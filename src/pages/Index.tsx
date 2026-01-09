@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt } from "lucide-react";
 import { exportToExcel } from "@/lib/exportToExcel";
 import { CompanyHeader } from "@/components/CompanyHeader";
 import { DashboardSheet } from "@/components/sheets/DashboardSheet";
@@ -11,6 +11,7 @@ import { ESafetySheet } from "@/components/sheets/ESafetySheet";
 import { VituSheet } from "@/components/sheets/VituSheet";
 import { ChartOfAccountsSheet } from "@/components/sheets/ChartOfAccountsSheet";
 import { ReconciliationSheet } from "@/components/sheets/ReconciliationSheet";
+import { TitleRevenueSheet } from "@/components/sheets/TitleRevenueSheet";
 import {
   octoberDeposits,
   octoberWithdrawals,
@@ -32,7 +33,7 @@ const Index = () => {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-xl font-bold text-foreground tracking-tight">Financial Workbook</h2>
-            <p className="text-sm text-muted-foreground mt-0.5">8 sheets • Q4 2025 • CPA-Ready Format</p>
+            <p className="text-sm text-muted-foreground mt-0.5">9 sheets • Q4 2025 • CPA-Ready Format</p>
           </div>
           <Button 
             variant="default" 
@@ -84,13 +85,20 @@ const Index = () => {
                 PA eSafety
               </TabsTrigger>
               <TabsTrigger 
+                value="titlerevenue" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <Receipt className="h-4 w-4" />
+                Title Revenue
+              </TabsTrigger>
+              <TabsTrigger 
                 value="vitu" 
                 className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
               >
                 <FileText className="h-4 w-4" />
-                Vitu
+                Vitu Expenses
               </TabsTrigger>
-              <TabsTrigger 
+              <TabsTrigger
                 value="coa" 
                 className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
               >
@@ -142,6 +150,10 @@ const Index = () => {
             
             <TabsContent value="esafety" className="m-0">
               <ESafetySheet />
+            </TabsContent>
+            
+            <TabsContent value="titlerevenue" className="m-0">
+              <TitleRevenueSheet />
             </TabsContent>
             
             <TabsContent value="vitu" className="m-0">
