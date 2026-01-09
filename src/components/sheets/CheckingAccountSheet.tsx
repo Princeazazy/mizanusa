@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, TrendingUp, TrendingDown } from "lucide-react";
+import { CheckCircle2, TrendingUp, TrendingDown, Building } from "lucide-react";
 import { Transaction } from "@/data/bankTransactions";
 
 interface CheckingAccountSheetProps {
@@ -30,20 +30,20 @@ const formatCurrency = (amount: number) => {
 
 const getCategoryColor = (category: string) => {
   const colors: Record<string, string> = {
-    "Credit Card Sales": "bg-green-100 text-green-800",
-    "Cash/Check Sales": "bg-blue-100 text-blue-800",
-    "Venmo Sales": "bg-purple-100 text-purple-800",
-    "Transfer In": "bg-gray-100 text-gray-800",
-    "Inventory Purchases": "bg-red-100 text-red-800",
-    "Title & Registration": "bg-orange-100 text-orange-800",
-    "Title Lookup Services": "bg-yellow-100 text-yellow-800",
-    "Utilities": "bg-cyan-100 text-cyan-800",
-    "Communications": "bg-indigo-100 text-indigo-800",
-    "Insurance": "bg-pink-100 text-pink-800",
-    "Bank Fees": "bg-rose-100 text-rose-800",
-    "Transfer Out": "bg-gray-100 text-gray-800",
+    "Credit Card Sales": "bg-income-muted text-income border-income/30",
+    "Cash/Check Sales": "bg-info-muted text-info border-info/30",
+    "Venmo Sales": "bg-purple-50 text-purple-700 border-purple-200",
+    "Transfer In": "bg-muted text-muted-foreground border-border",
+    "Inventory Purchases": "bg-expense-muted text-expense border-expense/30",
+    "Title & Registration": "bg-warning-muted text-warning border-warning/30",
+    "Title Lookup Services": "bg-yellow-50 text-yellow-700 border-yellow-200",
+    "Utilities": "bg-cyan-50 text-cyan-700 border-cyan-200",
+    "Communications": "bg-indigo-50 text-indigo-700 border-indigo-200",
+    "Insurance": "bg-pink-50 text-pink-700 border-pink-200",
+    "Bank Fees": "bg-rose-50 text-rose-700 border-rose-200",
+    "Transfer Out": "bg-muted text-muted-foreground border-border",
   };
-  return colors[category] || "bg-gray-100 text-gray-800";
+  return colors[category] || "bg-muted text-muted-foreground border-border";
 };
 
 export const CheckingAccountSheet = ({
@@ -76,24 +76,27 @@ export const CheckingAccountSheet = ({
   }, {} as Record<string, number>);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">{month} {year} - Checking Account</h2>
-          <p className="text-muted-foreground">TD Bank Business Checking | Member #0021348405</p>
+          <h2 className="text-2xl font-bold text-foreground tracking-tight">{month} {year} — Checking Account</h2>
+          <div className="flex items-center gap-2 mt-1.5">
+            <Building className="h-4 w-4 text-muted-foreground" />
+            <p className="text-muted-foreground text-sm">TD Bank Business Checking • Member #0021348405</p>
+          </div>
         </div>
         {isReconciled && (
-          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
-            <CheckCircle2 className="h-4 w-4 mr-1" />
+          <Badge className="bg-income-muted text-income border-income/30 gap-1.5 px-3 py-1.5">
+            <CheckCircle2 className="h-4 w-4" />
             Reconciled
           </Badge>
         )}
       </div>
 
       {/* Income Section */}
-      <Card>
-        <CardHeader className="bg-green-50 border-b">
-          <CardTitle className="flex items-center gap-2 text-green-800">
+      <Card className="shadow-card overflow-hidden">
+        <CardHeader className="bg-income-muted/60 border-b border-income/20">
+          <CardTitle className="flex items-center gap-2.5 text-income">
             <TrendingUp className="h-5 w-5" />
             Income (Deposits)
           </CardTitle>
@@ -101,37 +104,37 @@ export const CheckingAccountSheet = ({
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className="bg-muted/50">
-                <TableHead className="w-24">Date</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead className="w-20">COA</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead className="text-right w-32">Amount</TableHead>
+              <TableRow className="table-header-row">
+                <TableHead className="w-28 font-semibold">Date</TableHead>
+                <TableHead className="font-semibold">Description</TableHead>
+                <TableHead className="w-20 font-semibold">COA</TableHead>
+                <TableHead className="font-semibold">Category</TableHead>
+                <TableHead className="text-right w-32 font-semibold">Amount</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {actualDeposits.map((transaction, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-mono text-sm">{transaction.date}</TableCell>
-                  <TableCell>{transaction.description}</TableCell>
+                <TableRow key={index} className="hover:bg-muted/30 transition-colors">
+                  <TableCell className="font-mono text-sm text-muted-foreground">{transaction.date}</TableCell>
+                  <TableCell className="font-medium">{transaction.description}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="font-mono">
+                    <Badge variant="outline" className="font-mono text-xs">
                       {transaction.coaCode}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge className={getCategoryColor(transaction.category)}>
+                    <Badge className={`${getCategoryColor(transaction.category)} text-xs font-medium`}>
                       {transaction.category}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right font-medium text-green-600">
+                  <TableCell className="text-right font-semibold text-income font-mono">
                     {formatCurrency(transaction.amount)}
                   </TableCell>
                 </TableRow>
               ))}
-              <TableRow className="bg-green-50 font-bold">
-                <TableCell colSpan={4}>Total Deposits</TableCell>
-                <TableCell className="text-right text-green-700">
+              <TableRow className="bg-income-muted/40 font-bold border-t-2 border-income/20">
+                <TableCell colSpan={4} className="text-income">Total Deposits</TableCell>
+                <TableCell className="text-right text-income font-mono text-base">
                   {formatCurrency(totalDeposits)}
                 </TableCell>
               </TableRow>
@@ -141,16 +144,16 @@ export const CheckingAccountSheet = ({
       </Card>
 
       {/* Income by Category Summary */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Income by Category</CardTitle>
+      <Card className="shadow-card">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-base font-semibold">Income by Category</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {Object.entries(depositsByCategory).map(([category, amount]) => (
-              <div key={category} className="bg-muted/50 rounded-lg p-3">
-                <p className="text-xs text-muted-foreground">{category}</p>
-                <p className="text-lg font-bold text-green-600">{formatCurrency(amount)}</p>
+              <div key={category} className="bg-muted/40 rounded-xl p-4 border border-transparent hover:border-income/20 transition-colors">
+                <p className="text-xs text-muted-foreground font-medium">{category}</p>
+                <p className="text-lg font-bold text-income mt-1">{formatCurrency(amount)}</p>
               </div>
             ))}
           </div>
@@ -158,9 +161,9 @@ export const CheckingAccountSheet = ({
       </Card>
 
       {/* Expense Section */}
-      <Card>
-        <CardHeader className="bg-red-50 border-b">
-          <CardTitle className="flex items-center gap-2 text-red-800">
+      <Card className="shadow-card overflow-hidden">
+        <CardHeader className="bg-expense-muted/60 border-b border-expense/20">
+          <CardTitle className="flex items-center gap-2.5 text-expense">
             <TrendingDown className="h-5 w-5" />
             Expenses (Withdrawals)
           </CardTitle>
@@ -168,41 +171,41 @@ export const CheckingAccountSheet = ({
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className="bg-muted/50">
-                <TableHead className="w-24">Date</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead className="w-20">Check #</TableHead>
-                <TableHead className="w-20">COA</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead className="text-right w-32">Amount</TableHead>
+              <TableRow className="table-header-row">
+                <TableHead className="w-28 font-semibold">Date</TableHead>
+                <TableHead className="font-semibold">Description</TableHead>
+                <TableHead className="w-20 font-semibold">Check #</TableHead>
+                <TableHead className="w-20 font-semibold">COA</TableHead>
+                <TableHead className="font-semibold">Category</TableHead>
+                <TableHead className="text-right w-32 font-semibold">Amount</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {actualWithdrawals.map((transaction, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-mono text-sm">{transaction.date}</TableCell>
-                  <TableCell>{transaction.description}</TableCell>
-                  <TableCell className="font-mono text-sm">
+                <TableRow key={index} className="hover:bg-muted/30 transition-colors">
+                  <TableCell className="font-mono text-sm text-muted-foreground">{transaction.date}</TableCell>
+                  <TableCell className="font-medium">{transaction.description}</TableCell>
+                  <TableCell className="font-mono text-sm text-muted-foreground">
                     {transaction.checkNumber || "—"}
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="font-mono">
+                    <Badge variant="outline" className="font-mono text-xs">
                       {transaction.coaCode}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge className={getCategoryColor(transaction.category)}>
+                    <Badge className={`${getCategoryColor(transaction.category)} text-xs font-medium`}>
                       {transaction.category}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right font-medium text-red-600">
+                  <TableCell className="text-right font-semibold text-expense font-mono">
                     ({formatCurrency(transaction.amount)})
                   </TableCell>
                 </TableRow>
               ))}
-              <TableRow className="bg-red-50 font-bold">
-                <TableCell colSpan={5}>Total Withdrawals</TableCell>
-                <TableCell className="text-right text-red-700">
+              <TableRow className="bg-expense-muted/40 font-bold border-t-2 border-expense/20">
+                <TableCell colSpan={5} className="text-expense">Total Withdrawals</TableCell>
+                <TableCell className="text-right text-expense font-mono text-base">
                   ({formatCurrency(totalWithdrawals)})
                 </TableCell>
               </TableRow>
@@ -212,16 +215,16 @@ export const CheckingAccountSheet = ({
       </Card>
 
       {/* Expense by Category Summary */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Expenses by Category</CardTitle>
+      <Card className="shadow-card">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-base font-semibold">Expenses by Category</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {Object.entries(withdrawalsByCategory).map(([category, amount]) => (
-              <div key={category} className="bg-muted/50 rounded-lg p-3">
-                <p className="text-xs text-muted-foreground">{category}</p>
-                <p className="text-lg font-bold text-red-600">{formatCurrency(amount)}</p>
+              <div key={category} className="bg-muted/40 rounded-xl p-4 border border-transparent hover:border-expense/20 transition-colors">
+                <p className="text-xs text-muted-foreground font-medium">{category}</p>
+                <p className="text-lg font-bold text-expense mt-1">{formatCurrency(amount)}</p>
               </div>
             ))}
           </div>
@@ -229,37 +232,37 @@ export const CheckingAccountSheet = ({
       </Card>
 
       {/* Bank Reconciliation */}
-      <Card>
+      <Card className="shadow-card overflow-hidden">
         <CardHeader className="bg-primary/5 border-b">
-          <CardTitle>Bank Reconciliation - {month} {year}</CardTitle>
+          <CardTitle className="text-lg">Bank Reconciliation — {month} {year}</CardTitle>
         </CardHeader>
-        <CardContent className="pt-4">
+        <CardContent className="pt-5">
           <Table>
             <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">Beginning Balance ({month.substring(0, 3)}/01)</TableCell>
-                <TableCell className="text-right font-mono">{formatCurrency(beginningBalance)}</TableCell>
+              <TableRow className="hover:bg-transparent">
+                <TableCell className="font-medium py-3">Beginning Balance ({month.substring(0, 3)}/01)</TableCell>
+                <TableCell className="text-right font-mono font-medium py-3">{formatCurrency(beginningBalance)}</TableCell>
               </TableRow>
-              <TableRow className="text-green-600">
-                <TableCell className="font-medium">Add: Total Deposits</TableCell>
-                <TableCell className="text-right font-mono">{formatCurrency(totalDeposits)}</TableCell>
+              <TableRow className="hover:bg-transparent">
+                <TableCell className="font-medium text-income py-3">Add: Total Deposits</TableCell>
+                <TableCell className="text-right font-mono font-medium text-income py-3">{formatCurrency(totalDeposits)}</TableCell>
               </TableRow>
-              <TableRow className="text-red-600">
-                <TableCell className="font-medium">Less: Total Withdrawals</TableCell>
-                <TableCell className="text-right font-mono">({formatCurrency(totalWithdrawals)})</TableCell>
+              <TableRow className="hover:bg-transparent">
+                <TableCell className="font-medium text-expense py-3">Less: Total Withdrawals</TableCell>
+                <TableCell className="text-right font-mono font-medium text-expense py-3">({formatCurrency(totalWithdrawals)})</TableCell>
               </TableRow>
-              <TableRow className="border-t-2 font-bold">
-                <TableCell>Calculated Ending Balance</TableCell>
-                <TableCell className="text-right font-mono">{formatCurrency(endingBalance)}</TableCell>
+              <TableRow className="border-t-2 bg-muted/30 hover:bg-muted/30">
+                <TableCell className="font-bold py-4">Calculated Ending Balance</TableCell>
+                <TableCell className="text-right font-mono font-bold text-lg py-4">{formatCurrency(endingBalance)}</TableCell>
               </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Per Bank Statement</TableCell>
-                <TableCell className="text-right font-mono">{formatCurrency(statementBalance)}</TableCell>
+              <TableRow className="hover:bg-transparent">
+                <TableCell className="font-medium py-3">Per Bank Statement</TableCell>
+                <TableCell className="text-right font-mono font-medium py-3">{formatCurrency(statementBalance)}</TableCell>
               </TableRow>
-              <TableRow className={isReconciled ? "bg-green-50" : "bg-red-50"}>
-                <TableCell className="font-bold">Difference</TableCell>
-                <TableCell className="text-right font-mono font-bold">
-                  {formatCurrency(difference)} {isReconciled && "✓"}
+              <TableRow className={`${isReconciled ? "bg-income-muted/50" : "bg-expense-muted/50"} hover:bg-transparent`}>
+                <TableCell className="font-bold py-4">Difference</TableCell>
+                <TableCell className="text-right font-mono font-bold py-4">
+                  {formatCurrency(difference)} {isReconciled && <CheckCircle2 className="inline h-4 w-4 text-income ml-2" />}
                 </TableCell>
               </TableRow>
             </TableBody>

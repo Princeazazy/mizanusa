@@ -5,7 +5,9 @@ import {
   TrendingDown, 
   FileText, 
   Car,
-  CreditCard
+  CreditCard,
+  ArrowUpRight,
+  ArrowDownRight
 } from "lucide-react";
 import { 
   octoberDeposits, 
@@ -43,142 +45,138 @@ export const DashboardSheet = () => {
   const netChange = totalDeposits - totalExpenses;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold text-foreground">Executive Summary</h2>
-        <p className="text-muted-foreground">October - December 2025 Financial Overview</p>
+        <h2 className="text-2xl font-bold text-foreground tracking-tight">Executive Summary</h2>
+        <p className="text-muted-foreground mt-1">October - December 2025 Financial Overview</p>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Bank Deposits
-            </CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
-              {formatCurrency(totalDeposits)}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="stat-card stat-card-income shadow-card">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-muted-foreground">Total Deposits</span>
+            <div className="p-2 bg-income-muted rounded-lg">
+              <ArrowUpRight className="h-4 w-4 text-income" />
             </div>
-            <p className="text-xs text-muted-foreground mt-1">Oct-Nov 2025</p>
-          </CardContent>
-        </Card>
+          </div>
+          <div className="text-2xl font-bold text-income tracking-tight">
+            {formatCurrency(totalDeposits)}
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">Oct-Nov 2025</p>
+        </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Bank Expenses
-            </CardTitle>
-            <TrendingDown className="h-4 w-4 text-red-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">
-              {formatCurrency(totalExpenses)}
+        <div className="stat-card stat-card-expense shadow-card">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-muted-foreground">Total Expenses</span>
+            <div className="p-2 bg-expense-muted rounded-lg">
+              <ArrowDownRight className="h-4 w-4 text-expense" />
             </div>
-            <p className="text-xs text-muted-foreground mt-1">Oct-Nov 2025</p>
-          </CardContent>
-        </Card>
+          </div>
+          <div className="text-2xl font-bold text-expense tracking-tight">
+            {formatCurrency(totalExpenses)}
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">Oct-Nov 2025</p>
+        </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              PA eSafety Revenue
-            </CardTitle>
-            <Car className="h-4 w-4 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">
-              {formatCurrency(inspectionsSummary.total.revenue)}
+        <div className="stat-card stat-card-info shadow-card">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-muted-foreground">PA eSafety Revenue</span>
+            <div className="p-2 bg-info-muted rounded-lg">
+              <Car className="h-4 w-4 text-info" />
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {inspectionsSummary.total.count} inspections
-            </p>
-          </CardContent>
-        </Card>
+          </div>
+          <div className="text-2xl font-bold text-info tracking-tight">
+            {formatCurrency(inspectionsSummary.total.revenue)}
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            {inspectionsSummary.total.count} inspections
+          </p>
+        </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Vitu Title Services
-            </CardTitle>
-            <FileText className="h-4 w-4 text-orange-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-orange-600">
-              {formatCurrency(vituSummary.quarterTotal)}
+        <div className="stat-card stat-card-warning shadow-card">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-muted-foreground">Vitu Services</span>
+            <div className="p-2 bg-warning-muted rounded-lg">
+              <FileText className="h-4 w-4 text-warning" />
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {vituSummary.totalDLDVLookups + vituSummary.totalNMVTISInquiries} lookups
-            </p>
-          </CardContent>
-        </Card>
+          </div>
+          <div className="text-2xl font-bold text-warning tracking-tight">
+            {formatCurrency(vituSummary.quarterTotal)}
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            {vituSummary.totalDLDVLookups + vituSummary.totalNMVTISInquiries} lookups
+          </p>
+        </div>
       </div>
 
       {/* Monthly Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5" />
+        <Card className="shadow-card overflow-hidden">
+          <CardHeader className="bg-muted/40 border-b">
+            <CardTitle className="flex items-center gap-2.5 text-lg">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <DollarSign className="h-4 w-4 text-primary" />
+              </div>
               October 2025
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center py-2 border-b">
+          <CardContent className="pt-5">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center py-3 border-b border-dashed">
                 <span className="text-muted-foreground">Total Deposits</span>
-                <span className="font-medium text-green-600">
+                <span className="font-semibold text-income">
                   {formatCurrency(totalOctoberDeposits)}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b">
+              <div className="flex justify-between items-center py-3 border-b border-dashed">
                 <span className="text-muted-foreground">Total Expenses</span>
-                <span className="font-medium text-red-600">
+                <span className="font-semibold text-expense">
                   {formatCurrency(totalOctoberWithdrawals)}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b">
+              <div className="flex justify-between items-center py-3 border-b border-dashed">
                 <span className="text-muted-foreground">Beginning Balance</span>
                 <span className="font-medium">{formatCurrency(4311.94)}</span>
               </div>
-              <div className="flex justify-between items-center py-2">
+              <div className="flex justify-between items-center py-3 bg-muted/30 -mx-6 px-6 rounded-lg">
                 <span className="font-semibold">Ending Balance</span>
-                <span className="font-bold">{formatCurrency(0.00)}</span>
+                <span className="font-bold text-lg">{formatCurrency(0.00)}</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5" />
+        <Card className="shadow-card overflow-hidden">
+          <CardHeader className="bg-muted/40 border-b">
+            <CardTitle className="flex items-center gap-2.5 text-lg">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <DollarSign className="h-4 w-4 text-primary" />
+              </div>
               November 2025
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center py-2 border-b">
+          <CardContent className="pt-5">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center py-3 border-b border-dashed">
                 <span className="text-muted-foreground">Total Deposits</span>
-                <span className="font-medium text-green-600">
+                <span className="font-semibold text-income">
                   {formatCurrency(totalNovemberDeposits)}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b">
+              <div className="flex justify-between items-center py-3 border-b border-dashed">
                 <span className="text-muted-foreground">Total Expenses</span>
-                <span className="font-medium text-red-600">
+                <span className="font-semibold text-expense">
                   {formatCurrency(totalNovemberWithdrawals)}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b">
+              <div className="flex justify-between items-center py-3 border-b border-dashed">
                 <span className="text-muted-foreground">Beginning Balance</span>
                 <span className="font-medium">{formatCurrency(0.00)}</span>
               </div>
-              <div className="flex justify-between items-center py-2">
+              <div className="flex justify-between items-center py-3 bg-muted/30 -mx-6 px-6 rounded-lg">
                 <span className="font-semibold">Ending Balance</span>
-                <span className="font-bold">{formatCurrency(10443.93)}</span>
+                <span className="font-bold text-lg">{formatCurrency(10443.93)}</span>
               </div>
             </div>
           </CardContent>
@@ -186,62 +184,66 @@ export const DashboardSheet = () => {
       </div>
 
       {/* PA eSafety Breakdown */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Car className="h-5 w-5" />
-            PA eSafety Salvage Inspections - Quarterly Summary
+      <Card className="shadow-card overflow-hidden">
+        <CardHeader className="bg-muted/40 border-b">
+          <CardTitle className="flex items-center gap-2.5 text-lg">
+            <div className="p-2 bg-info/10 rounded-lg">
+              <Car className="h-4 w-4 text-info" />
+            </div>
+            PA eSafety Salvage Inspections — Quarterly Summary
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-muted/50 rounded-lg p-4 text-center">
-              <p className="text-sm text-muted-foreground">October</p>
-              <p className="text-xl font-bold">{inspectionsSummary.october.count}</p>
-              <p className="text-sm text-green-600">{formatCurrency(inspectionsSummary.october.revenue)}</p>
+        <CardContent className="pt-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-muted/40 rounded-xl p-5 text-center border border-transparent hover:border-border transition-colors">
+              <p className="text-sm text-muted-foreground font-medium">October</p>
+              <p className="text-2xl font-bold mt-2">{inspectionsSummary.october.count}</p>
+              <p className="text-sm text-income font-medium mt-1">{formatCurrency(inspectionsSummary.october.revenue)}</p>
             </div>
-            <div className="bg-muted/50 rounded-lg p-4 text-center">
-              <p className="text-sm text-muted-foreground">November</p>
-              <p className="text-xl font-bold">{inspectionsSummary.november.count}</p>
-              <p className="text-sm text-green-600">{formatCurrency(inspectionsSummary.november.revenue)}</p>
+            <div className="bg-muted/40 rounded-xl p-5 text-center border border-transparent hover:border-border transition-colors">
+              <p className="text-sm text-muted-foreground font-medium">November</p>
+              <p className="text-2xl font-bold mt-2">{inspectionsSummary.november.count}</p>
+              <p className="text-sm text-income font-medium mt-1">{formatCurrency(inspectionsSummary.november.revenue)}</p>
             </div>
-            <div className="bg-muted/50 rounded-lg p-4 text-center">
-              <p className="text-sm text-muted-foreground">December</p>
-              <p className="text-xl font-bold">{inspectionsSummary.december.count}</p>
-              <p className="text-sm text-green-600">{formatCurrency(inspectionsSummary.december.revenue)}</p>
+            <div className="bg-muted/40 rounded-xl p-5 text-center border border-transparent hover:border-border transition-colors">
+              <p className="text-sm text-muted-foreground font-medium">December</p>
+              <p className="text-2xl font-bold mt-2">{inspectionsSummary.december.count}</p>
+              <p className="text-sm text-income font-medium mt-1">{formatCurrency(inspectionsSummary.december.revenue)}</p>
             </div>
-            <div className="bg-primary/10 rounded-lg p-4 text-center">
-              <p className="text-sm text-muted-foreground">Q4 Total</p>
-              <p className="text-xl font-bold">{inspectionsSummary.total.count}</p>
-              <p className="text-sm font-semibold text-green-600">{formatCurrency(inspectionsSummary.total.revenue)}</p>
+            <div className="bg-primary/5 rounded-xl p-5 text-center border-2 border-primary/20">
+              <p className="text-sm text-muted-foreground font-medium">Q4 Total</p>
+              <p className="text-2xl font-bold mt-2">{inspectionsSummary.total.count}</p>
+              <p className="text-sm font-semibold text-income mt-1">{formatCurrency(inspectionsSummary.total.revenue)}</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Vitu Summary */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CreditCard className="h-5 w-5" />
-            Vitu Title Services - Quarterly Summary
+      <Card className="shadow-card overflow-hidden">
+        <CardHeader className="bg-muted/40 border-b">
+          <CardTitle className="flex items-center gap-2.5 text-lg">
+            <div className="p-2 bg-warning/10 rounded-lg">
+              <CreditCard className="h-4 w-4 text-warning" />
+            </div>
+            Vitu Title Services — Quarterly Summary
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-muted/50 rounded-lg p-4 text-center">
-              <p className="text-sm text-muted-foreground">DLDV Lookups</p>
-              <p className="text-xl font-bold">{vituSummary.totalDLDVLookups}</p>
-              <p className="text-sm text-muted-foreground">@ $2.00 each</p>
+            <div className="bg-muted/40 rounded-xl p-5 text-center border border-transparent hover:border-border transition-colors">
+              <p className="text-sm text-muted-foreground font-medium">DLDV Lookups</p>
+              <p className="text-2xl font-bold mt-2">{vituSummary.totalDLDVLookups}</p>
+              <p className="text-xs text-muted-foreground mt-1">@ $2.00 each</p>
             </div>
-            <div className="bg-muted/50 rounded-lg p-4 text-center">
-              <p className="text-sm text-muted-foreground">NMVTIS Inquiries</p>
-              <p className="text-xl font-bold">{vituSummary.totalNMVTISInquiries}</p>
-              <p className="text-sm text-muted-foreground">@ $2.00 each</p>
+            <div className="bg-muted/40 rounded-xl p-5 text-center border border-transparent hover:border-border transition-colors">
+              <p className="text-sm text-muted-foreground font-medium">NMVTIS Inquiries</p>
+              <p className="text-2xl font-bold mt-2">{vituSummary.totalNMVTISInquiries}</p>
+              <p className="text-xs text-muted-foreground mt-1">@ $2.00 each</p>
             </div>
-            <div className="bg-primary/10 rounded-lg p-4 text-center">
-              <p className="text-sm text-muted-foreground">Q4 Total</p>
-              <p className="text-xl font-bold text-orange-600">{formatCurrency(vituSummary.quarterTotal)}</p>
+            <div className="bg-primary/5 rounded-xl p-5 text-center border-2 border-primary/20">
+              <p className="text-sm text-muted-foreground font-medium">Q4 Total</p>
+              <p className="text-2xl font-bold text-warning mt-2">{formatCurrency(vituSummary.quarterTotal)}</p>
             </div>
           </div>
         </CardContent>

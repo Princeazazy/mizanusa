@@ -27,14 +27,18 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <CompanyHeader />
       
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Action Bar */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-lg font-semibold text-foreground">Financial Workbook</h2>
-            <p className="text-sm text-muted-foreground">8 sheets • Q4 2025</p>
+            <h2 className="text-xl font-bold text-foreground tracking-tight">Financial Workbook</h2>
+            <p className="text-sm text-muted-foreground mt-0.5">8 sheets • Q4 2025 • CPA-Ready Format</p>
           </div>
-          <Button variant="outline" className="gap-2" onClick={exportToExcel}>
+          <Button 
+            variant="default" 
+            className="gap-2.5 shadow-sm hover:shadow-md transition-shadow font-medium"
+            onClick={exportToExcel}
+          >
             <Download className="h-4 w-4" />
             Export to Excel
           </Button>
@@ -42,42 +46,68 @@ const Index = () => {
 
         {/* Sheet Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-muted/50 p-1">
-            <TabsTrigger value="dashboard" className="gap-2">
-              <LayoutDashboard className="h-4 w-4" />
-              Dashboard
-            </TabsTrigger>
-            <TabsTrigger value="october" className="gap-2">
-              <FileSpreadsheet className="h-4 w-4" />
-              Oct 2025
-            </TabsTrigger>
-            <TabsTrigger value="november" className="gap-2">
-              <FileSpreadsheet className="h-4 w-4" />
-              Nov 2025
-            </TabsTrigger>
-            <TabsTrigger value="transfers" className="gap-2">
-              <ArrowLeftRight className="h-4 w-4" />
-              Transfers
-            </TabsTrigger>
-            <TabsTrigger value="esafety" className="gap-2">
-              <Car className="h-4 w-4" />
-              PA eSafety
-            </TabsTrigger>
-            <TabsTrigger value="vitu" className="gap-2">
-              <FileText className="h-4 w-4" />
-              Vitu
-            </TabsTrigger>
-            <TabsTrigger value="coa" className="gap-2">
-              <BookOpen className="h-4 w-4" />
-              Chart of Accounts
-            </TabsTrigger>
-            <TabsTrigger value="reconciliation" className="gap-2">
-              <CheckSquare className="h-4 w-4" />
-              Reconciliation
-            </TabsTrigger>
-          </TabsList>
+          <div className="bg-card rounded-xl border shadow-card p-1.5 mb-8">
+            <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-transparent p-0">
+              <TabsTrigger 
+                value="dashboard" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </TabsTrigger>
+              <TabsTrigger 
+                value="october" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <FileSpreadsheet className="h-4 w-4" />
+                Oct 2025
+              </TabsTrigger>
+              <TabsTrigger 
+                value="november" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <FileSpreadsheet className="h-4 w-4" />
+                Nov 2025
+              </TabsTrigger>
+              <TabsTrigger 
+                value="transfers" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <ArrowLeftRight className="h-4 w-4" />
+                Transfers
+              </TabsTrigger>
+              <TabsTrigger 
+                value="esafety" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <Car className="h-4 w-4" />
+                PA eSafety
+              </TabsTrigger>
+              <TabsTrigger 
+                value="vitu" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <FileText className="h-4 w-4" />
+                Vitu
+              </TabsTrigger>
+              <TabsTrigger 
+                value="coa" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <BookOpen className="h-4 w-4" />
+                Chart of Accounts
+              </TabsTrigger>
+              <TabsTrigger 
+                value="reconciliation" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <CheckSquare className="h-4 w-4" />
+                Reconciliation
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-          <div className="mt-6">
+          <div className="animate-fade-in">
             <TabsContent value="dashboard" className="m-0">
               <DashboardSheet />
             </TabsContent>
@@ -130,10 +160,23 @@ const Index = () => {
       </div>
 
       {/* Footer */}
-      <footer className="border-t mt-12 py-6 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>CVS Auto Sales Inc. • 715 Huntingdon Pike, Rockledge, PA 19046</p>
-          <p className="mt-1">Financial Records Prepared for CPA Review • Q4 2025</p>
+      <footer className="border-t mt-16 bg-card">
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-center md:text-left">
+              <p className="text-sm font-medium text-foreground">CVS Auto Sales Inc.</p>
+              <p className="text-xs text-muted-foreground mt-0.5">715 Huntingdon Pike, Rockledge, PA 19046</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5 bg-muted px-3 py-1.5 rounded-full">
+                <CheckSquare className="h-3 w-3" />
+                CPA Review Ready
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-muted px-3 py-1.5 rounded-full">
+                Q4 2025
+              </span>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
