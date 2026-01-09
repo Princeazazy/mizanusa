@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare } from "lucide-react";
+import { exportToExcel } from "@/lib/exportToExcel";
 import { CompanyHeader } from "@/components/CompanyHeader";
 import { DashboardSheet } from "@/components/sheets/DashboardSheet";
 import { CheckingAccountSheet } from "@/components/sheets/CheckingAccountSheet";
@@ -33,7 +34,7 @@ const Index = () => {
             <h2 className="text-lg font-semibold text-foreground">Financial Workbook</h2>
             <p className="text-sm text-muted-foreground">8 sheets • Q4 2025</p>
           </div>
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2" onClick={exportToExcel}>
             <Download className="h-4 w-4" />
             Export to Excel
           </Button>
