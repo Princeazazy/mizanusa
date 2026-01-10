@@ -26,19 +26,12 @@ const formatCurrency = (amount: number) => {
 };
 
 export const DashboardSheet = () => {
-  const totalOctoberDeposits = octoberDeposits
-    .filter(t => t.coaCode !== "9999")
-    .reduce((sum, t) => sum + t.amount, 0);
-  const totalOctoberWithdrawals = octoberWithdrawals
-    .filter(t => t.coaCode !== "9999")
-    .reduce((sum, t) => sum + t.amount, 0);
+  // Include ALL deposits/withdrawals (including transfers) for accurate bank reconciliation
+  const totalOctoberDeposits = octoberDeposits.reduce((sum, t) => sum + t.amount, 0);
+  const totalOctoberWithdrawals = octoberWithdrawals.reduce((sum, t) => sum + t.amount, 0);
   
-  const totalNovemberDeposits = novemberDeposits
-    .filter(t => t.coaCode !== "9999")
-    .reduce((sum, t) => sum + t.amount, 0);
-  const totalNovemberWithdrawals = novemberWithdrawals
-    .filter(t => t.coaCode !== "9999")
-    .reduce((sum, t) => sum + t.amount, 0);
+  const totalNovemberDeposits = novemberDeposits.reduce((sum, t) => sum + t.amount, 0);
+  const totalNovemberWithdrawals = novemberWithdrawals.reduce((sum, t) => sum + t.amount, 0);
 
   const totalDeposits = totalOctoberDeposits + totalNovemberDeposits;
   const totalExpenses = totalOctoberWithdrawals + totalNovemberWithdrawals;
