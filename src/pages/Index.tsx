@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation } from "lucide-react";
 import { exportToExcel } from "@/lib/exportToExcel";
+import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
 import { CompanyHeader } from "@/components/CompanyHeader";
 import { DashboardSheet } from "@/components/sheets/DashboardSheet";
 import { CheckingAccountSheet } from "@/components/sheets/CheckingAccountSheet";
@@ -35,14 +36,24 @@ const Index = () => {
             <h2 className="text-xl font-bold text-foreground tracking-tight">Financial Workbook</h2>
             <p className="text-sm text-muted-foreground mt-0.5">9 sheets • Q4 2025 • CPA-Ready Format</p>
           </div>
-          <Button 
-            variant="default" 
-            className="gap-2.5 shadow-sm hover:shadow-md transition-shadow font-medium"
-            onClick={exportToExcel}
-          >
-            <Download className="h-4 w-4" />
-            Export to Excel
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="outline" 
+              className="gap-2.5 shadow-sm hover:shadow-md transition-shadow font-medium"
+              onClick={exportToPowerPoint}
+            >
+              <Presentation className="h-4 w-4" />
+              Export to PowerPoint
+            </Button>
+            <Button 
+              variant="default" 
+              className="gap-2.5 shadow-sm hover:shadow-md transition-shadow font-medium"
+              onClick={exportToExcel}
+            >
+              <Download className="h-4 w-4" />
+              Export to Excel
+            </Button>
+          </div>
         </div>
 
         {/* Sheet Tabs */}
