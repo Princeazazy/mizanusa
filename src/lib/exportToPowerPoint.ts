@@ -89,10 +89,19 @@ export const exportToPowerPoint = () => {
   // ==========================================
   const slide1 = pptx.addSlide({ masterName: 'TITLE_SLIDE' });
   
-  slide1.addText('APEX ACCOUNTING', {
+  // Add Apex Logo
+  slide1.addImage({
+    path: '/apex-logo.png',
     x: 0.5,
-    y: 1.2,
-    w: '90%',
+    y: 0.5,
+    w: 1.5,
+    h: 1.5,
+  });
+  
+  slide1.addText('APEX ACCOUNTING', {
+    x: 2.2,
+    y: 0.8,
+    w: 5,
     h: 0.6,
     fontSize: 28,
     bold: true,
@@ -102,7 +111,7 @@ export const exportToPowerPoint = () => {
   
   slide1.addText('CVS AUTO SALES INC.', {
     x: 0.5,
-    y: 2.0,
+    y: 2.2,
     w: '90%',
     h: 0.8,
     fontSize: 44,
@@ -113,7 +122,7 @@ export const exportToPowerPoint = () => {
   
   slide1.addText('Q4 2025 Financial Report', {
     x: 0.5,
-    y: 2.8,
+    y: 3.0,
     w: '90%',
     h: 0.6,
     fontSize: 28,
@@ -123,7 +132,7 @@ export const exportToPowerPoint = () => {
   
   slide1.addText('715 Huntingdon Pike, Rockledge, PA 19046', {
     x: 0.5,
-    y: 3.6,
+    y: 3.8,
     w: '90%',
     h: 0.4,
     fontSize: 16,
@@ -1100,9 +1109,18 @@ export const exportToPowerPoint = () => {
   // ==========================================
   const slide11 = pptx.addSlide({ masterName: 'TITLE_SLIDE' });
   
+  // Add Apex Logo to Thank You slide
+  slide11.addImage({
+    path: '/apex-logo.png',
+    x: 4.0,
+    y: 0.5,
+    w: 2.0,
+    h: 2.0,
+  });
+  
   slide11.addText('Thank You', {
     x: 0.5,
-    y: 1.6,
+    y: 2.8,
     w: '90%',
     h: 0.8,
     fontSize: 44,
@@ -1113,7 +1131,7 @@ export const exportToPowerPoint = () => {
   
   slide11.addText('CVS Auto Sales Inc.', {
     x: 0.5,
-    y: 2.6,
+    y: 3.6,
     w: '90%',
     h: 0.5,
     fontSize: 24,
@@ -1123,7 +1141,7 @@ export const exportToPowerPoint = () => {
   
   slide11.addText('715 Huntingdon Pike, Rockledge, PA 19046', {
     x: 0.5,
-    y: 3.2,
+    y: 4.1,
     w: '90%',
     h: 0.4,
     fontSize: 16,
@@ -1131,19 +1149,9 @@ export const exportToPowerPoint = () => {
     fontFace: 'Arial',
   });
   
-  slide11.addText('Q4 2025 Financial Report', {
-    x: 0.5,
-    y: 4.0,
-    w: '90%',
-    h: 0.3,
-    fontSize: 14,
-    color: colors.lightGray,
-    fontFace: 'Arial',
-  });
-
   slide11.addText('APEX ACCOUNTING', {
     x: 0.5,
-    y: 4.6,
+    y: 4.8,
     w: '90%',
     h: 0.5,
     fontSize: 20,
@@ -1154,7 +1162,7 @@ export const exportToPowerPoint = () => {
   
   slide11.addText('Professional Bookkeeping & Financial Services', {
     x: 0.5,
-    y: 5.0,
+    y: 5.2,
     w: '90%',
     h: 0.3,
     fontSize: 12,
