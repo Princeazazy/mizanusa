@@ -26,16 +26,15 @@ const formatCurrency = (amount: number) => {
 };
 
 export const ReconciliationSheet = () => {
-  // Calculate totals excluding transfers
-  const octDeposits = octoberDeposits.filter(t => t.coaCode !== "9999");
-  const octWithdrawals = octoberWithdrawals.filter(t => t.coaCode !== "9999");
-  const novDeposits = novemberDeposits.filter(t => t.coaCode !== "9999");
-  const novWithdrawals = novemberWithdrawals.filter(t => t.coaCode !== "9999");
+  // Calculate totals INCLUDING transfers (for accurate bank reconciliation)
+  const octTotalDeposits = octoberDeposits.reduce((sum, t) => sum + t.amount, 0);
+  const octTotalWithdrawals = octoberWithdrawals.reduce((sum, t) => sum + t.amount, 0);
+  const novTotalDeposits = novemberDeposits.reduce((sum, t) => sum + t.amount, 0);
+  const novTotalWithdrawals = novemberWithdrawals.reduce((sum, t) => sum + t.amount, 0);
 
-  const octTotalDeposits = octDeposits.reduce((sum, t) => sum + t.amount, 0);
-  const octTotalWithdrawals = octWithdrawals.reduce((sum, t) => sum + t.amount, 0);
-  const novTotalDeposits = novDeposits.reduce((sum, t) => sum + t.amount, 0);
-  const novTotalWithdrawals = novWithdrawals.reduce((sum, t) => sum + t.amount, 0);
+  // For deposit count, exclude transfers
+  const octDepositCount = octoberDeposits.filter(t => t.coaCode !== "9999").length;
+  const novDepositCount = novemberDeposits.filter(t => t.coaCode !== "9999").length;
 
   return (
     <div className="space-y-6">
@@ -180,7 +179,7 @@ export const ReconciliationSheet = () => {
             <TableBody>
               <TableRow>
                 <TableCell className="font-medium">October 2025</TableCell>
-                <TableCell className="text-right">{octDeposits.length}</TableCell>
+                <TableCell className="text-right">{octDepositCount}</TableCell>
                 <TableCell className="text-right font-mono text-green-600">
                   {formatCurrency(octTotalDeposits)}
                 </TableCell>
@@ -192,7 +191,7 @@ export const ReconciliationSheet = () => {
               </TableRow>
               <TableRow>
                 <TableCell className="font-medium">November 2025</TableCell>
-                <TableCell className="text-right">{novDeposits.length}</TableCell>
+                <TableCell className="text-right">{novDepositCount}</TableCell>
                 <TableCell className="text-right font-mono text-green-600">
                   {formatCurrency(novTotalDeposits)}
                 </TableCell>
@@ -204,7 +203,7 @@ export const ReconciliationSheet = () => {
               </TableRow>
               <TableRow className="font-bold bg-muted/50">
                 <TableCell>Total</TableCell>
-                <TableCell className="text-right">{octDeposits.length + novDeposits.length}</TableCell>
+                <TableCell className="text-right">{octDepositCount + novDepositCount}</TableCell>
                 <TableCell className="text-right font-mono text-green-600">
                   {formatCurrency(octTotalDeposits + novTotalDeposits)}
                 </TableCell>
