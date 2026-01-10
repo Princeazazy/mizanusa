@@ -26,6 +26,7 @@ export const exportToExcel = () => {
 
   // Sheet 1: Dashboard Summary
   const dashboardData = [
+    ['APEX ACCOUNTING'],
     ['CVS Auto Sales Inc.'],
     ['Financial Workbook - Q4 2025'],
     ['715 Huntingdon Pike, Rockledge, PA 19046'],
@@ -62,7 +63,7 @@ export const exportToExcel = () => {
 
   // Sheet 2: October 2025 - Checking Account
   const octoberData = [
-    ['CVS Auto Sales Inc. - Checking Account'],
+    ['APEX ACCOUNTING | CVS Auto Sales Inc. - Checking Account'],
     ['October 2025'],
     [],
     ['Beginning Balance:', formatCurrency(octoberSummary.beginningBalance)],
@@ -87,7 +88,7 @@ export const exportToExcel = () => {
 
   // Sheet 3: November 2025 - Checking Account
   const novemberData = [
-    ['CVS Auto Sales Inc. - Checking Account'],
+    ['APEX ACCOUNTING | CVS Auto Sales Inc. - Checking Account'],
     ['November 2025'],
     [],
     ['Beginning Balance:', formatCurrency(novemberSummary.beginningBalance)],
@@ -112,7 +113,7 @@ export const exportToExcel = () => {
 
   // Sheet 4: Inter-Account Transfers
   const transfersData = [
-    ['Inter-Account Transfers'],
+    ['APEX ACCOUNTING | Inter-Account Transfers'],
     ['Q4 2025'],
     [],
     ['Date', 'From Account', 'To Account', 'Amount', 'Reference'],
@@ -127,7 +128,7 @@ export const exportToExcel = () => {
   // Sheet 5: PA eSafety Inspections
   const allInspections = [...octoberInspections, ...novemberInspections, ...decemberInspections];
   const esafetyData = [
-    ['PA eSafety - Salvage Inspections'],
+    ['APEX ACCOUNTING | PA eSafety - Salvage Inspections'],
     ['October - December 2025'],
     [],
     ['SUMMARY'],
@@ -147,7 +148,7 @@ export const exportToExcel = () => {
 
   // Sheet 6: Vitu Title Services
   const vituData = [
-    ['Vitu - Title Services'],
+    ['APEX ACCOUNTING | Vitu - Title Services'],
     ['October - December 2025'],
     [],
     ['QUARTER SUMMARY'],
@@ -175,7 +176,7 @@ export const exportToExcel = () => {
 
   // Sheet 7: Chart of Accounts
   const coaData = [
-    ['Chart of Accounts'],
+    ['APEX ACCOUNTING | Chart of Accounts'],
     ['CVS Auto Sales Inc.'],
     [],
     ['Code', 'Account Name', 'Type', 'Description'],
@@ -187,7 +188,7 @@ export const exportToExcel = () => {
 
   // Sheet 8: Reconciliation
   const reconciliationData = [
-    ['Bank Reconciliation Summary'],
+    ['APEX ACCOUNTING | Bank Reconciliation Summary'],
     ['Q4 2025'],
     [],
     ['MONTHLY RECONCILIATION'],

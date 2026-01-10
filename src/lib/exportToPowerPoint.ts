@@ -89,6 +89,17 @@ export const exportToPowerPoint = () => {
   // ==========================================
   const slide1 = pptx.addSlide({ masterName: 'TITLE_SLIDE' });
   
+  slide1.addText('APEX ACCOUNTING', {
+    x: 0.5,
+    y: 1.2,
+    w: '90%',
+    h: 0.6,
+    fontSize: 28,
+    bold: true,
+    color: colors.gold,
+    fontFace: 'Arial',
+  });
+  
   slide1.addText('CVS AUTO SALES INC.', {
     x: 0.5,
     y: 2.0,
@@ -106,7 +117,7 @@ export const exportToPowerPoint = () => {
     w: '90%',
     h: 0.6,
     fontSize: 28,
-    color: colors.gold,
+    color: colors.lightGray,
     fontFace: 'Arial',
   });
   
@@ -120,13 +131,13 @@ export const exportToPowerPoint = () => {
     fontFace: 'Arial',
   });
   
-  slide1.addText('Prepared for CPA Review', {
+  slide1.addText('Prepared by Apex Accounting', {
     x: 0.5,
     y: 4.8,
     w: '90%',
     h: 0.3,
     fontSize: 14,
-    color: colors.lightGray,
+    color: colors.gold,
     fontFace: 'Arial',
     italic: true,
   });
@@ -1091,7 +1102,7 @@ export const exportToPowerPoint = () => {
   
   slide11.addText('Thank You', {
     x: 0.5,
-    y: 2.0,
+    y: 1.6,
     w: '90%',
     h: 0.8,
     fontSize: 44,
@@ -1102,17 +1113,17 @@ export const exportToPowerPoint = () => {
   
   slide11.addText('CVS Auto Sales Inc.', {
     x: 0.5,
-    y: 3.0,
+    y: 2.6,
     w: '90%',
     h: 0.5,
     fontSize: 24,
-    color: colors.gold,
+    color: colors.lightGray,
     fontFace: 'Arial',
   });
   
   slide11.addText('715 Huntingdon Pike, Rockledge, PA 19046', {
     x: 0.5,
-    y: 3.6,
+    y: 3.2,
     w: '90%',
     h: 0.4,
     fontSize: 16,
@@ -1120,9 +1131,30 @@ export const exportToPowerPoint = () => {
     fontFace: 'Arial',
   });
   
-  slide11.addText('Q4 2025 Financial Report | Prepared for CPA Review', {
+  slide11.addText('Q4 2025 Financial Report', {
     x: 0.5,
-    y: 4.4,
+    y: 4.0,
+    w: '90%',
+    h: 0.3,
+    fontSize: 14,
+    color: colors.lightGray,
+    fontFace: 'Arial',
+  });
+
+  slide11.addText('APEX ACCOUNTING', {
+    x: 0.5,
+    y: 4.6,
+    w: '90%',
+    h: 0.5,
+    fontSize: 20,
+    bold: true,
+    color: colors.gold,
+    fontFace: 'Arial',
+  });
+  
+  slide11.addText('Professional Bookkeeping & Financial Services', {
+    x: 0.5,
+    y: 5.0,
     w: '90%',
     h: 0.3,
     fontSize: 12,

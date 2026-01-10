@@ -1,4 +1,5 @@
-import { Building2, FileSpreadsheet, Shield } from "lucide-react";
+import { FileSpreadsheet, Shield } from "lucide-react";
+import apexLogo from "@/assets/apex-logo.png";
 
 export const CompanyHeader = () => {
   return (
@@ -7,7 +8,7 @@ export const CompanyHeader = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-5">
             <div className="bg-white/10 backdrop-blur-sm p-3.5 rounded-xl border border-white/10">
-              <Building2 className="h-9 w-9" />
+              <img src={apexLogo} alt="Apex Accounting" className="h-9 w-9 object-contain" />
             </div>
             <div>
               <h1 className="text-2xl font-bold tracking-tight">CVS Auto Sales Inc.</h1>
@@ -23,9 +24,9 @@ export const CompanyHeader = () => {
             </div>
           </div>
           <div className="hidden md:flex items-center gap-3 bg-white/5 backdrop-blur-sm px-5 py-3 rounded-xl border border-white/10">
-            <FileSpreadsheet className="h-5 w-5 text-primary-foreground/80" />
+            <img src={apexLogo} alt="Apex Accounting" className="h-8 w-8 object-contain" />
             <div className="text-right">
-              <p className="text-sm font-semibold">Financial Records</p>
+              <p className="text-sm font-semibold">Prepared by Apex Accounting</p>
               <p className="text-xs text-primary-foreground/70">Q4 2025</p>
             </div>
           </div>
