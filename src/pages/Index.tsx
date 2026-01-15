@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote } from "lucide-react";
 import { exportToExcel } from "@/lib/exportToExcel";
 import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
 import { CompanyHeader } from "@/components/CompanyHeader";
@@ -13,13 +13,19 @@ import { VituSheet } from "@/components/sheets/VituSheet";
 import { ChartOfAccountsSheet } from "@/components/sheets/ChartOfAccountsSheet";
 import { ReconciliationSheet } from "@/components/sheets/ReconciliationSheet";
 import { TitleRevenueSheet } from "@/components/sheets/TitleRevenueSheet";
+import { ProfitLossSheet } from "@/components/sheets/ProfitLossSheet";
+import { BalanceSheetSheet } from "@/components/sheets/BalanceSheetSheet";
+import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
 import {
   octoberDeposits,
   octoberWithdrawals,
   novemberDeposits,
   novemberWithdrawals,
+  decemberDeposits,
+  decemberWithdrawals,
   octoberSummary,
   novemberSummary,
+  decemberSummary,
 } from "@/data/bankTransactions";
 
 const Index = () => {
@@ -34,7 +40,7 @@ const Index = () => {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-xl font-bold text-foreground tracking-tight">Financial Workbook</h2>
-            <p className="text-sm text-muted-foreground mt-0.5">9 sheets • Q4 2025 • CPA-Ready Format</p>
+            <p className="text-sm text-muted-foreground mt-0.5">12 sheets • Q4 2025 • CPA-Ready Format</p>
           </div>
           <div className="flex items-center gap-3">
             <Button 
@@ -82,6 +88,13 @@ const Index = () => {
                 Nov 2025
               </TabsTrigger>
               <TabsTrigger 
+                value="december" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <FileSpreadsheet className="h-4 w-4" />
+                Dec 2025
+              </TabsTrigger>
+              <TabsTrigger 
                 value="transfers" 
                 className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
               >
@@ -123,6 +136,27 @@ const Index = () => {
                 <CheckSquare className="h-4 w-4" />
                 Reconciliation
               </TabsTrigger>
+              <TabsTrigger 
+                value="profitloss" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <TrendingUp className="h-4 w-4" />
+                P&L
+              </TabsTrigger>
+              <TabsTrigger 
+                value="balancesheet" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <Scale className="h-4 w-4" />
+                Balance Sheet
+              </TabsTrigger>
+              <TabsTrigger 
+                value="cashflow" 
+                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+              >
+                <Banknote className="h-4 w-4" />
+                Cash Flow
+              </TabsTrigger>
             </TabsList>
           </div>
 
@@ -155,6 +189,18 @@ const Index = () => {
               />
             </TabsContent>
             
+            <TabsContent value="december" className="m-0">
+              <CheckingAccountSheet
+                month="December"
+                year="2025"
+                deposits={decemberDeposits}
+                withdrawals={decemberWithdrawals}
+                beginningBalance={decemberSummary.beginningBalance}
+                endingBalance={decemberSummary.endingBalance}
+                statementBalance={decemberSummary.statementEndingBalance}
+              />
+            </TabsContent>
+            
             <TabsContent value="transfers" className="m-0">
               <TransfersSheet />
             </TabsContent>
@@ -177,6 +223,18 @@ const Index = () => {
             
             <TabsContent value="reconciliation" className="m-0">
               <ReconciliationSheet />
+            </TabsContent>
+            
+            <TabsContent value="profitloss" className="m-0">
+              <ProfitLossSheet />
+            </TabsContent>
+            
+            <TabsContent value="balancesheet" className="m-0">
+              <BalanceSheetSheet />
+            </TabsContent>
+            
+            <TabsContent value="cashflow" className="m-0">
+              <CashFlowSheet />
             </TabsContent>
           </div>
         </Tabs>
