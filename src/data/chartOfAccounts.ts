@@ -20,6 +20,8 @@ export const chartOfAccounts: COAEntry[] = [
   { code: "5120", name: "Title Lookup Services", type: "COGS", description: "VITU RTS title services" },
   
   // Operating Expenses (6000 series)
+  { code: "6050", name: "Rent - Front Office", type: "Expense", description: "Front office rent expense" },
+  { code: "6055", name: "Rent - Main Office", type: "Expense", description: "Main office rent expense" },
   { code: "6100", name: "Utilities", type: "Expense", description: "PECO Energy, water, gas" },
   { code: "6200", name: "Communications", type: "Expense", description: "Verizon, internet, phone" },
   { code: "6300", name: "Office & Supplies", type: "Expense", description: "Costco, office supplies, retail" },
