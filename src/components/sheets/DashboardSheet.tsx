@@ -13,7 +13,9 @@ import {
   octoberDeposits, 
   octoberWithdrawals, 
   novemberDeposits, 
-  novemberWithdrawals 
+  novemberWithdrawals,
+  decemberDeposits,
+  decemberWithdrawals 
 } from "@/data/bankTransactions";
 import { inspectionsSummary } from "@/data/esafetyInspections";
 import { vituSummary } from "@/data/vituStatements";
@@ -33,8 +35,11 @@ export const DashboardSheet = () => {
   const totalNovemberDeposits = novemberDeposits.reduce((sum, t) => sum + t.amount, 0);
   const totalNovemberWithdrawals = novemberWithdrawals.reduce((sum, t) => sum + t.amount, 0);
 
-  const totalDeposits = totalOctoberDeposits + totalNovemberDeposits;
-  const totalExpenses = totalOctoberWithdrawals + totalNovemberWithdrawals;
+  const totalDecemberDeposits = decemberDeposits.reduce((sum, t) => sum + t.amount, 0);
+  const totalDecemberWithdrawals = decemberWithdrawals.reduce((sum, t) => sum + t.amount, 0);
+
+  const totalDeposits = totalOctoberDeposits + totalNovemberDeposits + totalDecemberDeposits;
+  const totalExpenses = totalOctoberWithdrawals + totalNovemberWithdrawals + totalDecemberWithdrawals;
   const netChange = totalDeposits - totalExpenses;
 
   return (
@@ -56,7 +61,7 @@ export const DashboardSheet = () => {
           <div className="text-2xl font-bold text-income tracking-tight">
             {formatCurrency(totalDeposits)}
           </div>
-          <p className="text-xs text-muted-foreground mt-2">Oct-Nov 2025</p>
+          <p className="text-xs text-muted-foreground mt-2">Q4 2025</p>
         </div>
 
         <div className="stat-card stat-card-expense shadow-card">
@@ -69,7 +74,7 @@ export const DashboardSheet = () => {
           <div className="text-2xl font-bold text-expense tracking-tight">
             {formatCurrency(totalExpenses)}
           </div>
-          <p className="text-xs text-muted-foreground mt-2">Oct-Nov 2025</p>
+          <p className="text-xs text-muted-foreground mt-2">Q4 2025</p>
         </div>
 
         <div className="stat-card stat-card-info shadow-card">
@@ -104,7 +109,7 @@ export const DashboardSheet = () => {
       </div>
 
       {/* Monthly Breakdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="shadow-card overflow-hidden">
           <CardHeader className="bg-muted/40 border-b">
             <CardTitle className="flex items-center gap-2.5 text-lg">
@@ -170,6 +175,41 @@ export const DashboardSheet = () => {
               <div className="flex justify-between items-center py-3 bg-muted/30 -mx-6 px-6 rounded-lg">
                 <span className="font-semibold">Ending Balance</span>
                 <span className="font-bold text-lg">{formatCurrency(10443.93)}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-card overflow-hidden">
+          <CardHeader className="bg-muted/40 border-b">
+            <CardTitle className="flex items-center gap-2.5 text-lg">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <DollarSign className="h-4 w-4 text-primary" />
+              </div>
+              December 2025
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-5">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center py-3 border-b border-dashed">
+                <span className="text-muted-foreground">Total Deposits</span>
+                <span className="font-semibold text-income">
+                  {formatCurrency(totalDecemberDeposits)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-dashed">
+                <span className="text-muted-foreground">Total Expenses</span>
+                <span className="font-semibold text-expense">
+                  {formatCurrency(totalDecemberWithdrawals)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-dashed">
+                <span className="text-muted-foreground">Beginning Balance</span>
+                <span className="font-medium">{formatCurrency(10443.93)}</span>
+              </div>
+              <div className="flex justify-between items-center py-3 bg-muted/30 -mx-6 px-6 rounded-lg">
+                <span className="font-semibold">Ending Balance</span>
+                <span className="font-bold text-lg">{formatCurrency(6434.50)}</span>
               </div>
             </div>
           </CardContent>
