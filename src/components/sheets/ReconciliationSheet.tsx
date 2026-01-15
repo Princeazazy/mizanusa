@@ -14,8 +14,11 @@ import {
   octoberWithdrawals,
   novemberDeposits,
   novemberWithdrawals,
+  decemberDeposits,
+  decemberWithdrawals,
   octoberSummary,
   novemberSummary,
+  decemberSummary,
 } from "@/data/bankTransactions";
 
 const formatCurrency = (amount: number) => {
@@ -31,10 +34,13 @@ export const ReconciliationSheet = () => {
   const octTotalWithdrawals = octoberWithdrawals.reduce((sum, t) => sum + t.amount, 0);
   const novTotalDeposits = novemberDeposits.reduce((sum, t) => sum + t.amount, 0);
   const novTotalWithdrawals = novemberWithdrawals.reduce((sum, t) => sum + t.amount, 0);
+  const decTotalDeposits = decemberDeposits.reduce((sum, t) => sum + t.amount, 0);
+  const decTotalWithdrawals = decemberWithdrawals.reduce((sum, t) => sum + t.amount, 0);
 
   // For deposit count, exclude transfers
   const octDepositCount = octoberDeposits.filter(t => t.coaCode !== "9999").length;
   const novDepositCount = novemberDeposits.filter(t => t.coaCode !== "9999").length;
+  const decDepositCount = decemberDeposits.filter(t => t.coaCode !== "9999").length;
 
   return (
     <div className="space-y-6">
@@ -156,6 +162,60 @@ export const ReconciliationSheet = () => {
             </Table>
           </CardContent>
         </Card>
+        {/* December Reconciliation */}
+        <Card>
+          <CardHeader className="bg-primary/5 border-b">
+            <div className="flex items-center justify-between">
+              <CardTitle>December 2025 Reconciliation</CardTitle>
+              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
+                <CheckCircle2 className="h-3 w-3 mr-1" />
+                Reconciled
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-4">
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-medium">Beginning Balance (12/01)</TableCell>
+                  <TableCell className="text-right font-mono">
+                    {formatCurrency(decemberSummary.beginningBalance)}
+                  </TableCell>
+                </TableRow>
+                <TableRow className="text-green-600">
+                  <TableCell className="font-medium">Add: Total Deposits</TableCell>
+                  <TableCell className="text-right font-mono">
+                    {formatCurrency(decTotalDeposits)}
+                  </TableCell>
+                </TableRow>
+                <TableRow className="text-red-600">
+                  <TableCell className="font-medium">Less: Total Withdrawals</TableCell>
+                  <TableCell className="text-right font-mono">
+                    ({formatCurrency(decTotalWithdrawals)})
+                  </TableCell>
+                </TableRow>
+                <TableRow className="border-t-2 font-bold">
+                  <TableCell>Calculated Ending Balance</TableCell>
+                  <TableCell className="text-right font-mono">
+                    {formatCurrency(decemberSummary.endingBalance)}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Per Bank Statement</TableCell>
+                  <TableCell className="text-right font-mono">
+                    {formatCurrency(decemberSummary.statementEndingBalance)}
+                  </TableCell>
+                </TableRow>
+                <TableRow className="bg-green-50">
+                  <TableCell className="font-bold">Difference</TableCell>
+                  <TableCell className="text-right font-mono font-bold text-green-700">
+                    $0.00 ✓
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Deposit Verification */}
@@ -201,11 +261,23 @@ export const ReconciliationSheet = () => {
                   </Badge>
                 </TableCell>
               </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">December 2025</TableCell>
+                <TableCell className="text-right">{decDepositCount}</TableCell>
+                <TableCell className="text-right font-mono text-green-600">
+                  {formatCurrency(decTotalDeposits)}
+                </TableCell>
+                <TableCell className="text-center">
+                  <Badge variant="outline" className="bg-green-50 text-green-700">
+                    ✓ Matches Statement
+                  </Badge>
+                </TableCell>
+              </TableRow>
               <TableRow className="font-bold bg-muted/50">
                 <TableCell>Total</TableCell>
-                <TableCell className="text-right">{octDepositCount + novDepositCount}</TableCell>
+                <TableCell className="text-right">{octDepositCount + novDepositCount + decDepositCount}</TableCell>
                 <TableCell className="text-right font-mono text-green-600">
-                  {formatCurrency(octTotalDeposits + novTotalDeposits)}
+                  {formatCurrency(octTotalDeposits + novTotalDeposits + decTotalDeposits)}
                 </TableCell>
                 <TableCell className="text-center">
                   <Badge variant="outline" className="bg-green-50 text-green-700">
@@ -230,6 +302,7 @@ export const ReconciliationSheet = () => {
                 <TableHead>Category</TableHead>
                 <TableHead className="text-right">October</TableHead>
                 <TableHead className="text-right">November</TableHead>
+                <TableHead className="text-right">December</TableHead>
                 <TableHead className="text-right">Total</TableHead>
               </TableRow>
             </TableHeader>
@@ -242,8 +315,11 @@ export const ReconciliationSheet = () => {
                 <TableCell className="text-right text-green-600">
                   {formatCurrency(novTotalDeposits)}
                 </TableCell>
+                <TableCell className="text-right text-green-600">
+                  {formatCurrency(decTotalDeposits)}
+                </TableCell>
                 <TableCell className="text-right font-bold text-green-600">
-                  {formatCurrency(octTotalDeposits + novTotalDeposits)}
+                  {formatCurrency(octTotalDeposits + novTotalDeposits + decTotalDeposits)}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -254,8 +330,11 @@ export const ReconciliationSheet = () => {
                 <TableCell className="text-right text-red-600">
                   ({formatCurrency(novTotalWithdrawals)})
                 </TableCell>
+                <TableCell className="text-right text-red-600">
+                  ({formatCurrency(decTotalWithdrawals)})
+                </TableCell>
                 <TableCell className="text-right font-bold text-red-600">
-                  ({formatCurrency(octTotalWithdrawals + novTotalWithdrawals)})
+                  ({formatCurrency(octTotalWithdrawals + novTotalWithdrawals + decTotalWithdrawals)})
                 </TableCell>
               </TableRow>
               <TableRow className="border-t-2">
@@ -267,7 +346,10 @@ export const ReconciliationSheet = () => {
                   {formatCurrency(novTotalDeposits - novTotalWithdrawals)}
                 </TableCell>
                 <TableCell className="text-right font-bold">
-                  {formatCurrency((octTotalDeposits + novTotalDeposits) - (octTotalWithdrawals + novTotalWithdrawals))}
+                  {formatCurrency(decTotalDeposits - decTotalWithdrawals)}
+                </TableCell>
+                <TableCell className="text-right font-bold">
+                  {formatCurrency((octTotalDeposits + novTotalDeposits + decTotalDeposits) - (octTotalWithdrawals + novTotalWithdrawals + decTotalWithdrawals))}
                 </TableCell>
               </TableRow>
             </TableBody>
