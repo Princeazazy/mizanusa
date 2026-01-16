@@ -45,6 +45,7 @@ export const CashFlowSheet = () => {
   // Operating Payments
   const inventoryPayments = sumByCoaCode(allWithdrawals, "5000");
   const titleRegPayments = sumByCoaCode(allWithdrawals, "5100") + sumByCoaCode(allWithdrawals, "5120");
+  const rentPayments = sumByCoaCode(allWithdrawals, "6050") + sumByCoaCode(allWithdrawals, "6055");
   const utilityPayments = sumByCoaCode(allWithdrawals, "6100");
   const commPayments = sumByCoaCode(allWithdrawals, "6200");
   const suppliesPayments = sumByCoaCode(allWithdrawals, "6300");
@@ -53,7 +54,7 @@ export const CashFlowSheet = () => {
   const insurancePayments = sumByCoaCode(allWithdrawals, "6700");
   const otherOpPayments = sumByCoaCode(allWithdrawals, "6800");
   
-  const totalCashPayments = inventoryPayments + titleRegPayments + utilityPayments + commPayments + 
+  const totalCashPayments = inventoryPayments + titleRegPayments + rentPayments + utilityPayments + commPayments + 
     suppliesPayments + vehicleOpPayments + feePayments + insurancePayments + otherOpPayments;
 
   const netCashFromOperating = totalCashReceipts - totalCashPayments;
@@ -131,6 +132,10 @@ export const CashFlowSheet = () => {
               <TableRow>
                 <TableCell className="pl-8">Title & Registration Fees</TableCell>
                 <TableCell className="text-right font-mono text-red-600">({formatCurrency(titleRegPayments)})</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Rent</TableCell>
+                <TableCell className="text-right font-mono text-red-600">({formatCurrency(rentPayments)})</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell className="pl-8">Utilities</TableCell>

@@ -59,6 +59,9 @@ export const ProfitLossSheet = () => {
   const grossProfit = totalRevenue - totalCOGS;
 
   // Operating Expenses (6000 series)
+  const rentFrontOffice = sumByCoaCode(allWithdrawals, "6050");
+  const rentMainOffice = sumByCoaCode(allWithdrawals, "6055");
+  const totalRent = rentFrontOffice + rentMainOffice;
   const utilities = sumByCoaCode(allWithdrawals, "6100");
   const communications = sumByCoaCode(allWithdrawals, "6200");
   const officeSupplies = sumByCoaCode(allWithdrawals, "6300");
@@ -67,7 +70,7 @@ export const ProfitLossSheet = () => {
   const bankFees = sumByCoaCode(allWithdrawals, "6600");
   const insurance = sumByCoaCode(allWithdrawals, "6700");
   const otherExpenses = sumByCoaCode(allWithdrawals, "6800");
-  const totalOperatingExpenses = utilities + communications + officeSupplies + vehicleOperating + processingFees + bankFees + insurance + otherExpenses;
+  const totalOperatingExpenses = totalRent + utilities + communications + officeSupplies + vehicleOperating + processingFees + bankFees + insurance + otherExpenses;
 
   const netIncome = grossProfit - totalOperatingExpenses;
 
@@ -167,6 +170,16 @@ export const ProfitLossSheet = () => {
               {/* Operating Expenses */}
               <TableRow className="bg-red-50/50 font-semibold">
                 <TableCell colSpan={3}>OPERATING EXPENSES</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Rent - Front Office</TableCell>
+                <TableCell className="text-right text-muted-foreground">6050</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(rentFrontOffice)}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Rent - Main Office</TableCell>
+                <TableCell className="text-right text-muted-foreground">6055</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(rentMainOffice)}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell className="pl-8">Utilities</TableCell>
