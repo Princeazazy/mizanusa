@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, LogOut } from "lucide-react";
 import { exportToExcel } from "@/lib/exportToExcel";
 import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
 import { CompanyHeader } from "@/components/CompanyHeader";
@@ -16,6 +17,9 @@ import { TitleRevenueSheet } from "@/components/sheets/TitleRevenueSheet";
 import { ProfitLossSheet } from "@/components/sheets/ProfitLossSheet";
 import { BalanceSheetSheet } from "@/components/sheets/BalanceSheetSheet";
 import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
+import apexLogo from "@/assets/apex-logo.png";
 import {
   octoberDeposits,
   octoberWithdrawals,
@@ -30,6 +34,39 @@ import {
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const { user, loading, signOut } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({
+      title: "Signed out",
+      description: "You have been successfully logged out.",
+    });
+    navigate("/auth");
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <div className="animate-pulse flex flex-col items-center gap-4">
+          <img src={apexLogo} alt="Apex Accounting" className="h-16 w-16 object-contain" />
+          <p className="text-white/60 text-sm">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -58,6 +95,15 @@ const Index = () => {
             >
               <Download className="h-4 w-4" />
               Export to Excel
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="text-muted-foreground hover:text-destructive"
+              onClick={handleSignOut}
+              title="Sign out"
+            >
+              <LogOut className="h-4 w-4" />
             </Button>
           </div>
         </div>
