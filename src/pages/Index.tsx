@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, LogOut } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, LogOut, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { exportToExcel } from "@/lib/exportToExcel";
 import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
 import { CompanyHeader } from "@/components/CompanyHeader";
@@ -55,11 +56,42 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        <div className="animate-pulse flex flex-col items-center gap-4">
-          <img src={apexLogo} alt="Apex Accounting" className="h-16 w-16 object-contain" />
-          <p className="text-white/60 text-sm">Loading...</p>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+        {/* Animated background */}
+        <div className="absolute inset-0">
+          <motion.div 
+            className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 rounded-full blur-3xl"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          />
+          <motion.div 
+            className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-info/20 rounded-full blur-3xl"
+            animate={{ scale: [1.2, 1, 1.2], opacity: [0.5, 0.3, 0.5] }}
+            transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
+          />
         </div>
+        <motion.div 
+          className="flex flex-col items-center gap-4 z-10"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-primary/30 rounded-full blur-xl animate-pulse" />
+            <img src={apexLogo} alt="Apex Accounting" className="h-20 w-20 object-contain relative z-10" />
+          </motion.div>
+          <motion.div
+            className="flex items-center gap-2"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            <Sparkles className="h-4 w-4 text-warning" />
+            <p className="text-white/70 text-sm font-medium">Loading your workspace...</p>
+          </motion.div>
+        </motion.div>
       </div>
     );
   }
@@ -72,7 +104,12 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <CompanyHeader />
       
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <motion.div 
+        className="max-w-7xl mx-auto px-6 py-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         {/* Action Bar */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -284,7 +321,7 @@ const Index = () => {
             </TabsContent>
           </div>
         </Tabs>
-      </div>
+      </motion.div>
 
       {/* Footer */}
       <footer className="border-t mt-16 bg-card">
