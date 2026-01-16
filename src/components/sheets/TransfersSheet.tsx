@@ -21,6 +21,7 @@ const formatCurrency = (amount: number) => {
 export const TransfersSheet = () => {
   const octoberTransfers = transfers.filter(t => t.date.startsWith("10/"));
   const novemberTransfers = transfers.filter(t => t.date.startsWith("11/"));
+  const decemberTransfers = transfers.filter(t => t.date.startsWith("12/"));
 
   const totalToSavings = transfers
     .filter(t => t.to === "Savings")
@@ -29,6 +30,63 @@ export const TransfersSheet = () => {
     .filter(t => t.from === "Savings")
     .reduce((sum, t) => sum + t.amount, 0);
   const netTransfer = totalFromSavings - totalToSavings;
+
+  const renderTransferTable = (monthTransfers: typeof transfers, monthLabel: string) => (
+    <Card>
+      <CardHeader className="bg-muted/50 border-b">
+        <CardTitle className="flex items-center gap-2">
+          <ArrowLeftRight className="h-5 w-5" />
+          {monthLabel} 2025 Transfers
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-0">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/30">
+              <TableHead className="w-24">Date</TableHead>
+              <TableHead>From Account</TableHead>
+              <TableHead className="w-12 text-center"></TableHead>
+              <TableHead>To Account</TableHead>
+              <TableHead>Reference</TableHead>
+              <TableHead className="text-right w-32">Amount</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {monthTransfers.map((transfer, index) => (
+              <TableRow key={index}>
+                <TableCell className="font-mono text-sm">{transfer.date}</TableCell>
+                <TableCell>
+                  <Badge variant="outline">{transfer.from}</Badge>
+                </TableCell>
+                <TableCell className="text-center">
+                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                </TableCell>
+                <TableCell>
+                  <Badge variant="outline">{transfer.to}</Badge>
+                </TableCell>
+                <TableCell className="text-muted-foreground">{transfer.reference}</TableCell>
+                <TableCell className="text-right font-medium">
+                  {formatCurrency(transfer.amount)}
+                </TableCell>
+              </TableRow>
+            ))}
+            {monthTransfers.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                  No transfers in {monthLabel} 2025
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
+
+  const calcMonthToSavings = (monthTransfers: typeof transfers) => 
+    monthTransfers.filter(t => t.to === "Savings").reduce((s, t) => s + t.amount, 0);
+  const calcMonthFromSavings = (monthTransfers: typeof transfers) => 
+    monthTransfers.filter(t => t.from === "Savings").reduce((s, t) => s + t.amount, 0);
 
   return (
     <div className="space-y-6">
@@ -81,107 +139,10 @@ export const TransfersSheet = () => {
         </Card>
       </div>
 
-      {/* October Transfers */}
-      <Card>
-        <CardHeader className="bg-muted/50 border-b">
-          <CardTitle className="flex items-center gap-2">
-            <ArrowLeftRight className="h-5 w-5" />
-            October 2025 Transfers
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/30">
-                <TableHead className="w-24">Date</TableHead>
-                <TableHead>From Account</TableHead>
-                <TableHead className="w-12 text-center"></TableHead>
-                <TableHead>To Account</TableHead>
-                <TableHead>Reference</TableHead>
-                <TableHead className="text-right w-32">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {octoberTransfers.map((transfer, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-mono text-sm">{transfer.date}</TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{transfer.from}</Badge>
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{transfer.to}</Badge>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">{transfer.reference}</TableCell>
-                  <TableCell className="text-right font-medium">
-                    {formatCurrency(transfer.amount)}
-                  </TableCell>
-                </TableRow>
-              ))}
-              {octoberTransfers.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                    No transfers in October 2025
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-
-      {/* November Transfers */}
-      <Card>
-        <CardHeader className="bg-muted/50 border-b">
-          <CardTitle className="flex items-center gap-2">
-            <ArrowLeftRight className="h-5 w-5" />
-            November 2025 Transfers
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/30">
-                <TableHead className="w-24">Date</TableHead>
-                <TableHead>From Account</TableHead>
-                <TableHead className="w-12 text-center"></TableHead>
-                <TableHead>To Account</TableHead>
-                <TableHead>Reference</TableHead>
-                <TableHead className="text-right w-32">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {novemberTransfers.map((transfer, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-mono text-sm">{transfer.date}</TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{transfer.from}</Badge>
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{transfer.to}</Badge>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">{transfer.reference}</TableCell>
-                  <TableCell className="text-right font-medium">
-                    {formatCurrency(transfer.amount)}
-                  </TableCell>
-                </TableRow>
-              ))}
-              {novemberTransfers.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                    No transfers in November 2025
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      {/* Monthly Transfer Tables */}
+      {renderTransferTable(octoberTransfers, "October")}
+      {renderTransferTable(novemberTransfers, "November")}
+      {renderTransferTable(decemberTransfers, "December")}
 
       {/* All Transfers Summary */}
       <Card>
@@ -202,31 +163,37 @@ export const TransfersSheet = () => {
               <TableRow>
                 <TableCell className="font-medium">October 2025</TableCell>
                 <TableCell className="text-right text-red-600">
-                  ({formatCurrency(octoberTransfers.filter(t => t.to === "Savings").reduce((s, t) => s + t.amount, 0))})
+                  ({formatCurrency(calcMonthToSavings(octoberTransfers))})
                 </TableCell>
                 <TableCell className="text-right text-green-600">
-                  {formatCurrency(octoberTransfers.filter(t => t.from === "Savings").reduce((s, t) => s + t.amount, 0))}
+                  {formatCurrency(calcMonthFromSavings(octoberTransfers))}
                 </TableCell>
                 <TableCell className="text-right font-medium">
-                  {formatCurrency(
-                    octoberTransfers.filter(t => t.from === "Savings").reduce((s, t) => s + t.amount, 0) -
-                    octoberTransfers.filter(t => t.to === "Savings").reduce((s, t) => s + t.amount, 0)
-                  )}
+                  {formatCurrency(calcMonthFromSavings(octoberTransfers) - calcMonthToSavings(octoberTransfers))}
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell className="font-medium">November 2025</TableCell>
                 <TableCell className="text-right text-red-600">
-                  ({formatCurrency(novemberTransfers.filter(t => t.to === "Savings").reduce((s, t) => s + t.amount, 0))})
+                  ({formatCurrency(calcMonthToSavings(novemberTransfers))})
                 </TableCell>
                 <TableCell className="text-right text-green-600">
-                  {formatCurrency(novemberTransfers.filter(t => t.from === "Savings").reduce((s, t) => s + t.amount, 0))}
+                  {formatCurrency(calcMonthFromSavings(novemberTransfers))}
                 </TableCell>
                 <TableCell className="text-right font-medium">
-                  {formatCurrency(
-                    novemberTransfers.filter(t => t.from === "Savings").reduce((s, t) => s + t.amount, 0) -
-                    novemberTransfers.filter(t => t.to === "Savings").reduce((s, t) => s + t.amount, 0)
-                  )}
+                  {formatCurrency(calcMonthFromSavings(novemberTransfers) - calcMonthToSavings(novemberTransfers))}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">December 2025</TableCell>
+                <TableCell className="text-right text-red-600">
+                  ({formatCurrency(calcMonthToSavings(decemberTransfers))})
+                </TableCell>
+                <TableCell className="text-right text-green-600">
+                  {formatCurrency(calcMonthFromSavings(decemberTransfers))}
+                </TableCell>
+                <TableCell className="text-right font-medium">
+                  {formatCurrency(calcMonthFromSavings(decemberTransfers) - calcMonthToSavings(decemberTransfers))}
                 </TableCell>
               </TableRow>
               <TableRow className="font-bold bg-muted/50">
