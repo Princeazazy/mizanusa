@@ -32,7 +32,7 @@ export const octoberDeposits: Transaction[] = [
   { date: "10/23", description: "ACH MERCHANT BANKCD", coaCode: "4100", category: "Credit Card Sales", amount: 3500.00, type: "deposit" },
   { date: "10/28", description: "Check Deposit", coaCode: "4110", category: "Cash/Check Sales", amount: 6800.00, type: "deposit" },
   { date: "10/29", description: "ACH MERCHANT BANKCD", coaCode: "4100", category: "Credit Card Sales", amount: 4250.00, type: "deposit" },
-  { date: "10/31", description: "Transfer from Savings", coaCode: "9999", category: "Transfer In", amount: 1075.60, type: "deposit" },
+  { date: "10/31", description: "Transfer from Savings - Customer Payment", coaCode: "4900", category: "Other Income", amount: 1075.60, type: "deposit" },
   { date: "10/31", description: "ACH MERCHANT BANKCD", coaCode: "4100", category: "Credit Card Sales", amount: 2500.06, type: "deposit" },
 ];
 
@@ -65,8 +65,8 @@ export const octoberWithdrawals: Transaction[] = [
 
 export const novemberDeposits: Transaction[] = [
   { date: "11/01", description: "ACH MERCHANT BANKCD", coaCode: "4100", category: "Credit Card Sales", amount: 3250.00, type: "deposit" },
-  { date: "11/03", description: "Transfer from Savings", coaCode: "9999", category: "Transfer In", amount: 2500.00, type: "deposit" },
-  { date: "11/04", description: "Transfer from Savings", coaCode: "9999", category: "Transfer In", amount: 1800.00, type: "deposit" },
+  { date: "11/03", description: "Transfer from Savings - Customer Payment", coaCode: "4900", category: "Other Income", amount: 2500.00, type: "deposit" },
+  { date: "11/04", description: "Transfer from Savings - Customer Payment", coaCode: "4900", category: "Other Income", amount: 1800.00, type: "deposit" },
   { date: "11/04", description: "Check Deposit", coaCode: "4110", category: "Cash/Check Sales", amount: 8500.00, type: "deposit" },
   { date: "11/05", description: "ACH MERCHANT BANKCD", coaCode: "4100", category: "Credit Card Sales", amount: 5600.00, type: "deposit" },
   { date: "11/06", description: "ACH VENMO", coaCode: "4120", category: "Venmo Sales", amount: 3200.00, type: "deposit" },
@@ -166,12 +166,12 @@ export const decemberDeposits: Transaction[] = [
   { date: "12/31", description: "ACH MERCHANT BANKCD", coaCode: "4100", category: "Credit Card Sales", amount: 349.00, type: "deposit" },
   { date: "12/31", description: "ACH MERCHANT BANKCD", coaCode: "4100", category: "Credit Card Sales", amount: 571.00, type: "deposit" },
   { date: "12/31", description: "Debit Card Credit Voucher", coaCode: "4900", category: "Other Income", amount: 8.00, type: "deposit" },
-  // Transfers from Savings (recorded as deposits in checking)
-  { date: "12/01", description: "Transfer from Savings", coaCode: "9999", category: "Transfer In", amount: 50.00, type: "deposit" },
-  { date: "12/02", description: "Transfer from Savings", coaCode: "9999", category: "Transfer In", amount: 10000.00, type: "deposit" },
-  { date: "12/09", description: "Transfer from Savings", coaCode: "9999", category: "Transfer In", amount: 1500.00, type: "deposit" },
-  { date: "12/15", description: "Transfer from Savings", coaCode: "9999", category: "Transfer In", amount: 1837.00, type: "deposit" },
-  { date: "12/22", description: "Transfer from Savings", coaCode: "9999", category: "Transfer In", amount: 1500.00, type: "deposit" },
+  // Transfers from Savings (Customer payments redirected)
+  { date: "12/01", description: "Transfer from Savings - Customer Payment", coaCode: "4900", category: "Other Income", amount: 50.00, type: "deposit" },
+  { date: "12/02", description: "Transfer from Savings - Customer Payment", coaCode: "4900", category: "Other Income", amount: 10000.00, type: "deposit" },
+  { date: "12/09", description: "Transfer from Savings - Customer Payment", coaCode: "4900", category: "Other Income", amount: 1500.00, type: "deposit" },
+  { date: "12/15", description: "Transfer from Savings - Customer Payment", coaCode: "4900", category: "Other Income", amount: 1837.00, type: "deposit" },
+  { date: "12/22", description: "Transfer from Savings - Customer Payment", coaCode: "4900", category: "Other Income", amount: 1500.00, type: "deposit" },
 ];
 
 export const decemberWithdrawals: Transaction[] = [
