@@ -176,7 +176,7 @@ const createProfessionalSheet = (
   ];
   
   // Company header with logo text
-  setCell(sheet, 'A1', '★  APEX ACCOUNTING  ★', styles.companyHeader);
+  setCell(sheet, 'A1', '★  MIZAN  ★', styles.companyHeader);
   for (let i = 1; i < colWidths.length; i++) {
     setCell(sheet, String.fromCharCode(65 + i) + '1', '', styles.companyHeader);
   }

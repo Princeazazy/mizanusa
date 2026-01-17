@@ -1,6 +1,6 @@
 import { Shield, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import apexLogo from "@/assets/apex-logo.png";
+import mizanLogo from "@/assets/mizan-logo.png";
 
 export const CompanyHeader = () => {
   return (
@@ -55,7 +55,7 @@ export const CompanyHeader = () => {
               whileHover={{ scale: 1.05, rotate: 2 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <img src={apexLogo} alt="Apex Accounting" className="h-10 w-10 object-contain" />
+              <img src={mizanLogo} alt="Mizan" className="h-10 w-10 object-contain" />
             </motion.div>
             <div>
               <motion.h1 
@@ -109,11 +109,11 @@ export const CompanyHeader = () => {
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.5 }}
             >
-              <img src={apexLogo} alt="Apex Accounting" className="h-10 w-10 object-contain" />
+              <img src={mizanLogo} alt="Mizan" className="h-10 w-10 object-contain" />
             </motion.div>
             <div className="text-right">
               <p className="text-sm font-semibold flex items-center gap-2">
-                Prepared by Apex Accounting
+                Prepared by Mizan
                 <span className="inline-flex items-center justify-center w-5 h-5 bg-income/20 rounded-full">
                   <span className="w-2 h-2 bg-income rounded-full animate-pulse" />
                 </span>

@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, LogIn, Calculator, TrendingUp, PieChart, FileSpreadsheet } from "lucide-react";
-import apexLogo from "@/assets/apex-logo.png";
+import mizanLogo from "@/assets/mizan-logo.png";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -81,7 +81,7 @@ const Auth = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <div className="animate-pulse flex flex-col items-center gap-4">
-          <img src={apexLogo} alt="Apex Accounting" className="h-16 w-16 object-contain" />
+          <img src={mizanLogo} alt="Mizan" className="h-16 w-16 object-contain" />
           <p className="text-white/60 text-sm">Loading...</p>
         </div>
       </div>
@@ -104,12 +104,12 @@ const Auth = () => {
           <div className="relative mb-8 inline-block">
             <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl scale-150" />
             <div className="relative bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 shadow-2xl">
-              <img src={apexLogo} alt="Apex Accounting" className="h-24 w-24 object-contain mx-auto" />
+              <img src={mizanLogo} alt="Mizan" className="h-24 w-24 object-contain mx-auto" />
             </div>
           </div>
           
           <h1 className="text-4xl font-bold text-white mb-4">
-            Apex Accounting
+            Mizan
           </h1>
           <p className="text-white/60 text-lg mb-8">
             Professional Financial Management System
@@ -144,7 +144,7 @@ const Auth = () => {
             {/* Mobile logo */}
             <div className="lg:hidden mb-6">
               <div className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20 inline-block">
-                <img src={apexLogo} alt="Apex Accounting" className="h-16 w-16 object-contain" />
+                <img src={mizanLogo} alt="Mizan" className="h-16 w-16 object-contain" />
               </div>
             </div>
             <CardTitle className="text-2xl font-bold text-white">
@@ -213,7 +213,7 @@ const Auth = () => {
         {/* Footer */}
         <div className="absolute bottom-6 left-0 right-0 text-center">
           <p className="text-white/40 text-xs">
-            © 2025 Apex Accounting. All rights reserved.
+            © 2025 Mizan. All rights reserved.
           </p>
         </div>
       </div>

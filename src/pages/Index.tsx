@@ -20,7 +20,7 @@ import { BalanceSheetSheet } from "@/components/sheets/BalanceSheetSheet";
 import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import apexLogo from "@/assets/apex-logo.png";
+import mizanLogo from "@/assets/mizan-logo.png";
 import {
   octoberDeposits,
   octoberWithdrawals,
@@ -81,7 +81,7 @@ const Index = () => {
             className="relative"
           >
             <div className="absolute inset-0 bg-primary/30 rounded-full blur-xl animate-pulse" />
-            <img src={apexLogo} alt="Apex Accounting" className="h-20 w-20 object-contain relative z-10" />
+            <img src={mizanLogo} alt="Mizan" className="h-20 w-20 object-contain relative z-10" />
           </motion.div>
           <motion.div
             className="flex items-center gap-2"
