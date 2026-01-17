@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
-import apexLogo from "@/assets/apex-logo.png";
+import mizanLogo from "@/assets/mizan-logo.png";
 
 const ClientSelect = () => {
   const navigate = useNavigate();
@@ -19,12 +19,12 @@ const ClientSelect = () => {
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img 
-              src={apexLogo} 
-              alt="Apex Accounting" 
+              src={mizanLogo} 
+              alt="Mizan" 
               className="h-10 w-auto"
             />
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-white">Apex Accounting</h1>
+              <h1 className="text-xl font-bold tracking-tight text-white">Mizan</h1>
               <p className="text-xs text-white/60">Professional Financial Services</p>
             </div>
           </div>
@@ -45,12 +45,12 @@ const ClientSelect = () => {
           <div className="relative mb-8 inline-block">
             <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl scale-150" />
             <div className="relative bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 shadow-2xl">
-              <img src={apexLogo} alt="Apex Accounting" className="h-24 w-24 object-contain mx-auto" />
+              <img src={mizanLogo} alt="Mizan" className="h-24 w-24 object-contain mx-auto" />
             </div>
           </div>
           
           <h2 className="text-4xl font-bold text-white mb-4">
-            Welcome to Apex Accounting
+            Welcome to Mizan
           </h2>
           <p className="text-white/60 text-lg mb-8 max-w-md mx-auto">
             Professional bookkeeping and financial management services for your business
@@ -74,7 +74,7 @@ const ClientSelect = () => {
       {/* Footer */}
       <footer className="border-t border-white/10 bg-white/5 py-4 relative z-10">
         <div className="container mx-auto px-6 text-center text-sm text-white/40">
-          © 2025 Apex Accounting Services. All rights reserved.
+          © 2025 Mizan. All rights reserved.
         </div>
       </footer>
     </div>
