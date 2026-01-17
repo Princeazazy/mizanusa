@@ -14,7 +14,134 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      chat_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          role: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          role: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      financial_sheets: {
+        Row: {
+          client_id: string
+          created_at: string
+          created_by: string | null
+          data: Json
+          id: string
+          name: string
+          sheet_type: string
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          created_by?: string | null
+          data?: Json
+          id?: string
+          name: string
+          sheet_type: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          created_by?: string | null
+          data?: Json
+          id?: string
+          name?: string
+          sheet_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      uploaded_documents: {
+        Row: {
+          client_id: string
+          created_at: string
+          file_name: string
+          file_type: string
+          file_url: string
+          id: string
+          parsed_data: Json | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          file_name: string
+          file_type: string
+          file_url: string
+          id?: string
+          parsed_data?: Json | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          file_name?: string
+          file_type?: string
+          file_url?: string
+          id?: string
+          parsed_data?: Json | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
