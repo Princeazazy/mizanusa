@@ -89,16 +89,16 @@ export const exportToPowerPoint = () => {
   // ==========================================
   const slide1 = pptx.addSlide({ masterName: 'TITLE_SLIDE' });
   
-  // Add Apex Logo
+  // Add Mizan Logo
   slide1.addImage({
-    path: '/apex-logo.png',
+    path: '/mizan-logo.png',
     x: 0.5,
     y: 0.5,
     w: 1.5,
     h: 1.5,
   });
   
-  slide1.addText('APEX ACCOUNTING', {
+  slide1.addText('MIZAN', {
     x: 2.2,
     y: 0.8,
     w: 5,
@@ -140,7 +140,7 @@ export const exportToPowerPoint = () => {
     fontFace: 'Arial',
   });
   
-  slide1.addText('Prepared by Apex Accounting', {
+  slide1.addText('Prepared by Mizan', {
     x: 0.5,
     y: 4.8,
     w: '90%',
