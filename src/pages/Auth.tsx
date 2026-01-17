@@ -19,7 +19,6 @@ const Auth = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (session?.user) {
@@ -29,7 +28,6 @@ const Auth = () => {
       }
     );
 
-    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         navigate("/cvs");
@@ -79,10 +77,10 @@ const Auth = () => {
 
   if (checkingAuth) {
     return (
-      <div className="dark min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0e17]">
         <div className="animate-pulse flex flex-col items-center gap-4">
-          <img src={mizanLogo} alt="Mizan" className="h-24 w-24 object-contain logo-glow" />
-          <p className="text-muted-foreground text-sm">Loading...</p>
+          <img src={mizanLogo} alt="Mizan" className="h-24 w-24 object-contain mix-blend-lighten" />
+          <p className="text-slate-400 text-sm">Loading...</p>
         </div>
       </div>
     );
@@ -100,12 +98,12 @@ const Auth = () => {
       {/* Left side - Branding */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-center items-center p-12 relative">
         <div className="max-w-md text-center">
-          {/* Logo */}
+          {/* Logo with blend mode to hide background */}
           <div className="relative mb-8 inline-block">
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-40 w-40 object-contain mx-auto relative z-10"
+              className="h-40 w-40 object-contain mx-auto relative z-10 mix-blend-lighten drop-shadow-[0_0_25px_rgba(56,189,248,0.4)]"
             />
           </div>
           
@@ -140,86 +138,88 @@ const Auth = () => {
       
       {/* Right side - Login form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative">
-        <Card className="w-full max-w-md bg-card/70 backdrop-blur-xl border-border/60 shadow-2xl">
+        <Card className="w-full max-w-md bg-slate-900/80 backdrop-blur-xl border-white/10 shadow-2xl">
           <CardHeader className="text-center pb-2">
             {/* Mobile logo */}
             <div className="lg:hidden mb-6">
               <img
                 src={mizanLogo}
                 alt="Mizan"
-                className="h-24 w-24 object-contain mx-auto logo-glow"
+                className="h-24 w-24 object-contain mx-auto mix-blend-lighten drop-shadow-[0_0_20px_rgba(56,189,248,0.4)]"
               />
             </div>
-            <CardTitle className="text-2xl font-bold text-foreground">
+            <CardTitle className="text-2xl font-bold text-white">
               Accountant Login
             </CardTitle>
-            <CardDescription className="text-muted-foreground">
+            <CardDescription className="text-slate-400">
               Sign in to access the financial workbook
             </CardDescription>
           </CardHeader>
-
+          
           <CardContent className="pt-6">
             <form onSubmit={handleLogin} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="login-email" className="text-foreground">Email</Label>
+                <Label htmlFor="login-email" className="text-slate-300">Email</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                   <Input
                     id="login-email"
                     type="email"
                     placeholder="accountant@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-ring"
+                    className="pl-10 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500"
                   />
                 </div>
               </div>
-
+              
               <div className="space-y-2">
-                <Label htmlFor="login-password" className="text-foreground">Password</Label>
+                <Label htmlFor="login-password" className="text-slate-300">Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                   <Input
                     id="login-password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-ring"
+                    className="pl-10 pr-10 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
               </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-info hover:bg-info/90 text-info-foreground font-semibold h-11 mt-2"
+              
+              <Button 
+                type="submit" 
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold h-11 mt-2"
                 disabled={loading}
               >
                 <LogIn className="h-4 w-4 mr-2" />
                 {loading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
-
-            <p className="text-center text-muted-foreground text-xs mt-6">
+            
+            <p className="text-center text-slate-500 text-xs mt-6">
               Authorized personnel only
             </p>
           </CardContent>
         </Card>
-
+        
         {/* Footer */}
         <div className="absolute bottom-6 left-0 right-0 text-center">
-          <p className="text-muted-foreground text-xs">
+          <p className="text-slate-500 text-xs">
             © 2025 Mizan. All rights reserved.
           </p>
         </div>
       </div>
+    </div>
+  );
+};
 
 export default Auth;
