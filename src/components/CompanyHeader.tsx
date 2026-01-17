@@ -53,7 +53,7 @@ export const CompanyHeader = () => {
             <motion.img
               src={mizanLogo}
               alt="Mizan"
-              className="h-10 w-10 object-contain drop-shadow-xl"
+              className="h-10 w-10 object-contain logo-glow"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               whileHover={{ scale: 1.05, rotate: 2 }}
@@ -110,7 +110,7 @@ export const CompanyHeader = () => {
             <motion.img
               src={mizanLogo}
               alt="Mizan"
-              className="h-10 w-10 object-contain drop-shadow-xl"
+              className="h-10 w-10 object-contain logo-glow"
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.5 }}
             />
