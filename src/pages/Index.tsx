@@ -56,16 +56,16 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 relative overflow-hidden">
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0e17] relative overflow-hidden">
         {/* Animated background */}
         <div className="absolute inset-0">
           <motion.div 
-            className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl"
+            className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
             transition={{ duration: 3, repeat: Infinity }}
           />
           <motion.div 
-            className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-info/10 rounded-full blur-3xl"
+            className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl"
             animate={{ scale: [1.2, 1, 1.2], opacity: [0.5, 0.3, 0.5] }}
             transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
           />
@@ -83,7 +83,7 @@ const Index = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-20 w-20 object-contain relative z-10 drop-shadow-2xl"
+              className="h-24 w-24 object-contain relative z-10"
             />
           </motion.div>
           <motion.div
@@ -91,8 +91,8 @@ const Index = () => {
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           >
-            <Sparkles className="h-4 w-4 text-amber-500" />
-            <p className="text-slate-600 text-sm font-medium">Loading your workspace...</p>
+            <Sparkles className="h-4 w-4 text-blue-400" />
+            <p className="text-slate-400 text-sm font-medium">Loading your workspace...</p>
           </motion.div>
         </motion.div>
       </div>
