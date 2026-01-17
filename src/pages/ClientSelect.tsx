@@ -42,11 +42,8 @@ const ClientSelect = () => {
       <main className="flex-1 container mx-auto px-6 py-12 relative z-10 flex items-center justify-center">
         <div className="max-w-2xl text-center">
           {/* Hero Logo */}
-          <div className="relative mb-8 inline-block">
-            <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl scale-150" />
-            <div className="relative bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 shadow-2xl">
-              <img src={mizanLogo} alt="Mizan" className="h-24 w-24 object-contain mx-auto" />
-            </div>
+          <div className="mb-8">
+            <img src={mizanLogo} alt="Mizan" className="h-32 w-32 object-contain mx-auto drop-shadow-2xl" />
           </div>
           
           <h2 className="text-4xl font-bold text-white mb-4">
