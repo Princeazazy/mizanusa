@@ -360,6 +360,20 @@
   .card-shine:hover::after {
     transform: rotate(45deg) translateX(100%);
   }
+  
+  /* Pulsing glow animation for logo */
+  .logo-glow-pulse {
+    animation: logo-glow-pulse 3s ease-in-out infinite;
+  }
+  
+  @keyframes logo-glow-pulse {
+    0%, 100% {
+      filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.4)) drop-shadow(0 0 40px rgba(56, 189, 248, 0.2));
+    }
+    50% {
+      filter: drop-shadow(0 0 30px rgba(56, 189, 248, 0.6)) drop-shadow(0 0 60px rgba(56, 189, 248, 0.3));
+    }
+  }
 }
 
 @layer utilities {
