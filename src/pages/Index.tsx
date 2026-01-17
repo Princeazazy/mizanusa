@@ -20,7 +20,7 @@ import { BalanceSheetSheet } from "@/components/sheets/BalanceSheetSheet";
 import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import mizanLogo from "@/assets/mizan-logo.png";
+import mizanLogo from "@/assets/mizan-logo-transparent.png";
 import {
   octoberDeposits,
   octoberWithdrawals,

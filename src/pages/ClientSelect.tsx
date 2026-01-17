@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
-import mizanLogo from "@/assets/mizan-logo.png";
+import mizanLogo from "@/assets/mizan-logo-transparent.png";
 
 const ClientSelect = () => {
   const navigate = useNavigate();
