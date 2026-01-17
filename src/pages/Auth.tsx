@@ -22,7 +22,7 @@ const Auth = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (session?.user) {
-          navigate("/cvs");
+          navigate("/clients");
         }
         setCheckingAuth(false);
       }
@@ -30,7 +30,7 @@ const Auth = () => {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        navigate("/cvs");
+        navigate("/clients");
       }
       setCheckingAuth(false);
     });
