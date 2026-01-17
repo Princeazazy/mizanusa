@@ -1,6 +1,6 @@
 import { Shield, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import mizanLogo from "@/assets/mizan-logo.png";
+import mizanLogo from "@/assets/mizan-logo-transparent.png";
 
 export const CompanyHeader = () => {
   return (

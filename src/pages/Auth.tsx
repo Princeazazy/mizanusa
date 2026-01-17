@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, LogIn, Calculator, TrendingUp, PieChart, FileSpreadsheet } from "lucide-react";
-import mizanLogo from "@/assets/mizan-logo.png";
+import mizanLogo from "@/assets/mizan-logo-transparent.png";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
