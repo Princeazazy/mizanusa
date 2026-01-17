@@ -100,12 +100,14 @@ const Auth = () => {
       {/* Left side - Branding */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-center items-center p-12 relative">
         <div className="max-w-md text-center">
-          {/* Logo with glow effect */}
+          {/* Logo (transparent: no container) */}
           <div className="relative mb-8 inline-block">
-            <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl scale-150" />
-            <div className="relative bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 shadow-2xl">
-              <img src={mizanLogo} alt="Mizan" className="h-24 w-24 object-contain mx-auto" />
-            </div>
+            <div className="absolute inset-0 bg-primary/25 rounded-full blur-2xl scale-150" />
+            <img
+              src={mizanLogo}
+              alt="Mizan"
+              className="h-28 w-28 object-contain mx-auto relative z-10 drop-shadow-2xl"
+            />
           </div>
           
           <h1 className="text-4xl font-bold text-white mb-4">
@@ -143,9 +145,11 @@ const Auth = () => {
           <CardHeader className="text-center pb-2">
             {/* Mobile logo */}
             <div className="lg:hidden mb-6">
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20 inline-block">
-                <img src={mizanLogo} alt="Mizan" className="h-16 w-16 object-contain" />
-              </div>
+              <img
+                src={mizanLogo}
+                alt="Mizan"
+                className="h-16 w-16 object-contain mx-auto drop-shadow-2xl"
+              />
             </div>
             <CardTitle className="text-2xl font-bold text-white">
               Accountant Login

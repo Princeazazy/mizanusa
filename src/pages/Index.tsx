@@ -80,8 +80,11 @@ const Index = () => {
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             className="relative"
           >
-            <div className="absolute inset-0 bg-primary/30 rounded-full blur-xl animate-pulse" />
-            <img src={mizanLogo} alt="Mizan" className="h-20 w-20 object-contain relative z-10" />
+            <img
+              src={mizanLogo}
+              alt="Mizan"
+              className="h-20 w-20 object-contain relative z-10 drop-shadow-2xl"
+            />
           </motion.div>
           <motion.div
             className="flex items-center gap-2"
