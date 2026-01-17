@@ -56,21 +56,21 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0a0e17] relative overflow-hidden">
+      <div className="dark min-h-screen flex items-center justify-center bg-background text-foreground relative overflow-hidden">
         {/* Animated background */}
         <div className="absolute inset-0">
-          <motion.div 
-            className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-64 h-64 bg-info/10 rounded-full blur-3xl"
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
             transition={{ duration: 3, repeat: Infinity }}
           />
-          <motion.div 
-            className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl"
+          <motion.div
+            className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-info/10 rounded-full blur-3xl"
             animate={{ scale: [1.2, 1, 1.2], opacity: [0.5, 0.3, 0.5] }}
             transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
           />
         </div>
-        <motion.div 
+        <motion.div
           className="flex flex-col items-center gap-4 z-10"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -80,19 +80,15 @@ const Index = () => {
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             className="relative"
           >
-            <img
-              src={mizanLogo}
-              alt="Mizan"
-              className="h-24 w-24 object-contain relative z-10"
-            />
+            <img src={mizanLogo} alt="Mizan" className="h-24 w-24 object-contain relative z-10 logo-glow" />
           </motion.div>
           <motion.div
             className="flex items-center gap-2"
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           >
-            <Sparkles className="h-4 w-4 text-blue-400" />
-            <p className="text-slate-400 text-sm font-medium">Loading your workspace...</p>
+            <Sparkles className="h-4 w-4 text-info" />
+            <p className="text-muted-foreground text-sm font-medium">Loading your workspace...</p>
           </motion.div>
         </motion.div>
       </div>
