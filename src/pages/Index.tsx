@@ -170,27 +170,51 @@ const Index = () => {
                 <LayoutDashboard className="h-4 w-4" />
                 Dashboard
               </TabsTrigger>
-              <TabsTrigger 
-                value="october" 
-                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
-              >
-                <FileSpreadsheet className="h-4 w-4" />
-                Oct 2025
-              </TabsTrigger>
-              <TabsTrigger 
-                value="november" 
-                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
-              >
-                <FileSpreadsheet className="h-4 w-4" />
-                Nov 2025
-              </TabsTrigger>
-              <TabsTrigger 
-                value="december" 
-                className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
-              >
-                <FileSpreadsheet className="h-4 w-4" />
-                Dec 2025
-              </TabsTrigger>
+              
+              {/* Q4 2025 Dropdown */}
+              <div className="relative group">
+                <TabsTrigger 
+                  value="q4-2025" 
+                  className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
+                  data-state={["october", "november", "december"].includes(activeTab) ? "active" : "inactive"}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (!["october", "november", "december"].includes(activeTab)) {
+                      setActiveTab("october");
+                    }
+                  }}
+                >
+                  <FileSpreadsheet className="h-4 w-4" />
+                  Q4 2025
+                  <svg className="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </TabsTrigger>
+                <div className="absolute top-full left-0 mt-1 bg-card border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 min-w-[140px]">
+                  <button
+                    onClick={() => setActiveTab("october")}
+                    className={`w-full flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-muted rounded-t-lg transition-colors ${activeTab === "october" ? "bg-primary/10 text-primary font-medium" : ""}`}
+                  >
+                    <FileSpreadsheet className="h-4 w-4" />
+                    October 2025
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("november")}
+                    className={`w-full flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-muted transition-colors ${activeTab === "november" ? "bg-primary/10 text-primary font-medium" : ""}`}
+                  >
+                    <FileSpreadsheet className="h-4 w-4" />
+                    November 2025
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("december")}
+                    className={`w-full flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-muted rounded-b-lg transition-colors ${activeTab === "december" ? "bg-primary/10 text-primary font-medium" : ""}`}
+                  >
+                    <FileSpreadsheet className="h-4 w-4" />
+                    December 2025
+                  </button>
+                </div>
+              </div>
+              
               <TabsTrigger 
                 value="transfers" 
                 className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm rounded-lg px-4 py-2.5 transition-all"
