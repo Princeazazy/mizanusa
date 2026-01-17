@@ -79,7 +79,7 @@ const Auth = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0e17]">
         <div className="animate-pulse flex flex-col items-center gap-4">
-          <img src={mizanLogo} alt="Mizan" className="h-24 w-24 object-contain mix-blend-lighten" />
+          <img src={mizanLogo} alt="Mizan" className="h-24 w-24 object-contain mix-blend-lighten logo-glow-pulse" />
           <p className="text-slate-400 text-sm">Loading...</p>
         </div>
       </div>
@@ -103,7 +103,7 @@ const Auth = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-40 w-40 object-contain mx-auto relative z-10 mix-blend-lighten drop-shadow-[0_0_25px_rgba(56,189,248,0.4)]"
+              className="h-40 w-40 object-contain mx-auto relative z-10 mix-blend-lighten logo-glow-pulse"
             />
           </div>
           
@@ -145,7 +145,7 @@ const Auth = () => {
               <img
                 src={mizanLogo}
                 alt="Mizan"
-                className="h-24 w-24 object-contain mx-auto mix-blend-lighten drop-shadow-[0_0_20px_rgba(56,189,248,0.4)]"
+                className="h-24 w-24 object-contain mx-auto mix-blend-lighten logo-glow-pulse"
               />
             </div>
             <CardTitle className="text-2xl font-bold text-white">
