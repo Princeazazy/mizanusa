@@ -24,7 +24,7 @@ const ClientSelect = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-14 w-auto mix-blend-lighten drop-shadow-[0_0_15px_rgba(56,189,248,0.4)]"
+              className="h-14 w-auto mix-blend-lighten logo-glow-pulse"
             />
             <div>
               <h1 className="text-xl font-bold tracking-tight text-white">Mizan</h1>
@@ -46,7 +46,7 @@ const ClientSelect = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-64 w-64 object-contain mx-auto mix-blend-lighten drop-shadow-[0_0_40px_rgba(56,189,248,0.5)]"
+              className="h-64 w-64 object-contain mx-auto mix-blend-lighten logo-glow-pulse"
             />
           </div>
 
