@@ -83,7 +83,7 @@ const Index = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-24 w-24 object-contain relative z-10 mix-blend-lighten drop-shadow-[0_0_20px_rgba(56,189,248,0.4)]"
+              className="h-24 w-24 object-contain relative z-10 mix-blend-lighten logo-glow-pulse"
             />
           </motion.div>
           <motion.div
