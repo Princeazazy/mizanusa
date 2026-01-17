@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, LogOut, Sparkles } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, LogOut, Sparkles, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { exportToExcel } from "@/lib/exportToExcel";
 import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
@@ -18,6 +18,7 @@ import { TitleRevenueSheet } from "@/components/sheets/TitleRevenueSheet";
 import { ProfitLossSheet } from "@/components/sheets/ProfitLossSheet";
 import { BalanceSheetSheet } from "@/components/sheets/BalanceSheetSheet";
 import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
+import { AIChatBubble } from "@/components/AIChatBubble";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-transparent.png";
@@ -115,9 +116,19 @@ const Index = () => {
       >
         {/* Action Bar */}
         <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-xl font-bold text-foreground tracking-tight">Financial Workbook</h2>
-            <p className="text-sm text-muted-foreground mt-0.5">12 sheets • Q4 2025 • CPA-Ready Format</p>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/clients")}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div>
+              <h2 className="text-xl font-bold text-foreground tracking-tight">Financial Workbook</h2>
+              <p className="text-sm text-muted-foreground mt-0.5">12 sheets • Q4 2025 • CPA-Ready Format</p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <Button 
@@ -346,6 +357,9 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      {/* AI Chat Bubble */}
+      <AIChatBubble clientId="cvs" clientName="CVS Auto Sales Inc." />
     </div>
   );
 };
