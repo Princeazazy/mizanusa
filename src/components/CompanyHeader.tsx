@@ -50,13 +50,15 @@ export const CompanyHeader = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <motion.div 
-              className="bg-white/10 backdrop-blur-sm p-3.5 rounded-xl border border-white/20 shadow-lg"
+            <motion.img
+              src={mizanLogo}
+              alt="Mizan"
+              className="h-10 w-10 object-contain drop-shadow-xl"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
               whileHover={{ scale: 1.05, rotate: 2 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <img src={mizanLogo} alt="Mizan" className="h-10 w-10 object-contain" />
-            </motion.div>
+            />
             <div>
               <motion.h1 
                 className="text-2xl font-bold tracking-tight flex items-center gap-2"
@@ -105,12 +107,13 @@ export const CompanyHeader = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             whileHover={{ scale: 1.02 }}
           >
-            <motion.div
+            <motion.img
+              src={mizanLogo}
+              alt="Mizan"
+              className="h-10 w-10 object-contain drop-shadow-xl"
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.5 }}
-            >
-              <img src={mizanLogo} alt="Mizan" className="h-10 w-10 object-contain" />
-            </motion.div>
+            />
             <div className="text-right">
               <p className="text-sm font-semibold flex items-center gap-2">
                 Prepared by Mizan
