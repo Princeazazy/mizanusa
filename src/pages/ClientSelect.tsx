@@ -7,15 +7,15 @@ const ClientSelect = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 relative overflow-hidden flex flex-col">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
       </div>
 
       {/* Header */}
-      <header className="border-b border-white/10 bg-white/5 backdrop-blur-sm relative z-10">
+      <header className="border-b border-slate-200 bg-white/70 backdrop-blur-sm relative z-10">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img 
@@ -24,8 +24,8 @@ const ClientSelect = () => {
               className="h-10 w-auto"
             />
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-white">Mizan</h1>
-              <p className="text-xs text-white/60">Professional Financial Services</p>
+              <h1 className="text-xl font-bold tracking-tight text-slate-900">Mizan</h1>
+              <p className="text-xs text-slate-500">Professional Financial Services</p>
             </div>
           </div>
           <Button 
@@ -46,10 +46,10 @@ const ClientSelect = () => {
             <img src={mizanLogo} alt="Mizan" className="h-32 w-32 object-contain mx-auto drop-shadow-2xl" />
           </div>
           
-          <h2 className="text-4xl font-bold text-white mb-4">
+          <h2 className="text-4xl font-bold text-slate-900 mb-4">
             Welcome to Mizan
           </h2>
-          <p className="text-white/60 text-lg mb-8 max-w-md mx-auto">
+          <p className="text-slate-600 text-lg mb-8 max-w-md mx-auto">
             Professional bookkeeping and financial management services for your business
           </p>
           
@@ -62,15 +62,15 @@ const ClientSelect = () => {
             Sign In to Access Your Account
           </Button>
           
-          <p className="text-white/40 text-sm mt-6">
+          <p className="text-slate-400 text-sm mt-6">
             Authorized personnel only. Please sign in to continue.
           </p>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 bg-white/5 py-4 relative z-10">
-        <div className="container mx-auto px-6 text-center text-sm text-white/40">
+      <footer className="border-t border-slate-200 bg-white/70 py-4 relative z-10">
+        <div className="container mx-auto px-6 text-center text-sm text-slate-500">
           © 2025 Mizan. All rights reserved.
         </div>
       </footer>
