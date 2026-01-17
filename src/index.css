@@ -364,6 +364,12 @@
   /* Pulsing glow animation for logo */
   .logo-glow-pulse {
     animation: logo-glow-pulse 3s ease-in-out infinite;
+    transition: filter 0.3s ease;
+  }
+  
+  .logo-glow-pulse:hover {
+    animation: none;
+    filter: drop-shadow(0 0 40px rgba(56, 189, 248, 0.8)) drop-shadow(0 0 80px rgba(56, 189, 248, 0.5)) drop-shadow(0 0 120px rgba(56, 189, 248, 0.3));
   }
   
   @keyframes logo-glow-pulse {
