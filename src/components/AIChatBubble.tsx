@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Paperclip, Loader2, Bot, User, Sparkles } from "lucide-react";
+import { X, Send, Paperclip, Loader2, Bot, User, Sparkles, FileText, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import mizanLogo from "@/assets/mizan-logo-transparent.png";
 
 type Message = {
@@ -12,6 +13,7 @@ type Message = {
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
+  attachments?: { name: string; type: string; content?: string }[];
 };
 
 interface AIChatBubbleProps {
@@ -21,13 +23,25 @@ interface AIChatBubbleProps {
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/accountant-chat`;
 
+// Supported file types for upload
+const SUPPORTED_FILE_TYPES = [
+  "text/csv",
+  "application/pdf",
+  "text/plain",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+];
+
 export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [pendingFile, setPendingFile] = useState<{ name: string; content: string } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -162,10 +176,82 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
     }
   }, [messages, clientId, toast]);
 
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!SUPPORTED_FILE_TYPES.includes(file.type) && !file.name.endsWith('.csv') && !file.name.endsWith('.txt')) {
+      toast({
+        variant: "destructive",
+        title: "Unsupported file type",
+        description: "Please upload a CSV, TXT, PDF, or Excel file.",
+      });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        variant: "destructive",
+        title: "File too large",
+        description: "Please upload a file smaller than 5MB.",
+      });
+      return;
+    }
+
+    setIsUploading(true);
+
+    try {
+      // For text-based files, read the content
+      if (file.type === "text/csv" || file.type === "text/plain" || file.name.endsWith('.csv') || file.name.endsWith('.txt')) {
+        const text = await file.text();
+        setPendingFile({ name: file.name, content: text });
+        toast({
+          title: "File ready",
+          description: `${file.name} is ready to be analyzed.`,
+        });
+      } else {
+        // For binary files (PDF, Excel), we'll just note the file name
+        // In a full implementation, we'd upload to storage and parse server-side
+        setPendingFile({ 
+          name: file.name, 
+          content: `[File: ${file.name}]\n\nNote: This is a ${file.type} file. Please describe the data you'd like me to help with, or paste the relevant content.` 
+        });
+        toast({
+          title: "File attached",
+          description: `${file.name} attached. For best results with PDFs/Excel, please describe the data or paste key sections.`,
+        });
+      }
+    } catch (error) {
+      console.error("File read error:", error);
+      toast({
+        variant: "destructive",
+        title: "Error reading file",
+        description: "Could not read the file. Please try again.",
+      });
+    } finally {
+      setIsUploading(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
-    const message = input.trim();
+    if ((!input.trim() && !pendingFile) || isLoading) return;
+    
+    let message = input.trim();
+    
+    // If there's a pending file, include its content
+    if (pendingFile) {
+      const fileContext = `[Uploaded File: ${pendingFile.name}]\n\n${pendingFile.content}\n\n---\n\n`;
+      message = message ? `${fileContext}User request: ${message}` : `${fileContext}Please analyze this file and summarize the key financial data.`;
+      setPendingFile(null);
+    }
+    
     setInput("");
     streamChat(message);
   };
@@ -333,33 +419,64 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
               )}
             </ScrollArea>
 
+            {/* Pending file indicator */}
+            {pendingFile && (
+              <div className="px-4 py-2 border-t border-white/10 bg-primary/10">
+                <div className="flex items-center gap-2 text-sm">
+                  <FileText className="h-4 w-4 text-primary" />
+                  <span className="text-slate-300 truncate flex-1">{pendingFile.name}</span>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setPendingFile(null)}
+                    className="h-6 w-6 p-0 text-slate-400 hover:text-white"
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
+              </div>
+            )}
+
             {/* Input */}
             <form
               onSubmit={handleSubmit}
               className="p-4 border-t border-white/10 bg-black/20"
             >
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileSelect}
+                accept=".csv,.pdf,.txt,.xls,.xlsx"
+                className="hidden"
+              />
               <div className="flex items-center gap-2">
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
                   className="text-slate-400 hover:text-white hover:bg-white/10"
-                  disabled
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isLoading || isUploading}
                 >
-                  <Paperclip className="h-5 w-5" />
+                  {isUploading ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <Paperclip className="h-5 w-5" />
+                  )}
                 </Button>
                 <Input
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about financial data..."
+                  placeholder={pendingFile ? "Describe what to do with this file..." : "Ask about financial data..."}
                   className="flex-1 bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-primary"
                   disabled={isLoading}
                 />
                 <Button
                   type="submit"
                   size="icon"
-                  disabled={!input.trim() || isLoading}
+                  disabled={(!input.trim() && !pendingFile) || isLoading}
                   className="bg-primary hover:bg-primary/90"
                 >
                   {isLoading ? (
