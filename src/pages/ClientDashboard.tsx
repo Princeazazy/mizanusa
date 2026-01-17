@@ -167,7 +167,13 @@ const ClientDashboard = () => {
                   className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500 w-64"
                 />
               </div>
-              <Button className="gap-2" disabled>
+              <Button 
+                className="gap-2"
+                onClick={() => toast({
+                  title: "Coming Soon",
+                  description: "Add Client feature is under development.",
+                })}
+              >
                 <Plus className="h-4 w-4" />
                 Add Client
               </Button>
