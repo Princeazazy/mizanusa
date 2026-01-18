@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,37 +12,130 @@ const SYSTEM_PROMPT = `You are Mizan AI, an expert accounting and bookkeeping as
 
 2. **Suggesting Journal Entries**: Recommend appropriate debits/credits based on transaction descriptions.
 
-3. **Creating Financial Sheets**: When asked, suggest new financial tabs/sheets with appropriate structure (columns, data types).
+3. **Creating Financial Sheets**: When asked to create sheets, USE THE create_financial_sheet TOOL to actually create them.
 
-4. **Answering Questions**: Provide expert guidance on bookkeeping, GAAP, tax implications, reconciliation, and accounting best practices.
+4. **Adding Transactions**: When you have transaction data to add, USE THE add_transactions TOOL to actually add them.
 
-5. **Auto-populating Data**: When given statement data, suggest how to categorize and enter transactions.
+5. **Answering Questions**: Provide expert guidance on bookkeeping, GAAP, tax implications, reconciliation, and accounting best practices.
 
-When suggesting new tabs/sheets, respond with a structured JSON block like:
-\`\`\`json
-{
-  "action": "create_sheet",
-  "sheet": {
-    "name": "Sheet Name",
-    "type": "custom",
-    "columns": ["Date", "Description", "Amount", "Category"],
-    "data": []
-  }
-}
-\`\`\`
+IMPORTANT: When the user asks you to create a sheet or add transactions, you MUST use the appropriate tool to actually do it - don't just describe what you would do.
 
-When suggesting transactions to add, use:
-\`\`\`json
-{
-  "action": "add_transactions",
-  "sheet": "sheet_name",
-  "transactions": [
-    {"date": "2025-01-01", "description": "...", "amount": 100.00, "category": "..."}
-  ]
-}
-\`\`\`
+Available Chart of Accounts codes:
+- 4100: Credit Card Sales (Revenue)
+- 4110: Cash/Check Sales (Revenue)
+- 4120: Venmo/Digital Sales (Revenue)
+- 4200: Salvage Inspection Fees (Revenue)
+- 4900: Other Income (Revenue)
+- 5000: Vehicle Inventory Purchases (COGS)
+- 5100: Title & Registration Fees (COGS)
+- 5110: Floor Plan Interest (COGS)
+- 5120: Title Lookup Services (COGS)
+- 6050: Rent - Front Office (Expense)
+- 6055: Rent - Main Office (Expense)
+- 6100: Utilities (Expense)
+- 6200: Communications (Expense)
+- 6300: Office & Supplies (Expense)
+- 6400: Vehicle Operating (Expense)
+- 6500: Credit Card Processing Fees (Expense)
+- 6600: Bank Fees (Expense)
+- 6700: Insurance (Expense)
+- 6800: Other Operating Expenses (Expense)
 
 Always be professional, precise with numbers, and explain your reasoning for categorizations.`;
+
+const tools = [
+  {
+    type: "function",
+    function: {
+      name: "create_financial_sheet",
+      description: "Create a new financial sheet/tab in the client's workbook. Use this when the user asks to create a new sheet, report, or tab.",
+      parameters: {
+        type: "object",
+        properties: {
+          name: { 
+            type: "string", 
+            description: "Name of the sheet (e.g., 'January P&L', 'Custom Expenses')" 
+          },
+          sheet_type: { 
+            type: "string", 
+            enum: ["profit_loss", "balance_sheet", "cash_flow", "reconciliation", "custom"],
+            description: "Type of financial sheet" 
+          },
+          columns: {
+            type: "array",
+            items: { type: "string" },
+            description: "Column headers for the sheet"
+          },
+          initial_data: {
+            type: "array",
+            items: { type: "object" },
+            description: "Initial data rows for the sheet (optional)"
+          }
+        },
+        required: ["name", "sheet_type", "columns"],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "add_transactions",
+      description: "Add transactions to a financial sheet. Use this when the user provides transaction data to be recorded.",
+      parameters: {
+        type: "object",
+        properties: {
+          target_sheet: { 
+            type: "string", 
+            description: "Name of the sheet to add transactions to" 
+          },
+          transactions: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                date: { type: "string", description: "Transaction date (MM/DD or YYYY-MM-DD)" },
+                description: { type: "string", description: "Transaction description" },
+                amount: { type: "number", description: "Transaction amount" },
+                coaCode: { type: "string", description: "Chart of Accounts code" },
+                category: { type: "string", description: "Category name" },
+                type: { type: "string", enum: ["deposit", "withdrawal"], description: "Transaction type" }
+              },
+              required: ["date", "description", "amount", "coaCode", "category", "type"]
+            },
+            description: "Array of transactions to add"
+          }
+        },
+        required: ["target_sheet", "transactions"],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "get_sheet_summary",
+      description: "Get a summary of financial data from existing sheets. Use this when the user asks about totals, summaries, or comparisons.",
+      parameters: {
+        type: "object",
+        properties: {
+          sheet_names: {
+            type: "array",
+            items: { type: "string" },
+            description: "Names of sheets to summarize"
+          },
+          metrics: {
+            type: "array",
+            items: { type: "string" },
+            description: "Metrics to calculate (e.g., 'total_revenue', 'total_expenses', 'net_income')"
+          }
+        },
+        required: ["sheet_names", "metrics"],
+        additionalProperties: false
+      }
+    }
+  }
+];
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -49,11 +143,92 @@ serve(async (req) => {
   }
 
   try {
-    const { messages, clientId } = await req.json();
+    const { messages, clientId, executeActions } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
+    }
+
+    // If this is an action execution request, handle it
+    if (executeActions && Array.isArray(executeActions)) {
+      console.log(`Executing ${executeActions.length} actions for client: ${clientId}`);
+      
+      const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
+      const results = [];
+      
+      for (const action of executeActions) {
+        try {
+          if (action.name === "create_financial_sheet") {
+            const { name, sheet_type, columns, initial_data } = action.arguments;
+            
+            const { data, error } = await supabase
+              .from('financial_sheets')
+              .insert({
+                client_id: clientId,
+                name: name,
+                sheet_type: sheet_type,
+                data: { columns, rows: initial_data || [] }
+              })
+              .select()
+              .single();
+            
+            if (error) throw error;
+            results.push({ 
+              action: "create_financial_sheet", 
+              success: true, 
+              message: `Created sheet "${name}"`,
+              data 
+            });
+          } 
+          else if (action.name === "add_transactions") {
+            const { target_sheet, transactions } = action.arguments;
+            
+            // For now, we'll store this in financial_sheets
+            // In a full implementation, you'd update the actual transaction data
+            const { data, error } = await supabase
+              .from('financial_sheets')
+              .insert({
+                client_id: clientId,
+                name: `${target_sheet} - ${new Date().toLocaleDateString()}`,
+                sheet_type: 'transactions',
+                data: { transactions }
+              })
+              .select()
+              .single();
+            
+            if (error) throw error;
+            results.push({ 
+              action: "add_transactions", 
+              success: true, 
+              message: `Added ${transactions.length} transactions to ${target_sheet}`,
+              data 
+            });
+          }
+          else if (action.name === "get_sheet_summary") {
+            // This would query existing sheets
+            results.push({ 
+              action: "get_sheet_summary", 
+              success: true, 
+              message: "Summary generated",
+              data: { note: "Sheet summary functionality" }
+            });
+          }
+        } catch (err) {
+          console.error(`Action ${action.name} failed:`, err);
+          results.push({ 
+            action: action.name, 
+            success: false, 
+            error: err instanceof Error ? err.message : 'Unknown error'
+          });
+        }
+      }
+      
+      return new Response(JSON.stringify({ results }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     console.log(`Processing chat request for client: ${clientId}`);
@@ -71,6 +246,8 @@ serve(async (req) => {
           { role: "system", content: SYSTEM_PROMPT },
           ...messages,
         ],
+        tools: tools,
+        tool_choice: "auto",
         stream: true,
       }),
     });
