@@ -38,6 +38,8 @@ export const octoberDeposits: Transaction[] = [
 
 export const octoberWithdrawals: Transaction[] = [
   { date: "10/01", description: "ACH MOTOR VEHICLE SO", coaCode: "5100", category: "Title & Registration", amount: 2628.00, type: "withdrawal" },
+  { date: "10/01", description: "Check #1200 - Main Office Rent", checkNumber: "1200", coaCode: "6055", category: "Rent - Main Office", amount: 2800.00, type: "withdrawal" },
+  { date: "10/01", description: "Check #1201 - Front Office Rent", checkNumber: "1201", coaCode: "6050", category: "Rent - Front Office", amount: 900.00, type: "withdrawal" },
   { date: "10/02", description: "ACH VITU RTS", coaCode: "5120", category: "Title Lookup Services", amount: 809.16, type: "withdrawal" },
   { date: "10/03", description: "ACH PECO ENERGY", coaCode: "6100", category: "Utilities", amount: 245.87, type: "withdrawal" },
   { date: "10/04", description: "Debit Card SUNOCO", coaCode: "6400", category: "Vehicle Operating", amount: 67.50, type: "withdrawal" },
@@ -85,6 +87,8 @@ export const novemberDeposits: Transaction[] = [
 
 export const novemberWithdrawals: Transaction[] = [
   { date: "11/01", description: "ACH MOTOR VEHICLE SO", coaCode: "5100", category: "Title & Registration", amount: 2456.00, type: "withdrawal" },
+  { date: "11/01", description: "Check #1210 - Main Office Rent", checkNumber: "1210", coaCode: "6055", category: "Rent - Main Office", amount: 2800.00, type: "withdrawal" },
+  { date: "11/01", description: "Check #1211 - Front Office Rent", checkNumber: "1211", coaCode: "6050", category: "Rent - Front Office", amount: 900.00, type: "withdrawal" },
   { date: "11/04", description: "ACH VITU RTS", coaCode: "5120", category: "Title Lookup Services", amount: 756.45, type: "withdrawal" },
   { date: "11/05", description: "ACH PECO ENERGY", coaCode: "6100", category: "Utilities", amount: 312.56, type: "withdrawal" },
   { date: "11/06", description: "Debit Card SUNOCO", coaCode: "6400", category: "Vehicle Operating", amount: 75.80, type: "withdrawal" },
@@ -176,6 +180,8 @@ export const decemberDeposits: Transaction[] = [
 
 export const decemberWithdrawals: Transaction[] = [
   { date: "12/01", description: "ACH MOTOR VEHICLE SO", coaCode: "5100", category: "Title & Registration", amount: 1125.58, type: "withdrawal" },
+  { date: "12/01", description: "Check #1220 - Main Office Rent", checkNumber: "1220", coaCode: "6055", category: "Rent - Main Office", amount: 2800.00, type: "withdrawal" },
+  { date: "12/01", description: "Check #1221 - Front Office Rent", checkNumber: "1221", coaCode: "6050", category: "Rent - Front Office", amount: 900.00, type: "withdrawal" },
   { date: "12/01", description: "Transfer to Savings", coaCode: "9999", category: "Transfer Out", amount: 50.00, type: "withdrawal" },
   { date: "12/02", description: "ACH MOTOR VEHICLE SO", coaCode: "5100", category: "Title & Registration", amount: 110.00, type: "withdrawal" },
   { date: "12/02", description: "ACH MOTOR VEHICLE SO", coaCode: "5100", category: "Title & Registration", amount: 397.42, type: "withdrawal" },
