@@ -56,6 +56,36 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
     }
   }, [isOpen]);
 
+  // Execute tool calls on the backend
+  const executeActions = async (toolCalls: any[]) => {
+    try {
+      const resp = await fetch(CHAT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ 
+          clientId, 
+          executeActions: toolCalls.map(tc => ({
+            name: tc.function.name,
+            arguments: JSON.parse(tc.function.arguments || '{}')
+          }))
+        }),
+      });
+
+      if (!resp.ok) {
+        throw new Error("Failed to execute actions");
+      }
+
+      const data = await resp.json();
+      return data.results;
+    } catch (error) {
+      console.error("Action execution error:", error);
+      throw error;
+    }
+  };
+
   const streamChat = useCallback(async (userMessage: string) => {
     const newUserMessage: Message = {
       id: crypto.randomUUID(),
@@ -96,6 +126,8 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
       let textBuffer = "";
       let assistantSoFar = "";
       const assistantId = crypto.randomUUID();
+      let toolCalls: any[] = [];
+      let currentToolCall: any = null;
 
       // Create initial assistant message
       setMessages((prev) => [
@@ -123,7 +155,10 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
 
           try {
             const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            const delta = parsed.choices?.[0]?.delta;
+            
+            // Handle regular content
+            const content = delta?.content as string | undefined;
             if (content) {
               assistantSoFar += content;
               setMessages((prev) =>
@@ -131,6 +166,23 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
                   m.id === assistantId ? { ...m, content: assistantSoFar } : m
                 )
               );
+            }
+            
+            // Handle tool calls
+            if (delta?.tool_calls) {
+              for (const tc of delta.tool_calls) {
+                if (tc.index !== undefined) {
+                  if (!toolCalls[tc.index]) {
+                    toolCalls[tc.index] = { 
+                      id: tc.id || '', 
+                      function: { name: '', arguments: '' } 
+                    };
+                  }
+                  if (tc.id) toolCalls[tc.index].id = tc.id;
+                  if (tc.function?.name) toolCalls[tc.index].function.name = tc.function.name;
+                  if (tc.function?.arguments) toolCalls[tc.index].function.arguments += tc.function.arguments;
+                }
+              }
             }
           } catch {
             textBuffer = line + "\n" + textBuffer;
@@ -162,6 +214,59 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
           } catch {
             /* ignore */
           }
+        }
+      }
+
+      // Execute any tool calls
+      if (toolCalls.length > 0 && toolCalls.some(tc => tc.function.name)) {
+        const validToolCalls = toolCalls.filter(tc => tc.function.name);
+        
+        // Show what actions are being taken
+        const actionNames = validToolCalls.map(tc => tc.function.name).join(', ');
+        const actionMessage = `\n\n⚙️ **Executing actions:** ${actionNames}...`;
+        assistantSoFar += actionMessage;
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId ? { ...m, content: assistantSoFar } : m
+          )
+        );
+
+        try {
+          const results = await executeActions(validToolCalls);
+          
+          // Update message with results
+          let resultMessage = "\n\n✅ **Actions completed:**\n";
+          for (const result of results) {
+            if (result.success) {
+              resultMessage += `• ${result.message}\n`;
+              toast({
+                title: "Action completed",
+                description: result.message,
+              });
+            } else {
+              resultMessage += `• ❌ ${result.action} failed: ${result.error}\n`;
+              toast({
+                variant: "destructive",
+                title: "Action failed",
+                description: result.error,
+              });
+            }
+          }
+          
+          assistantSoFar += resultMessage;
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId ? { ...m, content: assistantSoFar } : m
+            )
+          );
+        } catch (error) {
+          const errorMessage = "\n\n❌ Failed to execute actions. Please try again.";
+          assistantSoFar += errorMessage;
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId ? { ...m, content: assistantSoFar } : m
+            )
+          );
         }
       }
     } catch (error) {
