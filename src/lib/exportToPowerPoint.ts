@@ -4,9 +4,12 @@ import {
   octoberWithdrawals,
   novemberDeposits,
   novemberWithdrawals,
+  decemberDeposits,
+  decemberWithdrawals,
   transfers,
   octoberSummary,
   novemberSummary,
+  decemberSummary,
 } from '@/data/bankTransactions';
 import {
   inspectionsSummary,
@@ -176,19 +179,21 @@ export const exportToPowerPoint = () => {
     fontFace: 'Arial',
   });
 
-  // Calculate totals
+  // Calculate totals for ALL 3 months
   const totalDeposits = 
     octoberDeposits.filter(d => d.coaCode !== '9999').reduce((sum, d) => sum + d.amount, 0) +
-    novemberDeposits.filter(d => d.coaCode !== '9999').reduce((sum, d) => sum + d.amount, 0);
+    novemberDeposits.filter(d => d.coaCode !== '9999').reduce((sum, d) => sum + d.amount, 0) +
+    decemberDeposits.filter(d => d.coaCode !== '9999').reduce((sum, d) => sum + d.amount, 0);
   
   const totalExpenses = 
     octoberWithdrawals.filter(w => w.coaCode !== '9999').reduce((sum, w) => sum + w.amount, 0) +
-    novemberWithdrawals.filter(w => w.coaCode !== '9999').reduce((sum, w) => sum + w.amount, 0);
+    novemberWithdrawals.filter(w => w.coaCode !== '9999').reduce((sum, w) => sum + w.amount, 0) +
+    decemberWithdrawals.filter(w => w.coaCode !== '9999').reduce((sum, w) => sum + w.amount, 0);
 
   // KPI Cards
   const kpiData = [
-    { label: 'Bank Deposits', value: formatCurrency(totalDeposits), color: colors.green },
-    { label: 'Bank Expenses', value: formatCurrency(totalExpenses), color: colors.red },
+    { label: 'Q4 Bank Deposits', value: formatCurrency(totalDeposits), color: colors.green },
+    { label: 'Q4 Bank Expenses', value: formatCurrency(totalExpenses), color: colors.red },
     { label: 'Title Services Revenue', value: formatCurrency(titleRevenueSummary.totalRevenue), color: colors.blue },
     { label: 'PA eSafety Revenue', value: formatCurrency(inspectionsSummary.total.revenue), color: colors.gold },
   ];
@@ -230,7 +235,7 @@ export const exportToPowerPoint = () => {
     });
   });
 
-  // Summary table
+  // Summary table - include ALL 3 months
   const summaryRows: PptxGenJS.TableRow[] = [
     [
       { text: 'Period', options: { bold: true, fill: { color: colors.navy }, color: colors.white } },
@@ -252,6 +257,13 @@ export const exportToPowerPoint = () => {
       { text: formatCurrency(novemberDeposits.reduce((sum, d) => sum + d.amount, 0)) },
       { text: formatCurrency(novemberWithdrawals.reduce((sum, w) => sum + w.amount, 0)) },
       { text: formatCurrency(novemberSummary.endingBalance) },
+    ],
+    [
+      { text: 'December 2025' },
+      { text: formatCurrency(decemberSummary.beginningBalance) },
+      { text: formatCurrency(decemberDeposits.reduce((sum, d) => sum + d.amount, 0)) },
+      { text: formatCurrency(decemberWithdrawals.reduce((sum, w) => sum + w.amount, 0)) },
+      { text: formatCurrency(decemberSummary.endingBalance) },
     ],
   ];
 
@@ -781,7 +793,7 @@ export const exportToPowerPoint = () => {
   });
 
   // ==========================================
-  // SLIDE 7: Inter-Account Transfers
+  // SLIDE 7: Checking Account - December
   // ==========================================
   const slide7 = pptx.addSlide({ masterName: 'CONTENT_SLIDE' });
   
@@ -793,7 +805,157 @@ export const exportToPowerPoint = () => {
     fill: { color: colors.navy },
   });
   
-  slide7.addText('INTER-ACCOUNT TRANSFERS', {
+  slide7.addText('CHECKING ACCOUNT - DECEMBER 2025', {
+    x: 0.5,
+    y: 0.2,
+    w: '90%',
+    h: 0.4,
+    fontSize: 24,
+    bold: true,
+    color: colors.white,
+    fontFace: 'Arial',
+  });
+
+  const decDepositsTotal = decemberDeposits.reduce((sum, d) => sum + d.amount, 0);
+  const decWithdrawalsTotal = decemberWithdrawals.reduce((sum, w) => sum + w.amount, 0);
+
+  // December summary boxes
+  const decKpis = [
+    { label: 'Beginning Balance', value: formatCurrency(decemberSummary.beginningBalance), color: colors.slate },
+    { label: 'Total Deposits', value: formatCurrency(decDepositsTotal), color: colors.green },
+    { label: 'Total Withdrawals', value: formatCurrency(decWithdrawalsTotal), color: colors.red },
+    { label: 'Ending Balance', value: formatCurrency(decemberSummary.endingBalance), color: colors.blue },
+  ];
+
+  decKpis.forEach((kpi, idx) => {
+    const xPos = 0.5 + (idx * 2.4);
+    
+    slide7.addShape('rect', {
+      x: xPos,
+      y: 1.0,
+      w: 2.2,
+      h: 0.9,
+      fill: { color: colors.lightGray },
+      line: { color: kpi.color, width: 2 },
+    });
+    
+    slide7.addText(kpi.label, {
+      x: xPos,
+      y: 1.05,
+      w: 2.2,
+      h: 0.25,
+      fontSize: 9,
+      bold: true,
+      color: colors.slate,
+      align: 'center',
+      fontFace: 'Arial',
+    });
+    
+    slide7.addText(kpi.value, {
+      x: xPos,
+      y: 1.35,
+      w: 2.2,
+      h: 0.4,
+      fontSize: 14,
+      bold: true,
+      color: kpi.color,
+      align: 'center',
+      fontFace: 'Arial',
+    });
+  });
+
+  // Top deposits table
+  const topDecDeposits = decemberDeposits.slice(0, 6);
+  const decDepositRows: PptxGenJS.TableRow[] = [
+    [
+      { text: 'Date', options: { bold: true, fill: { color: colors.green }, color: colors.white } },
+      { text: 'Description', options: { bold: true, fill: { color: colors.green }, color: colors.white } },
+      { text: 'Category', options: { bold: true, fill: { color: colors.green }, color: colors.white } },
+      { text: 'Amount', options: { bold: true, fill: { color: colors.green }, color: colors.white } },
+    ],
+    ...topDecDeposits.map(d => [
+      { text: d.date },
+      { text: d.description.substring(0, 30) + (d.description.length > 30 ? '...' : '') },
+      { text: d.category },
+      { text: formatCurrency(d.amount) },
+    ]),
+  ];
+
+  slide7.addText('Top Deposits', {
+    x: 0.5,
+    y: 2.1,
+    w: 4.0,
+    h: 0.3,
+    fontSize: 12,
+    bold: true,
+    color: colors.slate,
+    fontFace: 'Arial',
+  });
+
+  slide7.addTable(decDepositRows, {
+    x: 0.5,
+    y: 2.4,
+    w: 4.5,
+    fontSize: 9,
+    fontFace: 'Arial',
+    border: { color: colors.slate, pt: 0.5 },
+    align: 'left',
+    valign: 'middle',
+  });
+
+  // Top withdrawals table
+  const topDecWithdrawals = decemberWithdrawals.slice(0, 6);
+  const decWithdrawalRows: PptxGenJS.TableRow[] = [
+    [
+      { text: 'Date', options: { bold: true, fill: { color: colors.red }, color: colors.white } },
+      { text: 'Description', options: { bold: true, fill: { color: colors.red }, color: colors.white } },
+      { text: 'Category', options: { bold: true, fill: { color: colors.red }, color: colors.white } },
+      { text: 'Amount', options: { bold: true, fill: { color: colors.red }, color: colors.white } },
+    ],
+    ...topDecWithdrawals.map(w => [
+      { text: w.date },
+      { text: w.description.substring(0, 30) + (w.description.length > 30 ? '...' : '') },
+      { text: w.category },
+      { text: formatCurrency(w.amount) },
+    ]),
+  ];
+
+  slide7.addText('Top Expenses', {
+    x: 5.2,
+    y: 2.1,
+    w: 4.0,
+    h: 0.3,
+    fontSize: 12,
+    bold: true,
+    color: colors.slate,
+    fontFace: 'Arial',
+  });
+
+  slide7.addTable(decWithdrawalRows, {
+    x: 5.2,
+    y: 2.4,
+    w: 4.5,
+    fontSize: 9,
+    fontFace: 'Arial',
+    border: { color: colors.slate, pt: 0.5 },
+    align: 'left',
+    valign: 'middle',
+  });
+
+  // ==========================================
+  // SLIDE 8: Inter-Account Transfers
+  // ==========================================
+  const slide8 = pptx.addSlide({ masterName: 'CONTENT_SLIDE' });
+  
+  slide8.addShape('rect', {
+    x: 0,
+    y: 0,
+    w: '100%',
+    h: 0.8,
+    fill: { color: colors.navy },
+  });
+  
+  slide8.addText('INTER-ACCOUNT TRANSFERS', {
     x: 0.5,
     y: 0.2,
     w: '90%',
@@ -818,7 +980,7 @@ export const exportToPowerPoint = () => {
   transferKpis.forEach((kpi, idx) => {
     const xPos = 0.5 + (idx * 3.2);
     
-    slide7.addShape('rect', {
+    slide8.addShape('rect', {
       x: xPos,
       y: 1.2,
       w: 3.0,
@@ -827,7 +989,7 @@ export const exportToPowerPoint = () => {
       line: { color: kpi.color, width: 2 },
     });
     
-    slide7.addText(kpi.label, {
+    slide8.addText(kpi.label, {
       x: xPos,
       y: 1.3,
       w: 3.0,
@@ -839,7 +1001,7 @@ export const exportToPowerPoint = () => {
       fontFace: 'Arial',
     });
     
-    slide7.addText(kpi.value, {
+    slide8.addText(kpi.value, {
       x: xPos,
       y: 1.65,
       w: 3.0,
@@ -870,7 +1032,7 @@ export const exportToPowerPoint = () => {
     ]),
   ];
 
-  slide7.addTable(transferRows, {
+  slide8.addTable(transferRows, {
     x: 0.5,
     y: 2.5,
     w: 9.0,
@@ -882,11 +1044,11 @@ export const exportToPowerPoint = () => {
   });
 
   // ==========================================
-  // SLIDE 8: Vitu Expenses
+  // SLIDE 9: Vitu Expenses
   // ==========================================
-  const slide8 = pptx.addSlide({ masterName: 'CONTENT_SLIDE' });
+  const slide9 = pptx.addSlide({ masterName: 'CONTENT_SLIDE' });
   
-  slide8.addShape('rect', {
+  slide9.addShape('rect', {
     x: 0,
     y: 0,
     w: '100%',
@@ -894,7 +1056,7 @@ export const exportToPowerPoint = () => {
     fill: { color: colors.navy },
   });
   
-  slide8.addText('VITU EXPENSES (Title Lookup Services)', {
+  slide9.addText('VITU EXPENSES (Title Lookup Services)', {
     x: 0.5,
     y: 0.2,
     w: '90%',
@@ -915,7 +1077,7 @@ export const exportToPowerPoint = () => {
   vituKpis.forEach((kpi, idx) => {
     const xPos = 0.5 + (idx * 3.2);
     
-    slide8.addShape('rect', {
+    slide9.addShape('rect', {
       x: xPos,
       y: 1.2,
       w: 3.0,
@@ -924,7 +1086,7 @@ export const exportToPowerPoint = () => {
       line: { color: kpi.color, width: 2 },
     });
     
-    slide8.addText(kpi.label, {
+    slide9.addText(kpi.label, {
       x: xPos,
       y: 1.3,
       w: 3.0,
@@ -936,7 +1098,7 @@ export const exportToPowerPoint = () => {
       fontFace: 'Arial',
     });
     
-    slide8.addText(kpi.value, {
+    slide9.addText(kpi.value, {
       x: xPos,
       y: 1.65,
       w: 3.0,
@@ -971,7 +1133,7 @@ export const exportToPowerPoint = () => {
     ],
   ];
 
-  slide8.addTable(vituRows, {
+  slide9.addTable(vituRows, {
     x: 0.5,
     y: 2.5,
     w: 7.0,
@@ -983,11 +1145,11 @@ export const exportToPowerPoint = () => {
   });
 
   // ==========================================
-  // SLIDE 9: Reconciliation Summary
+  // SLIDE 10: Reconciliation Summary
   // ==========================================
-  const slide9 = pptx.addSlide({ masterName: 'CONTENT_SLIDE' });
+  const slide10 = pptx.addSlide({ masterName: 'CONTENT_SLIDE' });
   
-  slide9.addShape('rect', {
+  slide10.addShape('rect', {
     x: 0,
     y: 0,
     w: '100%',
@@ -995,7 +1157,7 @@ export const exportToPowerPoint = () => {
     fill: { color: colors.navy },
   });
   
-  slide9.addText('BANK RECONCILIATION', {
+  slide10.addText('BANK RECONCILIATION', {
     x: 0.5,
     y: 0.2,
     w: '90%',
@@ -1006,9 +1168,10 @@ export const exportToPowerPoint = () => {
     fontFace: 'Arial',
   });
 
-  // Reconciliation status
+  // Reconciliation status - all 3 months
   const octReconciled = octoberSummary.endingBalance === octoberSummary.statementEndingBalance;
   const novReconciled = novemberSummary.endingBalance === novemberSummary.statementEndingBalance;
+  const decReconciled = decemberSummary.endingBalance === decemberSummary.statementEndingBalance;
 
   const reconRows: PptxGenJS.TableRow[] = [
     [
@@ -1032,9 +1195,16 @@ export const exportToPowerPoint = () => {
       { text: formatCurrency(novemberSummary.endingBalance - novemberSummary.statementEndingBalance) },
       { text: novReconciled ? '✓ RECONCILED' : 'VARIANCE', options: { color: novReconciled ? colors.green : colors.red, bold: true } },
     ],
+    [
+      { text: 'December 2025' },
+      { text: formatCurrency(decemberSummary.endingBalance) },
+      { text: formatCurrency(decemberSummary.statementEndingBalance) },
+      { text: formatCurrency(decemberSummary.endingBalance - decemberSummary.statementEndingBalance) },
+      { text: decReconciled ? '✓ RECONCILED' : 'VARIANCE', options: { color: decReconciled ? colors.green : colors.red, bold: true } },
+    ],
   ];
 
-  slide9.addTable(reconRows, {
+  slide10.addTable(reconRows, {
     x: 0.5,
     y: 1.2,
     w: 9.0,
@@ -1045,7 +1215,7 @@ export const exportToPowerPoint = () => {
     valign: 'middle',
   });
 
-  slide9.addText('Both months are fully reconciled with bank statements.', {
+  slide10.addText('All three months are fully reconciled with bank statements.', {
     x: 0.5,
     y: 3.0,
     w: 9.0,
@@ -1057,11 +1227,11 @@ export const exportToPowerPoint = () => {
   });
 
   // ==========================================
-  // SLIDE 10: Chart of Accounts
+  // SLIDE 11: Chart of Accounts
   // ==========================================
-  const slide10 = pptx.addSlide({ masterName: 'CONTENT_SLIDE' });
+  const slide11 = pptx.addSlide({ masterName: 'CONTENT_SLIDE' });
   
-  slide10.addShape('rect', {
+  slide11.addShape('rect', {
     x: 0,
     y: 0,
     w: '100%',
@@ -1069,7 +1239,7 @@ export const exportToPowerPoint = () => {
     fill: { color: colors.navy },
   });
   
-  slide10.addText('CHART OF ACCOUNTS', {
+  slide11.addText('CHART OF ACCOUNTS', {
     x: 0.5,
     y: 0.2,
     w: '90%',
@@ -1093,7 +1263,7 @@ export const exportToPowerPoint = () => {
     ]),
   ];
 
-  slide10.addTable(coaRows, {
+  slide11.addTable(coaRows, {
     x: 0.5,
     y: 1.0,
     w: 9.0,
@@ -1105,20 +1275,20 @@ export const exportToPowerPoint = () => {
   });
 
   // ==========================================
-  // SLIDE 11: Thank You / Contact
+  // SLIDE 12: Thank You / Contact
   // ==========================================
-  const slide11 = pptx.addSlide({ masterName: 'TITLE_SLIDE' });
+  const slide12 = pptx.addSlide({ masterName: 'TITLE_SLIDE' });
   
-  // Add Mizan Logo to Thank You slide
-  slide11.addImage({
-    path: '/mizan-logo.png',
+  // Add Mizan Logo to Thank You slide - using the correct export logo
+  slide12.addImage({
+    path: '/mizan-logo-export.png',
     x: 4.0,
     y: 0.5,
     w: 2.0,
     h: 2.0,
   });
   
-  slide11.addText('Thank You', {
+  slide12.addText('Thank You', {
     x: 0.5,
     y: 2.8,
     w: '90%',
@@ -1129,7 +1299,7 @@ export const exportToPowerPoint = () => {
     fontFace: 'Arial',
   });
   
-  slide11.addText('CVS Auto Sales Inc.', {
+  slide12.addText('CVS Auto Sales Inc.', {
     x: 0.5,
     y: 3.6,
     w: '90%',
@@ -1139,7 +1309,7 @@ export const exportToPowerPoint = () => {
     fontFace: 'Arial',
   });
   
-  slide11.addText('715 Huntingdon Pike, Rockledge, PA 19046', {
+  slide12.addText('715 Huntingdon Pike, Rockledge, PA 19046', {
     x: 0.5,
     y: 4.1,
     w: '90%',
@@ -1149,7 +1319,7 @@ export const exportToPowerPoint = () => {
     fontFace: 'Arial',
   });
   
-  slide11.addText('MIZAN', {
+  slide12.addText('MIZAN', {
     x: 0.5,
     y: 4.8,
     w: '90%',
@@ -1160,7 +1330,7 @@ export const exportToPowerPoint = () => {
     fontFace: 'Arial',
   });
   
-  slide11.addText('Professional Bookkeeping & Financial Services', {
+  slide12.addText('Professional Bookkeeping & Financial Services', {
     x: 0.5,
     y: 5.2,
     w: '90%',

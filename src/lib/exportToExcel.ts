@@ -4,9 +4,12 @@ import {
   octoberWithdrawals,
   novemberDeposits,
   novemberWithdrawals,
+  decemberDeposits,
+  decemberWithdrawals,
   transfers,
   octoberSummary,
   novemberSummary,
+  decemberSummary,
 } from '@/data/bankTransactions';
 import {
   octoberInspections,
@@ -281,15 +284,20 @@ export const exportToExcel = () => {
   addTableHeader(dashSheet, row, ['Metric', 'Amount']);
   row++;
   
-  const totalDeposits = octoberDeposits.filter(d => d.coaCode !== '9999').reduce((sum, d) => sum + d.amount, 0) +
-    novemberDeposits.filter(d => d.coaCode !== '9999').reduce((sum, d) => sum + d.amount, 0);
-  const totalWithdrawals = octoberWithdrawals.filter(w => w.coaCode !== '9999').reduce((sum, w) => sum + w.amount, 0) +
-    novemberWithdrawals.filter(w => w.coaCode !== '9999').reduce((sum, w) => sum + w.amount, 0);
+  // Calculate Q4 totals (all 3 months)
+  const totalDeposits = 
+    octoberDeposits.filter(d => d.coaCode !== '9999').reduce((sum, d) => sum + d.amount, 0) +
+    novemberDeposits.filter(d => d.coaCode !== '9999').reduce((sum, d) => sum + d.amount, 0) +
+    decemberDeposits.filter(d => d.coaCode !== '9999').reduce((sum, d) => sum + d.amount, 0);
+  const totalWithdrawals = 
+    octoberWithdrawals.filter(w => w.coaCode !== '9999').reduce((sum, w) => sum + w.amount, 0) +
+    novemberWithdrawals.filter(w => w.coaCode !== '9999').reduce((sum, w) => sum + w.amount, 0) +
+    decemberWithdrawals.filter(w => w.coaCode !== '9999').reduce((sum, w) => sum + w.amount, 0);
   
   const summaryData = [
-    ['Total Bank Deposits (Oct-Nov)', totalDeposits],
-    ['Total Bank Expenses (Oct-Nov)', totalWithdrawals],
-    ['PA eSafety Revenue (423 inspections)', inspectionsSummary.total.revenue],
+    ['Total Bank Deposits (Q4)', totalDeposits],
+    ['Total Bank Expenses (Q4)', totalWithdrawals],
+    ['PA eSafety Revenue (Q4)', inspectionsSummary.total.revenue],
     ['Vitu Expenses (Q4)', vituSummary.quarterTotal],
   ];
   
@@ -298,7 +306,7 @@ export const exportToExcel = () => {
     row++;
   });
   
-  // Period Breakdown section
+  // Period Breakdown section - ALL 3 months
   row += 2;
   setCell(dashSheet, `A${row}`, 'PERIOD BREAKDOWN', styles.sectionTitle);
   for (let i = 1; i < 5; i++) {
@@ -318,6 +326,10 @@ export const exportToExcel = () => {
       novemberDeposits.reduce((sum, d) => sum + d.amount, 0),
       novemberWithdrawals.reduce((sum, w) => sum + w.amount, 0),
       novemberSummary.endingBalance],
+    ['December 2025', decemberSummary.beginningBalance, 
+      decemberDeposits.reduce((sum, d) => sum + d.amount, 0),
+      decemberWithdrawals.reduce((sum, w) => sum + w.amount, 0),
+      decemberSummary.endingBalance],
   ];
   
   periodData.forEach((d, idx) => {
@@ -461,7 +473,73 @@ export const exportToExcel = () => {
   XLSX.utils.book_append_sheet(workbook, novSheet, 'Nov 2025 Checking');
 
   // ==========================================
-  // Sheet 4: Inter-Account Transfers
+  // Sheet 4: December 2025 Checking Account
+  // ==========================================
+  const { sheet: decSheet, startRow: decStart } = createProfessionalSheet(
+    'Checking Account - December 2025',
+    'CVS Auto Sales Inc.',
+    [12, 35, 12, 10, 22, 15]
+  );
+  
+  row = decStart;
+  setCell(decSheet, `A${row}`, 'Beginning Balance:', styles.balanceLabel);
+  setCell(decSheet, `B${row}`, decemberSummary.beginningBalance, styles.balanceValue);
+  
+  // Deposits section
+  row += 2;
+  setCell(decSheet, `A${row}`, 'DEPOSITS', styles.sectionTitle);
+  for (let i = 1; i < 6; i++) {
+    setCell(decSheet, String.fromCharCode(65 + i) + row, '', styles.sectionTitle);
+  }
+  
+  row += 2;
+  addTableHeader(decSheet, row, ['Date', 'Description', 'COA Code', 'Category', 'Amount']);
+  row++;
+  
+  decemberDeposits.forEach((d, idx) => {
+    addDataRow(decSheet, row, [d.date, d.description, d.coaCode, d.category, d.amount], [4], idx % 2 === 1);
+    row++;
+  });
+  
+  addTotalRow(decSheet, row, ['', '', '', 'TOTAL DEPOSITS', decemberDeposits.reduce((sum, d) => sum + d.amount, 0)], [4]);
+  row++;
+  
+  // Withdrawals section
+  row += 2;
+  setCell(decSheet, `A${row}`, 'WITHDRAWALS', styles.sectionTitle);
+  for (let i = 1; i < 6; i++) {
+    setCell(decSheet, String.fromCharCode(65 + i) + row, '', styles.sectionTitle);
+  }
+  
+  row += 2;
+  addTableHeader(decSheet, row, ['Date', 'Description', 'Check #', 'COA Code', 'Category', 'Amount']);
+  row++;
+  
+  decemberWithdrawals.forEach((w, idx) => {
+    addDataRow(decSheet, row, [w.date, w.description, w.checkNumber || '', w.coaCode, w.category, w.amount], [5], idx % 2 === 1);
+    row++;
+  });
+  
+  addTotalRow(decSheet, row, ['', '', '', '', 'TOTAL WITHDRAWALS', decemberWithdrawals.reduce((sum, w) => sum + w.amount, 0)], [5]);
+  row++;
+  
+  // Ending balance
+  row += 2;
+  setCell(decSheet, `D${row}`, 'Ending Balance:', styles.balanceLabel);
+  setCell(decSheet, `E${row}`, decemberSummary.endingBalance, styles.balanceValue);
+  row++;
+  setCell(decSheet, `D${row}`, 'Statement Balance:', styles.balanceLabel);
+  setCell(decSheet, `E${row}`, decemberSummary.statementEndingBalance, styles.balanceValue);
+  row++;
+  setCell(decSheet, `D${row}`, 'Status:', styles.balanceLabel);
+  const decReconciled = decemberSummary.endingBalance === decemberSummary.statementEndingBalance;
+  setCell(decSheet, `E${row}`, decReconciled ? '✓ RECONCILED' : 'VARIANCE', decReconciled ? styles.reconciledBadge : styles.varianceBadge);
+  
+  decSheet['!ref'] = `A1:F${row}`;
+  XLSX.utils.book_append_sheet(workbook, decSheet, 'Dec 2025 Checking');
+
+  // ==========================================
+  // Sheet 5: Inter-Account Transfers
   // ==========================================
   const { sheet: transSheet, startRow: transStart } = createProfessionalSheet(
     'Inter-Account Transfers',
@@ -484,7 +562,7 @@ export const exportToExcel = () => {
   XLSX.utils.book_append_sheet(workbook, transSheet, 'Transfers');
 
   // ==========================================
-  // Sheet 5: PA eSafety Inspections
+  // Sheet 6: PA eSafety Inspections
   // ==========================================
   const { sheet: esafetySheet, startRow: esafetyStart } = createProfessionalSheet(
     'PA eSafety - Salvage Inspections',
@@ -537,7 +615,7 @@ export const exportToExcel = () => {
   XLSX.utils.book_append_sheet(workbook, esafetySheet, 'PA eSafety');
 
   // ==========================================
-  // Sheet 6: Vitu Title Services
+  // Sheet 7: Vitu Title Services
   // ==========================================
   const { sheet: vituSheet, startRow: vituStart } = createProfessionalSheet(
     'Vitu - Title Services',
@@ -586,7 +664,7 @@ export const exportToExcel = () => {
   XLSX.utils.book_append_sheet(workbook, vituSheet, 'Vitu');
 
   // ==========================================
-  // Sheet 7: Chart of Accounts
+  // Sheet 8: Chart of Accounts
   // ==========================================
   const { sheet: coaSheet, startRow: coaStart } = createProfessionalSheet(
     'Chart of Accounts',
@@ -607,7 +685,7 @@ export const exportToExcel = () => {
   XLSX.utils.book_append_sheet(workbook, coaSheet, 'Chart of Accounts');
 
   // ==========================================
-  // Sheet 8: Reconciliation Summary
+  // Sheet 9: Reconciliation Summary
   // ==========================================
   const { sheet: reconSheet, startRow: reconStart } = createProfessionalSheet(
     'Bank Reconciliation Summary',
@@ -655,6 +733,22 @@ export const exportToExcel = () => {
     novemberSummary.statementEndingBalance,
   ], [1, 2, 3, 4, 5], true);
   setCell(reconSheet, `G${row}`, novStatus ? '✓ Reconciled' : 'Variance', novStatus ? styles.reconciledBadge : styles.varianceBadge);
+  row++;
+  
+  // December reconciliation
+  const decDepositsTotal = decemberDeposits.reduce((sum, d) => sum + d.amount, 0);
+  const decWithdrawalsTotal = decemberWithdrawals.reduce((sum, w) => sum + w.amount, 0);
+  const decStatus = decemberSummary.endingBalance === decemberSummary.statementEndingBalance;
+  
+  addDataRow(reconSheet, row, [
+    'December 2025',
+    decemberSummary.beginningBalance,
+    decDepositsTotal,
+    decWithdrawalsTotal,
+    decemberSummary.endingBalance,
+    decemberSummary.statementEndingBalance,
+  ], [1, 2, 3, 4, 5], false);
+  setCell(reconSheet, `G${row}`, decStatus ? '✓ Reconciled' : 'Variance', decStatus ? styles.reconciledBadge : styles.varianceBadge);
   
   reconSheet['!ref'] = `A1:G${row}`;
   XLSX.utils.book_append_sheet(workbook, reconSheet, 'Reconciliation');
