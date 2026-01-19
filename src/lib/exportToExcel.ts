@@ -175,8 +175,8 @@ const createProfessionalSheet = (
     { s: { r: 2, c: 0 }, e: { r: 2, c: colWidths.length - 1 } },
   ];
   
-  // Company header with logo text
-  setCell(sheet, 'A1', '★  MIZAN  ★', styles.companyHeader);
+  // Company header with logo text (Note: xlsx-js-style doesn't support embedded images, using text representation)
+  setCell(sheet, 'A1', '⚖  MIZAN', styles.companyHeader);
   for (let i = 1; i < colWidths.length; i++) {
     setCell(sheet, String.fromCharCode(65 + i) + '1', '', styles.companyHeader);
   }
