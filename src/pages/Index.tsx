@@ -57,19 +57,11 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0a0e17] relative overflow-hidden">
-        {/* Animated background */}
-        <div className="absolute inset-0">
-          <motion.div
-            className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          />
-          <motion.div
-            className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl"
-            animate={{ scale: [1.2, 1, 1.2], opacity: [0.5, 0.3, 0.5] }}
-            transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-          />
+      <div className="min-h-screen flex items-center justify-center bg-background dark relative overflow-hidden">
+        {/* Subtle gradient */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-primary/5 rounded-full blur-[80px]" />
         </div>
         <motion.div
           className="flex flex-col items-center gap-4 z-10"
@@ -84,7 +76,7 @@ const Index = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-24 w-24 object-contain relative z-10 mix-blend-lighten logo-glow-pulse"
+              className="h-20 w-20 object-contain relative z-10 mix-blend-lighten logo-glow-pulse"
             />
           </motion.div>
           <motion.div
@@ -92,8 +84,8 @@ const Index = () => {
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           >
-            <Sparkles className="h-4 w-4 text-blue-400" />
-            <p className="text-slate-400 text-sm font-medium">Loading your workspace...</p>
+            <Sparkles className="h-4 w-4 text-primary" />
+            <p className="text-muted-foreground text-sm font-medium">Loading your workspace...</p>
           </motion.div>
         </motion.div>
       </div>
@@ -105,7 +97,7 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background dark">
       <CompanyHeader />
       
       <motion.div 
