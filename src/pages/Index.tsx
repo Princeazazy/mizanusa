@@ -103,7 +103,7 @@ const Index = () => {
       <div className="light-beam light-beam-right opacity-50" />
       
       {/* Sidebar */}
-      <FuturisticSidebar onSignOut={handleSignOut} />
+      <FuturisticSidebar onSignOut={handleSignOut} onTabChange={setActiveTab} />
       
       {/* Main content */}
       <div className="ml-16">
