@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogIn, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import mizanLogo from "@/assets/mizan-logo-transparent.png";
 
@@ -8,32 +8,29 @@ const ClientSelect = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background dark relative overflow-hidden flex flex-col">
-      {/* Subtle gradient orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/3 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2" />
-      </div>
+    <div className="min-h-screen futuristic-bg relative overflow-hidden flex flex-col">
+      {/* Light beams */}
+      <div className="light-beam light-beam-left" />
+      <div className="light-beam light-beam-right" />
 
       {/* Header */}
-      <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm relative z-10">
+      <header className="border-b border-border/30 bg-card/20 backdrop-blur-sm relative z-10">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-12 w-auto mix-blend-lighten logo-glow-pulse"
+              className="h-10 w-auto mix-blend-lighten logo-glow-pulse"
             />
             <div>
-              <h1 className="text-lg font-semibold tracking-tight text-foreground">Mizan</h1>
+              <h1 className="text-base font-semibold tracking-tight text-foreground">Mizan</h1>
               <p className="text-xs text-muted-foreground">Professional Financial Services</p>
             </div>
           </div>
           <Button 
             onClick={() => navigate("/auth")} 
-            className="gap-2 bg-primary hover:bg-primary/90"
+            className="btn-glow"
           >
-            <LogIn className="h-4 w-4" />
             Sign In
           </Button>
         </div>
@@ -57,7 +54,7 @@ const ClientSelect = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-48 w-48 object-contain mx-auto mix-blend-lighten logo-glow-pulse"
+              className="h-40 w-40 object-contain mx-auto mix-blend-lighten logo-glow-pulse"
             />
           </motion.div>
 
@@ -67,7 +64,7 @@ const ClientSelect = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Welcome to Mizan
+            Welcome to <span className="text-primary glow-text-cyan">Mizan</span>
           </motion.h2>
           
           <motion.p 
@@ -87,7 +84,7 @@ const ClientSelect = () => {
             <Button 
               size="lg" 
               onClick={() => navigate("/auth")} 
-              className="gap-2 px-8 py-6 text-base bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all btn-primary"
+              className="gap-2 px-8 py-6 text-base btn-glow"
             >
               Access Your Account
               <ArrowRight className="h-5 w-5" />
@@ -95,7 +92,7 @@ const ClientSelect = () => {
           </motion.div>
 
           <motion.p 
-            className="text-muted-foreground/60 text-sm mt-8"
+            className="text-muted-foreground/50 text-sm mt-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
@@ -106,7 +103,7 @@ const ClientSelect = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 bg-card/30 py-4 relative z-10">
+      <footer className="border-t border-border/30 bg-card/10 py-4 relative z-10">
         <div className="container mx-auto px-6 text-center text-sm text-muted-foreground">
           © 2025 Mizan. All rights reserved.
         </div>

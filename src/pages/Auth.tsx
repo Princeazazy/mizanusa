@@ -78,8 +78,10 @@ const Auth = () => {
 
   if (checkingAuth) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background dark">
-        <div className="animate-pulse flex flex-col items-center gap-4">
+      <div className="min-h-screen flex items-center justify-center futuristic-bg">
+        <div className="light-beam light-beam-left" />
+        <div className="light-beam light-beam-right" />
+        <div className="animate-pulse flex flex-col items-center gap-4 z-10">
           <img src={mizanLogo} alt="Mizan" className="h-24 w-24 object-contain mix-blend-lighten logo-glow-pulse" />
           <p className="text-muted-foreground text-sm">Loading...</p>
         </div>
@@ -88,15 +90,13 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen flex bg-background dark relative overflow-hidden">
-      {/* Subtle gradient orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/3 rounded-full blur-[80px] -translate-x-1/3 translate-y-1/3" />
-      </div>
+    <div className="min-h-screen flex futuristic-bg relative overflow-hidden">
+      {/* Light beams */}
+      <div className="light-beam light-beam-left" />
+      <div className="light-beam light-beam-right" />
       
       {/* Left side - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-center items-center p-12 relative">
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-center items-center p-12 relative z-10">
         <motion.div 
           className="max-w-md text-center"
           initial={{ opacity: 0, x: -20 }}
@@ -108,12 +108,12 @@ const Auth = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-36 w-36 object-contain mx-auto relative z-10 mix-blend-lighten logo-glow-pulse"
+              className="h-32 w-32 object-contain mx-auto relative z-10 mix-blend-lighten logo-glow-pulse"
             />
           </div>
           
           <h1 className="text-3xl font-bold text-foreground mb-3 tracking-tight">
-            Mizan
+            <span className="text-primary glow-text-cyan">Mizan</span>
           </h1>
           <p className="text-muted-foreground text-base mb-10">
             Professional Financial Management System
@@ -121,36 +121,56 @@ const Auth = () => {
           
           {/* Feature highlights */}
           <div className="grid grid-cols-2 gap-3 mt-8">
-            <div className="bg-card border border-border/50 p-4 rounded-xl hover:border-primary/30 transition-colors">
+            <motion.div 
+              className="glass-card p-4 hover:border-primary/30 transition-colors"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
               <Calculator className="h-7 w-7 text-primary mx-auto mb-2" />
               <p className="text-foreground/80 text-sm font-medium">P&L Statements</p>
-            </div>
-            <div className="bg-card border border-border/50 p-4 rounded-xl hover:border-primary/30 transition-colors">
+            </motion.div>
+            <motion.div 
+              className="glass-card p-4 hover:border-primary/30 transition-colors"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
               <TrendingUp className="h-7 w-7 text-primary mx-auto mb-2" />
               <p className="text-foreground/80 text-sm font-medium">Cash Flow</p>
-            </div>
-            <div className="bg-card border border-border/50 p-4 rounded-xl hover:border-primary/30 transition-colors">
+            </motion.div>
+            <motion.div 
+              className="glass-card p-4 hover:border-primary/30 transition-colors"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
               <PieChart className="h-7 w-7 text-primary mx-auto mb-2" />
               <p className="text-foreground/80 text-sm font-medium">Balance Sheet</p>
-            </div>
-            <div className="bg-card border border-border/50 p-4 rounded-xl hover:border-primary/30 transition-colors">
+            </motion.div>
+            <motion.div 
+              className="glass-card p-4 hover:border-primary/30 transition-colors"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
               <FileSpreadsheet className="h-7 w-7 text-primary mx-auto mb-2" />
               <p className="text-foreground/80 text-sm font-medium">Reconciliation</p>
-            </div>
+            </motion.div>
           </div>
         </motion.div>
       </div>
       
       {/* Right side - Login form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="w-full max-w-md"
         >
-          <Card className="bg-card border-border/50 shadow-xl">
-            <CardHeader className="text-center pb-2">
+          <div className="glass-card overflow-hidden">
+            <CardHeader className="text-center pb-2 pt-8">
               {/* Mobile logo */}
               <div className="lg:hidden mb-6">
                 <img
@@ -167,7 +187,7 @@ const Auth = () => {
               </CardDescription>
             </CardHeader>
             
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 pb-8 px-8">
               <form onSubmit={handleLogin} className="space-y-5">
                 <div className="space-y-2">
                   <Label htmlFor="login-email" className="text-foreground/80 text-sm">Email</Label>
@@ -179,7 +199,7 @@ const Auth = () => {
                       placeholder="accountant@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="pl-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
+                      className="pl-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary/50"
                     />
                   </div>
                 </div>
@@ -194,7 +214,7 @@ const Auth = () => {
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="pl-10 pr-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
+                      className="pl-10 pr-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary/50"
                     />
                     <button
                       type="button"
@@ -208,7 +228,7 @@ const Auth = () => {
                 
                 <Button 
                   type="submit" 
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium h-11 mt-2 btn-primary"
+                  className="w-full btn-glow h-11 mt-2"
                   disabled={loading}
                 >
                   <LogIn className="h-4 w-4 mr-2" />
@@ -220,7 +240,7 @@ const Auth = () => {
                 Authorized personnel only
               </p>
             </CardContent>
-          </Card>
+          </div>
         </motion.div>
         
         {/* Footer */}
