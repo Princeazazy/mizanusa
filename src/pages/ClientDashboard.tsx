@@ -97,42 +97,32 @@ const ClientDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0e17] relative overflow-hidden flex flex-col">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        />
+    <div className="min-h-screen bg-background dark relative overflow-hidden flex flex-col">
+      {/* Subtle gradient orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/3 rounded-full blur-[80px] -translate-x-1/3 translate-y-1/3" />
       </div>
 
       {/* Header */}
-      <header className="border-b border-white/10 bg-black/30 backdrop-blur-sm relative z-10">
+      <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm relative z-10">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-14 w-auto mix-blend-lighten logo-glow-pulse"
+              className="h-12 w-auto mix-blend-lighten logo-glow-pulse"
             />
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-white">Mizan</h1>
-              <p className="text-xs text-slate-400">Professional Financial Services</p>
+              <h1 className="text-lg font-semibold tracking-tight text-foreground">Mizan</h1>
+              <p className="text-xs text-muted-foreground">Professional Financial Services</p>
             </div>
           </div>
-          <Button variant="outline" onClick={handleSignOut} className="gap-2">
+          <Button 
+            variant="ghost" 
+            onClick={handleSignOut} 
+            className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent"
+          >
             <LogOut className="h-4 w-4" />
             Sign Out
           </Button>
@@ -140,48 +130,50 @@ const ClientDashboard = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 container mx-auto px-6 py-8 relative z-10">
+      <main className="flex-1 container mx-auto px-6 py-10 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Page Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <div>
-              <h2 className="text-3xl font-bold text-white flex items-center gap-3">
-                <Users className="h-8 w-8 text-primary" />
-                Your Clients
-              </h2>
-              <p className="text-slate-400 mt-1">
-                Select a client to view their financial workbook
-              </p>
+          {/* Welcome Header */}
+          <div className="mb-10">
+            <h2 className="text-3xl font-bold text-foreground tracking-tight mb-1">
+              Hi there!
+            </h2>
+            <p className="text-muted-foreground">
+              Here's Your Client Dashboard |{" "}
+              <span className="text-primary font-medium cursor-pointer hover:underline">
+                VIEW ALL
+              </span>
+            </p>
+          </div>
+
+          {/* Search and Actions */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search clients..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 bg-card border-border/50 text-foreground placeholder:text-muted-foreground w-72 focus:border-primary/50 focus:ring-primary/20"
+              />
             </div>
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                <Input
-                  placeholder="Search clients..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500 w-64"
-                />
-              </div>
-              <Button 
-                className="gap-2"
-                onClick={() => toast({
-                  title: "Coming Soon",
-                  description: "Add Client feature is under development.",
-                })}
-              >
-                <Plus className="h-4 w-4" />
-                Add Client
-              </Button>
-            </div>
+            <Button 
+              className="gap-2 bg-primary hover:bg-primary/90 btn-primary"
+              onClick={() => toast({
+                title: "Coming Soon",
+                description: "Add Client feature is under development.",
+              })}
+            >
+              <Plus className="h-4 w-4" />
+              Add Client
+            </Button>
           </div>
 
           {/* Client Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {filteredClients.map((client, index) => (
               <motion.div
                 key={client.id}
@@ -190,39 +182,39 @@ const ClientDashboard = () => {
                 transition={{ duration: 0.3, delay: index * 0.1 }}
               >
                 <Card
-                  className={`bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group ${
-                    client.status === "pending" ? "opacity-60" : ""
+                  className={`bg-card border-border/50 hover:border-primary/30 hover:bg-card/80 transition-all cursor-pointer group hover-lift ${
+                    client.status === "pending" ? "opacity-50" : ""
                   }`}
                   onClick={() => handleClientClick(client.id)}
                 >
-                  <CardContent className="p-6">
+                  <CardContent className="p-5">
                     <div className="flex items-start gap-4">
-                      <div className="p-3 rounded-xl bg-primary/20 text-primary group-hover:bg-primary/30 transition-colors">
-                        <Building2 className="h-6 w-6" />
+                      <div className="p-3 rounded-xl bg-primary/10 text-primary group-hover:bg-primary/15 transition-colors">
+                        <Building2 className="h-5 w-5" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-lg font-semibold text-white truncate">
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <h3 className="text-base font-semibold text-foreground truncate">
                             {client.name}
                           </h3>
                           {client.status === "active" && (
-                            <span className="inline-flex items-center gap-1.5 text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
-                              <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+                            <span className="badge-status badge-on-track">
+                              <span className="w-1.5 h-1.5 bg-primary rounded-full" />
                               Active
                             </span>
                           )}
                           {client.status === "pending" && (
-                            <span className="inline-flex items-center text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full">
+                            <span className="badge-status badge-tasks">
                               Pending
                             </span>
                           )}
                         </div>
-                        <p className="text-sm text-slate-400 truncate mb-3">
+                        <p className="text-sm text-muted-foreground truncate mb-3">
                           {client.address}
                         </p>
-                        <div className="flex items-center justify-between text-xs text-slate-500">
-                          <span>Member #{client.memberNumber}</span>
-                          <span>Last activity: {client.lastActivity}</span>
+                        <div className="flex items-center justify-between text-xs text-muted-foreground/70">
+                          <span>#{client.memberNumber}</span>
+                          <span>{client.lastActivity}</span>
                         </div>
                       </div>
                     </div>
@@ -233,16 +225,16 @@ const ClientDashboard = () => {
           </div>
 
           {filteredClients.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-slate-400">No clients found matching your search.</p>
+            <div className="text-center py-16">
+              <p className="text-muted-foreground">No clients found matching your search.</p>
             </div>
           )}
         </motion.div>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 bg-black/30 py-4 relative z-10">
-        <div className="container mx-auto px-6 text-center text-sm text-slate-500">
+      <footer className="border-t border-border/50 bg-card/30 py-4 relative z-10">
+        <div className="container mx-auto px-6 text-center text-sm text-muted-foreground">
           © 2025 Mizan. All rights reserved.
         </div>
       </footer>
