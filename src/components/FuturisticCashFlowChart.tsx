@@ -43,15 +43,15 @@ export const FuturisticCashFlowChart = ({
       {/* Legend */}
       <div className="flex items-center gap-6 mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#00E5C9]" />
+          <div className="w-3 h-3 rounded-full cf-dot-incoming" />
           <span className="text-xs text-muted-foreground">Incoming</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#6366F1]" />
+          <div className="w-3 h-3 rounded-full cf-dot-outgoing" />
           <span className="text-xs text-muted-foreground">Outgoing</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-white rounded-full" />
+          <div className="w-2 h-2 rounded-full cf-dot-net" />
           <span className="text-xs text-muted-foreground">Net Balance</span>
         </div>
       </div>
@@ -67,14 +67,14 @@ export const FuturisticCashFlowChart = ({
             return (
               <div key={index} className="flex-1 flex gap-[2px] items-end h-full">
                 <motion.div
-                  className="flex-1 bg-gradient-to-t from-[#00E5C9] to-[#00E5C9]/60 rounded-t-sm"
+                  className="flex-1 cf-bar-incoming rounded-t-sm"
                   style={{ height: `${incomingHeight}%` }}
                   initial={{ scaleY: 0 }}
                   animate={{ scaleY: 1 }}
                   transition={{ delay: index * 0.02, duration: 0.3 }}
                 />
                 <motion.div
-                  className="flex-1 bg-gradient-to-t from-[#6366F1] to-[#6366F1]/60 rounded-t-sm"
+                  className="flex-1 cf-bar-outgoing rounded-t-sm"
                   style={{ height: `${outgoingHeight}%` }}
                   initial={{ scaleY: 0 }}
                   animate={{ scaleY: 1 }}
@@ -89,7 +89,7 @@ export const FuturisticCashFlowChart = ({
         <svg className="absolute inset-0 w-full h-full pointer-events-none">
           <polyline
             fill="none"
-            stroke="white"
+            stroke="hsl(var(--chart-net))"
             strokeWidth="2"
             points={data.netBalance
               .map((val, i) => {
@@ -108,7 +108,7 @@ export const FuturisticCashFlowChart = ({
                 cx={`${x}%`}
                 cy={`${y}%`}
                 r="3"
-                fill="white"
+                fill="hsl(var(--chart-net))"
               />
             );
           })}

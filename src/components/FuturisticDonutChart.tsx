@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { TrendingUp } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface ExpenseCategory {
   name: string;
@@ -23,6 +24,7 @@ export const FuturisticDonutChart = ({
   change,
   categories,
 }: FuturisticDonutChartProps) => {
+  const { toast } = useToast();
   // Calculate percentages for the donut segments
   const total = categories.reduce((sum, cat) => sum + cat.amount, 0);
   let currentAngle = 0;
@@ -68,9 +70,6 @@ export const FuturisticDonutChart = ({
                   strokeDashoffset={strokeDashoffset}
                   strokeLinecap="round"
                   className="transition-all duration-500"
-                  style={{ 
-                    filter: `drop-shadow(0 0 8px ${segment.color}40)`,
-                  }}
                 />
               );
             })}
@@ -96,6 +95,15 @@ export const FuturisticDonutChart = ({
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 + index * 0.05 }}
+              onClick={() =>
+                toast({
+                  title: category.name,
+                  description: `${new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(category.amount)} • ${category.change > 0 ? "↑" : "↓"} ${Math.abs(category.change)}%`,
+                })
+              }
             >
               <div 
                 className="w-1.5 h-8 rounded-full"

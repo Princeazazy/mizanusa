@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import mizanLogo from "@/assets/mizan-logo-transparent.png";
+import mizanLogo from "@/assets/mizan-logo-brand.png";
 
 const ClientSelect = () => {
   const navigate = useNavigate();

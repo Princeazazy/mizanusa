@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { exportToExcel } from "@/lib/exportToExcel";
 import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
 import { FuturisticSidebar } from "@/components/FuturisticSidebar";
 import { FuturisticHeader } from "@/components/FuturisticHeader";
-import { DashboardSheet } from "@/components/sheets/DashboardSheet";
+import { FuturisticDashboardSheet } from "@/components/sheets/FuturisticDashboardSheet";
 import { CheckingAccountSheet } from "@/components/sheets/CheckingAccountSheet";
 import { TransfersSheet } from "@/components/sheets/TransfersSheet";
 import { ESafetySheet } from "@/components/sheets/ESafetySheet";
@@ -22,7 +22,7 @@ import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
 import { AIChatBubble } from "@/components/AIChatBubble";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import mizanLogo from "@/assets/mizan-logo-transparent.png";
+import mizanLogo from "@/assets/mizan-logo-brand.png";
 import {
   octoberDeposits,
   octoberWithdrawals,
@@ -37,9 +37,24 @@ import {
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [q4Open, setQ4Open] = useState(false);
+  const q4Ref = useRef<HTMLDivElement | null>(null);
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (!q4Open) return;
+    const onDocClick = (e: MouseEvent) => {
+      const el = q4Ref.current;
+      if (!el) return;
+      if (e.target instanceof Node && !el.contains(e.target)) {
+        setQ4Open(false);
+      }
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [q4Open]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -152,16 +167,15 @@ const Index = () => {
                 </TabsTrigger>
                 
                 {/* Q4 2025 Dropdown */}
-                <div className="relative group">
+                <div className="relative" ref={q4Ref}>
                   <TabsTrigger 
                     value="q4-2025" 
                     className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
                     data-state={["october", "november", "december"].includes(activeTab) ? "active" : "inactive"}
                     onClick={(e) => {
                       e.preventDefault();
-                      if (!["october", "november", "december"].includes(activeTab)) {
-                        setActiveTab("october");
-                      }
+                      setQ4Open((v) => !v);
+                      if (!["october", "november", "december"].includes(activeTab)) setActiveTab("october");
                     }}
                   >
                     <FileSpreadsheet className="h-4 w-4" />
@@ -170,29 +184,40 @@ const Index = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </TabsTrigger>
-                  <div className="absolute top-full left-0 mt-1 glass-card opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 min-w-[160px] p-1">
-                    <button
-                      onClick={() => setActiveTab("october")}
-                      className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "october" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
-                    >
-                      <FileSpreadsheet className="h-4 w-4" />
-                      October 2025
-                    </button>
-                    <button
-                      onClick={() => setActiveTab("november")}
-                      className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "november" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
-                    >
-                      <FileSpreadsheet className="h-4 w-4" />
-                      November 2025
-                    </button>
-                    <button
-                      onClick={() => setActiveTab("december")}
-                      className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "december" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
-                    >
-                      <FileSpreadsheet className="h-4 w-4" />
-                      December 2025
-                    </button>
-                  </div>
+                  {q4Open && (
+                    <div className="absolute top-full left-0 mt-1 glass-card z-50 min-w-[160px] p-1">
+                      <button
+                        onClick={() => {
+                          setActiveTab("october");
+                          setQ4Open(false);
+                        }}
+                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "october" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
+                      >
+                        <FileSpreadsheet className="h-4 w-4" />
+                        October 2025
+                      </button>
+                      <button
+                        onClick={() => {
+                          setActiveTab("november");
+                          setQ4Open(false);
+                        }}
+                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "november" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
+                      >
+                        <FileSpreadsheet className="h-4 w-4" />
+                        November 2025
+                      </button>
+                      <button
+                        onClick={() => {
+                          setActiveTab("december");
+                          setQ4Open(false);
+                        }}
+                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "december" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
+                      >
+                        <FileSpreadsheet className="h-4 w-4" />
+                        December 2025
+                      </button>
+                    </div>
+                  )}
                 </div>
                 
                 <TabsTrigger 
@@ -270,7 +295,7 @@ const Index = () => {
                 transition={{ duration: 0.2 }}
               >
                 <TabsContent value="dashboard" className="m-0">
-                  <DashboardSheet />
+                  <FuturisticDashboardSheet />
                 </TabsContent>
                 
                 <TabsContent value="october" className="m-0">

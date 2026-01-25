@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Clock, FileText, AlertTriangle, Upload, ArrowRight } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface StatusItem {
   label: string;
@@ -27,6 +28,7 @@ export const FuturisticStatusPanel = ({
   statusItems,
   tasks,
 }: FuturisticStatusPanelProps) => {
+  const { toast } = useToast();
   const getStatusBadgeClass = (status: StatusItem["status"]) => {
     switch (status) {
       case "on-track":
@@ -85,10 +87,18 @@ export const FuturisticStatusPanel = ({
         {statusItems.map((item, index) => (
           <motion.div
             key={item.label}
-            className="flex items-center"
+            className="flex items-center cursor-pointer"
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 + index * 0.05 }}
+            onClick={() =>
+              toast({
+                title: item.label,
+                description: item.taskCount
+                  ? `${item.taskCount} ${item.statusLabel}`
+                  : item.statusLabel,
+              })
+            }
           >
             <span className="text-sm text-muted-foreground">— {item.label}</span>
             <div className="dotted-connector" />
@@ -109,6 +119,12 @@ export const FuturisticStatusPanel = ({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 + index * 0.05 }}
+            onClick={() =>
+              toast({
+                title: task.title,
+                description: task.description || `Due ${task.dueDate} (in ${task.dueDays})`,
+              })
+            }
           >
             <div className="flex items-start gap-3">
               <div className={`${getTaskColor(task.type)} mt-0.5`}>
