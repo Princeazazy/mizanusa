@@ -121,7 +121,7 @@ const Index = () => {
       <FuturisticSidebar onSignOut={handleSignOut} onTabChange={setActiveTab} />
       
       {/* Main content */}
-      <div className="ml-40">
+      <div className="ml-24">
         <motion.div 
           className="max-w-[1600px] mx-auto px-8 py-8"
           initial={{ opacity: 0, y: 20 }}
