@@ -128,7 +128,7 @@ const Auth = () => {
               transition={{ delay: 0.2 }}
             >
               <Calculator className="h-7 w-7 text-primary mx-auto mb-2" />
-              <p className="text-foreground/80 text-sm font-medium">P&L Statements</p>
+              <p className="text-primary/70 text-sm font-medium">P&L Statements</p>
             </motion.div>
             <motion.div 
               className="glass-card p-4 hover:border-primary/30 transition-colors"
@@ -137,7 +137,7 @@ const Auth = () => {
               transition={{ delay: 0.3 }}
             >
               <TrendingUp className="h-7 w-7 text-primary mx-auto mb-2" />
-              <p className="text-foreground/80 text-sm font-medium">Cash Flow</p>
+              <p className="text-primary/70 text-sm font-medium">Cash Flow</p>
             </motion.div>
             <motion.div 
               className="glass-card p-4 hover:border-primary/30 transition-colors"
@@ -146,7 +146,7 @@ const Auth = () => {
               transition={{ delay: 0.4 }}
             >
               <PieChart className="h-7 w-7 text-primary mx-auto mb-2" />
-              <p className="text-foreground/80 text-sm font-medium">Balance Sheet</p>
+              <p className="text-primary/70 text-sm font-medium">Balance Sheet</p>
             </motion.div>
             <motion.div 
               className="glass-card p-4 hover:border-primary/30 transition-colors"
@@ -155,7 +155,7 @@ const Auth = () => {
               transition={{ delay: 0.5 }}
             >
               <FileSpreadsheet className="h-7 w-7 text-primary mx-auto mb-2" />
-              <p className="text-foreground/80 text-sm font-medium">Reconciliation</p>
+              <p className="text-primary/70 text-sm font-medium">Reconciliation</p>
             </motion.div>
           </div>
         </motion.div>
@@ -179,10 +179,10 @@ const Auth = () => {
                   className="h-32 w-32 object-contain mx-auto mix-blend-lighten logo-glow-pulse"
                 />
               </div>
-              <CardTitle className="text-xl font-semibold text-foreground">
+              <CardTitle className="text-xl font-semibold text-primary">
                 Sign In
               </CardTitle>
-              <CardDescription className="text-muted-foreground">
+              <CardDescription className="text-primary/60">
                 Access your financial workbook
               </CardDescription>
             </CardHeader>
@@ -190,9 +190,9 @@ const Auth = () => {
             <CardContent className="pt-6 pb-8 px-8">
               <form onSubmit={handleLogin} className="space-y-5">
                 <div className="space-y-2">
-                  <Label htmlFor="login-email" className="text-foreground/80 text-sm">Email</Label>
+                  <Label htmlFor="login-email" className="text-primary/80 text-sm">Email</Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/60" />
                     <Input
                       id="login-email"
                       type="email"
@@ -205,9 +205,9 @@ const Auth = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="login-password" className="text-foreground/80 text-sm">Password</Label>
+                  <Label htmlFor="login-password" className="text-primary/80 text-sm">Password</Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/60" />
                     <Input
                       id="login-password"
                       type={showPassword ? "text" : "password"}
