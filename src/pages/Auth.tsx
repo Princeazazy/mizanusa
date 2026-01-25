@@ -115,7 +115,7 @@ const Auth = () => {
           <h1 className="text-3xl font-bold text-foreground mb-3 tracking-tight">
             <span className="text-primary glow-text-cyan">Mizan</span>
           </h1>
-          <p className="text-muted-foreground text-base mb-10">
+          <p className="text-primary/60 text-base mb-10">
             Professional Financial Management System
           </p>
           
@@ -169,7 +169,7 @@ const Auth = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="w-full max-w-md"
         >
-          <div className="glass-card overflow-hidden">
+          <div className="glass-card overflow-hidden border-primary/30">
             <CardHeader className="text-center pb-2 pt-8">
               {/* Mobile logo */}
               <div className="lg:hidden mb-6">
@@ -199,7 +199,7 @@ const Auth = () => {
                       placeholder="accountant@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="pl-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary/50"
+                      className="pl-10 bg-primary/5 border-primary/30 text-foreground placeholder:text-primary/40 focus:border-primary focus:ring-primary/20"
                     />
                   </div>
                 </div>
@@ -214,12 +214,12 @@ const Auth = () => {
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="pl-10 pr-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary/50"
+                      className="pl-10 pr-10 bg-primary/5 border-primary/30 text-foreground placeholder:text-primary/40 focus:border-primary focus:ring-primary/20"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/50 hover:text-primary transition-colors"
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -236,7 +236,7 @@ const Auth = () => {
                 </Button>
               </form>
               
-              <p className="text-center text-muted-foreground/60 text-xs mt-6">
+              <p className="text-center text-primary/40 text-xs mt-6">
                 Authorized personnel only
               </p>
             </CardContent>
@@ -245,7 +245,7 @@ const Auth = () => {
         
         {/* Footer */}
         <div className="absolute bottom-6 left-0 right-0 text-center">
-          <p className="text-muted-foreground/50 text-xs">
+          <p className="text-primary/30 text-xs">
             © 2025 Mizan. All rights reserved.
           </p>
         </div>
