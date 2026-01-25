@@ -82,7 +82,7 @@ const Auth = () => {
         <div className="light-beam light-beam-left" />
         <div className="light-beam light-beam-right" />
         <div className="animate-pulse flex flex-col items-center gap-4 z-10">
-          <img src={mizanLogo} alt="Mizan" className="h-48 w-48 object-contain mix-blend-lighten logo-glow-pulse" />
+          <img src={mizanLogo} alt="Mizan" className="h-96 w-96 object-contain mix-blend-lighten logo-glow-pulse" />
           <p className="text-muted-foreground text-sm">Loading...</p>
         </div>
       </div>
@@ -108,7 +108,7 @@ const Auth = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-48 w-48 object-contain mx-auto relative z-10 mix-blend-lighten logo-glow-pulse"
+              className="h-96 w-96 object-contain mx-auto relative z-10 mix-blend-lighten logo-glow-pulse"
             />
           </div>
           
