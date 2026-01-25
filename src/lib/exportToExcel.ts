@@ -37,7 +37,7 @@ const colors = {
 // Style definitions
 const styles = {
   companyHeader: {
-    font: { bold: true, sz: 18, color: { rgb: colors.white } },
+    font: { bold: true, sz: 24, color: { rgb: colors.white } },
     fill: { fgColor: { rgb: colors.navyBlue } },
     alignment: { horizontal: 'center', vertical: 'center' },
   },
@@ -179,7 +179,7 @@ const createProfessionalSheet = (
   ];
   
   // Company header with logo text (Note: xlsx-js-style doesn't support embedded images, using text representation)
-  setCell(sheet, 'A1', '⚖  MIZAN', styles.companyHeader);
+  setCell(sheet, 'A1', '⚖️  MIZAN', styles.companyHeader);
   for (let i = 1; i < colWidths.length; i++) {
     setCell(sheet, String.fromCharCode(65 + i) + '1', '', styles.companyHeader);
   }
@@ -202,8 +202,8 @@ const createProfessionalSheet = (
     });
   }
   
-  // Set row heights
-  sheet['!rows'] = [{ hpt: 30 }, { hpt: 24 }, { hpt: 20 }];
+  // Set row heights (bigger header row for logo)
+  sheet['!rows'] = [{ hpt: 45 }, { hpt: 28 }, { hpt: 22 }];
   
   return { sheet, startRow: 5 }; // Start data at row 5 (0-indexed: 4)
 };

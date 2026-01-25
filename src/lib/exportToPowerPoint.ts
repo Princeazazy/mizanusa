@@ -92,21 +92,21 @@ export const exportToPowerPoint = () => {
   // ==========================================
   const slide1 = pptx.addSlide({ masterName: 'TITLE_SLIDE' });
   
-  // Add Mizan Logo
+  // Add Mizan Logo (bigger)
   slide1.addImage({
     path: '/mizan-logo-brand.png',
-    x: 0.5,
-    y: 0.5,
-    w: 1.5,
-    h: 1.5,
+    x: 0.4,
+    y: 0.3,
+    w: 1.8,
+    h: 1.8,
   });
   
   slide1.addText('MIZAN', {
-    x: 2.2,
-    y: 0.8,
+    x: 2.4,
+    y: 0.9,
     w: 5,
-    h: 0.6,
-    fontSize: 28,
+    h: 0.7,
+    fontSize: 32,
     bold: true,
     color: colors.gold,
     fontFace: 'Arial',

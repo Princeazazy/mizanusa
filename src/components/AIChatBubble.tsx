@@ -399,11 +399,11 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
             <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary/20 to-blue-600/20 border-b border-white/10">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <img
-                    src={mizanLogo}
-                    alt="Mizan AI"
-                    className="h-10 w-10 object-contain mix-blend-lighten logo-glow-pulse"
-                  />
+              <img
+                src={mizanLogo}
+                alt="Mizan AI"
+                className="h-12 w-12 object-contain mix-blend-lighten logo-glow-pulse"
+              />
                 </div>
                 <div>
                   <h3 className="text-white font-semibold flex items-center gap-2">
