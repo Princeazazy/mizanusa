@@ -91,7 +91,7 @@ const Index = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-20 w-20 object-contain relative z-10 mix-blend-lighten logo-glow-pulse"
+              className="h-32 w-32 object-contain relative z-10 mix-blend-lighten logo-glow-pulse"
             />
           </motion.div>
           <motion.div
@@ -121,7 +121,7 @@ const Index = () => {
       <FuturisticSidebar onSignOut={handleSignOut} onTabChange={setActiveTab} />
       
       {/* Main content */}
-      <div className="ml-16">
+      <div className="ml-24">
         <motion.div 
           className="max-w-[1600px] mx-auto px-8 py-8"
           initial={{ opacity: 0, y: 20 }}
