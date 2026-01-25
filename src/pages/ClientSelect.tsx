@@ -20,7 +20,7 @@ const ClientSelect = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-10 w-auto mix-blend-lighten logo-glow-pulse"
+              className="h-14 w-auto mix-blend-lighten logo-glow-pulse"
             />
             <div>
               <h1 className="text-base font-semibold tracking-tight text-foreground">Mizan</h1>
@@ -54,7 +54,7 @@ const ClientSelect = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-40 w-40 object-contain mx-auto mix-blend-lighten logo-glow-pulse"
+              className="h-64 w-64 object-contain mx-auto mix-blend-lighten logo-glow-pulse"
             />
           </motion.div>
 
