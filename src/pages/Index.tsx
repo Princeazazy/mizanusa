@@ -22,7 +22,7 @@ import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
 import { AIChatBubble } from "@/components/AIChatBubble";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import mizanLogo from "@/assets/mizan-logo-brand.png";
+import mizanLogo from "@/assets/mizan-logo-new.png";
 import {
   octoberDeposits,
   octoberWithdrawals,

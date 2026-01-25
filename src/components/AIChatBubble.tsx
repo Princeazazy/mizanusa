@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import mizanLogo from "@/assets/mizan-logo-brand.png";
+import mizanLogo from "@/assets/mizan-logo-new.png";
 
 type Message = {
   id: string;
