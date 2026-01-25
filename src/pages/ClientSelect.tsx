@@ -20,7 +20,7 @@ const ClientSelect = () => {
             <img
               src={mizanLogo}
               alt="Mizan"
-              className="h-20 w-auto mix-blend-lighten logo-glow-pulse"
+              className="h-28 w-auto mix-blend-lighten logo-glow-pulse"
             />
             <div>
               <h1 className="text-base font-semibold tracking-tight text-foreground">Mizan</h1>
