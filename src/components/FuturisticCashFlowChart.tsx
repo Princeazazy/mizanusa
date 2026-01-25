@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface CashFlowData {
   incoming: number[];
@@ -18,6 +19,11 @@ interface FuturisticCashFlowChartProps {
   runwayChange: number;
 }
 
+const formatCurrency = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+
+const weekLabels = ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10", "W11", "W12"];
+
 export const FuturisticCashFlowChart = ({
   data,
   netCashFlow,
@@ -29,7 +35,8 @@ export const FuturisticCashFlowChart = ({
   runway,
   runwayChange,
 }: FuturisticCashFlowChartProps) => {
-  const maxVal = Math.max(...data.incoming, ...data.outgoing);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const maxVal = Math.max(...data.incoming, ...data.outgoing, ...data.netBalance) || 1;
 
   return (
     <motion.div
@@ -57,29 +64,63 @@ export const FuturisticCashFlowChart = ({
       </div>
 
       {/* Chart area */}
-      <div className="relative h-32 mb-6">
+      <div className="relative h-36 mb-6">
         {/* Bars */}
         <div className="flex items-end justify-between h-full gap-1">
           {data.incoming.map((incoming, index) => {
             const incomingHeight = (incoming / maxVal) * 100;
             const outgoingHeight = (data.outgoing[index] / maxVal) * 100;
-            
+            const isHovered = hoveredIndex === index;
+
             return (
-              <div key={index} className="flex-1 flex gap-[2px] items-end h-full">
+              <div
+                key={index}
+                className="flex-1 flex gap-[2px] items-end h-full relative cursor-pointer"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
                 <motion.div
-                  className="flex-1 cf-bar-incoming rounded-t-sm"
+                  className={`flex-1 cf-bar-incoming rounded-t-sm transition-all ${isHovered ? "opacity-100 scale-x-110" : "opacity-80"}`}
                   style={{ height: `${incomingHeight}%` }}
                   initial={{ scaleY: 0 }}
                   animate={{ scaleY: 1 }}
                   transition={{ delay: index * 0.02, duration: 0.3 }}
                 />
                 <motion.div
-                  className="flex-1 cf-bar-outgoing rounded-t-sm"
+                  className={`flex-1 cf-bar-outgoing rounded-t-sm transition-all ${isHovered ? "opacity-100 scale-x-110" : "opacity-80"}`}
                   style={{ height: `${outgoingHeight}%` }}
                   initial={{ scaleY: 0 }}
                   animate={{ scaleY: 1 }}
                   transition={{ delay: index * 0.02 + 0.1, duration: 0.3 }}
                 />
+
+                {/* Tooltip */}
+                <AnimatePresence>
+                  {isHovered && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-20 pointer-events-none"
+                    >
+                      <div className="bg-card border border-border rounded-lg shadow-lg px-3 py-2 text-xs whitespace-nowrap">
+                        <p className="font-semibold text-foreground mb-1">{weekLabels[index] || `Week ${index + 1}`}</p>
+                        <p className="text-income flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full cf-dot-incoming inline-block" />
+                          In: {formatCurrency(incoming)}
+                        </p>
+                        <p className="text-expense flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full cf-dot-outgoing inline-block" />
+                          Out: {formatCurrency(data.outgoing[index])}
+                        </p>
+                        <p className="text-muted-foreground flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full cf-dot-net inline-block" />
+                          Net: {formatCurrency(data.netBalance[index])}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}
@@ -102,13 +143,15 @@ export const FuturisticCashFlowChart = ({
           {data.netBalance.map((val, i) => {
             const x = (i / (data.netBalance.length - 1)) * 100;
             const y = 100 - (val / maxVal) * 100;
+            const isHovered = hoveredIndex === i;
             return (
               <circle
                 key={i}
                 cx={`${x}%`}
                 cy={`${y}%`}
-                r="3"
+                r={isHovered ? 5 : 3}
                 fill="hsl(var(--chart-net))"
+                className="transition-all duration-150"
               />
             );
           })}
@@ -120,29 +163,29 @@ export const FuturisticCashFlowChart = ({
         <div>
           <p className="text-xs text-muted-foreground mb-1">Net Cash Flow</p>
           <p className="text-xl font-bold text-foreground">{netCashFlow}</p>
-          <p className={`text-xs ${netCashFlowChange > 0 ? 'text-income' : 'text-expense'}`}>
-            {netCashFlowChange > 0 ? '↑' : '↓'} {Math.abs(netCashFlowChange)}%
+          <p className={`text-xs ${netCashFlowChange > 0 ? "text-income" : "text-expense"}`}>
+            {netCashFlowChange > 0 ? "↑" : "↓"} {Math.abs(netCashFlowChange)}%
           </p>
         </div>
         <div>
           <p className="text-xs text-muted-foreground mb-1">Current Cash Balance</p>
           <p className="text-xl font-bold text-foreground">{currentBalance}</p>
-          <p className={`text-xs ${currentBalanceChange > 0 ? 'text-expense' : 'text-income'}`}>
-            {currentBalanceChange > 0 ? '↓' : '↑'} {Math.abs(currentBalanceChange)}%
+          <p className={`text-xs ${currentBalanceChange > 0 ? "text-expense" : "text-income"}`}>
+            {currentBalanceChange > 0 ? "↓" : "↑"} {Math.abs(currentBalanceChange)}%
           </p>
         </div>
         <div>
           <p className="text-xs text-muted-foreground mb-1">Free Cash Flow</p>
           <p className="text-xl font-bold text-foreground">{freeCashFlow}</p>
-          <p className={`text-xs ${freeCashFlowChange > 0 ? 'text-expense' : 'text-income'}`}>
-            {freeCashFlowChange > 0 ? '↓' : '↑'} {Math.abs(freeCashFlowChange)}%
+          <p className={`text-xs ${freeCashFlowChange > 0 ? "text-expense" : "text-income"}`}>
+            {freeCashFlowChange > 0 ? "↓" : "↑"} {Math.abs(freeCashFlowChange)}%
           </p>
         </div>
         <div>
           <p className="text-xs text-muted-foreground mb-1">Runway (Months)</p>
           <p className="text-xl font-bold text-foreground">{runway}</p>
-          <p className={`text-xs ${runwayChange > 0 ? 'text-income' : 'text-expense'}`}>
-            {runwayChange > 0 ? '↑' : '↓'} {Math.abs(runwayChange)}%
+          <p className={`text-xs ${runwayChange > 0 ? "text-income" : "text-expense"}`}>
+            {runwayChange > 0 ? "↑" : "↓"} {Math.abs(runwayChange)}%
           </p>
         </div>
       </div>
