@@ -378,7 +378,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
             <img
               src={mizanLogo}
               alt="Mizan AI"
-              className="h-12 w-12 object-contain logo-glow-pulse"
+              className="h-14 w-14 object-contain logo-glow-pulse"
             />
             <span className="absolute -top-1 -right-1 w-4 h-4 bg-income rounded-full border-2 border-background animate-pulse" />
           </motion.button>
