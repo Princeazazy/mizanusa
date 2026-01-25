@@ -123,7 +123,7 @@ export const FuturisticSidebar = ({ onSignOut, onTabChange }: FuturisticSidebarP
         <img
           src={mizanLogo}
           alt="Mizan"
-          className="h-10 w-10 object-contain mix-blend-lighten logo-glow-pulse cursor-pointer"
+          className="h-14 w-14 object-contain mix-blend-lighten logo-glow-pulse cursor-pointer"
           onClick={() => navigate("/clients")}
           title="Return to Dashboard"
         />
