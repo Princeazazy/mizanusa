@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { FuturisticSidebar } from "@/components/FuturisticSidebar";
 import { FuturisticHeader } from "@/components/FuturisticHeader";
-import mizanLogo from "@/assets/mizan-logo-transparent.png";
+import mizanLogo from "@/assets/mizan-logo-brand.png";
 
 // Mock client data - in the future this would come from the database
 const clients = [

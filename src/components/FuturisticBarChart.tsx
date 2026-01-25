@@ -66,10 +66,9 @@ export const FuturisticBarChart = ({
                 style={{ transformOrigin: "bottom" }}
               >
                 <div
-                  className={`w-full rounded-t-md ${barColors[index % barColors.length]}`}
+                  className={`w-full rounded-t-md bar-glow ${barColors[index % barColors.length]}`}
                   style={{ 
                     height: `${barHeight}%`,
-                    boxShadow: "0 0 15px rgba(0, 229, 201, 0.2)",
                   }}
                 />
               </motion.div>

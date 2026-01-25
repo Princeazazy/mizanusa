@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import mizanLogo from "@/assets/mizan-logo-transparent.png";
+import mizanLogo from "@/assets/mizan-logo-brand.png";
 
 interface NavItem {
   icon: React.ElementType;

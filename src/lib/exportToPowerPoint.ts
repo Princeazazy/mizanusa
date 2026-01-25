@@ -94,7 +94,7 @@ export const exportToPowerPoint = () => {
   
   // Add Mizan Logo
   slide1.addImage({
-    path: '/mizan-logo-export.png',
+    path: '/mizan-logo-brand.png',
     x: 0.5,
     y: 0.5,
     w: 1.5,
@@ -1279,9 +1279,9 @@ export const exportToPowerPoint = () => {
   // ==========================================
   const slide12 = pptx.addSlide({ masterName: 'TITLE_SLIDE' });
   
-  // Add Mizan Logo to Thank You slide - using the correct export logo
+  // Add Mizan Logo to Thank You slide
   slide12.addImage({
-    path: '/mizan-logo-export.png',
+    path: '/mizan-logo-brand.png',
     x: 4.0,
     y: 0.5,
     w: 2.0,
