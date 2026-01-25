@@ -373,14 +373,14 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-br from-primary to-blue-600 shadow-2xl flex items-center justify-center text-white hover:shadow-primary/30 transition-shadow"
+            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-card/90 backdrop-blur-sm border border-primary/50 shadow-2xl flex items-center justify-center hover:shadow-primary/50 transition-shadow"
           >
             <img
               src={mizanLogo}
               alt="Mizan AI"
-              className="h-14 w-14 object-contain mix-blend-lighten"
+              className="h-12 w-12 object-contain logo-glow-pulse"
             />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-income rounded-full border-2 border-background animate-pulse" />
           </motion.button>
         )}
       </AnimatePresence>
