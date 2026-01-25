@@ -113,17 +113,17 @@ export const FuturisticSidebar = ({ onSignOut, onTabChange }: FuturisticSidebarP
   };
 
   return (
-    <div className="sidebar-futuristic w-16 min-h-screen flex flex-col items-center py-4 fixed left-0 top-0 z-40">
+    <div className="sidebar-futuristic w-24 min-h-screen flex flex-col items-center py-6 fixed left-0 top-0 z-40">
       {/* Logo */}
       <motion.div 
-        className="mb-6"
+        className="mb-8"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
       >
         <img
           src={mizanLogo}
           alt="Mizan"
-          className="h-14 w-14 object-contain mix-blend-lighten logo-glow-pulse cursor-pointer"
+          className="h-20 w-20 object-contain mix-blend-lighten logo-glow-pulse cursor-pointer"
           onClick={() => navigate("/clients")}
           title="Return to Dashboard"
         />

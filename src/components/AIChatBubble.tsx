@@ -402,7 +402,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
               <img
                 src={mizanLogo}
                 alt="Mizan AI"
-                className="h-12 w-12 object-contain mix-blend-lighten logo-glow-pulse"
+                className="h-16 w-16 object-contain mix-blend-lighten logo-glow-pulse"
               />
                 </div>
                 <div>
