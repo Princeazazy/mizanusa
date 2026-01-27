@@ -144,12 +144,12 @@ serve(async (req) => {
 
   try {
     const { messages, clientId, executeActions } = await req.json();
-    const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     
-    if (!OPENAI_API_KEY) {
-      throw new Error("OPENAI_API_KEY is not configured");
+    if (!LOVABLE_API_KEY) {
+      throw new Error("LOVABLE_API_KEY is not configured");
     }
 
     // If this is an action execution request, handle it
@@ -234,14 +234,14 @@ serve(async (req) => {
     console.log(`Processing chat request for client: ${clientId}`);
     console.log(`Number of messages: ${messages?.length || 0}`);
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o",
+        model: "google/gemini-3-flash-preview",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           ...messages,
@@ -259,20 +259,14 @@ serve(async (req) => {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      if (response.status === 401) {
-        return new Response(JSON.stringify({ error: "Invalid OpenAI API key. Please check your configuration." }), {
-          status: 401,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402 || response.status === 403) {
-        return new Response(JSON.stringify({ error: "OpenAI API access issue. Please check your billing or API key permissions." }), {
-          status: response.status,
+      if (response.status === 402) {
+        return new Response(JSON.stringify({ error: "AI usage limit reached. Please add credits to continue." }), {
+          status: 402,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
       const errorText = await response.text();
-      console.error("OpenAI API error:", response.status, errorText);
+      console.error("AI gateway error:", response.status, errorText);
       return new Response(JSON.stringify({ error: "AI service error. Please try again." }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
