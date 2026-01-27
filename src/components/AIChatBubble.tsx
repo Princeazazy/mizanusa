@@ -114,6 +114,33 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
 
       if (!resp.ok) {
         const errorData = await resp.json().catch(() => ({}));
+        
+        // Handle specific error codes with user-friendly messages
+        if (resp.status === 402) {
+          // Add a special message to the chat instead of throwing
+          const limitMessage: Message = {
+            id: crypto.randomUUID(),
+            role: "assistant",
+            content: "⚠️ **AI Usage Limit Reached**\n\nI'm temporarily unable to respond because the AI usage limit has been reached. Please contact your administrator to add more credits or try again later.\n\nIn the meantime, I'm still here to help with any questions about bookkeeping concepts!",
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, limitMessage]);
+          setIsLoading(false);
+          return;
+        }
+        
+        if (resp.status === 429) {
+          const rateLimitMessage: Message = {
+            id: crypto.randomUUID(),
+            role: "assistant",
+            content: "⏳ **Too Many Requests**\n\nPlease wait a moment before sending another message. I'm processing requests as quickly as I can!",
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, rateLimitMessage]);
+          setIsLoading(false);
+          return;
+        }
+        
         throw new Error(errorData.error || `Request failed with status ${resp.status}`);
       }
 
