@@ -38,11 +38,11 @@ Deno.serve(async (req) => {
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       const passwordHash = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
 
-      // Look up credentials
+      // Look up credentials (case-insensitive username)
       const { data: credentials, error: credError } = await supabase
         .from("client_credentials")
         .select("*")
-        .eq("username", username)
+        .ilike("username", username)
         .eq("is_active", true)
         .single();
 
