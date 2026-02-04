@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Sparkles, LogOut, Eye } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Sparkles, LogOut, Eye, Printer } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { exportToExcel } from "@/lib/exportToExcel";
 import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
@@ -36,9 +36,83 @@ const ClientPortal = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [q4Open, setQ4Open] = useState(false);
   const q4Ref = useRef<HTMLDivElement | null>(null);
+  const printRef = useRef<HTMLDivElement | null>(null);
   const { session, loading, logout, clientName } = useClientAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const getTabLabel = (tab: string) => {
+    const labels: Record<string, string> = {
+      dashboard: "Dashboard",
+      october: "October 2025 - Checking Account",
+      november: "November 2025 - Checking Account",
+      december: "December 2025 - Checking Account",
+      transfers: "Transfers",
+      esafety: "PA eSafety",
+      titlerevenue: "Title Revenue",
+      vitu: "Vitu Expenses",
+      coa: "Chart of Accounts",
+      reconciliation: "Reconciliation",
+      profitloss: "Profit & Loss",
+      balancesheet: "Balance Sheet",
+      cashflow: "Cash Flow Statement",
+    };
+    return labels[tab] || tab;
+  };
+
+  const handlePrint = () => {
+    const printContent = printRef.current;
+    if (!printContent) return;
+
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      toast({
+        title: "Print blocked",
+        description: "Please allow popups to print.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>${getTabLabel(activeTab)} - CVS Auto Sales Inc.</title>
+          <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { font-family: system-ui, -apple-system, sans-serif; padding: 20px; color: #1a1a1a; }
+            .header { text-align: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid #0891b2; }
+            .header h1 { font-size: 24px; color: #0891b2; margin-bottom: 4px; }
+            .header p { font-size: 14px; color: #666; }
+            table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+            th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; font-size: 12px; }
+            th { background: #f5f5f5; font-weight: 600; }
+            tr:nth-child(even) { background: #fafafa; }
+            .card { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 12px 0; }
+            h2, h3, h4 { margin: 16px 0 8px; }
+            @media print {
+              body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>${getTabLabel(activeTab)}</h1>
+            <p>CVS Auto Sales Inc. | 715 Huntingdon Pike, Rockledge, PA 19046</p>
+            <p style="margin-top: 4px; font-size: 12px; color: #888;">Printed on ${new Date().toLocaleDateString()}</p>
+          </div>
+          ${printContent.innerHTML}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 250);
+  };
 
   useEffect(() => {
     if (!q4Open) return;
@@ -155,6 +229,14 @@ const ClientPortal = () => {
 
           {/* Action buttons - only exports */}
           <div className="flex items-center gap-3 mb-8">
+            <Button 
+              variant="outline" 
+              className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
+              onClick={handlePrint}
+            >
+              <Printer className="h-4 w-4" />
+              Print {getTabLabel(activeTab)}
+            </Button>
             <Button 
               variant="outline" 
               className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
@@ -312,81 +394,83 @@ const ClientPortal = () => {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <TabsContent value="dashboard" className="m-0">
-                  <FuturisticDashboardSheet viewOnly={true} />
-                </TabsContent>
-                
-                <TabsContent value="october" className="m-0">
-                  <CheckingAccountSheet
-                    month="October"
-                    year="2025"
-                    deposits={octoberDeposits}
-                    withdrawals={octoberWithdrawals}
-                    beginningBalance={octoberSummary.beginningBalance}
-                    endingBalance={octoberSummary.endingBalance}
-                    statementBalance={octoberSummary.statementEndingBalance}
-                  />
-                </TabsContent>
-                
-                <TabsContent value="november" className="m-0">
-                  <CheckingAccountSheet
-                    month="November"
-                    year="2025"
-                    deposits={novemberDeposits}
-                    withdrawals={novemberWithdrawals}
-                    beginningBalance={novemberSummary.beginningBalance}
-                    endingBalance={novemberSummary.endingBalance}
-                    statementBalance={novemberSummary.statementEndingBalance}
-                  />
-                </TabsContent>
-                
-                <TabsContent value="december" className="m-0">
-                  <CheckingAccountSheet
-                    month="December"
-                    year="2025"
-                    deposits={decemberDeposits}
-                    withdrawals={decemberWithdrawals}
-                    beginningBalance={decemberSummary.beginningBalance}
-                    endingBalance={decemberSummary.endingBalance}
-                    statementBalance={decemberSummary.statementEndingBalance}
-                  />
-                </TabsContent>
-                
-                <TabsContent value="transfers" className="m-0">
-                  <TransfersSheet />
-                </TabsContent>
-                
-                <TabsContent value="esafety" className="m-0">
-                  <ESafetySheet />
-                </TabsContent>
-                
-                <TabsContent value="titlerevenue" className="m-0">
-                  <TitleRevenueSheet />
-                </TabsContent>
-                
-                <TabsContent value="vitu" className="m-0">
-                  <VituSheet />
-                </TabsContent>
-                
-                <TabsContent value="coa" className="m-0">
-                  <ChartOfAccountsSheet />
-                </TabsContent>
-                
-                <TabsContent value="reconciliation" className="m-0">
-                  <ReconciliationSheet />
-                </TabsContent>
-                
-                <TabsContent value="profitloss" className="m-0">
-                  <ProfitLossSheet />
-                </TabsContent>
-                
-                <TabsContent value="balancesheet" className="m-0">
-                  <BalanceSheetSheet />
-                </TabsContent>
-                
-                <TabsContent value="cashflow" className="m-0">
-                  <CashFlowSheet />
-                </TabsContent>
+                <div ref={printRef}>
+                  <TabsContent value="dashboard" className="m-0">
+                    <FuturisticDashboardSheet viewOnly={true} />
+                  </TabsContent>
+                  
+                  <TabsContent value="october" className="m-0">
+                    <CheckingAccountSheet
+                      month="October"
+                      year="2025"
+                      deposits={octoberDeposits}
+                      withdrawals={octoberWithdrawals}
+                      beginningBalance={octoberSummary.beginningBalance}
+                      endingBalance={octoberSummary.endingBalance}
+                      statementBalance={octoberSummary.statementEndingBalance}
+                    />
+                  </TabsContent>
+                  
+                  <TabsContent value="november" className="m-0">
+                    <CheckingAccountSheet
+                      month="November"
+                      year="2025"
+                      deposits={novemberDeposits}
+                      withdrawals={novemberWithdrawals}
+                      beginningBalance={novemberSummary.beginningBalance}
+                      endingBalance={novemberSummary.endingBalance}
+                      statementBalance={novemberSummary.statementEndingBalance}
+                    />
+                  </TabsContent>
+                  
+                  <TabsContent value="december" className="m-0">
+                    <CheckingAccountSheet
+                      month="December"
+                      year="2025"
+                      deposits={decemberDeposits}
+                      withdrawals={decemberWithdrawals}
+                      beginningBalance={decemberSummary.beginningBalance}
+                      endingBalance={decemberSummary.endingBalance}
+                      statementBalance={decemberSummary.statementEndingBalance}
+                    />
+                  </TabsContent>
+                  
+                  <TabsContent value="transfers" className="m-0">
+                    <TransfersSheet />
+                  </TabsContent>
+                  
+                  <TabsContent value="esafety" className="m-0">
+                    <ESafetySheet />
+                  </TabsContent>
+                  
+                  <TabsContent value="titlerevenue" className="m-0">
+                    <TitleRevenueSheet />
+                  </TabsContent>
+                  
+                  <TabsContent value="vitu" className="m-0">
+                    <VituSheet />
+                  </TabsContent>
+                  
+                  <TabsContent value="coa" className="m-0">
+                    <ChartOfAccountsSheet />
+                  </TabsContent>
+                  
+                  <TabsContent value="reconciliation" className="m-0">
+                    <ReconciliationSheet />
+                  </TabsContent>
+                  
+                  <TabsContent value="profitloss" className="m-0">
+                    <ProfitLossSheet />
+                  </TabsContent>
+                  
+                  <TabsContent value="balancesheet" className="m-0">
+                    <BalanceSheetSheet />
+                  </TabsContent>
+                  
+                  <TabsContent value="cashflow" className="m-0">
+                    <CashFlowSheet />
+                  </TabsContent>
+                </div>
               </motion.div>
             </AnimatePresence>
           </Tabs>
