@@ -313,7 +313,7 @@ const ClientPortal = () => {
                 transition={{ duration: 0.2 }}
               >
                 <TabsContent value="dashboard" className="m-0">
-                  <FuturisticDashboardSheet />
+                  <FuturisticDashboardSheet viewOnly={true} />
                 </TabsContent>
                 
                 <TabsContent value="october" className="m-0">
