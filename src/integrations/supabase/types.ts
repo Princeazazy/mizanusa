@@ -49,6 +49,71 @@ export type Database = {
           },
         ]
       }
+      client_credentials: {
+        Row: {
+          client_id: string
+          client_name: string
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          password_hash: string
+          updated_at: string | null
+          username: string
+        }
+        Insert: {
+          client_id: string
+          client_name: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          password_hash: string
+          updated_at?: string | null
+          username: string
+        }
+        Update: {
+          client_id?: string
+          client_name?: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          password_hash?: string
+          updated_at?: string | null
+          username?: string
+        }
+        Relationships: []
+      }
+      client_sessions: {
+        Row: {
+          client_id: string
+          created_at: string | null
+          expires_at: string
+          id: string
+          session_token: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string | null
+          expires_at: string
+          id?: string
+          session_token: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string | null
+          expires_at?: string
+          id?: string
+          session_token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_sessions_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "client_credentials"
+            referencedColumns: ["client_id"]
+          },
+        ]
+      }
       conversations: {
         Row: {
           client_id: string
