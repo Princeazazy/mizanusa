@@ -50,9 +50,9 @@ export const FuturisticDonutChart = ({
     >
       <h3 className="section-header">{title}</h3>
 
-      <div className="flex items-start gap-6">
+      <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6">
         {/* Donut Chart */}
-        <div className="relative w-72 h-72 donut-glow flex-shrink-0">
+        <div className="relative w-52 h-52 lg:w-56 lg:h-56 xl:w-48 xl:h-48 donut-glow flex-shrink-0">
           <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
             {segments.map((segment, index) => {
               const radius = 40;

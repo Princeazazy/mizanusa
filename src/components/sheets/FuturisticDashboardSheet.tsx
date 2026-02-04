@@ -38,7 +38,11 @@ const bucketWeekly = (txns: Txn[], monthOffset: number) => {
   return buckets;
 };
 
-export const FuturisticDashboardSheet = () => {
+interface FuturisticDashboardSheetProps {
+  viewOnly?: boolean;
+}
+
+export const FuturisticDashboardSheet = ({ viewOnly = false }: FuturisticDashboardSheetProps) => {
   const { toast } = useToast();
 
   const incoming = [
@@ -136,9 +140,28 @@ export const FuturisticDashboardSheet = () => {
           statusItems={[
             { label: "My Taxes", status: "on-track", statusLabel: "On Track" },
             { label: "Acct. Connections", status: "optimal", statusLabel: "Optimal" },
-            { label: "Bookkeeping", status: "tasks", statusLabel: "Assigned Tasks", taskCount: 4 },
+            { label: "Bookkeeping", status: "tasks", statusLabel: "Assigned Tasks", taskCount: viewOnly ? 2 : 4 },
           ]}
-          tasks={[
+          tasks={viewOnly ? [
+            // View-only mode: only show non-action tasks (no upload/documents)
+            {
+              id: "t1",
+              title: "Transaction in Need of Review",
+              count: 4,
+              dueDate: "Apr 2",
+              dueDays: "2d",
+              type: "review",
+              description: "Review uncategorized / unusual bank activity.",
+            },
+            {
+              id: "t3",
+              title: "Taxes Ready for Signature",
+              dueDate: "Apr 15",
+              dueDays: "1w 3d",
+              type: "signature",
+              description: "Sign off before we can submit.",
+            },
+          ] : [
             {
               id: "t1",
               title: "Transaction in Need of Review",
