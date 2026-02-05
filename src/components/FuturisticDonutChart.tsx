@@ -123,13 +123,13 @@ export const FuturisticDonutChart = ({
         </div>
 
         {/* Categories list */}
-        <div className="flex-1 min-w-0 space-y-3 overflow-hidden">
+        <div className="flex-1 min-w-0 space-y-2">
           {categories.map((category, index) => {
             const isHovered = hoveredIndex === index;
             return (
               <motion.div
                 key={category.name}
-                className={`flex items-center gap-3 py-2 rounded-lg px-2 -mx-2 transition-colors cursor-pointer ${
+                className={`flex items-center gap-2 py-1.5 rounded-lg px-2 transition-colors cursor-pointer ${
                   isHovered ? "bg-accent/50" : "hover:bg-accent/30"
                 }`}
                 initial={{ opacity: 0, x: 10 }}
@@ -139,22 +139,22 @@ export const FuturisticDonutChart = ({
                 onMouseLeave={() => setHoveredIndex(null)}
               >
                 <div
-                  className="w-1.5 h-8 rounded-full transition-all"
+                  className="w-1 h-6 rounded-full flex-shrink-0 transition-all"
                   style={{
                     backgroundColor: category.color,
                     boxShadow: isHovered ? `0 0 10px ${category.color}` : undefined,
                   }}
                 />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-foreground truncate">
+                <div className="flex-1 min-w-0 flex items-center justify-between gap-2">
+                  <p className="text-xs text-foreground truncate">
                     {index + 1}. {category.name}
                   </p>
-                </div>
-                <div className="text-right flex-shrink-0 ml-2">
-                  <p className="text-sm font-medium text-foreground whitespace-nowrap">${category.amount.toLocaleString()}</p>
-                  <p className={`text-xs whitespace-nowrap ${category.change > 0 ? "text-expense" : "text-income"}`}>
-                    {category.change > 0 ? "↑" : "↓"} {Math.abs(category.change)}%
-                  </p>
+                  <div className="text-right flex-shrink-0">
+                    <p className="text-xs font-medium text-foreground">${category.amount.toLocaleString()}</p>
+                    <p className={`text-[10px] ${category.change > 0 ? "text-expense" : "text-income"}`}>
+                      {category.change > 0 ? "↑" : "↓"}{Math.abs(category.change)}%
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             );
