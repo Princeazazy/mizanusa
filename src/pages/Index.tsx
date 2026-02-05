@@ -385,7 +385,7 @@ const Index = () => {
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span className="badge-status badge-on-track">
                   <CheckSquare className="h-3 w-3" />
-                  CPA Review Ready
+                  Accountant Ready
                 </span>
                 <span className="badge-status bg-accent text-muted-foreground border-border">
                   Q4 2025

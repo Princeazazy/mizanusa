@@ -47,7 +47,7 @@ export const ReconciliationSheet = () => {
       <div>
         <h2 className="text-2xl font-bold text-foreground">Full Reconciliation & Deposit Verification</h2>
         <p className="text-muted-foreground">
-          Bank reconciliation summary and deposit verification for CPA review
+          Bank reconciliation summary and deposit verification for accountant review
         </p>
       </div>
 
@@ -357,10 +357,10 @@ export const ReconciliationSheet = () => {
         </CardContent>
       </Card>
 
-      {/* CPA Notes */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-semibold text-blue-800 mb-2">CPA Review Notes</h4>
-        <ul className="text-sm text-blue-700 space-y-1">
+      {/* Accountant Notes */}
+      <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+        <h4 className="font-semibold text-primary mb-2">Accountant Review Notes</h4>
+        <ul className="text-sm text-muted-foreground space-y-1">
           <li>• All bank deposits have been verified against TD Bank statements</li>
           <li>• Inter-account transfers are tracked separately and excluded from income/expense totals</li>
           <li>• Chart of Accounts follows auto dealership industry standards</li>
