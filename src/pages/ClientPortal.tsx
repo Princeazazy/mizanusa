@@ -274,8 +274,7 @@ const ClientPortal = () => {
                     data-state={["october", "november", "december"].includes(activeTab) ? "active" : "inactive"}
                     onClick={(e) => {
                       e.preventDefault();
-                      setQ4Open((v) => !v);
-                      if (!["october", "november", "december"].includes(activeTab)) setActiveTab("october");
+                      setQ4Open((prev) => !prev);
                     }}
                   >
                     <FileSpreadsheet className="h-4 w-4" />
