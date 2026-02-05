@@ -145,14 +145,14 @@ export const FuturisticDonutChart = ({
                     boxShadow: isHovered ? `0 0 10px ${category.color}` : undefined,
                   }}
                 />
-                <div className="flex-1">
-                  <p className="text-sm text-foreground">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-foreground truncate">
                     {index + 1}. {category.name}
                   </p>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-medium text-foreground">${category.amount.toLocaleString()}</p>
-                  <p className={`text-xs ${category.change > 0 ? "text-expense" : "text-income"}`}>
+                <div className="text-right flex-shrink-0 ml-2">
+                  <p className="text-sm font-medium text-foreground whitespace-nowrap">${category.amount.toLocaleString()}</p>
+                  <p className={`text-xs whitespace-nowrap ${category.change > 0 ? "text-expense" : "text-income"}`}>
                     {category.change > 0 ? "↑" : "↓"} {Math.abs(category.change)}%
                   </p>
                 </div>
