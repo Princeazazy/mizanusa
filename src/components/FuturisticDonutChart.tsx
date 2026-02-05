@@ -43,14 +43,14 @@ export const FuturisticDonutChart = ({
 
   return (
     <motion.div
-      className="glass-card p-6"
+      className="glass-card p-6 overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
       <h3 className="section-header">{title}</h3>
 
-      <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6">
+      <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 overflow-hidden">
         {/* Donut Chart */}
         <div className="relative w-52 h-52 lg:w-56 lg:h-56 xl:w-48 xl:h-48 donut-glow flex-shrink-0">
           <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
@@ -123,7 +123,7 @@ export const FuturisticDonutChart = ({
         </div>
 
         {/* Categories list */}
-        <div className="flex-1 space-y-3">
+        <div className="flex-1 min-w-0 space-y-3 overflow-hidden">
           {categories.map((category, index) => {
             const isHovered = hoveredIndex === index;
             return (
