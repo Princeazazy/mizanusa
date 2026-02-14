@@ -1,6 +1,7 @@
 import { Shield, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import mizanLogo from "@/assets/mizan-logo-new.png";
+import cvsLogo from "@/assets/cvs-logo.png";
 
 export const CompanyHeader = () => {
   return (
@@ -51,12 +52,12 @@ export const CompanyHeader = () => {
             transition={{ duration: 0.5 }}
           >
             <motion.img
-              src={mizanLogo}
-              alt="Mizan"
-              className="h-20 w-20 object-contain mix-blend-lighten logo-glow-pulse"
+              src={cvsLogo}
+              alt="CVS Auto Sales Inc."
+              className="h-20 w-auto object-contain"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.05, rotate: 2 }}
+              whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             />
             <div>
