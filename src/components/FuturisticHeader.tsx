@@ -9,6 +9,7 @@ interface FuturisticHeaderProps {
   title: string;
   subtitle?: string;
   clientName?: string;
+  clientLogo?: string;
   showDatePicker?: boolean;
   onDateRangeChange?: (range: string) => void;
 }
@@ -31,6 +32,7 @@ export const FuturisticHeader = ({
   title, 
   subtitle, 
   clientName,
+  clientLogo,
   showDatePicker = true,
   onDateRangeChange 
 }: FuturisticHeaderProps) => {
@@ -91,29 +93,34 @@ export const FuturisticHeader = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <div>
-        <h1 className="text-3xl font-bold text-foreground tracking-tight">
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="text-muted-foreground mt-1">
-            {subtitle}
-            {clientName && (
-              <>
-                {" "}
-                <span 
-                  className="text-primary font-medium cursor-pointer hover:underline"
-                  onClick={() => toast({
-                    title: clientName,
-                    description: "View detailed client information and settings.",
-                  })}
-                >
-                  {clientName}
-                </span>
-              </>
-            )}
-          </p>
+      <div className="flex items-center gap-4">
+        {clientLogo && (
+          <img src={clientLogo} alt={clientName || "Client"} className="h-14 w-auto object-contain" />
         )}
+        <div>
+          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+            {title}
+          </h1>
+          {subtitle && (
+            <p className="text-muted-foreground mt-1">
+              {subtitle}
+              {clientName && (
+                <>
+                  {" "}
+                  <span 
+                    className="text-primary font-medium cursor-pointer hover:underline"
+                    onClick={() => toast({
+                      title: clientName,
+                      description: "View detailed client information and settings.",
+                    })}
+                  >
+                    {clientName}
+                  </span>
+                </>
+              )}
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="flex items-center gap-3">
