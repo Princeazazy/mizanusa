@@ -22,6 +22,14 @@ const clients = [
     lastActivity: "2 hours ago",
   },
   {
+    id: "defiore",
+    name: "Defiore Carpentry LLC",
+    address: "1162 S 12th St, Philadelphia, PA 19147",
+    memberNumber: "9046528999",
+    status: "active" as const,
+    lastActivity: "Just added",
+  },
+  {
     id: "coming-soon-1",
     name: "Coming Soon",
     address: "New client onboarding",
@@ -69,6 +77,8 @@ const ClientDashboard = () => {
   const handleClientClick = (clientId: string) => {
     if (clientId === "cvs") {
       navigate("/cvs");
+    } else if (clientId === "defiore") {
+      navigate("/defiore");
     } else {
       toast({
         title: "Coming Soon",
