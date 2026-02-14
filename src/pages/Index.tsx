@@ -8,6 +8,7 @@ import { exportToExcel } from "@/lib/exportToExcel";
 import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
 import { FuturisticSidebar } from "@/components/FuturisticSidebar";
 import { FuturisticHeader } from "@/components/FuturisticHeader";
+import cvsLogo from "@/assets/cvs-logo.png";
 import { FuturisticDashboardSheet } from "@/components/sheets/FuturisticDashboardSheet";
 import { CheckingAccountSheet } from "@/components/sheets/CheckingAccountSheet";
 import { TransfersSheet } from "@/components/sheets/TransfersSheet";
@@ -133,6 +134,7 @@ const Index = () => {
             title="Hi there!"
             subtitle="Here's Your Financial Workbook for"
             clientName="CVS Auto Sales Inc."
+            clientLogo={cvsLogo}
           />
 
           {/* Action buttons */}
