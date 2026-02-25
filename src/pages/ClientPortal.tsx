@@ -112,6 +112,9 @@ const ClientPortal = () => {
             .header { text-align: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid #0891b2; }
             .header h1 { font-size: 24px; color: #0891b2; margin-bottom: 4px; }
             .header p { font-size: 14px; color: #666; }
+            .header-logos { display: flex; justify-content: center; align-items: center; gap: 24px; margin-bottom: 16px; }
+            .header-logos img { height: 60px; object-fit: contain; }
+            .header-logos .divider { font-size: 20px; color: #ccc; }
             table { width: 100%; border-collapse: collapse; margin: 16px 0; }
             th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; font-size: 12px; }
             th { background: #f5f5f5; font-weight: 600; }
@@ -125,6 +128,11 @@ const ClientPortal = () => {
         </head>
         <body>
           <div class="header">
+            <div class="header-logos">
+              <img src="/mizan-logo-new.png" alt="Mizan" />
+              <span class="divider">×</span>
+              <img src="${isDefiore ? '/defiore-logo.png' : '/cvs-logo.png'}" alt="${clientName}" />
+            </div>
             <h1>${getTabLabel(activeTab)}</h1>
             <p>${clientName}</p>
             <p style="margin-top: 4px; font-size: 12px; color: #888;">Printed on ${new Date().toLocaleDateString()}</p>
@@ -267,14 +275,14 @@ const ClientPortal = () => {
             <Button 
               variant="outline" 
               className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
-              onClick={exportToPowerPoint}
+              onClick={() => exportToPowerPoint({ clientName: clientName || 'Client', clientLogoPath: isDefiore ? '/defiore-logo.png' : '/cvs-logo.png', fileName: `${clientName}_Financial_Report.pptx` })}
             >
               <Presentation className="h-4 w-4" />
               Export to PowerPoint
             </Button>
             <Button 
               className="gap-2 btn-glow"
-              onClick={exportToExcel}
+              onClick={() => exportToExcel({ clientName: clientName || 'Client', fileName: `${clientName}_Bookkeeping.xlsx` })}
             >
               <Download className="h-4 w-4" />
               Export to Excel

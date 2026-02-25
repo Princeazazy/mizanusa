@@ -142,14 +142,14 @@ const Index = () => {
             <Button 
               variant="outline" 
               className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
-              onClick={exportToPowerPoint}
+              onClick={() => exportToPowerPoint({ clientName: 'CVS Auto Sales Inc.', clientLogoPath: '/cvs-logo.png', fileName: 'CVS_Auto_Sales_Q4_2025_Financial_Report.pptx' })}
             >
               <Presentation className="h-4 w-4" />
               Export to PowerPoint
             </Button>
             <Button 
               className="gap-2 btn-glow"
-              onClick={exportToExcel}
+              onClick={() => exportToExcel({ clientName: 'CVS Auto Sales Inc.', fileName: 'CVS_Auto_Sales_Q4_2025_Bookkeeping.xlsx' })}
             >
               <Download className="h-4 w-4" />
               Export to Excel
