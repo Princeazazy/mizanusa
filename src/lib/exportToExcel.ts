@@ -163,7 +163,8 @@ const setCell = (sheet: XLSX.WorkSheet, cell: string, value: string | number, st
 const createProfessionalSheet = (
   title: string,
   subtitle: string,
-  colWidths: number[]
+  colWidths: number[],
+  clientName?: string
 ): { sheet: XLSX.WorkSheet; startRow: number } => {
   const sheet: XLSX.WorkSheet = {};
   
@@ -178,8 +179,9 @@ const createProfessionalSheet = (
     { s: { r: 2, c: 0 }, e: { r: 2, c: colWidths.length - 1 } },
   ];
   
-  // Company header with logo text (Note: xlsx-js-style doesn't support embedded images, using text representation)
-  setCell(sheet, 'A1', '⚖️  MIZAN', styles.companyHeader);
+  // Company header with both Mizan and client branding
+  const headerText = clientName ? `⚖️  MIZAN  ×  ${clientName.toUpperCase()}` : '⚖️  MIZAN';
+  setCell(sheet, 'A1', headerText, styles.companyHeader);
   for (let i = 1; i < colWidths.length; i++) {
     setCell(sheet, String.fromCharCode(65 + i) + '1', '', styles.companyHeader);
   }
@@ -261,16 +263,25 @@ const addTotalRow = (
   });
 };
 
-export const exportToExcel = () => {
+interface ExcelExportOptions {
+  clientName?: string;
+  fileName?: string;
+}
+
+export const exportToExcel = (options?: ExcelExportOptions) => {
+  const clientName = options?.clientName || 'CVS Auto Sales Inc.';
+  const fileName = options?.fileName || 'CVS_Auto_Sales_Q4_2025_Bookkeeping.xlsx';
+
   const workbook = XLSX.utils.book_new();
 
   // ==========================================
   // Sheet 1: Dashboard Summary
   // ==========================================
   const { sheet: dashSheet, startRow: dashStart } = createProfessionalSheet(
-    'CVS Auto Sales Inc. - Financial Dashboard',
+    `${clientName} - Financial Dashboard`,
     '715 Huntingdon Pike, Rockledge, PA 19046 | Q4 2025',
-    [25, 20, 20, 20, 20]
+    [25, 20, 20, 20, 20],
+    clientName
   );
   
   // Executive Summary section
@@ -345,8 +356,9 @@ export const exportToExcel = () => {
   // ==========================================
   const { sheet: octSheet, startRow: octStart } = createProfessionalSheet(
     'Checking Account - October 2025',
-    'CVS Auto Sales Inc.',
-    [12, 35, 12, 10, 22, 15]
+    clientName,
+    [12, 35, 12, 10, 22, 15],
+    clientName
   );
   
   row = octStart;
@@ -411,8 +423,9 @@ export const exportToExcel = () => {
   // ==========================================
   const { sheet: novSheet, startRow: novStart } = createProfessionalSheet(
     'Checking Account - November 2025',
-    'CVS Auto Sales Inc.',
-    [12, 35, 12, 10, 22, 15]
+    clientName,
+    [12, 35, 12, 10, 22, 15],
+    clientName
   );
   
   row = novStart;
@@ -477,8 +490,9 @@ export const exportToExcel = () => {
   // ==========================================
   const { sheet: decSheet, startRow: decStart } = createProfessionalSheet(
     'Checking Account - December 2025',
-    'CVS Auto Sales Inc.',
-    [12, 35, 12, 10, 22, 15]
+    clientName,
+    [12, 35, 12, 10, 22, 15],
+    clientName
   );
   
   row = decStart;
@@ -544,7 +558,8 @@ export const exportToExcel = () => {
   const { sheet: transSheet, startRow: transStart } = createProfessionalSheet(
     'Inter-Account Transfers',
     'Q4 2025',
-    [12, 18, 18, 15, 25]
+    [12, 18, 18, 15, 25],
+    clientName
   );
   
   row = transStart;
@@ -567,7 +582,8 @@ export const exportToExcel = () => {
   const { sheet: esafetySheet, startRow: esafetyStart } = createProfessionalSheet(
     'PA eSafety - Salvage Inspections',
     'October - December 2025',
-    [12, 15, 12, 32, 22, 12]
+    [12, 15, 12, 32, 22, 12],
+    clientName
   );
   
   row = esafetyStart;
@@ -620,7 +636,8 @@ export const exportToExcel = () => {
   const { sheet: vituSheet, startRow: vituStart } = createProfessionalSheet(
     'Vitu - Title Services',
     'October - December 2025',
-    [28, 15, 15, 15]
+    [28, 15, 15, 15],
+    clientName
   );
   
   row = vituStart;
@@ -668,8 +685,9 @@ export const exportToExcel = () => {
   // ==========================================
   const { sheet: coaSheet, startRow: coaStart } = createProfessionalSheet(
     'Chart of Accounts',
-    'CVS Auto Sales Inc.',
-    [12, 32, 15, 45]
+    clientName,
+    [12, 32, 15, 45],
+    clientName
   );
   
   row = coaStart;
@@ -690,7 +708,8 @@ export const exportToExcel = () => {
   const { sheet: reconSheet, startRow: reconStart } = createProfessionalSheet(
     'Bank Reconciliation Summary',
     'Q4 2025',
-    [15, 18, 16, 16, 16, 18, 15]
+    [15, 18, 16, 16, 16, 18, 15],
+    clientName
   );
   
   row = reconStart;
@@ -754,5 +773,5 @@ export const exportToExcel = () => {
   XLSX.utils.book_append_sheet(workbook, reconSheet, 'Reconciliation');
 
   // Generate and download the file
-  XLSX.writeFile(workbook, 'CVS_Auto_Sales_Q4_2025_Bookkeeping.xlsx');
+  XLSX.writeFile(workbook, fileName);
 };

@@ -66,15 +66,25 @@ const colors = {
   blue: '3b82f6',
 };
 
-export const exportToPowerPoint = () => {
+interface ExportOptions {
+  clientName?: string;
+  clientLogoPath?: string;
+  fileName?: string;
+}
+
+export const exportToPowerPoint = (options?: ExportOptions) => {
+  const clientName = options?.clientName || 'CVS Auto Sales Inc.';
+  const clientLogoPath = options?.clientLogoPath || '/cvs-logo.png';
+  const fileName = options?.fileName || 'CVS_Auto_Sales_Q4_2025_Financial_Report.pptx';
+
   const titleRevenueSummary = calculateTitleRevenueSummary();
   const pptx = new PptxGenJS();
   
   // Set presentation properties
-  pptx.author = 'CVS Auto Sales Inc.';
+  pptx.author = clientName;
   pptx.title = 'Q4 2025 Financial Report';
   pptx.subject = 'Quarterly Financial Summary';
-  pptx.company = 'CVS Auto Sales Inc.';
+  pptx.company = clientName;
   
   // Define master slide layouts
   pptx.defineSlideMaster({
@@ -92,27 +102,59 @@ export const exportToPowerPoint = () => {
   // ==========================================
   const slide1 = pptx.addSlide({ masterName: 'TITLE_SLIDE' });
   
-  // Add Mizan Logo (bigger)
+  // Add Mizan Logo (left side)
   slide1.addImage({
     path: '/mizan-logo-new.png',
     x: 0.4,
     y: 0.3,
+    w: 1.4,
+    h: 1.4,
+  });
+
+  // Add Client Logo (right side of Mizan logo)
+  slide1.addImage({
+    path: clientLogoPath,
+    x: 2.0,
+    y: 0.3,
     w: 1.8,
-    h: 1.8,
+    h: 1.4,
+    sizing: { type: 'contain', w: 1.8, h: 1.4 },
   });
   
   slide1.addText('MIZAN', {
-    x: 2.4,
-    y: 0.9,
-    w: 5,
-    h: 0.7,
-    fontSize: 32,
+    x: 4.0,
+    y: 0.5,
+    w: 3,
+    h: 0.5,
+    fontSize: 28,
     bold: true,
     color: colors.gold,
     fontFace: 'Arial',
   });
+
+  slide1.addText('×', {
+    x: 7.0,
+    y: 0.5,
+    w: 0.5,
+    h: 0.5,
+    fontSize: 20,
+    color: colors.lightGray,
+    fontFace: 'Arial',
+    align: 'center',
+  });
+
+  slide1.addText(clientName.toUpperCase(), {
+    x: 7.5,
+    y: 0.5,
+    w: 2.5,
+    h: 0.5,
+    fontSize: 14,
+    bold: true,
+    color: colors.white,
+    fontFace: 'Arial',
+  });
   
-  slide1.addText('CVS AUTO SALES INC.', {
+  slide1.addText(clientName.toUpperCase(), {
     x: 0.5,
     y: 2.2,
     w: '90%',
@@ -1299,7 +1341,7 @@ export const exportToPowerPoint = () => {
     fontFace: 'Arial',
   });
   
-  slide12.addText('CVS Auto Sales Inc.', {
+  slide12.addText(clientName, {
     x: 0.5,
     y: 3.6,
     w: '90%',
@@ -1318,29 +1360,37 @@ export const exportToPowerPoint = () => {
     color: colors.lightGray,
     fontFace: 'Arial',
   });
-  
-  slide12.addText('MIZAN', {
-    x: 0.5,
-    y: 4.8,
-    w: '90%',
-    h: 0.5,
-    fontSize: 20,
-    bold: true,
-    color: colors.gold,
-    fontFace: 'Arial',
+
+  // Add both logos on final slide
+  slide12.addImage({
+    path: '/mizan-logo-new.png',
+    x: 3.5,
+    y: 4.6,
+    w: 1.0,
+    h: 1.0,
+  });
+
+  slide12.addImage({
+    path: clientLogoPath,
+    x: 4.8,
+    y: 4.6,
+    w: 1.5,
+    h: 1.0,
+    sizing: { type: 'contain', w: 1.5, h: 1.0 },
   });
   
-  slide12.addText('Professional Bookkeeping & Financial Services', {
+  slide12.addText('MIZAN × ' + clientName.toUpperCase(), {
     x: 0.5,
-    y: 5.2,
+    y: 5.6,
     w: '90%',
     h: 0.3,
     fontSize: 12,
     color: colors.lightGray,
     fontFace: 'Arial',
     italic: true,
+    align: 'center',
   });
 
   // Generate and download
-  pptx.writeFile({ fileName: 'CVS_Auto_Sales_Q4_2025_Financial_Report.pptx' });
+  pptx.writeFile({ fileName });
 };
