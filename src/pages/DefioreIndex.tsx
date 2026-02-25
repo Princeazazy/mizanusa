@@ -10,6 +10,7 @@ import { CheckingAccountSheet } from "@/components/sheets/CheckingAccountSheet";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
+import defioreLogo from "@/assets/defiore-logo.png";
 import {
   januaryDeposits,
   januaryWithdrawals,
@@ -90,6 +91,7 @@ const DefioreIndex = () => {
             title="Hi there!"
             subtitle="Here's Your Financial Workbook for"
             clientName="Defiore Carpentry LLC"
+            clientLogo={defioreLogo}
           />
 
           {/* Action buttons */}
