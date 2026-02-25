@@ -101,6 +101,7 @@ const ClientPortal = () => {
       return;
     }
 
+    const origin = window.location.origin;
     printWindow.document.write(`
       <!DOCTYPE html>
       <html>
@@ -129,9 +130,9 @@ const ClientPortal = () => {
         <body>
           <div class="header">
             <div class="header-logos">
-              <img src="/mizan-logo-new.png" alt="Mizan" />
+              <img src="${origin}/mizan-logo-new.png" alt="Mizan" />
               <span class="divider">×</span>
-              <img src="${isDefiore ? '/defiore-logo.png' : '/cvs-logo.png'}" alt="${clientName}" />
+              <img src="${origin}/${isDefiore ? 'defiore-logo.png' : 'cvs-logo.png'}" alt="${clientName}" />
             </div>
             <h1>${getTabLabel(activeTab)}</h1>
             <p>${clientName}</p>
