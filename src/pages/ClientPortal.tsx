@@ -32,15 +32,34 @@ import {
   novemberSummary,
   decemberSummary,
 } from "@/data/bankTransactions";
+import {
+  januaryDeposits,
+  januaryWithdrawals,
+  januarySummary,
+} from "@/data/defioreBankTransactions";
 
 const ClientPortal = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [q4Open, setQ4Open] = useState(false);
   const q4Ref = useRef<HTMLDivElement | null>(null);
   const printRef = useRef<HTMLDivElement | null>(null);
-  const { session, loading, logout, clientName } = useClientAuth();
+  const { session, loading, logout, clientName, clientId } = useClientAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const isDefiore = clientId === "defiore-carpentry";
+  const isCVS = !isDefiore;
+
+  // Set default tab based on client
+  useEffect(() => {
+    if (!loading && session) {
+      if (isDefiore) {
+        setActiveTab("january");
+      } else {
+        setActiveTab("dashboard");
+      }
+    }
+  }, [loading, session, isDefiore]);
 
   const getTabLabel = (tab: string) => {
     const labels: Record<string, string> = {
@@ -48,6 +67,7 @@ const ClientPortal = () => {
       october: "October 2025 - Checking Account",
       november: "November 2025 - Checking Account",
       december: "December 2025 - Checking Account",
+      january: "January 2026 - Checking Account",
       transfers: "Transfers",
       esafety: "PA eSafety",
       titlerevenue: "Title Revenue",
@@ -79,7 +99,7 @@ const ClientPortal = () => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>${getTabLabel(activeTab)} - CVS Auto Sales Inc.</title>
+          <title>${getTabLabel(activeTab)} - ${clientName}</title>
           <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { font-family: system-ui, -apple-system, sans-serif; padding: 20px; color: #1a1a1a; }
@@ -100,7 +120,7 @@ const ClientPortal = () => {
         <body>
           <div class="header">
             <h1>${getTabLabel(activeTab)}</h1>
-            <p>CVS Auto Sales Inc. | 715 Huntingdon Pike, Rockledge, PA 19046</p>
+            <p>${clientName}</p>
             <p style="margin-top: 4px; font-size: 12px; color: #888;">Printed on ${new Date().toLocaleDateString()}</p>
           </div>
           ${printContent.innerHTML}
@@ -199,11 +219,13 @@ const ClientPortal = () => {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
-              <img
-                src={cvsLogo}
-                alt="CVS Auto Sales Inc."
-                className="h-14 w-auto object-contain"
-              />
+              {isCVS && (
+                <img
+                  src={cvsLogo}
+                  alt="CVS Auto Sales Inc."
+                  className="h-14 w-auto object-contain"
+                />
+              )}
               <div>
                 <h1 className="text-2xl font-bold text-foreground">
                   Welcome, <span className="text-primary glow-text-cyan">{clientName}</span>
@@ -259,130 +281,119 @@ const ClientPortal = () => {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <div className="glass-card p-1.5 mb-8">
               <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-transparent p-0">
-                <TabsTrigger 
-                  value="dashboard" 
-                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                >
-                  <LayoutDashboard className="h-4 w-4" />
-                  Dashboard
-                </TabsTrigger>
-                
-                {/* Q4 2025 Dropdown */}
-                <div className="relative" ref={q4Ref}>
+                {isCVS && (
                   <TabsTrigger 
-                    value="q4-2025" 
+                    value="dashboard" 
                     className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                    data-state={["october", "november", "december"].includes(activeTab) ? "active" : "inactive"}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setQ4Open((prev) => !prev);
-                    }}
+                  >
+                    <LayoutDashboard className="h-4 w-4" />
+                    Dashboard
+                  </TabsTrigger>
+                )}
+                
+                {/* Q4 2025 Dropdown - CVS only */}
+                {isCVS && (
+                  <div className="relative" ref={q4Ref}>
+                    <TabsTrigger 
+                      value="q4-2025" 
+                      className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                      data-state={["october", "november", "december"].includes(activeTab) ? "active" : "inactive"}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setQ4Open((prev) => !prev);
+                      }}
+                    >
+                      <FileSpreadsheet className="h-4 w-4" />
+                      Q4 2025
+                      <svg className="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </TabsTrigger>
+                    {q4Open && (
+                      <div className="absolute top-full left-0 mt-1 glass-card z-50 min-w-[160px] p-1">
+                        <button
+                          onClick={() => { setActiveTab("october"); setQ4Open(false); }}
+                          className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "october" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
+                        >
+                          <FileSpreadsheet className="h-4 w-4" />
+                          October 2025
+                        </button>
+                        <button
+                          onClick={() => { setActiveTab("november"); setQ4Open(false); }}
+                          className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "november" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
+                        >
+                          <FileSpreadsheet className="h-4 w-4" />
+                          November 2025
+                        </button>
+                        <button
+                          onClick={() => { setActiveTab("december"); setQ4Open(false); }}
+                          className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "december" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
+                        >
+                          <FileSpreadsheet className="h-4 w-4" />
+                          December 2025
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Defiore: January 2026 tab */}
+                {isDefiore && (
+                  <TabsTrigger 
+                    value="january" 
+                    className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
                   >
                     <FileSpreadsheet className="h-4 w-4" />
-                    Q4 2025
-                    <svg className="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    January 2026
                   </TabsTrigger>
-                  {q4Open && (
-                    <div className="absolute top-full left-0 mt-1 glass-card z-50 min-w-[160px] p-1">
-                      <button
-                        onClick={() => {
-                          setActiveTab("october");
-                          setQ4Open(false);
-                        }}
-                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "october" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
-                      >
-                        <FileSpreadsheet className="h-4 w-4" />
-                        October 2025
-                      </button>
-                      <button
-                        onClick={() => {
-                          setActiveTab("november");
-                          setQ4Open(false);
-                        }}
-                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "november" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
-                      >
-                        <FileSpreadsheet className="h-4 w-4" />
-                        November 2025
-                      </button>
-                      <button
-                        onClick={() => {
-                          setActiveTab("december");
-                          setQ4Open(false);
-                        }}
-                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "december" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
-                      >
-                        <FileSpreadsheet className="h-4 w-4" />
-                        December 2025
-                      </button>
-                    </div>
-                  )}
-                </div>
+                )}
                 
-                <TabsTrigger 
-                  value="transfers" 
-                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                >
-                  <ArrowLeftRight className="h-4 w-4" />
-                  Transfers
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="esafety" 
-                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                >
-                  <Car className="h-4 w-4" />
-                  PA eSafety
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="titlerevenue" 
-                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                >
-                  <Receipt className="h-4 w-4" />
-                  Title Revenue
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="vitu" 
-                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                >
-                  <FileText className="h-4 w-4" />
-                  Vitu Expenses
-                </TabsTrigger>
-                <TabsTrigger
-                  value="coa" 
-                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                >
-                  <BookOpen className="h-4 w-4" />
-                  Chart of Accounts
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="reconciliation" 
-                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                >
+                {isCVS && (
+                  <>
+                    <TabsTrigger value="transfers" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <ArrowLeftRight className="h-4 w-4" />
+                      Transfers
+                    </TabsTrigger>
+                    <TabsTrigger value="esafety" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <Car className="h-4 w-4" />
+                      PA eSafety
+                    </TabsTrigger>
+                    <TabsTrigger value="titlerevenue" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <Receipt className="h-4 w-4" />
+                      Title Revenue
+                    </TabsTrigger>
+                    <TabsTrigger value="vitu" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <FileText className="h-4 w-4" />
+                      Vitu Expenses
+                    </TabsTrigger>
+                    <TabsTrigger value="coa" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <BookOpen className="h-4 w-4" />
+                      Chart of Accounts
+                    </TabsTrigger>
+                  </>
+                )}
+
+                <TabsTrigger value="reconciliation" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
                   <CheckSquare className="h-4 w-4" />
                   Reconciliation
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="profitloss" 
-                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                >
-                  <TrendingUp className="h-4 w-4" />
-                  P&L
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="balancesheet" 
-                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                >
-                  <Scale className="h-4 w-4" />
-                  Balance Sheet
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="cashflow" 
-                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                >
-                  <Banknote className="h-4 w-4" />
-                  Cash Flow
-                </TabsTrigger>
+
+                {isCVS && (
+                  <>
+                    <TabsTrigger value="profitloss" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <TrendingUp className="h-4 w-4" />
+                      P&L
+                    </TabsTrigger>
+                    <TabsTrigger value="balancesheet" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <Scale className="h-4 w-4" />
+                      Balance Sheet
+                    </TabsTrigger>
+                    <TabsTrigger value="cashflow" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <Banknote className="h-4 w-4" />
+                      Cash Flow
+                    </TabsTrigger>
+                  </>
+                )}
               </TabsList>
             </div>
 
@@ -395,80 +406,39 @@ const ClientPortal = () => {
                 transition={{ duration: 0.2 }}
               >
                 <div ref={printRef}>
-                  <TabsContent value="dashboard" className="m-0">
-                    <FuturisticDashboardSheet viewOnly={true} />
-                  </TabsContent>
-                  
-                  <TabsContent value="october" className="m-0">
-                    <CheckingAccountSheet
-                      month="October"
-                      year="2025"
-                      deposits={octoberDeposits}
-                      withdrawals={octoberWithdrawals}
-                      beginningBalance={octoberSummary.beginningBalance}
-                      endingBalance={octoberSummary.endingBalance}
-                      statementBalance={octoberSummary.statementEndingBalance}
-                    />
-                  </TabsContent>
-                  
-                  <TabsContent value="november" className="m-0">
-                    <CheckingAccountSheet
-                      month="November"
-                      year="2025"
-                      deposits={novemberDeposits}
-                      withdrawals={novemberWithdrawals}
-                      beginningBalance={novemberSummary.beginningBalance}
-                      endingBalance={novemberSummary.endingBalance}
-                      statementBalance={novemberSummary.statementEndingBalance}
-                    />
-                  </TabsContent>
-                  
-                  <TabsContent value="december" className="m-0">
-                    <CheckingAccountSheet
-                      month="December"
-                      year="2025"
-                      deposits={decemberDeposits}
-                      withdrawals={decemberWithdrawals}
-                      beginningBalance={decemberSummary.beginningBalance}
-                      endingBalance={decemberSummary.endingBalance}
-                      statementBalance={decemberSummary.statementEndingBalance}
-                    />
-                  </TabsContent>
-                  
-                  <TabsContent value="transfers" className="m-0">
-                    <TransfersSheet />
-                  </TabsContent>
-                  
-                  <TabsContent value="esafety" className="m-0">
-                    <ESafetySheet />
-                  </TabsContent>
-                  
-                  <TabsContent value="titlerevenue" className="m-0">
-                    <TitleRevenueSheet />
-                  </TabsContent>
-                  
-                  <TabsContent value="vitu" className="m-0">
-                    <VituSheet />
-                  </TabsContent>
-                  
-                  <TabsContent value="coa" className="m-0">
-                    <ChartOfAccountsSheet />
-                  </TabsContent>
-                  
+                  {isCVS && (
+                    <>
+                      <TabsContent value="dashboard" className="m-0">
+                        <FuturisticDashboardSheet viewOnly={true} />
+                      </TabsContent>
+                      <TabsContent value="october" className="m-0">
+                        <CheckingAccountSheet month="October" year="2025" deposits={octoberDeposits} withdrawals={octoberWithdrawals} beginningBalance={octoberSummary.beginningBalance} endingBalance={octoberSummary.endingBalance} statementBalance={octoberSummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="november" className="m-0">
+                        <CheckingAccountSheet month="November" year="2025" deposits={novemberDeposits} withdrawals={novemberWithdrawals} beginningBalance={novemberSummary.beginningBalance} endingBalance={novemberSummary.endingBalance} statementBalance={novemberSummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="december" className="m-0">
+                        <CheckingAccountSheet month="December" year="2025" deposits={decemberDeposits} withdrawals={decemberWithdrawals} beginningBalance={decemberSummary.beginningBalance} endingBalance={decemberSummary.endingBalance} statementBalance={decemberSummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="transfers" className="m-0"><TransfersSheet /></TabsContent>
+                      <TabsContent value="esafety" className="m-0"><ESafetySheet /></TabsContent>
+                      <TabsContent value="titlerevenue" className="m-0"><TitleRevenueSheet /></TabsContent>
+                      <TabsContent value="vitu" className="m-0"><VituSheet /></TabsContent>
+                      <TabsContent value="coa" className="m-0"><ChartOfAccountsSheet /></TabsContent>
+                      <TabsContent value="profitloss" className="m-0"><ProfitLossSheet /></TabsContent>
+                      <TabsContent value="balancesheet" className="m-0"><BalanceSheetSheet /></TabsContent>
+                      <TabsContent value="cashflow" className="m-0"><CashFlowSheet /></TabsContent>
+                    </>
+                  )}
+
+                  {isDefiore && (
+                    <TabsContent value="january" className="m-0">
+                      <CheckingAccountSheet month="January" year="2026" deposits={januaryDeposits} withdrawals={januaryWithdrawals} beginningBalance={januarySummary.beginningBalance} endingBalance={januarySummary.endingBalance} statementBalance={januarySummary.statementEndingBalance} />
+                    </TabsContent>
+                  )}
+
                   <TabsContent value="reconciliation" className="m-0">
                     <ReconciliationSheet />
-                  </TabsContent>
-                  
-                  <TabsContent value="profitloss" className="m-0">
-                    <ProfitLossSheet />
-                  </TabsContent>
-                  
-                  <TabsContent value="balancesheet" className="m-0">
-                    <BalanceSheetSheet />
-                  </TabsContent>
-                  
-                  <TabsContent value="cashflow" className="m-0">
-                    <CashFlowSheet />
                   </TabsContent>
                 </div>
               </motion.div>
@@ -481,8 +451,10 @@ const ClientPortal = () => {
           <div className="max-w-[1600px] mx-auto px-8 py-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="text-center md:text-left">
-                <p className="text-sm font-medium text-foreground">CVS Auto Sales Inc.</p>
-                <p className="text-xs text-muted-foreground mt-0.5">715 Huntingdon Pike, Rockledge, PA 19046</p>
+                <p className="text-sm font-medium text-foreground">{clientName}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {isCVS ? "715 Huntingdon Pike, Rockledge, PA 19046" : "Client Portal"}
+                </p>
               </div>
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span className="badge-status badge-on-track">
@@ -490,7 +462,7 @@ const ClientPortal = () => {
                   Accountant Ready
                 </span>
                 <span className="badge-status bg-accent text-muted-foreground border-border">
-                  Q4 2025
+                  {isDefiore ? "Jan 2026" : "Q4 2025"}
                 </span>
               </div>
             </div>
