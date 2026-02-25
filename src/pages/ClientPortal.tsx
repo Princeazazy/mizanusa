@@ -48,7 +48,12 @@ const ClientPortal = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const isDefiore = clientId === "defiore-carpentry";
+  const normalizedClientId = (clientId || "").toLowerCase().trim();
+  const normalizedClientName = (clientName || "").toLowerCase();
+  const isDefiore =
+    normalizedClientId === "defiore" ||
+    normalizedClientId === "defiore-carpentry" ||
+    normalizedClientName.includes("defiore");
   const isCVS = !isDefiore;
 
   // Set default tab based on client
