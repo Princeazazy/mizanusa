@@ -21,6 +21,7 @@ import { useClientAuth } from "@/hooks/useClientAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
 import cvsLogo from "@/assets/cvs-logo.png";
+import defioreLogo from "@/assets/defiore-logo.png";
 import {
   octoberDeposits,
   octoberWithdrawals,
@@ -219,13 +220,11 @@ const ClientPortal = () => {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
-              {isCVS && (
-                <img
-                  src={cvsLogo}
-                  alt="CVS Auto Sales Inc."
-                  className="h-14 w-auto object-contain"
-                />
-              )}
+              <img
+                src={isDefiore ? defioreLogo : cvsLogo}
+                alt={clientName || "Client"}
+                className="h-14 w-auto object-contain"
+              />
               <div>
                 <h1 className="text-2xl font-bold text-foreground">
                   Welcome, <span className="text-primary glow-text-cyan">{clientName}</span>
