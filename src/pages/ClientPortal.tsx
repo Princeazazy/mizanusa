@@ -130,7 +130,7 @@ const ClientPortal = () => {
         <body>
           <div class="header">
             <div class="header-logos">
-              <img src="${origin}/mizan-logo-new.png" alt="Mizan" />
+              <img src="${origin}/mizan-logo-export.png" alt="Mizan" />
               <span class="divider">×</span>
               <img src="${origin}/${isDefiore ? 'defiore-logo.png' : 'cvs-logo.png'}" alt="${clientName}" />
             </div>
