@@ -101,7 +101,7 @@ const ClientPortal = () => {
       return;
     }
 
-    const origin = window.location.origin;
+    const activeClientLogo = isDefiore ? defioreLogo : cvsLogo;
     printWindow.document.write(`
       <!DOCTYPE html>
       <html>
@@ -131,9 +131,9 @@ const ClientPortal = () => {
         <body>
           <div class="header">
             <div class="header-logos">
-              <img src="${origin}/mizan-logo-new.png" alt="Mizan" class="mizan-logo" />
+              <img src="${mizanLogo}" alt="Mizan USA" class="mizan-logo" />
               <span class="divider">×</span>
-              <img src="${origin}/${isDefiore ? 'defiore-logo.png' : 'cvs-logo.png'}" alt="${clientName}" />
+              <img src="${activeClientLogo}" alt="${clientName}" />
             </div>
             <h1>${getTabLabel(activeTab)}</h1>
             <p>${clientName}</p>
@@ -144,11 +144,23 @@ const ClientPortal = () => {
       </html>
     `);
     printWindow.document.close();
-    printWindow.focus();
-    setTimeout(() => {
+    const images = Array.from(printWindow.document.images);
+    Promise.all(
+      images.map((img) =>
+        img.complete
+          ? Promise.resolve()
+          : new Promise<void>((resolve) => {
+              img.onload = () => resolve();
+              img.onerror = () => resolve();
+            })
+      )
+    ).finally(() => {
+      printWindow.focus();
       printWindow.print();
-      printWindow.close();
-    }, 250);
+      setTimeout(() => {
+        printWindow.close();
+      }, 150);
+    });
   };
 
   useEffect(() => {
