@@ -115,6 +115,7 @@ const ClientPortal = () => {
             .header p { font-size: 14px; color: #666; }
             .header-logos { display: flex; justify-content: center; align-items: center; gap: 24px; margin-bottom: 16px; }
             .header-logos img { height: 60px; object-fit: contain; }
+            .header-logos .mizan-logo { background: #0f172a; border-radius: 10px; padding: 6px 10px; }
             .header-logos .divider { font-size: 20px; color: #ccc; }
             table { width: 100%; border-collapse: collapse; margin: 16px 0; }
             th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; font-size: 12px; }
@@ -130,7 +131,7 @@ const ClientPortal = () => {
         <body>
           <div class="header">
             <div class="header-logos">
-              <img src="${origin}/mizan-logo-export.png" alt="Mizan" />
+              <img src="${origin}/mizan-logo-new.png" alt="Mizan" class="mizan-logo" />
               <span class="divider">×</span>
               <img src="${origin}/${isDefiore ? 'defiore-logo.png' : 'cvs-logo.png'}" alt="${clientName}" />
             </div>
