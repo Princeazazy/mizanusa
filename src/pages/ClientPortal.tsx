@@ -399,10 +399,12 @@ const ClientPortal = () => {
                   </>
                 )}
 
-                <TabsTrigger value="reconciliation" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
-                  <CheckSquare className="h-4 w-4" />
-                  Reconciliation
-                </TabsTrigger>
+                {isCVS && (
+                  <TabsTrigger value="reconciliation" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                    <CheckSquare className="h-4 w-4" />
+                    Reconciliation
+                  </TabsTrigger>
+                )}
 
                 {isCVS && (
                   <>
@@ -463,9 +465,11 @@ const ClientPortal = () => {
                     </TabsContent>
                   )}
 
-                  <TabsContent value="reconciliation" className="m-0">
-                    <ReconciliationSheet />
-                  </TabsContent>
+                  {isCVS && (
+                    <TabsContent value="reconciliation" className="m-0">
+                      <ReconciliationSheet />
+                    </TabsContent>
+                  )}
                 </div>
               </motion.div>
             </AnimatePresence>
