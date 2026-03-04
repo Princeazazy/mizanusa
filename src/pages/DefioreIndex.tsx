@@ -15,6 +15,9 @@ import {
   januaryDeposits,
   januaryWithdrawals,
   januarySummary,
+  februaryDeposits,
+  februaryWithdrawals,
+  februarySummary,
 } from "@/data/defioreBankTransactions";
 
 const DefioreIndex = () => {
@@ -124,6 +127,13 @@ const DefioreIndex = () => {
                   <FileSpreadsheet className="h-4 w-4" />
                   January 2026
                 </TabsTrigger>
+                <TabsTrigger
+                  value="february"
+                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                >
+                  <FileSpreadsheet className="h-4 w-4" />
+                  February 2026
+                </TabsTrigger>
               </TabsList>
             </div>
 
@@ -144,6 +154,17 @@ const DefioreIndex = () => {
                     beginningBalance={januarySummary.beginningBalance}
                     endingBalance={januarySummary.endingBalance}
                     statementBalance={januarySummary.statementEndingBalance}
+                  />
+                </TabsContent>
+                <TabsContent value="february" className="m-0">
+                  <CheckingAccountSheet
+                    month="February"
+                    year="2026"
+                    deposits={februaryDeposits}
+                    withdrawals={februaryWithdrawals}
+                    beginningBalance={februarySummary.beginningBalance}
+                    endingBalance={februarySummary.endingBalance}
+                    statementBalance={februarySummary.statementEndingBalance}
                   />
                 </TabsContent>
               </motion.div>
