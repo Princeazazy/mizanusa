@@ -49,12 +49,15 @@ const ClientPortal = () => {
   const { toast } = useToast();
 
   const normalizedClientId = (clientId || "").toLowerCase().trim();
-  const normalizedClientName = (clientName || "").toLowerCase();
+  const normalizedClientName = (clientName || "").toLowerCase().trim();
+
   const isDefiore =
     normalizedClientId === "defiore" ||
-    normalizedClientId === "defiore-carpentry" ||
     normalizedClientName.includes("defiore");
-  const isCVS = !isDefiore;
+
+  const isCVS =
+    normalizedClientId === "cvs-auto-sales" ||
+    normalizedClientName.includes("cvs auto sales");
 
   // Set default tab based on client
   useEffect(() => {
@@ -86,6 +89,35 @@ const ClientPortal = () => {
     };
     return labels[tab] || tab;
   };
+
+  // Guardrail: never allow cross-client tab leakage
+  useEffect(() => {
+    if (loading || !session) return;
+
+    const allowedTabs = isDefiore
+      ? new Set(["january"])
+      : isCVS
+        ? new Set([
+            "dashboard",
+            "october",
+            "november",
+            "december",
+            "transfers",
+            "esafety",
+            "titlerevenue",
+            "vitu",
+            "coa",
+            "reconciliation",
+            "profitloss",
+            "balancesheet",
+            "cashflow",
+          ])
+        : new Set<string>();
+
+    if (!allowedTabs.has(activeTab)) {
+      setActiveTab(isDefiore ? "january" : isCVS ? "dashboard" : "");
+    }
+  }, [activeTab, loading, session, isDefiore, isCVS]);
 
   const handlePrint = () => {
     const printContent = printRef.current;
@@ -284,7 +316,7 @@ const ClientPortal = () => {
               onClick={handlePrint}
             >
               <Printer className="h-4 w-4" />
-              Print {getTabLabel(activeTab)}
+              Print {getTabLabel(isDefiore && activeTab === "reconciliation" ? "january" : activeTab)}
             </Button>
             <Button 
               variant="outline" 
