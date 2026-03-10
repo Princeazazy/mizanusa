@@ -176,6 +176,9 @@ const DefioreIndex = () => {
                     statementBalance={februarySummary.statementEndingBalance}
                   />
                 </TabsContent>
+                <TabsContent value="invoices" className="m-0">
+                  <InvoicesSheet invoices={defioreInvoices} title="Defiore Carpentry LLC – Invoices" />
+                </TabsContent>
               </motion.div>
             </AnimatePresence>
           </Tabs>
