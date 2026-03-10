@@ -42,6 +42,7 @@ import {
   februaryWithdrawals,
   februarySummary,
 } from "@/data/defioreBankTransactions";
+import { defioreInvoices } from "@/data/defioreInvoices";
 
 const ClientPortal = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
