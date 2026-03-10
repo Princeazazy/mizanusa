@@ -17,6 +17,7 @@ import { TitleRevenueSheet } from "@/components/sheets/TitleRevenueSheet";
 import { ProfitLossSheet } from "@/components/sheets/ProfitLossSheet";
 import { BalanceSheetSheet } from "@/components/sheets/BalanceSheetSheet";
 import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
+import { InvoicesSheet } from "@/components/sheets/InvoicesSheet";
 import { useClientAuth } from "@/hooks/useClientAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
@@ -41,6 +42,7 @@ import {
   februaryWithdrawals,
   februarySummary,
 } from "@/data/defioreBankTransactions";
+import { defioreInvoices } from "@/data/defioreInvoices";
 
 const ClientPortal = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -81,6 +83,7 @@ const ClientPortal = () => {
       december: "December 2025 - Checking Account",
       january: "January 2026 - Checking Account",
       february: "February 2026 - Checking Account",
+      invoices: "Invoices",
       transfers: "Transfers",
       esafety: "PA eSafety",
       titlerevenue: "Title Revenue",
@@ -99,7 +102,7 @@ const ClientPortal = () => {
     if (loading || !session) return;
 
     const allowedTabs = isDefiore
-      ? new Set(["january", "february"])
+      ? new Set(["january", "february", "invoices"])
       : isCVS
         ? new Set([
             "dashboard",
@@ -416,6 +419,13 @@ const ClientPortal = () => {
                       <FileSpreadsheet className="h-4 w-4" />
                       February 2026
                     </TabsTrigger>
+                    <TabsTrigger 
+                      value="invoices" 
+                      className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                    >
+                      <Receipt className="h-4 w-4" />
+                      Invoices
+                    </TabsTrigger>
                   </>
                 )}
                 
@@ -511,6 +521,9 @@ const ClientPortal = () => {
                       </TabsContent>
                       <TabsContent value="february" className="m-0">
                         <CheckingAccountSheet month="February" year="2026" deposits={februaryDeposits} withdrawals={februaryWithdrawals} beginningBalance={februarySummary.beginningBalance} endingBalance={februarySummary.endingBalance} statementBalance={februarySummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="invoices" className="m-0">
+                        <InvoicesSheet invoices={defioreInvoices} title="Defiore Carpentry LLC – Invoices" />
                       </TabsContent>
                     </>
                   )}

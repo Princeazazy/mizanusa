@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, Presentation, Sparkles } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, Presentation, Sparkles, Receipt } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FuturisticSidebar } from "@/components/FuturisticSidebar";
 import { FuturisticHeader } from "@/components/FuturisticHeader";
 import { CheckingAccountSheet } from "@/components/sheets/CheckingAccountSheet";
+import { InvoicesSheet } from "@/components/sheets/InvoicesSheet";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
@@ -19,6 +20,7 @@ import {
   februaryWithdrawals,
   februarySummary,
 } from "@/data/defioreBankTransactions";
+import { defioreInvoices } from "@/data/defioreInvoices";
 
 const DefioreIndex = () => {
   const [activeTab, setActiveTab] = useState("january");
@@ -134,6 +136,13 @@ const DefioreIndex = () => {
                   <FileSpreadsheet className="h-4 w-4" />
                   February 2026
                 </TabsTrigger>
+                <TabsTrigger
+                  value="invoices"
+                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                >
+                  <Receipt className="h-4 w-4" />
+                  Invoices
+                </TabsTrigger>
               </TabsList>
             </div>
 
@@ -166,6 +175,9 @@ const DefioreIndex = () => {
                     endingBalance={februarySummary.endingBalance}
                     statementBalance={februarySummary.statementEndingBalance}
                   />
+                </TabsContent>
+                <TabsContent value="invoices" className="m-0">
+                  <InvoicesSheet invoices={defioreInvoices} title="Defiore Carpentry LLC – Invoices" />
                 </TabsContent>
               </motion.div>
             </AnimatePresence>
