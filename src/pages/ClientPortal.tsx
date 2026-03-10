@@ -523,6 +523,9 @@ const ClientPortal = () => {
                       <TabsContent value="february" className="m-0">
                         <CheckingAccountSheet month="February" year="2026" deposits={februaryDeposits} withdrawals={februaryWithdrawals} beginningBalance={februarySummary.beginningBalance} endingBalance={februarySummary.endingBalance} statementBalance={februarySummary.statementEndingBalance} />
                       </TabsContent>
+                      <TabsContent value="invoices" className="m-0">
+                        <InvoicesSheet invoices={defioreInvoices} title="Defiore Carpentry LLC – Invoices" />
+                      </TabsContent>
                     </>
                   )}
 
