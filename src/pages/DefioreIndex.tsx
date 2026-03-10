@@ -20,6 +20,7 @@ import {
   februaryWithdrawals,
   februarySummary,
 } from "@/data/defioreBankTransactions";
+import { defioreInvoices } from "@/data/defioreInvoices";
 
 const DefioreIndex = () => {
   const [activeTab, setActiveTab] = useState("january");
