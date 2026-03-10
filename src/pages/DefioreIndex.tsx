@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FuturisticSidebar } from "@/components/FuturisticSidebar";
 import { FuturisticHeader } from "@/components/FuturisticHeader";
 import { CheckingAccountSheet } from "@/components/sheets/CheckingAccountSheet";
+import { InvoicesSheet } from "@/components/sheets/InvoicesSheet";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
