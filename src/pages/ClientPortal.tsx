@@ -420,6 +420,13 @@ const ClientPortal = () => {
                       <FileSpreadsheet className="h-4 w-4" />
                       February 2026
                     </TabsTrigger>
+                    <TabsTrigger 
+                      value="invoices" 
+                      className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                    >
+                      <Receipt className="h-4 w-4" />
+                      Invoices
+                    </TabsTrigger>
                   </>
                 )}
                 
