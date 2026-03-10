@@ -17,6 +17,7 @@ import { TitleRevenueSheet } from "@/components/sheets/TitleRevenueSheet";
 import { ProfitLossSheet } from "@/components/sheets/ProfitLossSheet";
 import { BalanceSheetSheet } from "@/components/sheets/BalanceSheetSheet";
 import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
+import { InvoicesSheet } from "@/components/sheets/InvoicesSheet";
 import { useClientAuth } from "@/hooks/useClientAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
