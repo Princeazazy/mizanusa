@@ -83,6 +83,8 @@ const ClientPortal = () => {
       december: "December 2025 - Checking Account",
       january: "January 2026 - Checking Account",
       february: "February 2026 - Checking Account",
+      invoices: "Invoices",
+      february: "February 2026 - Checking Account",
       transfers: "Transfers",
       esafety: "PA eSafety",
       titlerevenue: "Title Revenue",
