@@ -101,26 +101,84 @@ const DefioreIndex = () => {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <div className="glass-card p-1.5 mb-8">
               <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-transparent p-0">
-                <TabsTrigger value="january" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
-                  <FileSpreadsheet className="h-4 w-4" />January 2026
-                </TabsTrigger>
-                <TabsTrigger value="february" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
-                  <FileSpreadsheet className="h-4 w-4" />February 2026
-                </TabsTrigger>
-                <TabsTrigger value="cc-january" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
-                  <CreditCard className="h-4 w-4" />CC – Jan 2026
-                </TabsTrigger>
-                <TabsTrigger value="cc-february" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
-                  <CreditCard className="h-4 w-4" />CC – Feb 2026
-                </TabsTrigger>
-                <TabsTrigger value="cc-march" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
-                  <CreditCard className="h-4 w-4" />CC – Mar 2026
-                </TabsTrigger>
+                {/* Bank Statements Dropdown */}
+                <div className="relative" ref={bankRef}>
+                  <TabsTrigger
+                    value="bank-q1"
+                    className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                    data-state={["january", "february", "march"].includes(activeTab) ? "active" : "inactive"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setBankOpen((v) => !v);
+                      if (!["january", "february", "march"].includes(activeTab)) setActiveTab("january");
+                    }}
+                  >
+                    <FileSpreadsheet className="h-4 w-4" />
+                    Bank Q1 2026
+                    <svg className="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </TabsTrigger>
+                  {bankOpen && (
+                    <div className="absolute top-full left-0 mt-1 glass-card z-50 min-w-[160px] p-1">
+                      {[
+                        { value: "january", label: "January 2026" },
+                        { value: "february", label: "February 2026" },
+                        { value: "march", label: "March 2026" },
+                      ].map((m) => (
+                        <button
+                          key={m.value}
+                          onClick={() => { setActiveTab(m.value); setBankOpen(false); }}
+                          className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === m.value ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
+                        >
+                          <FileSpreadsheet className="h-4 w-4" />
+                          {m.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Credit Card Statements Dropdown */}
+                <div className="relative" ref={ccRef}>
+                  <TabsTrigger
+                    value="cc-q1"
+                    className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                    data-state={["cc-january", "cc-february", "cc-march"].includes(activeTab) ? "active" : "inactive"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCcOpen((v) => !v);
+                      if (!["cc-january", "cc-february", "cc-march"].includes(activeTab)) setActiveTab("cc-january");
+                    }}
+                  >
+                    <CreditCard className="h-4 w-4" />
+                    CC Q1 2026
+                    <svg className="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </TabsTrigger>
+                  {ccOpen && (
+                    <div className="absolute top-full left-0 mt-1 glass-card z-50 min-w-[160px] p-1">
+                      {[
+                        { value: "cc-january", label: "CC – Jan 2026" },
+                        { value: "cc-february", label: "CC – Feb 2026" },
+                        { value: "cc-march", label: "CC – Mar 2026" },
+                      ].map((m) => (
+                        <button
+                          key={m.value}
+                          onClick={() => { setActiveTab(m.value); setCcOpen(false); }}
+                          className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === m.value ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
+                        >
+                          <CreditCard className="h-4 w-4" />
+                          {m.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <TabsTrigger value="invoices" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
                   <Receipt className="h-4 w-4" />Invoices
-                </TabsTrigger>
-                <TabsTrigger value="march" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
-                  <FileSpreadsheet className="h-4 w-4" />March 2026
                 </TabsTrigger>
                 <TabsTrigger value="pnl" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
                   <TrendingUp className="h-4 w-4" />P&L Q1
