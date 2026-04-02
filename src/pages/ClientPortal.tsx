@@ -45,6 +45,9 @@ import {
   februaryDeposits,
   februaryWithdrawals,
   februarySummary,
+  marchDeposits,
+  marchWithdrawals,
+  marchSummary,
 } from "@/data/defioreBankTransactions";
 import { defioreInvoices } from "@/data/defioreInvoices";
 import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/data/defioreCreditCardTransactions";
