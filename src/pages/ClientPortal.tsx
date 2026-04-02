@@ -425,6 +425,27 @@ const ClientPortal = () => {
                       February 2026
                     </TabsTrigger>
                     <TabsTrigger 
+                      value="cc-january" 
+                      className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                    >
+                      <CreditCard className="h-4 w-4" />
+                      CC Jan 2026
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="cc-february" 
+                      className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                    >
+                      <CreditCard className="h-4 w-4" />
+                      CC Feb 2026
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="cc-march" 
+                      className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                    >
+                      <CreditCard className="h-4 w-4" />
+                      CC Mar 2026
+                    </TabsTrigger>
+                    <TabsTrigger 
                       value="invoices" 
                       className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
                     >
