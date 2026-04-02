@@ -586,6 +586,18 @@ const ClientPortal = () => {
                       <TabsContent value="invoices" className="m-0">
                         <InvoicesSheet invoices={defioreInvoices} title="Defiore Carpentry LLC – Invoices" />
                       </TabsContent>
+                      <TabsContent value="march" className="m-0">
+                        <CheckingAccountSheet month="March" year="2026" deposits={marchDeposits} withdrawals={marchWithdrawals} beginningBalance={marchSummary.beginningBalance} endingBalance={marchSummary.endingBalance} statementBalance={marchSummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="pnl" className="m-0">
+                        <DefioreProfitLossSheet />
+                      </TabsContent>
+                      <TabsContent value="balance-sheet" className="m-0">
+                        <DefioreBalanceSheet />
+                      </TabsContent>
+                      <TabsContent value="cash-flow" className="m-0">
+                        <DefioreCashFlowSheet />
+                      </TabsContent>
                     </>
                   )}
 
