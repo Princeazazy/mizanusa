@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Sparkles, LogOut, Eye, Printer } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Sparkles, LogOut, Eye, Printer, CreditCard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { exportToExcel } from "@/lib/exportToExcel";
 import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
@@ -18,6 +18,7 @@ import { ProfitLossSheet } from "@/components/sheets/ProfitLossSheet";
 import { BalanceSheetSheet } from "@/components/sheets/BalanceSheetSheet";
 import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
 import { InvoicesSheet } from "@/components/sheets/InvoicesSheet";
+import { CreditCardStatementSheet } from "@/components/sheets/CreditCardStatementSheet";
 import { useClientAuth } from "@/hooks/useClientAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
@@ -43,6 +44,7 @@ import {
   februarySummary,
 } from "@/data/defioreBankTransactions";
 import { defioreInvoices } from "@/data/defioreInvoices";
+import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/data/defioreCreditCardTransactions";
 
 const ClientPortal = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -83,6 +85,9 @@ const ClientPortal = () => {
       december: "December 2025 - Checking Account",
       january: "January 2026 - Checking Account",
       february: "February 2026 - Checking Account",
+      "cc-january": "Credit Cards – January 2026",
+      "cc-february": "Credit Cards – February 2026",
+      "cc-march": "Credit Cards – March 2026",
       invoices: "Invoices",
       transfers: "Transfers",
       esafety: "PA eSafety",
@@ -102,7 +107,7 @@ const ClientPortal = () => {
     if (loading || !session) return;
 
     const allowedTabs = isDefiore
-      ? new Set(["january", "february", "invoices"])
+      ? new Set(["january", "february", "cc-january", "cc-february", "cc-march", "invoices"])
       : isCVS
         ? new Set([
             "dashboard",
@@ -521,6 +526,15 @@ const ClientPortal = () => {
                       </TabsContent>
                       <TabsContent value="february" className="m-0">
                         <CheckingAccountSheet month="February" year="2026" deposits={februaryDeposits} withdrawals={februaryWithdrawals} beginningBalance={februarySummary.beginningBalance} endingBalance={februarySummary.endingBalance} statementBalance={februarySummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="cc-january" className="m-0">
+                        <CreditCardStatementSheet statements={januaryCreditCards} month="January" year="2026" />
+                      </TabsContent>
+                      <TabsContent value="cc-february" className="m-0">
+                        <CreditCardStatementSheet statements={februaryCreditCards} month="February" year="2026" />
+                      </TabsContent>
+                      <TabsContent value="cc-march" className="m-0">
+                        <CreditCardStatementSheet statements={marchCreditCards} month="March" year="2026" />
                       </TabsContent>
                       <TabsContent value="invoices" className="m-0">
                         <InvoicesSheet invoices={defioreInvoices} title="Defiore Carpentry LLC – Invoices" />
