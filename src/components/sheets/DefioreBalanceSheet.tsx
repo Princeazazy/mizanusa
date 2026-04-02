@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Building2 } from "lucide-react";
 import { marchSummary } from "@/data/defioreBankTransactions";
 import {
-  capitalOneMarch, amexPlatinumMarch, amexBlueMarch,
+  capitalOneMarch, amexPlatinumMarch, amexBlueCashMarch,
 } from "@/data/defioreCreditCardTransactions";
 
 const fmt = (n: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
