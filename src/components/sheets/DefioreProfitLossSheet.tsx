@@ -180,7 +180,7 @@ export const DefioreProfitLossSheet = () => {
               <Row label="Credit Card Interest & Fees" amount={ccInterest} indent />
               <Row label="Bank Fees" amount={bankFees} indent />
               <Row label="Office Supplies" amount={bankOffice} indent />
-              <Row label="Personal Expenses" amount={totalPersonal} indent code="5900" />
+              
               <Row label="Government / Permits" amount={ccGovt} indent />
               <Row label="Credit Card Reward Fees" amount={ccCardFees} indent />
               <Row label="Professional Development" amount={ccProfDev} indent />
