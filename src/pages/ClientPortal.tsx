@@ -107,7 +107,7 @@ const ClientPortal = () => {
     if (loading || !session) return;
 
     const allowedTabs = isDefiore
-      ? new Set(["january", "february", "invoices"])
+      ? new Set(["january", "february", "cc-january", "cc-february", "cc-march", "invoices"])
       : isCVS
         ? new Set([
             "dashboard",
