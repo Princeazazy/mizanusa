@@ -19,6 +19,7 @@ import defioreLogo from "@/assets/defiore-logo.png";
 import {
   januaryDeposits, januaryWithdrawals, januarySummary,
   februaryDeposits, februaryWithdrawals, februarySummary,
+  marchDeposits, marchWithdrawals, marchSummary,
 } from "@/data/defioreBankTransactions";
 import { defioreInvoices } from "@/data/defioreInvoices";
 import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/data/defioreCreditCardTransactions";
