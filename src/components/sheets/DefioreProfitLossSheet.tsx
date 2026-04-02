@@ -94,10 +94,6 @@ export const DefioreProfitLossSheet = () => {
   // Office Supplies (bank)
   const bankOffice = sumByCategory(allWithdrawals, "Office Supplies");
 
-  // Personal/Owner expenses from bank + CC
-  const ccPersonal = sumCCByCategory(allCC, "Personal Expense");
-  const bankPersonal = sumByCategory(allWithdrawals, "Personal Expense");
-  const totalPersonal = ccPersonal + bankPersonal;
 
   // Government/Permits from CC
   const ccGovt = sumCCByCategory(allCC, "Government / Permits");
@@ -108,7 +104,7 @@ export const DefioreProfitLossSheet = () => {
   // Professional Development (CC)
   const ccProfDev = sumCCByCategory(allCC, "Professional Development");
 
-  const totalOperatingExpenses = totalFuel + ccVehicleMaint + totalParkingTolls + ccParkingFines + ccFines + totalMeals + ccSoftware + totalInsurance + vehiclePayment + ccInterest + bankFees + bankOffice + totalPersonal + ccGovt + ccCardFees + ccProfDev;
+  const totalOperatingExpenses = totalFuel + ccVehicleMaint + totalParkingTolls + ccParkingFines + ccFines + totalMeals + ccSoftware + totalInsurance + vehiclePayment + ccInterest + bankFees + bankOffice + ccGovt + ccCardFees + ccProfDev;
 
   // Owner's Draw (not an expense on P&L but tracked)
   const ownersDrawBank = sumByCategory(allWithdrawals, "Owner's Draw");
@@ -184,7 +180,7 @@ export const DefioreProfitLossSheet = () => {
               <Row label="Credit Card Interest & Fees" amount={ccInterest} indent />
               <Row label="Bank Fees" amount={bankFees} indent />
               <Row label="Office Supplies" amount={bankOffice} indent />
-              <Row label="Personal Expenses" amount={totalPersonal} indent code="5900" />
+              
               <Row label="Government / Permits" amount={ccGovt} indent />
               <Row label="Credit Card Reward Fees" amount={ccCardFees} indent />
               <Row label="Professional Development" amount={ccProfDev} indent />
