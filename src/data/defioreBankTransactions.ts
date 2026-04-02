@@ -9,7 +9,7 @@ export const januaryDeposits: Transaction[] = [
   { date: "1/9", description: "Direct Pay Monthly Base", coaCode: "4900", category: "Other Income", amount: 10.00, type: "deposit" },
   { date: "1/12", description: "Online Transfer Week 1 Self Payment 2026", coaCode: "4900", category: "Other Income", amount: 700.00, type: "deposit" },
   { date: "1/12", description: "Online Transfer from Defiore A Everyday Checking", coaCode: "4900", category: "Other Income", amount: 67.22, type: "deposit" },
-  { date: "1/13", description: "Acorns Invest Transfer 011326", coaCode: "4900", category: "Other Income", amount: 5.00, type: "deposit" },
+  { date: "1/13", description: "Acorns Invest Transfer 011326", coaCode: "5900", category: "Personal Investment", amount: 5.00, type: "deposit" },
   { date: "1/14", description: "Zelle from Maricela on 01/14", coaCode: "4100", category: "Service Revenue", amount: 500.00, type: "deposit" },
   { date: "1/20", description: "Zelle from Lopez Aguilar Walter on 01/17", coaCode: "4100", category: "Service Revenue", amount: 1320.00, type: "deposit" },
   { date: "1/20", description: "Zelle from Rodrigo on 01/17", coaCode: "4100", category: "Service Revenue", amount: 920.00, type: "deposit" },
