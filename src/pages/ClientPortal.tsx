@@ -44,6 +44,7 @@ import {
   februarySummary,
 } from "@/data/defioreBankTransactions";
 import { defioreInvoices } from "@/data/defioreInvoices";
+import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/data/defioreCreditCardTransactions";
 
 const ClientPortal = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
