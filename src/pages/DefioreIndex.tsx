@@ -26,9 +26,31 @@ import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/dat
 
 const DefioreIndex = () => {
   const [activeTab, setActiveTab] = useState("january");
+  const [bankOpen, setBankOpen] = useState(false);
+  const [ccOpen, setCcOpen] = useState(false);
+  const bankRef = useRef<HTMLDivElement | null>(null);
+  const ccRef = useRef<HTMLDivElement | null>(null);
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (!bankOpen) return;
+    const onDocClick = (e: MouseEvent) => {
+      if (bankRef.current && e.target instanceof Node && !bankRef.current.contains(e.target)) setBankOpen(false);
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [bankOpen]);
+
+  useEffect(() => {
+    if (!ccOpen) return;
+    const onDocClick = (e: MouseEvent) => {
+      if (ccRef.current && e.target instanceof Node && !ccRef.current.contains(e.target)) setCcOpen(false);
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [ccOpen]);
 
   useEffect(() => { if (!loading && !user) navigate("/auth"); }, [user, loading, navigate]);
 
