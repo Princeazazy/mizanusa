@@ -104,7 +104,7 @@ export const DefioreProfitLossSheet = () => {
   // Professional Development (CC)
   const ccProfDev = sumCCByCategory(allCC, "Professional Development");
 
-  const totalOperatingExpenses = totalFuel + ccVehicleMaint + totalParkingTolls + ccParkingFines + ccFines + totalMeals + ccSoftware + totalInsurance + vehiclePayment + ccInterest + bankFees + bankOffice + totalPersonal + ccGovt + ccCardFees + ccProfDev;
+  const totalOperatingExpenses = totalFuel + ccVehicleMaint + totalParkingTolls + ccParkingFines + ccFines + totalMeals + ccSoftware + totalInsurance + vehiclePayment + ccInterest + bankFees + bankOffice + ccGovt + ccCardFees + ccProfDev;
 
   // Owner's Draw (not an expense on P&L but tracked)
   const ownersDrawBank = sumByCategory(allWithdrawals, "Owner's Draw");
