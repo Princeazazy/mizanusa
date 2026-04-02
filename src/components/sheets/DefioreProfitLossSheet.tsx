@@ -94,10 +94,6 @@ export const DefioreProfitLossSheet = () => {
   // Office Supplies (bank)
   const bankOffice = sumByCategory(allWithdrawals, "Office Supplies");
 
-  // Personal/Owner expenses from bank + CC
-  const ccPersonal = sumCCByCategory(allCC, "Personal Expense");
-  const bankPersonal = sumByCategory(allWithdrawals, "Personal Expense");
-  const totalPersonal = ccPersonal + bankPersonal;
 
   // Government/Permits from CC
   const ccGovt = sumCCByCategory(allCC, "Government / Permits");
