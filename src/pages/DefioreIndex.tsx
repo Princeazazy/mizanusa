@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, FileSpreadsheet, Presentation, Sparkles, Receipt, CreditCard } from "lucide-react";
+import { Download, FileSpreadsheet, Presentation, Sparkles, Receipt, CreditCard, TrendingUp, Scale, ArrowDownUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FuturisticSidebar } from "@/components/FuturisticSidebar";
 import { FuturisticHeader } from "@/components/FuturisticHeader";
 import { CheckingAccountSheet } from "@/components/sheets/CheckingAccountSheet";
 import { InvoicesSheet } from "@/components/sheets/InvoicesSheet";
 import { CreditCardStatementSheet } from "@/components/sheets/CreditCardStatementSheet";
+import { DefioreProfitLossSheet } from "@/components/sheets/DefioreProfitLossSheet";
+import { DefioreBalanceSheet } from "@/components/sheets/DefioreBalanceSheet";
+import { DefioreCashFlowSheet } from "@/components/sheets/DefioreCashFlowSheet";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
@@ -16,6 +19,7 @@ import defioreLogo from "@/assets/defiore-logo.png";
 import {
   januaryDeposits, januaryWithdrawals, januarySummary,
   februaryDeposits, februaryWithdrawals, februarySummary,
+  marchDeposits, marchWithdrawals, marchSummary,
 } from "@/data/defioreBankTransactions";
 import { defioreInvoices } from "@/data/defioreInvoices";
 import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/data/defioreCreditCardTransactions";
@@ -93,6 +97,18 @@ const DefioreIndex = () => {
                 <TabsTrigger value="invoices" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
                   <Receipt className="h-4 w-4" />Invoices
                 </TabsTrigger>
+                <TabsTrigger value="march" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <FileSpreadsheet className="h-4 w-4" />March 2026
+                </TabsTrigger>
+                <TabsTrigger value="pnl" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <TrendingUp className="h-4 w-4" />P&L Q1
+                </TabsTrigger>
+                <TabsTrigger value="balance-sheet" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <Scale className="h-4 w-4" />Balance Sheet
+                </TabsTrigger>
+                <TabsTrigger value="cash-flow" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <ArrowDownUp className="h-4 w-4" />Cash Flow
+                </TabsTrigger>
               </TabsList>
             </div>
 
@@ -115,6 +131,18 @@ const DefioreIndex = () => {
                 </TabsContent>
                 <TabsContent value="invoices" className="m-0">
                   <InvoicesSheet invoices={defioreInvoices} title="Defiore Carpentry LLC – Invoices" />
+                </TabsContent>
+                <TabsContent value="march" className="m-0">
+                  <CheckingAccountSheet month="March" year="2026" deposits={marchDeposits} withdrawals={marchWithdrawals} beginningBalance={marchSummary.beginningBalance} endingBalance={marchSummary.endingBalance} statementBalance={marchSummary.statementEndingBalance} />
+                </TabsContent>
+                <TabsContent value="pnl" className="m-0">
+                  <DefioreProfitLossSheet />
+                </TabsContent>
+                <TabsContent value="balance-sheet" className="m-0">
+                  <DefioreBalanceSheet />
+                </TabsContent>
+                <TabsContent value="cash-flow" className="m-0">
+                  <DefioreCashFlowSheet />
                 </TabsContent>
               </motion.div>
             </AnimatePresence>

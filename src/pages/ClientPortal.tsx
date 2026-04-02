@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Sparkles, LogOut, Eye, Printer, CreditCard } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Sparkles, LogOut, Eye, Printer, CreditCard, ArrowDownUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { exportToExcel } from "@/lib/exportToExcel";
 import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
@@ -19,6 +19,9 @@ import { BalanceSheetSheet } from "@/components/sheets/BalanceSheetSheet";
 import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
 import { InvoicesSheet } from "@/components/sheets/InvoicesSheet";
 import { CreditCardStatementSheet } from "@/components/sheets/CreditCardStatementSheet";
+import { DefioreProfitLossSheet } from "@/components/sheets/DefioreProfitLossSheet";
+import { DefioreBalanceSheet } from "@/components/sheets/DefioreBalanceSheet";
+import { DefioreCashFlowSheet } from "@/components/sheets/DefioreCashFlowSheet";
 import { useClientAuth } from "@/hooks/useClientAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
@@ -42,6 +45,9 @@ import {
   februaryDeposits,
   februaryWithdrawals,
   februarySummary,
+  marchDeposits,
+  marchWithdrawals,
+  marchSummary,
 } from "@/data/defioreBankTransactions";
 import { defioreInvoices } from "@/data/defioreInvoices";
 import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/data/defioreCreditCardTransactions";
@@ -88,7 +94,11 @@ const ClientPortal = () => {
       "cc-january": "Credit Cards – January 2026",
       "cc-february": "Credit Cards – February 2026",
       "cc-march": "Credit Cards – March 2026",
+      march: "March 2026 - Checking Account",
       invoices: "Invoices",
+      pnl: "Profit & Loss – Q1 2026",
+      "balance-sheet": "Balance Sheet – Q1 2026",
+      "cash-flow": "Cash Flow – Q1 2026",
       transfers: "Transfers",
       esafety: "PA eSafety",
       titlerevenue: "Title Revenue",
@@ -107,7 +117,7 @@ const ClientPortal = () => {
     if (loading || !session) return;
 
     const allowedTabs = isDefiore
-      ? new Set(["january", "february", "cc-january", "cc-february", "cc-march", "invoices"])
+      ? new Set(["january", "february", "march", "cc-january", "cc-february", "cc-march", "invoices", "pnl", "balance-sheet", "cash-flow"])
       : isCVS
         ? new Set([
             "dashboard",
@@ -452,6 +462,22 @@ const ClientPortal = () => {
                       <Receipt className="h-4 w-4" />
                       Invoices
                     </TabsTrigger>
+                    <TabsTrigger value="march" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <FileSpreadsheet className="h-4 w-4" />
+                      March 2026
+                    </TabsTrigger>
+                    <TabsTrigger value="pnl" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <TrendingUp className="h-4 w-4" />
+                      P&L Q1
+                    </TabsTrigger>
+                    <TabsTrigger value="balance-sheet" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <Scale className="h-4 w-4" />
+                      Balance Sheet
+                    </TabsTrigger>
+                    <TabsTrigger value="cash-flow" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <ArrowDownUp className="h-4 w-4" />
+                      Cash Flow
+                    </TabsTrigger>
                   </>
                 )}
                 
@@ -559,6 +585,18 @@ const ClientPortal = () => {
                       </TabsContent>
                       <TabsContent value="invoices" className="m-0">
                         <InvoicesSheet invoices={defioreInvoices} title="Defiore Carpentry LLC – Invoices" />
+                      </TabsContent>
+                      <TabsContent value="march" className="m-0">
+                        <CheckingAccountSheet month="March" year="2026" deposits={marchDeposits} withdrawals={marchWithdrawals} beginningBalance={marchSummary.beginningBalance} endingBalance={marchSummary.endingBalance} statementBalance={marchSummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="pnl" className="m-0">
+                        <DefioreProfitLossSheet />
+                      </TabsContent>
+                      <TabsContent value="balance-sheet" className="m-0">
+                        <DefioreBalanceSheet />
+                      </TabsContent>
+                      <TabsContent value="cash-flow" className="m-0">
+                        <DefioreCashFlowSheet />
                       </TabsContent>
                     </>
                   )}
