@@ -19,7 +19,7 @@ export const januaryDeposits: Transaction[] = [
   { date: "1/21", description: "Mobile Deposit : Ref Number :716210702249", coaCode: "4100", category: "Service Revenue", amount: 1200.00, type: "deposit" },
   { date: "1/21", description: "Mobile Deposit : Ref Number :516210700863", coaCode: "4100", category: "Service Revenue", amount: 1250.00, type: "deposit" },
   { date: "1/21", description: "Mobile Deposit : Ref Number :716210703227", coaCode: "4100", category: "Service Revenue", amount: 1400.00, type: "deposit" },
-  { date: "1/21", description: "Acorns Invest Transfer 012126", coaCode: "4900", category: "Other Income", amount: 5.00, type: "deposit" },
+  { date: "1/21", description: "Acorns Invest Transfer 012126", coaCode: "5900", category: "Personal Investment", amount: 5.00, type: "deposit" },
   { date: "1/23", description: "Paypal Transfer Defiore Carpentry LLC", coaCode: "4100", category: "Service Revenue", amount: 5790.11, type: "deposit" },
   { date: "1/23", description: "Online Transfer from Defiore A Everyday Checking", coaCode: "4900", category: "Other Income", amount: 100.00, type: "deposit" },
   { date: "1/26", description: "Online Transfer from Defiore A Everyday Checking", coaCode: "4900", category: "Other Income", amount: 700.00, type: "deposit" },
