@@ -17,7 +17,7 @@ export const DefioreBalanceSheet = () => {
   // Liabilities – credit card balances at end of March
   const capOneBalance = capitalOneMarch.newBalance;
   const amexPlatBalance = amexPlatinumMarch.newBalance;
-  const amexBlueBalance = amexBlueMarch.newBalance;
+  const amexBlueBalance = amexBlueCashMarch.newBalance;
   const totalCCLiabilities = capOneBalance + amexPlatBalance + amexBlueBalance;
   const totalLiabilities = totalCCLiabilities;
 
