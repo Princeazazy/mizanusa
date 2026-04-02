@@ -31,33 +31,43 @@ export const DefioreProfitLossSheet = () => {
   const allWithdrawals = [...januaryWithdrawals, ...februaryWithdrawals, ...marchWithdrawals];
   const allCC = [...januaryCreditCards, ...februaryCreditCards, ...marchCreditCards];
 
-  // REVENUE (from bank deposits)
+  // REVENUE (from bank deposits only)
   const serviceRevenue = sumByCode(allDeposits, "4100");
   const otherIncome = sumByCode(allDeposits, "4900");
   const totalRevenue = serviceRevenue + otherIncome;
 
-  // COST OF REVENUE / DIRECT COSTS
-  // Subcontractor labor from bank
+  // ─── COST OF REVENUE / DIRECT COSTS ───
   const subcontractorLabor = sumByCode(allWithdrawals, "5100");
-  // Materials from bank + CC
   const bankMaterials = sumByCode(allWithdrawals, "5200") + sumByCategory(allWithdrawals, "Materials & Supplies");
   const ccMaterials = sumCCByCode(allCC, "5200");
   const totalMaterials = bankMaterials + ccMaterials;
-  // Waste disposal from CC
   const ccWaste = sumCCByCategory(allCC, "Waste Disposal");
-  // Tools from CC
   const ccTools = sumCCByCategory(allCC, "Tools & Equipment");
-  // Uncategorized checks (likely job costs)
   const uncategorizedChecks = sumByCode(allWithdrawals, "5000");
 
   const totalCostOfRevenue = subcontractorLabor + totalMaterials + ccWaste + ccTools + uncategorizedChecks;
   const grossProfit = totalRevenue - totalCostOfRevenue;
 
-  // OPERATING EXPENSES
-  // Fuel & Gas (bank + CC)
+  // ─── OPERATING EXPENSES ───
+  // Fuel & Gas (bank + CC, only actual fuel category)
   const bankFuel = sumByCode(allWithdrawals, "5300");
-  const ccFuel = sumCCByCode(allCC, "5300");
-  const totalFuel = bankFuel + ccFuel;
+  const ccFuelOnly = sumCCByCategory(allCC, "Fuel & Gas");
+  const totalFuel = bankFuel + ccFuelOnly;
+
+  // Vehicle Maintenance (CC)
+  const ccVehicleMaint = sumCCByCategory(allCC, "Vehicle Maintenance");
+
+  // Parking & Tolls (CC)
+  const ccParking = sumCCByCategory(allCC, "Parking");
+  const ccTolls = sumCCByCategory(allCC, "Tolls");
+  const ccTransportation = sumCCByCategory(allCC, "Transportation");
+  const totalParkingTolls = ccParking + ccTolls + ccTransportation;
+
+  // Parking Fines (CC - Philadelphia Parking Authority)
+  const ccParkingFines = sumCCByCategory(allCC, "Parking / Fines");
+
+  // Fines & Penalties (CC)
+  const ccFines = sumCCByCategory(allCC, "Fines & Penalties");
 
   // Meals & Entertainment (bank + CC)
   const bankMeals = sumByCode(allWithdrawals, "5400");
@@ -67,31 +77,38 @@ export const DefioreProfitLossSheet = () => {
   // Software & Subscriptions (CC)
   const ccSoftware = sumCCByCode(allCC, "5500");
 
-  // Insurance (bank)
-  const insurance = sumByCode(allWithdrawals, "5600");
+  // Insurance (bank + CC)
+  const bankInsurance = sumByCode(allWithdrawals, "5600");
+  const ccInsurance = sumCCByCode(allCC, "5600");
+  const totalInsurance = bankInsurance + ccInsurance;
 
   // Vehicle Payment (bank)
   const vehiclePayment = sumByCode(allWithdrawals, "5700");
 
-  // CC Interest & Fees
+  // CC Interest & Fees (includes annual fees)
   const ccInterest = allCC.reduce((s, c) => s + c.interest + c.fees, 0);
 
   // Bank Fees
   const bankFees = sumByCategory(allWithdrawals, "Bank Fee");
 
-  // Office Supplies (bank + CC)
+  // Office Supplies (bank)
   const bankOffice = sumByCategory(allWithdrawals, "Office Supplies");
 
-  // Personal/Owner expenses from CC
+  // Personal/Owner expenses from bank + CC
   const ccPersonal = sumCCByCategory(allCC, "Personal Expense");
+  const bankPersonal = sumByCategory(allWithdrawals, "Personal Expense");
+  const totalPersonal = ccPersonal + bankPersonal;
 
   // Government/Permits from CC
   const ccGovt = sumCCByCategory(allCC, "Government / Permits");
 
-  // CC Fees from CC
+  // CC Reward Fees from CC
   const ccCardFees = sumCCByCategory(allCC, "Credit Card Fees");
 
-  const totalOperatingExpenses = totalFuel + totalMeals + ccSoftware + insurance + vehiclePayment + ccInterest + bankFees + bankOffice + ccPersonal + ccGovt + ccCardFees;
+  // Professional Development (CC)
+  const ccProfDev = sumCCByCategory(allCC, "Professional Development");
+
+  const totalOperatingExpenses = totalFuel + ccVehicleMaint + totalParkingTolls + ccParkingFines + ccFines + totalMeals + ccSoftware + totalInsurance + vehiclePayment + ccInterest + bankFees + bankOffice + totalPersonal + ccGovt + ccCardFees + ccProfDev;
 
   // Owner's Draw (not an expense on P&L but tracked)
   const ownersDrawBank = sumByCategory(allWithdrawals, "Owner's Draw");
@@ -135,7 +152,7 @@ export const DefioreProfitLossSheet = () => {
             <TableBody>
               <TableRow className="bg-green-500/10 font-semibold"><TableCell colSpan={3}>REVENUE</TableCell></TableRow>
               <Row label="Service Revenue" amount={serviceRevenue} indent code="4100" />
-              <Row label="Other Income (Transfers, Acorns, etc.)" amount={otherIncome} indent code="4900" />
+              <Row label="Other Income (Transfers, etc.)" amount={otherIncome} indent code="4900" />
               <TableRow className="border-t-2 font-bold bg-green-500/10">
                 <TableCell>Total Revenue</TableCell><TableCell /><TableCell className="text-right font-mono text-green-400">{fmt(totalRevenue)}</TableCell>
               </TableRow>
@@ -157,16 +174,21 @@ export const DefioreProfitLossSheet = () => {
 
               <TableRow className="bg-red-500/10 font-semibold"><TableCell colSpan={3}>OPERATING EXPENSES</TableCell></TableRow>
               <Row label="Fuel & Gas" amount={totalFuel} indent code="5300" />
+              <Row label="Vehicle Maintenance" amount={ccVehicleMaint} indent />
+              <Row label="Parking & Tolls" amount={totalParkingTolls} indent />
+              <Row label="Parking Fines" amount={ccParkingFines} indent />
               <Row label="Meals & Entertainment" amount={totalMeals} indent code="5400" />
               <Row label="Software & Subscriptions" amount={ccSoftware} indent code="5500" />
-              <Row label="Insurance" amount={insurance} indent code="5600" />
+              <Row label="Insurance" amount={totalInsurance} indent code="5600" />
               <Row label="Vehicle Payment" amount={vehiclePayment} indent code="5700" />
               <Row label="Credit Card Interest & Fees" amount={ccInterest} indent />
               <Row label="Bank Fees" amount={bankFees} indent />
               <Row label="Office Supplies" amount={bankOffice} indent />
-              <Row label="Personal Expenses (CC)" amount={ccPersonal} indent code="5900" />
+              <Row label="Personal Expenses" amount={totalPersonal} indent code="5900" />
               <Row label="Government / Permits" amount={ccGovt} indent />
               <Row label="Credit Card Reward Fees" amount={ccCardFees} indent />
+              <Row label="Professional Development" amount={ccProfDev} indent />
+              <Row label="Fines & Penalties" amount={ccFines} indent />
               <TableRow className="border-t-2 font-bold bg-red-500/10">
                 <TableCell>Total Operating Expenses</TableCell><TableCell /><TableCell className="text-right font-mono text-red-400">({fmt(totalOperatingExpenses)})</TableCell>
               </TableRow>
