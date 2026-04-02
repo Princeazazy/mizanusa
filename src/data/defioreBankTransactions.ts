@@ -5,7 +5,7 @@ export const januaryDeposits: Transaction[] = [
   { date: "1/2", description: "Subscription Acorns 010226", coaCode: "5900", category: "Personal Investment", amount: 12.00, type: "deposit" },
   { date: "1/5", description: "Mobile Deposit : Ref Number :217050591263", coaCode: "4100", category: "Service Revenue", amount: 1000.00, type: "deposit" },
   { date: "1/5", description: "Mobile Deposit : Ref Number :317050592585", coaCode: "4100", category: "Service Revenue", amount: 20000.00, type: "deposit" },
-  { date: "1/6", description: "Acorns Invest Transfer 010626", coaCode: "4900", category: "Other Income", amount: 5.00, type: "deposit" },
+  { date: "1/6", description: "Acorns Invest Transfer 010626", coaCode: "5900", category: "Personal Investment", amount: 5.00, type: "deposit" },
   { date: "1/9", description: "Direct Pay Monthly Base", coaCode: "4900", category: "Other Income", amount: 10.00, type: "deposit" },
   { date: "1/12", description: "Online Transfer Week 1 Self Payment 2026", coaCode: "4900", category: "Other Income", amount: 700.00, type: "deposit" },
   { date: "1/12", description: "Online Transfer from Defiore A Everyday Checking", coaCode: "4900", category: "Other Income", amount: 67.22, type: "deposit" },
