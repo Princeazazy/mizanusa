@@ -97,6 +97,18 @@ const DefioreIndex = () => {
                 <TabsTrigger value="invoices" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
                   <Receipt className="h-4 w-4" />Invoices
                 </TabsTrigger>
+                <TabsTrigger value="march" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <FileSpreadsheet className="h-4 w-4" />March 2026
+                </TabsTrigger>
+                <TabsTrigger value="pnl" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <TrendingUp className="h-4 w-4" />P&L Q1
+                </TabsTrigger>
+                <TabsTrigger value="balance-sheet" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <Scale className="h-4 w-4" />Balance Sheet
+                </TabsTrigger>
+                <TabsTrigger value="cash-flow" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <ArrowDownUp className="h-4 w-4" />Cash Flow
+                </TabsTrigger>
               </TabsList>
             </div>
 
