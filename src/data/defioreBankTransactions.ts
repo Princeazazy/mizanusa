@@ -24,7 +24,7 @@ export const januaryDeposits: Transaction[] = [
   { date: "1/23", description: "Online Transfer from Defiore A Everyday Checking", coaCode: "4900", category: "Other Income", amount: 100.00, type: "deposit" },
   { date: "1/26", description: "Online Transfer from Defiore A Everyday Checking", coaCode: "4900", category: "Other Income", amount: 700.00, type: "deposit" },
   { date: "1/27", description: "Online Transfer to BusinessLine Line of Credit", coaCode: "4900", category: "Other Income", amount: 686.00, type: "deposit" },
-  { date: "1/27", description: "Acorns Invest Transfer 012726", coaCode: "4900", category: "Other Income", amount: 5.00, type: "deposit" },
+  { date: "1/27", description: "Acorns Invest Transfer 012726", coaCode: "5900", category: "Personal Investment", amount: 5.00, type: "deposit" },
 ];
 
 export const januaryWithdrawals: Transaction[] = [
