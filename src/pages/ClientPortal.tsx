@@ -458,7 +458,7 @@ const ClientPortal = () => {
             <Button 
               variant="outline" 
               className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
-              onClick={handlePrint}
+              onClick={handleDownloadPDF}
             >
               <FileDown className="h-4 w-4" />
               Download PDF
