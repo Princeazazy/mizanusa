@@ -142,7 +142,7 @@ export const DefioreProfitLossSheet = () => {
               Defiore Carpentry LLC
             </CardTitle>
             <p className="text-sm font-semibold text-foreground">Profit & Loss Statement</p>
-            <p className="text-sm text-muted-foreground">For the Three Months Ended March 31, 2026</p>
+            <p className="text-sm text-muted-foreground">Quarter 1, 2026 — January 1, 2026 – March 31, 2026</p>
           </div>
         </CardHeader>
         <CardContent className="p-0">
