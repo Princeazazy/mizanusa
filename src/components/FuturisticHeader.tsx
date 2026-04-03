@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import mizanLogo from "@/assets/mizan-logo-new.png";
 
 interface FuturisticHeaderProps {
   title: string;
