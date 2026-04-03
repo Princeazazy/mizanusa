@@ -174,17 +174,17 @@ const ClientPortal = () => {
           <title>${getTabLabel(activeTab)} - ${clientName}</title>
           <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { font-family: system-ui, -apple-system, sans-serif; padding: 24px 28px; color: hsl(${printTheme.foreground}); background: hsl(${printTheme.background}); }
-            .header { text-align: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid hsl(${printTheme.border}); }
-            .header h1 { font-size: 24px; color: hsl(${printTheme.foreground}); margin-bottom: 4px; }
-            .header p { font-size: 14px; color: hsl(${printTheme.mutedForeground}); }
+            body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; padding: 32px 36px; color: #1a1a2e; background: #ffffff; }
+            .header { text-align: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 3px solid #0d9488; }
+            .header h1 { font-size: 22px; color: #0d9488; margin-bottom: 4px; font-weight: 700; letter-spacing: 0.5px; }
+            .header p { font-size: 13px; color: #475569; }
             .header-logos {
               display: grid;
               grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
               align-items: center;
-              column-gap: 18px;
-              width: min(100%, 620px);
-              margin: 0 auto 16px;
+              column-gap: 20px;
+              width: min(100%, 640px);
+              margin: 0 auto 20px;
             }
             .logo-slot {
               display: flex;
@@ -195,33 +195,45 @@ const ClientPortal = () => {
             .logo-slot--right { justify-content: flex-start; }
             .logo-slot img {
               display: block;
-              width: min(100%, 240px);
-              height: 78px;
+              max-width: 220px;
+              height: 100px;
               object-fit: contain;
               object-position: center;
             }
             .logo-slot .mizan-logo {
-              width: min(100%, 280px);
-              height: 92px;
+              max-width: 220px;
+              height: 100px;
             }
             .divider {
               display: flex;
               align-items: center;
               justify-content: center;
-              width: 32px;
-              height: 78px;
-              font-size: 28px;
+              width: 36px;
+              height: 100px;
+              font-size: 30px;
+              font-weight: 300;
               line-height: 1;
-              color: hsl(${printTheme.mutedForeground});
+              color: #0d9488;
             }
-            table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-            th, td { border: 1px solid hsl(${printTheme.border}); padding: 8px 12px; text-align: left; font-size: 12px; }
-            th { background: hsl(${printTheme.muted}); font-weight: 600; }
-            tr:nth-child(even) { background: hsl(${printTheme.muted} / 0.45); }
-            .card { border: 1px solid hsl(${printTheme.border}); background: hsl(${printTheme.card}); border-radius: 8px; padding: 16px; margin: 12px 0; }
-            h2, h3, h4 { margin: 16px 0 8px; }
+            table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+            th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; font-size: 12px; color: #1e293b; }
+            th { background: linear-gradient(135deg, #0d9488, #14b8a6); color: #ffffff; font-weight: 600; letter-spacing: 0.3px; }
+            tr:nth-child(even) { background: #f0fdfa; }
+            tr:hover { background: #ccfbf1; }
+            .card { border: 1px solid #99f6e4; background: #f0fdfa; border-radius: 10px; padding: 16px; margin: 12px 0; }
+            h2, h3, h4 { margin: 16px 0 8px; color: #0d9488; }
+            .font-semibold { font-weight: 600; }
+            .font-bold { font-weight: 700; }
+            .font-mono { font-family: 'SF Mono', 'Consolas', monospace; }
+            .text-destructive, [style*="color: red"], .text-red-500 { color: #dc2626 !important; }
+            .border-t-2 { border-top: 2px solid #0d9488 !important; }
+            .border-t-4, .border-double { border-top: 4px double #0d9488 !important; }
+            .uppercase { text-transform: uppercase; }
+            .tracking-wide { letter-spacing: 0.05em; }
             @media print {
               body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+              th { background: linear-gradient(135deg, #0d9488, #14b8a6) !important; color: #ffffff !important; }
+              tr:nth-child(even) { background: #f0fdfa !important; }
             }
           </style>
         </head>
