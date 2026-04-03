@@ -227,15 +227,6 @@ export const CashFlowSheet = () => {
         </CardContent>
       </Card>
 
-      <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-        <h4 className="font-semibold text-primary mb-2">Cash Flow Notes</h4>
-        <ul className="text-sm text-muted-foreground space-y-1">
-          <li>• This statement uses the direct method of reporting operating cash flows</li>
-          <li>• Inter-account transfers between checking and savings are excluded as they don't affect total cash</li>
-          <li>• No significant investing or financing activities during Q4 2025</li>
-          <li>• Ending cash balance represents TruMark checking account only (savings shown separately on Balance Sheet)</li>
-        </ul>
-      </div>
     </div>
   );
 };

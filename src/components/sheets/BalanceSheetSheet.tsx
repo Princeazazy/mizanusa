@@ -115,15 +115,6 @@ export const BalanceSheetSheet = () => {
         </CardContent>
       </Card>
 
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-        <h4 className="font-semibold text-amber-800 mb-2">Balance Sheet Notes</h4>
-        <ul className="text-sm text-amber-700 space-y-1">
-          <li>• Only verified bank statement balances are shown</li>
-          <li>• Additional assets (savings accounts, inventory, equipment) require documentation to be added</li>
-          <li>• Liabilities require documentation to be recorded</li>
-          <li>• Owner's equity/capital contributions require documentation to be recorded</li>
-        </ul>
-      </div>
     </div>
   );
 };
