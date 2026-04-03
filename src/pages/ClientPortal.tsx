@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Sparkles, LogOut, Eye, Printer, CreditCard, ArrowDownUp } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Sparkles, LogOut, Eye, Printer, CreditCard, ArrowDownUp, FileDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { exportToExcel } from "@/lib/exportToExcel";
 import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
@@ -401,7 +401,7 @@ const ClientPortal = () => {
           </div>
 
           {/* Action buttons - only exports */}
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center gap-3 mb-8 flex-wrap">
             <Button 
               variant="outline" 
               className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
@@ -409,6 +409,14 @@ const ClientPortal = () => {
             >
               <Printer className="h-4 w-4" />
               Print {getTabLabel(isDefiore && activeTab === "reconciliation" ? "january" : activeTab)}
+            </Button>
+            <Button 
+              variant="outline" 
+              className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
+              onClick={handlePrint}
+            >
+              <FileDown className="h-4 w-4" />
+              Download PDF
             </Button>
             <Button 
               variant="outline" 
