@@ -156,6 +156,17 @@ const ClientPortal = () => {
     }
 
     const activeClientLogo = isDefiore ? defioreLogo : cvsLogo;
+    const rootStyles = getComputedStyle(document.documentElement);
+    const printTheme = {
+      background: rootStyles.getPropertyValue("--background").trim() || "0 0% 100%",
+      foreground: rootStyles.getPropertyValue("--foreground").trim() || "222.2 84% 4.9%",
+      muted: rootStyles.getPropertyValue("--muted").trim() || "210 40% 96.1%",
+      mutedForeground: rootStyles.getPropertyValue("--muted-foreground").trim() || "215.4 16.3% 46.9%",
+      border: rootStyles.getPropertyValue("--border").trim() || "214.3 31.8% 91.4%",
+      primary: rootStyles.getPropertyValue("--primary").trim() || "187 92% 38%",
+      card: rootStyles.getPropertyValue("--card").trim() || "0 0% 100%",
+    };
+
     printWindow.document.write(`
       <!DOCTYPE html>
       <html>
@@ -163,19 +174,51 @@ const ClientPortal = () => {
           <title>${getTabLabel(activeTab)} - ${clientName}</title>
           <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { font-family: system-ui, -apple-system, sans-serif; padding: 20px; color: #1a1a1a; }
-            .header { text-align: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid #0891b2; }
-            .header h1 { font-size: 24px; color: #0891b2; margin-bottom: 4px; }
-            .header p { font-size: 14px; color: #666; }
-            .header-logos { display: flex; justify-content: center; align-items: center; gap: 24px; margin-bottom: 16px; }
-            .header-logos img { height: 60px; object-fit: contain; }
-            .header-logos .mizan-logo { height: 60px; object-fit: contain; }
-            .header-logos .divider { font-size: 20px; color: #ccc; }
+            body { font-family: system-ui, -apple-system, sans-serif; padding: 24px 28px; color: hsl(${printTheme.foreground}); background: hsl(${printTheme.background}); }
+            .header { text-align: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid hsl(${printTheme.border}); }
+            .header h1 { font-size: 24px; color: hsl(${printTheme.foreground}); margin-bottom: 4px; }
+            .header p { font-size: 14px; color: hsl(${printTheme.mutedForeground}); }
+            .header-logos {
+              display: grid;
+              grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+              align-items: center;
+              column-gap: 18px;
+              width: min(100%, 620px);
+              margin: 0 auto 16px;
+            }
+            .logo-slot {
+              display: flex;
+              align-items: center;
+              min-width: 0;
+            }
+            .logo-slot--left { justify-content: flex-end; }
+            .logo-slot--right { justify-content: flex-start; }
+            .logo-slot img {
+              display: block;
+              width: min(100%, 240px);
+              height: 78px;
+              object-fit: contain;
+              object-position: center;
+            }
+            .logo-slot .mizan-logo {
+              width: min(100%, 280px);
+              height: 92px;
+            }
+            .divider {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 78px;
+              font-size: 28px;
+              line-height: 1;
+              color: hsl(${printTheme.mutedForeground});
+            }
             table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-            th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; font-size: 12px; }
-            th { background: #f5f5f5; font-weight: 600; }
-            tr:nth-child(even) { background: #fafafa; }
-            .card { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 12px 0; }
+            th, td { border: 1px solid hsl(${printTheme.border}); padding: 8px 12px; text-align: left; font-size: 12px; }
+            th { background: hsl(${printTheme.muted}); font-weight: 600; }
+            tr:nth-child(even) { background: hsl(${printTheme.muted} / 0.45); }
+            .card { border: 1px solid hsl(${printTheme.border}); background: hsl(${printTheme.card}); border-radius: 8px; padding: 16px; margin: 12px 0; }
             h2, h3, h4 { margin: 16px 0 8px; }
             @media print {
               body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
@@ -185,13 +228,17 @@ const ClientPortal = () => {
         <body>
           <div class="header">
             <div class="header-logos">
-              <img src="${window.location.origin}/mizan-logo-brand.png" alt="Mizan USA" class="mizan-logo" />
+              <div class="logo-slot logo-slot--left">
+                <img src="${window.location.origin}/mizan-logo-brand.png" alt="Mizan USA" class="mizan-logo" />
+              </div>
               <span class="divider">×</span>
-              <img src="${activeClientLogo}" alt="${clientName}" />
+              <div class="logo-slot logo-slot--right">
+                <img src="${activeClientLogo}" alt="${clientName}" />
+              </div>
             </div>
             <h1>${getTabLabel(activeTab)}</h1>
             <p>${clientName}</p>
-            <p style="margin-top: 4px; font-size: 12px; color: #888;">Printed on ${new Date().toLocaleDateString()}</p>
+            <p style="margin-top: 4px; font-size: 12px; color: hsl(${printTheme.mutedForeground});">Printed on ${new Date().toLocaleDateString()}</p>
           </div>
           ${printContent.innerHTML}
         </body>
