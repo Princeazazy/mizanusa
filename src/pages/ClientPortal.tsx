@@ -156,6 +156,7 @@ const ClientPortal = () => {
     }
 
     const activeClientLogo = isDefiore ? defioreLogo : cvsLogo;
+    const printMizanLogo = `${window.location.origin}/mizan-logo-brand-cropped.png`;
     const rootStyles = getComputedStyle(document.documentElement);
     const printTheme = {
       background: rootStyles.getPropertyValue("--background").trim() || "0 0% 100%",
@@ -180,40 +181,50 @@ const ClientPortal = () => {
             .header p { font-size: 13px; color: #475569; }
             .header-logos {
               display: grid;
-              grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+              grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
               align-items: center;
-              column-gap: 20px;
-              width: min(100%, 640px);
-              margin: 0 auto 20px;
+              width: min(100%, 760px);
+              margin: 0 auto 24px;
             }
             .logo-slot {
               display: flex;
               align-items: center;
               min-width: 0;
             }
-            .logo-slot--left { justify-content: flex-end; }
-            .logo-slot--right { justify-content: flex-start; }
+            .logo-slot--left {
+              justify-content: flex-end;
+              padding-right: 10px;
+            }
+            .logo-slot--right {
+              justify-content: flex-start;
+              padding-left: 10px;
+            }
             .logo-slot img {
               display: block;
-              max-width: 220px;
-              height: 100px;
+              width: auto;
+              max-width: min(100%, 300px);
               object-fit: contain;
               object-position: center;
             }
             .logo-slot .mizan-logo {
-              max-width: 220px;
-              height: 100px;
+              max-width: 320px;
+              height: 136px;
+            }
+            .logo-slot .client-logo {
+              max-width: 240px;
+              height: 112px;
             }
             .divider {
               display: flex;
               align-items: center;
               justify-content: center;
-              width: 36px;
-              height: 100px;
-              font-size: 30px;
+              width: 72px;
+              height: 136px;
+              font-size: 38px;
               font-weight: 300;
               line-height: 1;
               color: #0d9488;
+              transform: translateY(-2px);
             }
             table { width: 100%; border-collapse: collapse; margin: 12px 0; }
             th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; font-size: 12px; color: #1e293b; }
@@ -241,11 +252,11 @@ const ClientPortal = () => {
           <div class="header">
             <div class="header-logos">
               <div class="logo-slot logo-slot--left">
-                <img src="${window.location.origin}/mizan-logo-brand.png" alt="Mizan USA" class="mizan-logo" />
+                <img src="${printMizanLogo}" alt="Mizan USA" class="mizan-logo" />
               </div>
               <span class="divider">×</span>
               <div class="logo-slot logo-slot--right">
-                <img src="${activeClientLogo}" alt="${clientName}" />
+                <img src="${activeClientLogo}" alt="${clientName}" class="client-logo" />
               </div>
             </div>
             <h1>${getTabLabel(activeTab)}</h1>
