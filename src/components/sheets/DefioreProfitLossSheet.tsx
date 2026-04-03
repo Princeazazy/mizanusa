@@ -199,14 +199,6 @@ export const DefioreProfitLossSheet = () => {
         </CardContent>
       </Card>
 
-      {/* Owner's Draw footnote */}
-      <Card className="glass-card border-border/50">
-        <CardContent className="pt-4 pb-4">
-          <p className="text-xs text-muted-foreground italic">
-            <span className="font-semibold not-italic text-foreground">Note:</span> Owner's Draws of {fmt(totalOwnerDraws)} are excluded from this statement. Draws reduce owner's equity and are not operating expenses.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 };

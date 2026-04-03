@@ -129,15 +129,6 @@ export const DefioreCashFlowSheet = () => {
         </CardContent>
       </Card>
 
-      <div className="glass-card p-4 border-primary/20">
-        <h4 className="font-semibold text-primary mb-2">Cash Flow Notes</h4>
-        <ul className="text-sm text-muted-foreground space-y-1">
-          <li>• Direct method — tracks actual cash in/out from the Wells Fargo business checking account</li>
-          <li>• Credit card purchases are NOT shown here (non-cash); they appear on the P&L via CC statements</li>
-          <li>• CC payments from checking are classified under Financing Activities</li>
-          <li>• Owner's draws reduce cash but are not operating expenses</li>
-        </ul>
-      </div>
     </div>
   );
 };

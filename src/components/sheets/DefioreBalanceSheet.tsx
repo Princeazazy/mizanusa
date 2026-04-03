@@ -85,15 +85,6 @@ export const DefioreBalanceSheet = () => {
         </CardContent>
       </Card>
 
-      <div className="glass-card p-4 border-primary/20">
-        <h4 className="font-semibold text-primary mb-2">Balance Sheet Notes</h4>
-        <ul className="text-sm text-muted-foreground space-y-1">
-          <li>• Only verified bank statement and credit card balances are shown</li>
-          <li>• Business savings account, equipment, and vehicles are not included (require documentation)</li>
-          <li>• Line of credit balance not shown (requires full statement)</li>
-          <li>• Owner's equity reflects net of assets minus liabilities</li>
-        </ul>
-      </div>
     </div>
   );
 };
