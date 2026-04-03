@@ -93,9 +93,13 @@ export const FuturisticHeader = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col">
         {clientLogo && (
-          <img src={clientLogo} alt={clientName || "Client"} className="h-14 w-auto object-contain" />
+          <div className="flex items-center justify-center gap-4 mb-3">
+            <img src={mizanLogo} alt="Mizan" className="h-14 w-auto object-contain" />
+            <span className="text-muted-foreground text-xl font-light">×</span>
+            <img src={clientLogo} alt={clientName || "Client"} className="h-14 w-auto object-contain" />
+          </div>
         )}
         <div>
           <h1 className="text-3xl font-bold text-foreground tracking-tight">
