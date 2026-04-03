@@ -297,12 +297,48 @@ const ClientPortal = () => {
       const html2canvas = (await import("html2canvas")).default;
       const { jsPDF } = await import("jspdf");
 
-      const canvas = await html2canvas(printContent, {
+      const activeClientLogo = isDefiore ? defioreLogo : cvsLogo;
+      const mizanLogo = `${window.location.origin}/mizan-logo-brand-cropped.png`;
+
+      // Create a temporary container with branded header + content
+      const container = document.createElement("div");
+      container.style.cssText = "position:absolute;left:-9999px;top:0;width:900px;background:#fff;padding:32px 36px;font-family:'Segoe UI',system-ui,sans-serif;color:#1a1a2e;";
+      container.innerHTML = `
+        <div style="text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:3px solid #0d9488;">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr);align-items:center;width:min(100%,760px);margin:0 auto 24px;">
+            <div style="display:flex;align-items:center;justify-content:flex-end;padding-right:10px;">
+              <img src="${mizanLogo}" alt="Mizan USA" style="height:136px;max-width:320px;width:auto;object-fit:contain;" crossorigin="anonymous" />
+            </div>
+            <span style="display:flex;align-items:center;justify-content:center;width:72px;height:136px;font-size:38px;font-weight:300;color:#0d9488;">×</span>
+            <div style="display:flex;align-items:center;justify-content:flex-start;padding-left:10px;">
+              <img src="${activeClientLogo}" alt="${clientName}" style="height:112px;max-width:240px;width:auto;object-fit:contain;" crossorigin="anonymous" />
+            </div>
+          </div>
+          <h1 style="font-size:22px;color:#0d9488;margin-bottom:4px;font-weight:700;letter-spacing:0.5px;">${getTabLabel(isDefiore && activeTab === "reconciliation" ? "january" : activeTab)}</h1>
+          <p style="font-size:13px;color:#475569;">${clientName}</p>
+          <p style="margin-top:4px;font-size:12px;color:#94a3b8;">Generated on ${new Date().toLocaleDateString()}</p>
+        </div>
+      `;
+
+      // Clone the tab content into the container
+      const contentClone = printContent.cloneNode(true) as HTMLElement;
+      container.appendChild(contentClone);
+      document.body.appendChild(container);
+
+      // Wait for logos to load
+      const imgs = Array.from(container.querySelectorAll("img"));
+      await Promise.all(imgs.map(img =>
+        img.complete ? Promise.resolve() : new Promise<void>(r => { img.onload = () => r(); img.onerror = () => r(); })
+      ));
+
+      const canvas = await html2canvas(container, {
         scale: 2,
         useCORS: true,
         backgroundColor: "#ffffff",
         logging: false,
       });
+
+      document.body.removeChild(container);
 
       const imgData = canvas.toDataURL("image/png");
       const imgWidth = 210; // A4 width in mm
