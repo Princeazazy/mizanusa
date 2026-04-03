@@ -287,6 +287,51 @@ const ClientPortal = () => {
     });
   };
 
+  const handleDownloadPDF = async () => {
+    const printContent = printRef.current;
+    if (!printContent) return;
+
+    toast({ title: "Generating PDF…", description: "Please wait a moment." });
+
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const { jsPDF } = await import("jspdf");
+
+      const canvas = await html2canvas(printContent, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 297; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      const pdf = new jsPDF("p", "mm", "a4");
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position -= pageHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      const tabLabel = getTabLabel(isDefiore && activeTab === "reconciliation" ? "january" : activeTab);
+      const fileName = `${clientName}_${tabLabel.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`;
+      pdf.save(fileName);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      toast({ title: "PDF Failed", description: "Could not generate PDF. Try using Print instead.", variant: "destructive" });
+    }
+  };
+
   useEffect(() => {
     if (!q4Open) return;
     const onDocClick = (e: MouseEvent) => {
@@ -413,7 +458,7 @@ const ClientPortal = () => {
             <Button 
               variant="outline" 
               className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
-              onClick={handlePrint}
+              onClick={handleDownloadPDF}
             >
               <FileDown className="h-4 w-4" />
               Download PDF
