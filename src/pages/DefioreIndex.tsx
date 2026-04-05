@@ -26,7 +26,7 @@ import { defioreInvoices } from "@/data/defioreInvoices";
 import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/data/defioreCreditCardTransactions";
 
 const DefioreIndex = () => {
-  const [activeTab, setActiveTab] = useState("january");
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [bankOpen, setBankOpen] = useState(false);
   const [ccOpen, setCcOpen] = useState(false);
   const bankRef = useRef<HTMLDivElement | null>(null);
