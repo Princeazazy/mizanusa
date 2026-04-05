@@ -102,6 +102,9 @@ const DefioreIndex = () => {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <div className="glass-card p-1.5 mb-8">
               <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-transparent p-0">
+                <TabsTrigger value="dashboard" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <LayoutDashboard className="h-4 w-4" />Dashboard
+                </TabsTrigger>
                 {/* Bank Statements Dropdown */}
                 <div className="relative" ref={bankRef}>
                   <TabsTrigger
