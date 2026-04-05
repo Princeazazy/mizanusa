@@ -24,16 +24,16 @@ export const DefioreBalanceSheet = () => {
   const totalEquity = totalAssets - totalLiabilities;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">Balance Sheet</h2>
-        <p className="text-muted-foreground">Defiore Carpentry LLC — As of March 31, 2026</p>
+    <div className="space-y-6 print-compact-bs">
+      <div className="print:mb-1">
+        <h2 className="text-2xl font-bold text-foreground print:text-base">Balance Sheet</h2>
+        <p className="text-muted-foreground print:text-xs">Defiore Carpentry LLC — As of March 31, 2026</p>
       </div>
 
       <Card className="glass-card border-primary/20">
-        <CardHeader className="bg-primary/5 border-b border-primary/10">
-          <CardTitle className="flex items-center gap-2 text-primary">
-            <Building2 className="h-5 w-5" />
+        <CardHeader className="bg-primary/5 border-b border-primary/10 print:py-2">
+          <CardTitle className="flex items-center gap-2 text-primary print:text-sm">
+            <Building2 className="h-5 w-5 print:h-4 print:w-4" />
             Statement of Financial Position
           </CardTitle>
         </CardHeader>
@@ -41,8 +41,8 @@ export const DefioreBalanceSheet = () => {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/30">
-                <TableHead className="w-2/3">Account</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
+                <TableHead className="w-2/3 print:text-[10px] print:py-1">Account</TableHead>
+                <TableHead className="text-right print:text-[10px] print:py-1">Amount</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
