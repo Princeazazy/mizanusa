@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, FileSpreadsheet, Presentation, Sparkles, Receipt, CreditCard, TrendingUp, Scale, ArrowDownUp } from "lucide-react";
+import { Download, FileSpreadsheet, Presentation, Sparkles, Receipt, CreditCard, TrendingUp, Scale, ArrowDownUp, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FuturisticSidebar } from "@/components/FuturisticSidebar";
 import { FuturisticHeader } from "@/components/FuturisticHeader";
@@ -12,6 +12,7 @@ import { CreditCardStatementSheet } from "@/components/sheets/CreditCardStatemen
 import { DefioreProfitLossSheet } from "@/components/sheets/DefioreProfitLossSheet";
 import { DefioreBalanceSheet } from "@/components/sheets/DefioreBalanceSheet";
 import { DefioreCashFlowSheet } from "@/components/sheets/DefioreCashFlowSheet";
+import { DefioreDashboardSheet } from "@/components/sheets/DefioreDashboardSheet";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
@@ -25,7 +26,7 @@ import { defioreInvoices } from "@/data/defioreInvoices";
 import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/data/defioreCreditCardTransactions";
 
 const DefioreIndex = () => {
-  const [activeTab, setActiveTab] = useState("january");
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [bankOpen, setBankOpen] = useState(false);
   const [ccOpen, setCcOpen] = useState(false);
   const bankRef = useRef<HTMLDivElement | null>(null);
@@ -101,6 +102,9 @@ const DefioreIndex = () => {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <div className="glass-card p-1.5 mb-8">
               <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-transparent p-0">
+                <TabsTrigger value="dashboard" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <LayoutDashboard className="h-4 w-4" />Dashboard
+                </TabsTrigger>
                 {/* Bank Statements Dropdown */}
                 <div className="relative" ref={bankRef}>
                   <TabsTrigger
@@ -194,6 +198,9 @@ const DefioreIndex = () => {
 
             <AnimatePresence mode="wait">
               <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
+                <TabsContent value="dashboard" className="m-0">
+                  <DefioreDashboardSheet />
+                </TabsContent>
                 <TabsContent value="january" className="m-0">
                   <CheckingAccountSheet month="January" year="2026" deposits={januaryDeposits} withdrawals={januaryWithdrawals} beginningBalance={januarySummary.beginningBalance} endingBalance={januarySummary.endingBalance} statementBalance={januarySummary.statementEndingBalance} />
                 </TabsContent>

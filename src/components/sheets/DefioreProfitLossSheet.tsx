@@ -105,7 +105,7 @@ export const DefioreProfitLossSheet = () => {
   // ═══════════════════════════════════════
   const SectionHeader = ({ children }: { children: string }) => (
     <TableRow className="border-b border-border">
-      <TableCell colSpan={2} className="font-bold text-sm text-foreground pt-4 pb-1 uppercase tracking-wide">
+      <TableCell colSpan={2} className="font-bold text-sm text-foreground pt-4 pb-1 uppercase tracking-wide print:text-[10px] print:pt-1 print:pb-0">
         {children}
       </TableCell>
     </TableRow>
@@ -113,10 +113,10 @@ export const DefioreProfitLossSheet = () => {
 
   const LineItem = ({ label, amount, indent = false, bold = false }: { label: string; amount: number; indent?: boolean; bold?: boolean }) => (
     <TableRow className="border-0">
-      <TableCell className={`py-1 ${indent ? "pl-10" : "pl-6"} ${bold ? "font-semibold" : ""}`}>
+      <TableCell className={`py-1 print:py-0 print:text-[10px] ${indent ? "pl-10 print:pl-6" : "pl-6 print:pl-4"} ${bold ? "font-semibold" : ""}`}>
         {label}
       </TableCell>
-      <TableCell className={`py-1 text-right font-mono ${bold ? "font-semibold" : ""}`}>
+      <TableCell className={`py-1 print:py-0 print:text-[10px] text-right font-mono ${bold ? "font-semibold" : ""}`}>
         {fmt(amount)}
       </TableCell>
     </TableRow>
@@ -124,25 +124,25 @@ export const DefioreProfitLossSheet = () => {
 
   const TotalLine = ({ label, amount, isGrand = false, borderStyle = "single" }: { label: string; amount: number; isGrand?: boolean; borderStyle?: "single" | "double" }) => (
     <TableRow className={`${borderStyle === "double" ? "border-t-4 border-double" : "border-t-2"} border-border`}>
-      <TableCell className={`py-2 pl-6 ${isGrand ? "font-bold text-base" : "font-semibold"}`}>
+      <TableCell className={`py-2 print:py-0.5 print:text-[10px] pl-6 print:pl-4 ${isGrand ? "font-bold text-base print:text-xs" : "font-semibold"}`}>
         {label}
       </TableCell>
-      <TableCell className={`py-2 text-right font-mono ${isGrand ? "font-bold text-base" : "font-semibold"} ${amount < 0 ? "text-destructive" : ""}`}>
+      <TableCell className={`py-2 print:py-0.5 print:text-[10px] text-right font-mono ${isGrand ? "font-bold text-base print:text-xs" : "font-semibold"} ${amount < 0 ? "text-destructive" : ""}`}>
         {amount < 0 ? `(${fmt(Math.abs(amount))})` : fmt(amount)}
       </TableCell>
     </TableRow>
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 print-compact-pnl">
       <Card className="glass-card border-primary/20">
-        <CardHeader className="border-b border-border pb-4">
-          <div className="text-center space-y-1">
-            <CardTitle className="text-lg font-bold text-foreground">
+        <CardHeader className="border-b border-border pb-4 print:pb-1">
+          <div className="text-center space-y-1 print:space-y-0">
+            <CardTitle className="text-lg font-bold text-foreground print:text-sm">
               Defiore Carpentry LLC
             </CardTitle>
-            <p className="text-sm font-semibold text-foreground">Profit & Loss Statement</p>
-            <p className="text-sm text-muted-foreground">Quarter 1, 2026 — January 1, 2026 – March 31, 2026</p>
+            <p className="text-sm font-semibold text-foreground print:text-xs">Profit & Loss Statement</p>
+            <p className="text-sm text-muted-foreground print:text-xs">Quarter 1, 2026 — January 1, 2026 – March 31, 2026</p>
           </div>
         </CardHeader>
         <CardContent className="p-0">

@@ -503,6 +503,21 @@
   }
 }
 
+@media print {
+  .print-compact-pnl table,
+  .print-compact-bs table,
+  .print-compact-cf table {
+    font-size: 10px;
+  }
+  
+  .print-compact-pnl,
+  .print-compact-bs,
+  .print-compact-cf {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
