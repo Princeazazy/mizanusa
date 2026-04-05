@@ -504,17 +504,52 @@
 }
 
 @media print {
-  .print-compact-pnl table,
-  .print-compact-bs table,
-  .print-compact-cf table {
-    font-size: 10px;
-  }
-  
   .print-compact-pnl,
   .print-compact-bs,
   .print-compact-cf {
     margin: 0 !important;
     padding: 0 !important;
+  }
+
+  .print-compact-pnl table,
+  .print-compact-bs table,
+  .print-compact-cf table {
+    font-size: 9px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-compact-pnl table tr,
+  .print-compact-bs table tr,
+  .print-compact-cf table tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-compact-pnl table td,
+  .print-compact-pnl table th,
+  .print-compact-bs table td,
+  .print-compact-bs table th,
+  .print-compact-cf table td,
+  .print-compact-cf table th {
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+    line-height: 1.2 !important;
+  }
+
+  .print-compact-pnl .glass-card,
+  .print-compact-bs .glass-card,
+  .print-compact-cf .glass-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #333 !important;
+  }
+
+  .print-compact-pnl > div:first-child,
+  .print-compact-bs > div:first-child,
+  .print-compact-cf > div:first-child {
+    margin-bottom: 4px !important;
   }
 }
 
