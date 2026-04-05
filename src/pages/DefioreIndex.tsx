@@ -198,6 +198,9 @@ const DefioreIndex = () => {
 
             <AnimatePresence mode="wait">
               <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
+                <TabsContent value="dashboard" className="m-0">
+                  <DefioreDashboardSheet />
+                </TabsContent>
                 <TabsContent value="january" className="m-0">
                   <CheckingAccountSheet month="January" year="2026" deposits={januaryDeposits} withdrawals={januaryWithdrawals} beginningBalance={januarySummary.beginningBalance} endingBalance={januarySummary.endingBalance} statementBalance={januarySummary.statementEndingBalance} />
                 </TabsContent>
