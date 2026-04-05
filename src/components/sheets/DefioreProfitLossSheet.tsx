@@ -134,15 +134,15 @@ export const DefioreProfitLossSheet = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 print-compact-pnl">
       <Card className="glass-card border-primary/20">
-        <CardHeader className="border-b border-border pb-4">
-          <div className="text-center space-y-1">
-            <CardTitle className="text-lg font-bold text-foreground">
+        <CardHeader className="border-b border-border pb-4 print:pb-1">
+          <div className="text-center space-y-1 print:space-y-0">
+            <CardTitle className="text-lg font-bold text-foreground print:text-sm">
               Defiore Carpentry LLC
             </CardTitle>
-            <p className="text-sm font-semibold text-foreground">Profit & Loss Statement</p>
-            <p className="text-sm text-muted-foreground">Quarter 1, 2026 — January 1, 2026 – March 31, 2026</p>
+            <p className="text-sm font-semibold text-foreground print:text-xs">Profit & Loss Statement</p>
+            <p className="text-sm text-muted-foreground print:text-xs">Quarter 1, 2026 — January 1, 2026 – March 31, 2026</p>
           </div>
         </CardHeader>
         <CardContent className="p-0">
