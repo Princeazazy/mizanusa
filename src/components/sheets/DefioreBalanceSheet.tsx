@@ -47,38 +47,38 @@ export const DefioreBalanceSheet = () => {
             </TableHeader>
             <TableBody>
               {/* Assets */}
-              <TableRow className="bg-blue-500/10 font-bold text-lg"><TableCell colSpan={2}>ASSETS</TableCell></TableRow>
-              <TableRow className="bg-blue-500/5 font-semibold"><TableCell className="pl-4">Current Assets</TableCell><TableCell /></TableRow>
-              <TableRow><TableCell className="pl-8">Wells Fargo Business Checking</TableCell><TableCell className="text-right font-mono">{fmt(checkingBalance)}</TableCell></TableRow>
+              <TableRow className="bg-blue-500/10 font-bold text-lg print:text-xs"><TableCell colSpan={2} className="print:py-1">ASSETS</TableCell></TableRow>
+              <TableRow className="bg-blue-500/5 font-semibold"><TableCell className="pl-4 print:py-0.5 print:text-[10px]">Current Assets</TableCell><TableCell /></TableRow>
+              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Wells Fargo Business Checking</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(checkingBalance)}</TableCell></TableRow>
               <TableRow className="font-semibold bg-blue-500/10">
-                <TableCell className="pl-4">Total Current Assets</TableCell><TableCell className="text-right font-mono">{fmt(totalCurrentAssets)}</TableCell>
+                <TableCell className="pl-4 print:py-0.5 print:text-[10px]">Total Current Assets</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(totalCurrentAssets)}</TableCell>
               </TableRow>
-              <TableRow className="border-t-4 font-bold text-lg bg-blue-500/15">
-                <TableCell>TOTAL ASSETS</TableCell><TableCell className="text-right font-mono text-blue-400">{fmt(totalAssets)}</TableCell>
+              <TableRow className="border-t-4 font-bold text-lg print:text-xs bg-blue-500/15">
+                <TableCell className="print:py-1">TOTAL ASSETS</TableCell><TableCell className="text-right font-mono text-blue-400 print:py-1">{fmt(totalAssets)}</TableCell>
               </TableRow>
 
               {/* Liabilities */}
-              <TableRow className="bg-red-500/10 font-bold text-lg"><TableCell colSpan={2}>LIABILITIES</TableCell></TableRow>
-              <TableRow className="bg-red-500/5 font-semibold"><TableCell className="pl-4">Current Liabilities</TableCell><TableCell /></TableRow>
-              <TableRow><TableCell className="pl-8">Capital One Spark Classic (5155)</TableCell><TableCell className="text-right font-mono">{fmt(capOneBalance)}</TableCell></TableRow>
-              <TableRow><TableCell className="pl-8">Amex Business Platinum (51001)</TableCell><TableCell className="text-right font-mono">{fmt(amexPlatBalance)}</TableCell></TableRow>
-              <TableRow><TableCell className="pl-8">Amex Blue Business Cash (72000)</TableCell><TableCell className="text-right font-mono">{fmt(amexBlueBalance)}</TableCell></TableRow>
+              <TableRow className="bg-red-500/10 font-bold text-lg print:text-xs"><TableCell colSpan={2} className="print:py-1">LIABILITIES</TableCell></TableRow>
+              <TableRow className="bg-red-500/5 font-semibold"><TableCell className="pl-4 print:py-0.5 print:text-[10px]">Current Liabilities</TableCell><TableCell /></TableRow>
+              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Capital One Spark Classic (5155)</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(capOneBalance)}</TableCell></TableRow>
+              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Amex Business Platinum (51001)</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(amexPlatBalance)}</TableCell></TableRow>
+              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Amex Blue Business Cash (72000)</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(amexBlueBalance)}</TableCell></TableRow>
               <TableRow className="font-semibold bg-red-500/10">
-                <TableCell className="pl-4">Total Current Liabilities</TableCell><TableCell className="text-right font-mono">{fmt(totalCCLiabilities)}</TableCell>
+                <TableCell className="pl-4 print:py-0.5 print:text-[10px]">Total Current Liabilities</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(totalCCLiabilities)}</TableCell>
               </TableRow>
               <TableRow className="border-t-2 font-bold bg-red-500/15">
-                <TableCell>TOTAL LIABILITIES</TableCell><TableCell className="text-right font-mono text-red-400">{fmt(totalLiabilities)}</TableCell>
+                <TableCell className="print:py-1 print:text-xs">TOTAL LIABILITIES</TableCell><TableCell className="text-right font-mono text-red-400 print:py-1 print:text-xs">{fmt(totalLiabilities)}</TableCell>
               </TableRow>
 
               {/* Equity */}
-              <TableRow className="bg-green-500/10 font-bold text-lg"><TableCell colSpan={2}>EQUITY</TableCell></TableRow>
-              <TableRow><TableCell className="pl-8">Retained Earnings / Owner's Equity</TableCell><TableCell className="text-right font-mono">{fmt(totalEquity)}</TableCell></TableRow>
+              <TableRow className="bg-green-500/10 font-bold text-lg print:text-xs"><TableCell colSpan={2} className="print:py-1">EQUITY</TableCell></TableRow>
+              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Retained Earnings / Owner's Equity</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(totalEquity)}</TableCell></TableRow>
               <TableRow className="font-semibold bg-green-500/10">
-                <TableCell className="pl-4">Total Equity</TableCell><TableCell className="text-right font-mono">{fmt(totalEquity)}</TableCell>
+                <TableCell className="pl-4 print:py-0.5 print:text-[10px]">Total Equity</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(totalEquity)}</TableCell>
               </TableRow>
 
-              <TableRow className="border-t-4 font-bold text-lg bg-primary/10">
-                <TableCell>TOTAL LIABILITIES & EQUITY</TableCell><TableCell className="text-right font-mono">{fmt(totalLiabilities + totalEquity)}</TableCell>
+              <TableRow className="border-t-4 font-bold text-lg print:text-xs bg-primary/10">
+                <TableCell className="print:py-1">TOTAL LIABILITIES & EQUITY</TableCell><TableCell className="text-right font-mono print:py-1">{fmt(totalLiabilities + totalEquity)}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
