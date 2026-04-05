@@ -55,16 +55,16 @@ export const DefioreCashFlowSheet = () => {
   const endCash = marchSummary.endingBalance;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">Statement of Cash Flows</h2>
-        <p className="text-muted-foreground">Defiore Carpentry LLC — Q1 2026 (January – March)</p>
+    <div className="space-y-6 print-compact-cf">
+      <div className="print:mb-1">
+        <h2 className="text-2xl font-bold text-foreground print:text-base">Statement of Cash Flows</h2>
+        <p className="text-muted-foreground print:text-xs">Defiore Carpentry LLC — Q1 2026 (January – March)</p>
       </div>
 
       <Card className="glass-card border-primary/20">
-        <CardHeader className="bg-primary/5 border-b border-primary/10">
-          <CardTitle className="flex items-center gap-2 text-primary">
-            <ArrowDownUp className="h-5 w-5" />
+        <CardHeader className="bg-primary/5 border-b border-primary/10 print:py-2">
+          <CardTitle className="flex items-center gap-2 text-primary print:text-sm">
+            <ArrowDownUp className="h-5 w-5 print:h-4 print:w-4" />
             Cash Flow Statement — Direct Method
           </CardTitle>
         </CardHeader>
@@ -72,8 +72,8 @@ export const DefioreCashFlowSheet = () => {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/30">
-                <TableHead className="w-2/3">Description</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
+                <TableHead className="w-2/3 print:text-[10px] print:py-1">Description</TableHead>
+                <TableHead className="text-right print:text-[10px] print:py-1">Amount</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
