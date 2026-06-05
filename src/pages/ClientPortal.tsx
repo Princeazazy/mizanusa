@@ -672,6 +672,18 @@ const ClientPortal = () => {
                       <Receipt className="h-4 w-4" />
                       Invoices
                     </TabsTrigger>
+                    <TabsTrigger value="pnl" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <TrendingUp className="h-4 w-4" />
+                      P&L Q1
+                    </TabsTrigger>
+                    <TabsTrigger value="balance-sheet" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <Scale className="h-4 w-4" />
+                      Balance Sheet
+                    </TabsTrigger>
+                    <TabsTrigger value="cash-flow" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <ArrowDownUp className="h-4 w-4" />
+                      Cash Flow
+                    </TabsTrigger>
                   </>
                 )}
                 
