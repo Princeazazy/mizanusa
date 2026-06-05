@@ -827,6 +827,9 @@ const ClientPortal = () => {
                       <TabsContent value="invoices" className="m-0">
                         <InvoicesSheet invoices={testInvoices} title={`${TEST_BUSINESS_NAME} – Invoices`} />
                       </TabsContent>
+                      <TabsContent value="pnl" className="m-0"><TestProfitLossSheet /></TabsContent>
+                      <TabsContent value="balance-sheet" className="m-0"><TestBalanceSheet /></TabsContent>
+                      <TabsContent value="cash-flow" className="m-0"><TestCashFlowSheet /></TabsContent>
                     </>
                   )}
                 </div>
