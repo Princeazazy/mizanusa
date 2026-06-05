@@ -145,12 +145,14 @@ const ClientPortal = () => {
             "balancesheet",
             "cashflow",
           ])
-        : new Set<string>();
+        : isTest
+          ? new Set(["january", "february", "march", "invoices"])
+          : new Set<string>();
 
     if (!allowedTabs.has(activeTab)) {
-      setActiveTab(isDefiore ? "january" : isCVS ? "dashboard" : "");
+      setActiveTab(isDefiore || isTest ? "january" : isCVS ? "dashboard" : "");
     }
-  }, [activeTab, loading, session, isDefiore, isCVS]);
+  }, [activeTab, loading, session, isDefiore, isCVS, isTest]);
 
   const handlePrint = () => {
     const printContent = printRef.current;
