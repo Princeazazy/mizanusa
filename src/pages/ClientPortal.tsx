@@ -22,6 +22,7 @@ import { CreditCardStatementSheet } from "@/components/sheets/CreditCardStatemen
 import { DefioreProfitLossSheet } from "@/components/sheets/DefioreProfitLossSheet";
 import { DefioreBalanceSheet } from "@/components/sheets/DefioreBalanceSheet";
 import { DefioreCashFlowSheet } from "@/components/sheets/DefioreCashFlowSheet";
+import { TestProfitLossSheet, TestBalanceSheet, TestCashFlowSheet } from "@/components/sheets/TestFinancialSheets";
 import { useClientAuth } from "@/hooks/useClientAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
