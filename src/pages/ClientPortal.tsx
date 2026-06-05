@@ -147,7 +147,6 @@ const ClientPortal = () => {
             "cashflow",
           ])
         : isTest
-          : isTest
           ? new Set(["january", "february", "march", "invoices", "pnl", "balance-sheet", "cash-flow"])
           : new Set<string>();
 
