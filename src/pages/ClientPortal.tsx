@@ -466,7 +466,7 @@ const ClientPortal = () => {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
               <img
-                src={isDefiore ? defioreLogo : cvsLogo}
+                src={isDefiore ? defioreLogo : isTest ? mizanLogo : cvsLogo}
                 alt={clientName || "Client"}
                 className="h-14 w-auto object-contain"
               />
