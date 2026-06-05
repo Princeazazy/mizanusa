@@ -51,6 +51,13 @@ import {
 } from "@/data/defioreBankTransactions";
 import { defioreInvoices } from "@/data/defioreInvoices";
 import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/data/defioreCreditCardTransactions";
+import {
+  TEST_BUSINESS_NAME,
+  testJanDeposits, testJanWithdrawals, testJanSummary,
+  testFebDeposits, testFebWithdrawals, testFebSummary,
+  testMarDeposits, testMarWithdrawals, testMarSummary,
+  testInvoices,
+} from "@/data/testMockData";
 
 const ClientPortal = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
