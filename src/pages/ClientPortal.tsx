@@ -79,16 +79,20 @@ const ClientPortal = () => {
     normalizedClientId === "cvs-auto-sales" ||
     normalizedClientName.includes("cvs auto sales");
 
+  const isTest =
+    normalizedClientId === "test" ||
+    normalizedClientName.includes("acme demo");
+
   // Set default tab based on client
   useEffect(() => {
     if (!loading && session) {
-      if (isDefiore) {
+      if (isDefiore || isTest) {
         setActiveTab("january");
       } else {
         setActiveTab("dashboard");
       }
     }
-  }, [loading, session, isDefiore]);
+  }, [loading, session, isDefiore, isTest]);
 
   const getTabLabel = (tab: string) => {
     const labels: Record<string, string> = {
