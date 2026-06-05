@@ -799,6 +799,23 @@ const ClientPortal = () => {
                       <ReconciliationSheet />
                     </TabsContent>
                   )}
+
+                  {isTest && (
+                    <>
+                      <TabsContent value="january" className="m-0">
+                        <CheckingAccountSheet month="January" year="2026" deposits={testJanDeposits} withdrawals={testJanWithdrawals} beginningBalance={testJanSummary.beginningBalance} endingBalance={testJanSummary.endingBalance} statementBalance={testJanSummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="february" className="m-0">
+                        <CheckingAccountSheet month="February" year="2026" deposits={testFebDeposits} withdrawals={testFebWithdrawals} beginningBalance={testFebSummary.beginningBalance} endingBalance={testFebSummary.endingBalance} statementBalance={testFebSummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="march" className="m-0">
+                        <CheckingAccountSheet month="March" year="2026" deposits={testMarDeposits} withdrawals={testMarWithdrawals} beginningBalance={testMarSummary.beginningBalance} endingBalance={testMarSummary.endingBalance} statementBalance={testMarSummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="invoices" className="m-0">
+                        <InvoicesSheet invoices={testInvoices} title={`${TEST_BUSINESS_NAME} – Invoices`} />
+                      </TabsContent>
+                    </>
+                  )}
                 </div>
               </motion.div>
             </AnimatePresence>
