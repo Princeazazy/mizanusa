@@ -22,6 +22,7 @@ import { CreditCardStatementSheet } from "@/components/sheets/CreditCardStatemen
 import { DefioreProfitLossSheet } from "@/components/sheets/DefioreProfitLossSheet";
 import { DefioreBalanceSheet } from "@/components/sheets/DefioreBalanceSheet";
 import { DefioreCashFlowSheet } from "@/components/sheets/DefioreCashFlowSheet";
+import { TestProfitLossSheet, TestBalanceSheet, TestCashFlowSheet } from "@/components/sheets/TestFinancialSheets";
 import { useClientAuth } from "@/hooks/useClientAuth";
 import { useToast } from "@/hooks/use-toast";
 import mizanLogo from "@/assets/mizan-logo-new.png";
@@ -146,7 +147,7 @@ const ClientPortal = () => {
             "cashflow",
           ])
         : isTest
-          ? new Set(["january", "february", "march", "invoices"])
+          ? new Set(["january", "february", "march", "invoices", "pnl", "balance-sheet", "cash-flow"])
           : new Set<string>();
 
     if (!allowedTabs.has(activeTab)) {
@@ -671,6 +672,18 @@ const ClientPortal = () => {
                       <Receipt className="h-4 w-4" />
                       Invoices
                     </TabsTrigger>
+                    <TabsTrigger value="pnl" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <TrendingUp className="h-4 w-4" />
+                      P&L Q1
+                    </TabsTrigger>
+                    <TabsTrigger value="balance-sheet" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <Scale className="h-4 w-4" />
+                      Balance Sheet
+                    </TabsTrigger>
+                    <TabsTrigger value="cash-flow" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <ArrowDownUp className="h-4 w-4" />
+                      Cash Flow
+                    </TabsTrigger>
                   </>
                 )}
                 
@@ -814,6 +827,9 @@ const ClientPortal = () => {
                       <TabsContent value="invoices" className="m-0">
                         <InvoicesSheet invoices={testInvoices} title={`${TEST_BUSINESS_NAME} – Invoices`} />
                       </TabsContent>
+                      <TabsContent value="pnl" className="m-0"><TestProfitLossSheet /></TabsContent>
+                      <TabsContent value="balance-sheet" className="m-0"><TestBalanceSheet /></TabsContent>
+                      <TabsContent value="cash-flow" className="m-0"><TestCashFlowSheet /></TabsContent>
                     </>
                   )}
                 </div>
