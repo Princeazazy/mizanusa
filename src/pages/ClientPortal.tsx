@@ -51,6 +51,13 @@ import {
 } from "@/data/defioreBankTransactions";
 import { defioreInvoices } from "@/data/defioreInvoices";
 import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/data/defioreCreditCardTransactions";
+import {
+  TEST_BUSINESS_NAME,
+  testJanDeposits, testJanWithdrawals, testJanSummary,
+  testFebDeposits, testFebWithdrawals, testFebSummary,
+  testMarDeposits, testMarWithdrawals, testMarSummary,
+  testInvoices,
+} from "@/data/testMockData";
 
 const ClientPortal = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -72,16 +79,20 @@ const ClientPortal = () => {
     normalizedClientId === "cvs-auto-sales" ||
     normalizedClientName.includes("cvs auto sales");
 
+  const isTest =
+    normalizedClientId === "test" ||
+    normalizedClientName.includes("acme demo");
+
   // Set default tab based on client
   useEffect(() => {
     if (!loading && session) {
-      if (isDefiore) {
+      if (isDefiore || isTest) {
         setActiveTab("january");
       } else {
         setActiveTab("dashboard");
       }
     }
-  }, [loading, session, isDefiore]);
+  }, [loading, session, isDefiore, isTest]);
 
   const getTabLabel = (tab: string) => {
     const labels: Record<string, string> = {
@@ -134,12 +145,14 @@ const ClientPortal = () => {
             "balancesheet",
             "cashflow",
           ])
-        : new Set<string>();
+        : isTest
+          ? new Set(["january", "february", "march", "invoices"])
+          : new Set<string>();
 
     if (!allowedTabs.has(activeTab)) {
-      setActiveTab(isDefiore ? "january" : isCVS ? "dashboard" : "");
+      setActiveTab(isDefiore || isTest ? "january" : isCVS ? "dashboard" : "");
     }
-  }, [activeTab, loading, session, isDefiore, isCVS]);
+  }, [activeTab, loading, session, isDefiore, isCVS, isTest]);
 
   const handlePrint = () => {
     const printContent = printRef.current;
@@ -453,7 +466,7 @@ const ClientPortal = () => {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
               <img
-                src={isDefiore ? defioreLogo : cvsLogo}
+                src={isDefiore ? defioreLogo : isTest ? mizanLogo : cvsLogo}
                 alt={clientName || "Client"}
                 className="h-14 w-auto object-contain"
               />
@@ -639,6 +652,27 @@ const ClientPortal = () => {
                     </TabsTrigger>
                   </>
                 )}
+
+                {isTest && (
+                  <>
+                    <TabsTrigger value="january" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <FileSpreadsheet className="h-4 w-4" />
+                      January 2026
+                    </TabsTrigger>
+                    <TabsTrigger value="february" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <FileSpreadsheet className="h-4 w-4" />
+                      February 2026
+                    </TabsTrigger>
+                    <TabsTrigger value="march" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <FileSpreadsheet className="h-4 w-4" />
+                      March 2026
+                    </TabsTrigger>
+                    <TabsTrigger value="invoices" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                      <Receipt className="h-4 w-4" />
+                      Invoices
+                    </TabsTrigger>
+                  </>
+                )}
                 
                 {isCVS && (
                   <>
@@ -764,6 +798,23 @@ const ClientPortal = () => {
                     <TabsContent value="reconciliation" className="m-0">
                       <ReconciliationSheet />
                     </TabsContent>
+                  )}
+
+                  {isTest && (
+                    <>
+                      <TabsContent value="january" className="m-0">
+                        <CheckingAccountSheet month="January" year="2026" deposits={testJanDeposits} withdrawals={testJanWithdrawals} beginningBalance={testJanSummary.beginningBalance} endingBalance={testJanSummary.endingBalance} statementBalance={testJanSummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="february" className="m-0">
+                        <CheckingAccountSheet month="February" year="2026" deposits={testFebDeposits} withdrawals={testFebWithdrawals} beginningBalance={testFebSummary.beginningBalance} endingBalance={testFebSummary.endingBalance} statementBalance={testFebSummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="march" className="m-0">
+                        <CheckingAccountSheet month="March" year="2026" deposits={testMarDeposits} withdrawals={testMarWithdrawals} beginningBalance={testMarSummary.beginningBalance} endingBalance={testMarSummary.endingBalance} statementBalance={testMarSummary.statementEndingBalance} />
+                      </TabsContent>
+                      <TabsContent value="invoices" className="m-0">
+                        <InvoicesSheet invoices={testInvoices} title={`${TEST_BUSINESS_NAME} – Invoices`} />
+                      </TabsContent>
+                    </>
                   )}
                 </div>
               </motion.div>
