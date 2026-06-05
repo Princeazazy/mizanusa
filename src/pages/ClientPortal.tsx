@@ -147,7 +147,8 @@ const ClientPortal = () => {
             "cashflow",
           ])
         : isTest
-          ? new Set(["january", "february", "march", "invoices"])
+          : isTest
+          ? new Set(["january", "february", "march", "invoices", "pnl", "balance-sheet", "cash-flow"])
           : new Set<string>();
 
     if (!allowedTabs.has(activeTab)) {
