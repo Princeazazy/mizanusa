@@ -142,7 +142,7 @@ export const RevenueExpenseChart = ({
                       textAnchor="middle"
                       fill="hsl(var(--foreground))"
                       fontSize={11}
-                      fontVariantNumeric="tabular-nums"
+                      style={{ fontVariantNumeric: "tabular-nums" }}
                     >
                       {compactCurrency(props.value)}
                     </text>
