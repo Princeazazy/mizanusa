@@ -464,71 +464,94 @@ const ClientPortal = () => {
           transition={{ duration: 0.5 }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-4">
-              <img
-                src={isDefiore ? defioreLogo : isTest ? mizanLogo : cvsLogo}
-                alt={clientName || "Client"}
-                className="h-14 w-auto object-contain"
+          <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0">
+              <BrandLockup
+                clientLogo={isTest ? undefined : isDefiore ? defioreLogo : cvsLogo}
+                clientName={clientName || "Client"}
+                eyebrow="Prepared for"
+                size="md"
               />
-              <div>
-                <h1 className="text-2xl font-bold text-foreground">
-                  Welcome, <span className="text-primary glow-text-cyan">{clientName}</span>
-                </h1>
-                <p className="text-sm text-muted-foreground">Client Portal - View Only</p>
-              </div>
+              <h1 className="headline-editorial mt-5 text-[24px] text-foreground sm:text-[28px]">
+                Welcome, <span className="text-primary">{clientName}</span>
+              </h1>
+              <p className="mt-1.5 text-[13px] text-muted-foreground">
+                Client portal — your reconciled records, view only.
+              </p>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-warning/10 border border-warning/30">
-                <Eye className="h-4 w-4 text-warning" />
-                <span className="text-xs font-medium text-warning">View Only Mode</span>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 rounded-full border border-warning/30 bg-warning/10 px-3 py-1.5">
+                <Eye className="h-4 w-4 text-warning" aria-hidden="true" />
+                <span className="text-xs font-medium text-warning">View only</span>
               </div>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
                 onClick={handleSignOut}
-                className="gap-2 glass-card border-border/50 hover:border-destructive/50 hover:text-destructive"
+                className="gap-2 hover:border-destructive/50 hover:text-destructive"
               >
-                <LogOut className="h-4 w-4" />
-                Sign Out
+                <LogOut className="h-4 w-4" aria-hidden="true" />
+                Sign out
               </Button>
             </div>
           </div>
 
           {/* Action buttons - only exports */}
-          <div className="flex items-center gap-3 mb-8 flex-wrap">
-            <Button 
-              variant="outline" 
-              className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
-              onClick={handlePrint}
-            >
-              <Printer className="h-4 w-4" />
+          <div className="mb-8 flex flex-wrap items-center gap-3">
+            <Button variant="outline" className="gap-2" onClick={handlePrint}>
+              <Printer className="h-4 w-4" aria-hidden="true" />
               Print {getTabLabel(isDefiore && activeTab === "reconciliation" ? "january" : activeTab)}
             </Button>
-            <Button 
-              variant="outline" 
-              className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
-              onClick={handleDownloadPDF}
-            >
-              <FileDown className="h-4 w-4" />
+            <Button variant="outline" className="gap-2" onClick={handleDownloadPDF}>
+              <FileDown className="h-4 w-4" aria-hidden="true" />
               Download PDF
             </Button>
-            <Button 
-              variant="outline" 
-              className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
-              onClick={() => exportToPowerPoint({ clientName: clientName || 'Client', clientLogoPath: isDefiore ? '/defiore-logo.png' : '/cvs-logo.png', fileName: `${clientName}_Financial_Report.pptx` })}
-            >
-              <Presentation className="h-4 w-4" />
-              Export to PowerPoint
-            </Button>
-            <Button 
-              className="gap-2 btn-glow"
-              onClick={() => exportToExcel({ clientName: clientName || 'Client', fileName: `${clientName}_Bookkeeping.xlsx` })}
-            >
-              <Download className="h-4 w-4" />
-              Export to Excel
-            </Button>
+            {isCvs ? (
+              <>
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => exportToPowerPoint({ clientName: clientName || 'Client', clientLogoPath: '/cvs-logo.png', fileName: `${clientName}_Financial_Report.pptx` })}
+                >
+                  <Presentation className="h-4 w-4" aria-hidden="true" />
+                  Export to PowerPoint
+                </Button>
+                <Button
+                  className="gap-2 btn-glow"
+                  onClick={() => exportToExcel({ clientName: clientName || 'Client', fileName: `${clientName}_Bookkeeping.xlsx` })}
+                >
+                  <Download className="h-4 w-4" aria-hidden="true" />
+                  Export to Excel
+                </Button>
+              </>
+            ) : (
+              <>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span tabIndex={0} className="inline-flex rounded-lg">
+                      <Button variant="outline" className="gap-2" disabled aria-disabled="true">
+                        <Presentation className="h-4 w-4" aria-hidden="true" />
+                        Export to PowerPoint
+                      </Button>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>Deck export isn’t available for this engagement yet — use Print or Download PDF.</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span tabIndex={0} className="inline-flex rounded-lg">
+                      <Button className="gap-2" disabled aria-disabled="true">
+                        <Download className="h-4 w-4" aria-hidden="true" />
+                        Export to Excel
+                      </Button>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>Workbook export isn’t available for this engagement yet — use Print or Download PDF.</TooltipContent>
+                </Tooltip>
+              </>
+            )}
           </div>
+
 
           {/* Sheet Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
