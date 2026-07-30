@@ -1,8 +1,5 @@
 project_id = "elsornmcrygzzcskbqbe"
 
-[functions.seed-users]
-verify_jwt = false
-
 [functions.accountant-chat]
 verify_jwt = false
 
