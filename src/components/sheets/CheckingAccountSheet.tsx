@@ -122,18 +122,19 @@ export const CheckingAccountSheet = ({
                       {transaction.coaCode}
                     </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden md:table-cell">
                     <Badge className={`${getCategoryColor(transaction.category)} text-xs font-medium`}>
                       {transaction.category}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right font-semibold text-income font-mono">
+                  <TableCell className="text-right font-semibold text-income font-mono whitespace-nowrap">
                     {formatCurrency(transaction.amount)}
                   </TableCell>
                 </TableRow>
               ))}
               <TableRow className="bg-income-muted/40 font-bold border-t-2 border-income/20">
-                <TableCell colSpan={4} className="text-income">Total Deposits</TableCell>
+                <TableCell colSpan={3} className="text-income">Total Deposits</TableCell>
+                <TableCell className="hidden md:table-cell" />
                 <TableCell className="text-right text-income font-mono text-base">
                   {formatCurrency(totalDeposits)}
                 </TableCell>
