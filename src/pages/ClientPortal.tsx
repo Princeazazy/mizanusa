@@ -231,16 +231,11 @@ const ClientPortal = () => {
               height: 112px;
             }
             .divider {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              width: 72px;
-              height: 136px;
-              font-size: 38px;
-              font-weight: 300;
-              line-height: 1;
-              color: #0d9488;
-              transform: translateY(-2px);
+              display: block;
+              width: 1px;
+              height: 96px;
+              margin: 0 auto;
+              background: #cbd5e1;
             }
             table { width: 100%; border-collapse: collapse; margin: 12px 0; }
             th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; font-size: 12px; color: #1e293b; }
@@ -270,7 +265,7 @@ const ClientPortal = () => {
               <div class="logo-slot logo-slot--left">
                 <img src="${printMizanLogo}" alt="Mizan USA" class="mizan-logo" />
               </div>
-              <span class="divider">×</span>
+              <span class="divider" aria-hidden="true"></span>
               <div class="logo-slot logo-slot--right">
                 <img src="${activeClientLogo}" alt="${clientName}" class="client-logo" />
               </div>
@@ -325,7 +320,7 @@ const ClientPortal = () => {
             <div style="display:flex;align-items:center;justify-content:flex-end;padding-right:10px;">
               <img src="${mizanLogo}" alt="Mizan USA" style="height:136px;max-width:320px;width:auto;object-fit:contain;" crossorigin="anonymous" />
             </div>
-            <span style="display:flex;align-items:center;justify-content:center;width:72px;height:136px;font-size:38px;font-weight:300;color:#0d9488;">×</span>
+            <span style="display:block;width:1px;height:96px;margin:0 auto;background:#cbd5e1;"></span>
             <div style="display:flex;align-items:center;justify-content:flex-start;padding-left:10px;">
               <img src="${activeClientLogo}" alt="${clientName}" style="height:112px;max-width:240px;width:auto;object-fit:contain;" crossorigin="anonymous" />
             </div>
