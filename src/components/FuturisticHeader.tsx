@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { ClientLoginButton } from "@/components/ClientLoginButton";
 import mizanLogo from "@/assets/mizan-logo-new.png";
 
 interface FuturisticHeaderProps {
@@ -268,6 +269,10 @@ export const FuturisticHeader = ({
         >
           <HelpCircle className="h-5 w-5" />
         </Button>
+
+        {/* Client access — always available */}
+        <ClientLoginButton className="ml-1" />
+
 
         {/* User avatar */}
         <button 
