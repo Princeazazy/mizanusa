@@ -126,31 +126,38 @@ const ClientDashboard = () => {
             {/* Header */}
             <FuturisticHeader
               title="Your Clients"
-              subtitle="Select a client to view their financial workbook"
-              showDatePicker={false}
+              subtitle="Select a client to open their financial workbook."
+              onSignOut={handleSignOut}
             />
 
             {/* Search and Actions */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search
+                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+                  aria-hidden="true"
+                />
                 <Input
-                  placeholder="Search clients..."
+                  placeholder="Search clients…"
+                  aria-label="Search clients by name or address"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground w-72 focus:border-primary/50"
+                  className="w-full pl-10 sm:w-72"
                 />
               </div>
-              <Button 
-                className="gap-2 btn-glow"
-                onClick={() => toast({
-                  title: "Coming Soon",
-                  description: "Add Client feature is under development.",
-                })}
-              >
-                <Plus className="h-4 w-4" />
-                Add Client
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span tabIndex={0} className="inline-flex rounded-lg">
+                    <Button className="gap-2" disabled aria-disabled="true">
+                      <Plus className="h-4 w-4" aria-hidden="true" />
+                      Add Client
+                    </Button>
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Client onboarding isn’t built yet — new clients are added by Mizan directly.
+                </TooltipContent>
+              </Tooltip>
             </div>
 
             {/* Client roster — editorial, asymmetric */}
@@ -168,23 +175,21 @@ const ClientDashboard = () => {
                     <button
                       type="button"
                       onClick={() => handleClientClick(client.id)}
-                      className={`surface-panel tilt-surface flex h-full w-full flex-col justify-between text-left ${
-                        feature ? "p-9" : "p-7"
-                      } ${client.status === "pending" ? "opacity-55" : ""}`}
+                      aria-label={`Open the ${client.name} workbook`}
+                      className={`surface-panel tilt-surface flex h-full w-full flex-col justify-between text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                        feature ? "p-7 sm:p-9" : "p-6 sm:p-7"
+                      }`}
                     >
                       <div className="flex items-start justify-between gap-6">
                         <span className="stat-display text-[13px] text-muted-foreground/60">
                           {String(index + 1).padStart(2, "0")}
                         </span>
-                        {client.status === "active" ? (
-                          <span className="badge-status badge-on-track">
-                            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                            Active
-                          </span>
-                        ) : (
-                          <span className="badge-status badge-tasks">Pending</span>
-                        )}
+                        <span className="badge-status badge-on-track">
+                          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                          Active
+                        </span>
                       </div>
+
 
                       <div className={feature ? "mt-16" : "mt-10"}>
                         <h3
