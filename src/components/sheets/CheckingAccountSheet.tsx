@@ -102,7 +102,7 @@ export const CheckingAccountSheet = ({
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <Table>
+          <Table className="[&_th]:px-2 [&_td]:px-2 sm:[&_th]:px-4 sm:[&_td]:px-4">
             <TableHeader>
               <TableRow className="table-header-row">
                 <TableHead className="w-20 sm:w-28 font-semibold">Date</TableHead>
@@ -116,7 +116,7 @@ export const CheckingAccountSheet = ({
               {actualDeposits.map((transaction, index) => (
                 <TableRow key={index} className="hover:bg-muted/30 transition-colors">
                   <TableCell className="font-mono text-sm text-muted-foreground">{transaction.date}</TableCell>
-                  <TableCell className="font-medium">{transaction.description}</TableCell>
+                  <TableCell className="font-medium max-w-[130px] truncate sm:max-w-none sm:whitespace-normal" title={transaction.description}>{transaction.description}</TableCell>
                   <TableCell>
                     <Badge variant="outline" className="font-mono text-xs">
                       {transaction.coaCode}
@@ -170,7 +170,7 @@ export const CheckingAccountSheet = ({
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <Table>
+          <Table className="[&_th]:px-2 [&_td]:px-2 sm:[&_th]:px-4 sm:[&_td]:px-4">
             <TableHeader>
               <TableRow className="table-header-row">
                 <TableHead className="w-20 sm:w-28 font-semibold">Date</TableHead>
@@ -185,7 +185,7 @@ export const CheckingAccountSheet = ({
               {actualWithdrawals.map((transaction, index) => (
                 <TableRow key={index} className="hover:bg-muted/30 transition-colors">
                   <TableCell className="font-mono text-sm text-muted-foreground">{transaction.date}</TableCell>
-                  <TableCell className="font-medium">{transaction.description}</TableCell>
+                  <TableCell className="font-medium max-w-[130px] truncate sm:max-w-none sm:whitespace-normal" title={transaction.description}>{transaction.description}</TableCell>
                   <TableCell className="hidden lg:table-cell font-mono text-sm text-muted-foreground">
                     {transaction.checkNumber || "—"}
                   </TableCell>
@@ -241,7 +241,7 @@ export const CheckingAccountSheet = ({
           <CardTitle className="text-lg">Bank Reconciliation — {month} {year}</CardTitle>
         </CardHeader>
         <CardContent className="pt-5">
-          <Table>
+          <Table className="[&_th]:px-2 [&_td]:px-2 sm:[&_th]:px-4 sm:[&_td]:px-4">
             <TableBody>
               <TableRow className="hover:bg-transparent">
                 <TableCell className="font-medium py-3">Beginning Balance ({month.substring(0, 3)}/01)</TableCell>
