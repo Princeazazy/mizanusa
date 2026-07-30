@@ -95,6 +95,25 @@ export const DefioreDashboardSheet = ({ viewOnly = false }: DefioreDashboardShee
   const netTrend = monthly.map((m) => ({ month: m.month, net: m.revenue - m.expenses }));
   const categorySlices = topCats.map((c) => ({ name: c.name, value: c.amount }));
 
+  // Cash bridge: opening cash in, top expense categories out, closing net movement.
+  const namedCatTotal = topCats.reduce((s, c) => s + c.amount, 0);
+  const otherOutflow = totalOutgoing - namedCatTotal;
+  const waterfallSteps = [
+    { name: "Cash In", amount: totalIncoming },
+    ...topCats.map((c) => ({ name: c.name, amount: -c.amount })),
+    ...(otherOutflow > 0.005 ? [{ name: "Other Outflow", amount: -otherOutflow }] : []),
+    { name: "Net Movement", amount: netCashFlow, total: true },
+  ];
+
+  const sparkSeries: SparkSeries[] = [
+    { label: "Cash In", values: monthly.map((m) => m.revenue) },
+    { label: "Cash Out", values: monthly.map((m) => m.expenses), invertDelta: true },
+    { label: "Net Movement", values: netTrend.map((n) => n.net) },
+    { label: "Ending Balance", values: [netBalance[3], netBalance[7], netBalance[11]] },
+  ];
+
+
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
