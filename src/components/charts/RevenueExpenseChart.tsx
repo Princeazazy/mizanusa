@@ -99,7 +99,7 @@ export const RevenueExpenseChart = ({
         <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
           <BarChart data={data} margin={CHART_MARGIN} barGap={5}>
             <CartesianGrid stroke={chartColors.grid} vertical={false} strokeDasharray="0" />
-            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={false} dy={8} />
+            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={false} dy={8} interval="preserveStartEnd" minTickGap={12} />
             <YAxis
               tick={axisTick}
               tickLine={false}
