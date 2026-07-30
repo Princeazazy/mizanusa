@@ -157,55 +157,63 @@ const ClientDashboard = () => {
               </Button>
             </div>
 
-            {/* Client Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredClients.map((client, index) => (
-                <motion.div
-                  key={client.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
-                  <div
-                    className={`floating-card p-6 cursor-pointer ${
-                      client.status === "pending" ? "opacity-50" : ""
-                    }`}
-                    onClick={() => handleClientClick(client.id)}
+            {/* Client roster — editorial, asymmetric */}
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+              {filteredClients.map((client, index) => {
+                const feature = index === 0;
+                return (
+                  <motion.div
+                    key={client.id}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                    className={feature ? "lg:col-span-2 lg:row-span-2" : ""}
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 rounded-xl bg-primary/15 text-primary">
-                        <Building2 className="h-6 w-6" />
+                    <button
+                      type="button"
+                      onClick={() => handleClientClick(client.id)}
+                      className={`surface-panel tilt-surface flex h-full w-full flex-col justify-between text-left ${
+                        feature ? "p-9" : "p-7"
+                      } ${client.status === "pending" ? "opacity-55" : ""}`}
+                    >
+                      <div className="flex items-start justify-between gap-6">
+                        <span className="stat-display text-[13px] text-muted-foreground/60">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        {client.status === "active" ? (
+                          <span className="badge-status badge-on-track">
+                            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                            Active
+                          </span>
+                        ) : (
+                          <span className="badge-status badge-tasks">Pending</span>
+                        )}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <h3 className="text-base font-semibold text-foreground truncate">
-                            {client.name}
-                          </h3>
-                          {client.status === "active" && (
-                            <span className="badge-status badge-on-track">
-                              <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                              Active
-                            </span>
-                          )}
-                          {client.status === "pending" && (
-                            <span className="badge-status badge-tasks">
-                              Pending
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-sm text-muted-foreground truncate mb-3">
+
+                      <div className={feature ? "mt-16" : "mt-10"}>
+                        <h3
+                          className={`headline-editorial text-foreground ${
+                            feature ? "text-[30px]" : "text-[19px]"
+                          }`}
+                        >
+                          {client.name}
+                        </h3>
+                        <p className="mt-3 max-w-[46ch] text-[13px] leading-relaxed text-muted-foreground">
                           {client.address}
                         </p>
-                        <div className="flex items-center justify-between text-xs text-muted-foreground/70">
-                          <span>#{client.memberNumber}</span>
-                          <span>{client.lastActivity}</span>
-                        </div>
                       </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+
+                      <div className="rule-hairline mt-7" />
+                      <div className="mt-4 flex items-center justify-between text-[11.5px] text-muted-foreground/70">
+                        <span className="tabular">#{client.memberNumber}</span>
+                        <span>{client.lastActivity}</span>
+                      </div>
+                    </button>
+                  </motion.div>
+                );
+              })}
             </div>
+
 
             {filteredClients.length === 0 && (
               <div className="text-center py-16">
