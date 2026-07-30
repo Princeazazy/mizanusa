@@ -89,20 +89,22 @@ const ClientDashboard = () => {
 
   if (checkingAuth) {
     return (
-      <div className="min-h-screen flex items-center justify-center futuristic-bg">
+      <div className="min-h-screen futuristic-bg">
         <div className="light-beam light-beam-left" />
         <div className="light-beam light-beam-right" />
-        <div className="animate-pulse flex flex-col items-center gap-4 z-10">
-          <img
-            src={mizanLogo}
-            alt="Mizan"
-            className="h-24 w-24 object-contain mix-blend-lighten logo-glow-pulse"
-          />
-          <p className="text-muted-foreground text-sm">Loading...</p>
+        <div className="mx-auto max-w-[1600px] px-8 py-8" aria-busy="true" aria-label="Loading clients">
+          <BrandLockup size="md" />
+          <div className="mt-8 h-9 w-56 animate-pulse rounded-lg bg-white/[0.05]" />
+          <div className="mt-3 h-4 w-80 animate-pulse rounded bg-white/[0.04]" />
+          <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="h-[320px] animate-pulse rounded-2xl bg-white/[0.04] lg:col-span-2" />
+            <div className="h-[320px] animate-pulse rounded-2xl bg-white/[0.04]" />
+          </div>
         </div>
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen futuristic-bg relative overflow-hidden">
