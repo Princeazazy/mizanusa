@@ -5,7 +5,7 @@ import cvsLogo from "@/assets/cvs-logo.png";
 
 export const CompanyHeader = () => {
   return (
-    <div className="animated-gradient text-primary-foreground relative overflow-hidden">
+    <div className="animated-gradient-bg text-foreground relative overflow-hidden border-b border-white/[0.08]">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div 
@@ -76,7 +76,7 @@ export const CompanyHeader = () => {
                 </motion.span>
               </motion.h1>
               <motion.p 
-                className="text-primary-foreground/70 text-sm mt-0.5"
+                className="text-muted-foreground text-sm mt-0.5"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -89,12 +89,12 @@ export const CompanyHeader = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
               >
-                <span className="inline-flex items-center gap-1.5 text-xs bg-white/10 px-2.5 py-1 rounded-full border border-white/10 backdrop-blur-sm">
+                <span className="inline-flex items-center gap-1.5 text-xs bg-white/[0.05] px-2.5 py-1 rounded-full border border-white/[0.08] backdrop-blur-sm">
                   <Shield className="h-3 w-3" />
                   Member #0021348405
                 </span>
-                <span className="inline-flex items-center gap-1.5 text-xs bg-income/20 text-income-foreground px-2.5 py-1 rounded-full border border-income/30 backdrop-blur-sm">
-                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+                <span className="inline-flex items-center gap-1.5 text-xs bg-income/10 text-income px-2.5 py-1 rounded-full border border-income/30 backdrop-blur-sm">
+                  <span className="w-1.5 h-1.5 bg-income rounded-full animate-pulse" />
                   Active
                 </span>
               </motion.div>
@@ -122,7 +122,7 @@ export const CompanyHeader = () => {
                   <span className="w-2 h-2 bg-income rounded-full animate-pulse" />
                 </span>
               </p>
-              <p className="text-xs text-primary-foreground/70">Q4 2025 • CPA-Ready</p>
+              <p className="text-xs text-muted-foreground">Q4 2025 • CPA-Ready</p>
             </div>
           </motion.div>
         </div>
