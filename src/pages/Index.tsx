@@ -131,30 +131,39 @@ const Index = () => {
         >
           {/* Header */}
           <FuturisticHeader
-            title="Hi there!"
-            subtitle="Here's Your Financial Workbook for"
+            title="Financial Workbook"
+            subtitle="Reconciled Q4 2025 records for"
             clientName="CVS Auto Sales Inc."
             clientLogo={cvsLogo}
+            searchTargets={SEARCH_TARGETS}
+            onTabChange={setActiveTab}
+            onSignOut={handleSignOut}
+            accountEmail={user?.email ?? undefined}
           />
 
           {/* Action buttons */}
-          <div className="flex items-center gap-3 mb-8">
-            <Button 
-              variant="outline" 
-              className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
+          <div className="flex flex-wrap items-center gap-3 mb-8">
+            <Button
+              variant="outline"
+              className="gap-2"
               onClick={() => exportToPowerPoint({ clientName: 'CVS Auto Sales Inc.', clientLogoPath: '/cvs-logo.png', fileName: 'CVS_Auto_Sales_Q4_2025_Financial_Report.pptx' })}
             >
-              <Presentation className="h-4 w-4" />
+              <Presentation className="h-4 w-4" aria-hidden="true" />
               Export to PowerPoint
             </Button>
-            <Button 
+            <Button
               className="gap-2 btn-glow"
               onClick={() => exportToExcel({ clientName: 'CVS Auto Sales Inc.', fileName: 'CVS_Auto_Sales_Q4_2025_Bookkeeping.xlsx' })}
             >
-              <Download className="h-4 w-4" />
+              <Download className="h-4 w-4" aria-hidden="true" />
               Export to Excel
             </Button>
+            <Button variant="outline" className="gap-2" onClick={() => window.print()}>
+              <Printer className="h-4 w-4" aria-hidden="true" />
+              Print workbook
+            </Button>
           </div>
+
 
           {/* Sheet Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
