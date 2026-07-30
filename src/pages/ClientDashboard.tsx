@@ -191,10 +191,10 @@ const ClientDashboard = () => {
                       </div>
 
 
-                      <div className={feature ? "mt-16" : "mt-10"}>
+                      <div className={feature ? "mt-12 sm:mt-16" : "mt-8 sm:mt-10"}>
                         <h3
                           className={`headline-editorial text-foreground ${
-                            feature ? "text-[30px]" : "text-[19px]"
+                            feature ? "text-[24px] sm:text-[30px]" : "text-[18px] sm:text-[19px]"
                           }`}
                         >
                           {client.name}
@@ -205,7 +205,7 @@ const ClientDashboard = () => {
                       </div>
 
                       <div className="rule-hairline mt-7" />
-                      <div className="mt-4 flex items-center justify-between text-[11.5px] text-muted-foreground/70">
+                      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-[11.5px] text-muted-foreground/70">
                         <span className="tabular">#{client.memberNumber}</span>
                         <span>{client.lastActivity}</span>
                       </div>
@@ -215,12 +215,19 @@ const ClientDashboard = () => {
               })}
             </div>
 
-
             {filteredClients.length === 0 && (
-              <div className="text-center py-16">
-                <p className="text-muted-foreground">No clients found matching your search.</p>
-              </div>
+              <EmptyState
+                icon={Users}
+                title="No clients match that search"
+                description={`Nothing found for “${searchQuery}”. Clear the search to see every client on the roster.`}
+                action={
+                  <Button variant="outline" size="sm" onClick={() => setSearchQuery("")}>
+                    Clear search
+                  </Button>
+                }
+              />
             )}
+
           </motion.div>
         </div>
 
