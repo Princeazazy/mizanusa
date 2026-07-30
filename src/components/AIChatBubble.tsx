@@ -420,10 +420,10 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed bottom-6 right-6 z-50 w-[420px] h-[600px] bg-[#0a0e17] rounded-2xl shadow-2xl border border-white/10 flex flex-col overflow-hidden"
+            className="fixed bottom-6 right-6 z-50 w-[420px] h-[600px] glass-card-solid rounded-[20px] shadow-prominent flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary/20 to-blue-600/20 border-b border-white/10">
+            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary/[0.12] to-transparent border-b border-white/[0.08]">
               <div className="flex items-center gap-3">
               <div className="relative w-16 h-16 rounded-full overflow-hidden">
                 <img
@@ -433,18 +433,18 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
                 />
               </div>
                 <div>
-                  <h3 className="text-white font-semibold flex items-center gap-2">
+                  <h3 className="text-foreground font-semibold flex items-center gap-2">
                     Mizan AI
-                    <Sparkles className="h-4 w-4 text-yellow-400" />
+                    <Sparkles className="h-4 w-4 text-primary" />
                   </h3>
-                  <p className="text-xs text-slate-400">{clientName}</p>
+                  <p className="text-xs text-muted-foreground">{clientName}</p>
                 </div>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsOpen(false)}
-                className="text-slate-400 hover:text-white hover:bg-white/10"
+                className="text-muted-foreground hover:text-foreground hover:bg-white/[0.06]"
               >
                 <X className="h-5 w-5" />
               </Button>
@@ -457,7 +457,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
                   <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mb-4">
                     <Bot className="h-10 w-10 text-primary" />
                   </div>
-                  <h4 className="text-white font-medium mb-2">
+                  <h4 className="text-foreground font-medium mb-2">
                     How can I help with {clientName}?
                   </h4>
                   <p className="text-sm text-slate-400 mb-4">
@@ -475,7 +475,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
                           setInput(suggestion);
                           inputRef.current?.focus();
                         }}
-                        className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/20 transition-colors"
+                        className="text-xs px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] text-muted-foreground hover:bg-white/[0.06] hover:border-primary/30 hover:text-foreground transition-all duration-200"
                       >
                         {suggestion}
                       </button>
@@ -497,7 +497,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
                         className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                           message.role === "user"
                             ? "bg-primary/20"
-                            : "bg-gradient-to-br from-primary to-blue-600"
+                            : "bg-gradient-to-br from-primary to-primary-glow"
                         }`}
                       >
                         {message.role === "user" ? (
@@ -514,7 +514,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
                         className={`flex-1 px-4 py-2.5 rounded-2xl max-w-[80%] ${
                           message.role === "user"
                             ? "bg-primary text-primary-foreground ml-auto"
-                            : "bg-white/5 text-slate-200 border border-white/10"
+                            : "bg-white/[0.04] text-foreground/90 border border-white/[0.08]"
                         }`}
                       >
                         <p className="text-sm whitespace-pre-wrap leading-relaxed">
@@ -529,18 +529,18 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
                       animate={{ opacity: 1, y: 0 }}
                       className="flex gap-3"
                     >
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center">
-                        <Loader2 className="h-4 w-4 text-white animate-spin" />
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
+                        <Loader2 className="h-4 w-4 text-primary-foreground animate-spin" />
                       </div>
-                      <div className="flex-1 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10">
+                      <div className="flex-1 px-4 py-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
                         <div className="flex gap-1">
-                          <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" />
+                          <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
                           <span
-                            className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
+                            className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
                             style={{ animationDelay: "0.1s" }}
                           />
                           <span
-                            className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
+                            className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
                             style={{ animationDelay: "0.2s" }}
                           />
                         </div>
@@ -553,16 +553,16 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
 
             {/* Pending file indicator */}
             {pendingFile && (
-              <div className="px-4 py-2 border-t border-white/10 bg-primary/10">
+              <div className="px-4 py-2 border-t border-white/[0.08] bg-primary/[0.08]">
                 <div className="flex items-center gap-2 text-sm">
                   <FileText className="h-4 w-4 text-primary" />
-                  <span className="text-slate-300 truncate flex-1">{pendingFile.name}</span>
+                  <span className="text-foreground/80 truncate flex-1">{pendingFile.name}</span>
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
                     onClick={() => setPendingFile(null)}
-                    className="h-6 w-6 p-0 text-slate-400 hover:text-white"
+                    className="h-6 w-6 p-0 text-muted-foreground hover:text-foreground"
                   >
                     <X className="h-3 w-3" />
                   </Button>
@@ -573,7 +573,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
             {/* Input */}
             <form
               onSubmit={handleSubmit}
-              className="p-4 border-t border-white/10 bg-black/20"
+              className="p-4 border-t border-white/[0.08] bg-background/40"
             >
               <input
                 type="file"
@@ -587,7 +587,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="text-slate-400 hover:text-white hover:bg-white/10"
+                  className="text-muted-foreground hover:text-foreground hover:bg-white/[0.06]"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isLoading || isUploading}
                 >
@@ -602,14 +602,14 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder={pendingFile ? "Describe what to do with this file..." : "Ask about financial data..."}
-                  className="flex-1 bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-primary"
+                  className="flex-1"
                   disabled={isLoading}
                 />
                 <Button
                   type="submit"
                   size="icon"
                   disabled={(!input.trim() && !pendingFile) || isLoading}
-                  className="bg-primary hover:bg-primary/90"
+                  className="shadow-[0_8px_24px_-10px_hsl(var(--primary)/0.8)]"
                 >
                   {isLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
