@@ -3,7 +3,10 @@ import { FuturisticCashFlowChart } from "@/components/FuturisticCashFlowChart";
 import { FuturisticStatusPanel } from "@/components/FuturisticStatusPanel";
 import { RevenueExpenseChart } from "@/components/charts/RevenueExpenseChart";
 import { NetIncomeTrendChart } from "@/components/charts/NetIncomeTrendChart";
-import { ExpenseBreakdownChart } from "@/components/charts/ExpenseBreakdownChart";
+import { ExpenseCompositionBar } from "@/components/charts/ExpenseCompositionBar";
+import { PLWaterfallChart } from "@/components/charts/PLWaterfallChart";
+import { SparklineRow, type SparkSeries } from "@/components/charts/SparklineRow";
+
 import {
   januaryDeposits, januaryWithdrawals, januarySummary,
   februaryDeposits, februaryWithdrawals,
