@@ -6,9 +6,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useClientAuth } from "@/hooks/useClientAuth";
+import { Switch } from "@/components/ui/switch";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { motion } from "framer-motion";
 import { MizanBalance3D } from "@/components/brand/MizanBalance3D";
+import { AppleGlyph, GoogleGlyph } from "@/components/brand/ProviderGlyphs";
+import { setStaySignedIn } from "@/lib/sessionPersistence";
+
+const SSO_SURFACE =
+  "group relative flex h-11 w-full items-center rounded-xl border border-white/[0.07] bg-white/[0.04] px-4 text-[13.5px] font-medium text-foreground transition-all duration-200 hover:-translate-y-px hover:border-white/[0.12] hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/60 disabled:pointer-events-none disabled:opacity-60";
 
 const Auth = () => {
   // Accountant login state
@@ -17,6 +23,9 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [staySignedIn, setStaySignedInState] = useState(true);
+  const [oauthPending, setOauthPending] = useState<"apple" | "google" | null>(null);
+  const [resetting, setResetting] = useState(false);
 
   // Client login state
   const [clientUsername, setClientUsername] = useState("");
@@ -64,6 +73,55 @@ const Auth = () => {
     }
   }, [isClientAuthenticated, clientAuthLoading, navigate]);
 
+  const handleOAuth = async (provider: "apple" | "google") => {
+    setOauthPending(provider);
+    setStaySignedIn(staySignedIn);
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo: `${window.location.origin}/clients` },
+    });
+
+    if (error) {
+      const notEnabled = /not enabled|unsupported provider|provider is not/i.test(error.message);
+      toast({
+        title: notEnabled ? "Provider not enabled yet" : "Sign-in failed",
+        description: notEnabled
+          ? `${provider === "apple" ? "Apple" : "Google"} sign-in has not been switched on for this workspace yet.`
+          : error.message,
+        variant: "destructive",
+      });
+      setOauthPending(null);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast({
+        title: "Enter your email first",
+        description: "Add your practice email above, then select Forgot password.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setResetting(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setResetting(false);
+
+    if (error) {
+      toast({ title: "Could not send reset link", description: error.message, variant: "destructive" });
+      return;
+    }
+
+    toast({
+      title: "Reset link sent",
+      description: `If an account exists for ${email}, a password reset link is on its way.`,
+    });
+  };
+
   const handleAccountantLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -77,6 +135,7 @@ const Auth = () => {
     }
 
     setLoading(true);
+    setStaySignedIn(staySignedIn);
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -228,6 +287,40 @@ const Auth = () => {
 
           {!isClient ? (
             <form onSubmit={handleAccountantLogin} className="mt-8 space-y-6">
+              {/* Federated sign-in */}
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  onClick={() => handleOAuth("apple")}
+                  disabled={oauthPending !== null}
+                  className={SSO_SURFACE}
+                >
+                  <AppleGlyph className="h-[17px] w-[17px] -mt-[2px] text-foreground" />
+                  <span className="pointer-events-none absolute inset-x-0 text-center">
+                    {oauthPending === "apple" ? "Opening Apple..." : "Continue with Apple"}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleOAuth("google")}
+                  disabled={oauthPending !== null}
+                  className={SSO_SURFACE}
+                >
+                  <GoogleGlyph className="h-[17px] w-[17px]" />
+                  <span className="pointer-events-none absolute inset-x-0 text-center">
+                    {oauthPending === "google" ? "Opening Google..." : "Continue with Google"}
+                  </span>
+                </button>
+              </div>
+
+              {/* Quiet divider */}
+              <div className="flex items-center gap-4" aria-hidden="true">
+                <span className="h-px flex-1 bg-white/[0.07]" />
+                <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">Or</span>
+                <span className="h-px flex-1 bg-white/[0.07]" />
+              </div>
+
               <div className="space-y-2.5">
                 <Label htmlFor="login-email" className="eyebrow-label">Email</Label>
                 <Input
@@ -241,7 +334,17 @@ const Auth = () => {
               </div>
 
               <div className="space-y-2.5">
-                <Label htmlFor="login-password" className="eyebrow-label">Password</Label>
+                <div className="flex items-baseline justify-between">
+                  <Label htmlFor="login-password" className="eyebrow-label">Password</Label>
+                  <button
+                    type="button"
+                    onClick={handleForgotPassword}
+                    disabled={resetting}
+                    className="text-[11.5px] font-medium text-muted-foreground underline-offset-4 transition-colors duration-150 hover:text-foreground hover:underline disabled:opacity-60"
+                  >
+                    {resetting ? "Sending..." : "Forgot password?"}
+                  </button>
+                </div>
                 <div className="relative">
                   <Input
                     id="login-password"
@@ -261,6 +364,17 @@ const Auth = () => {
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
+              </div>
+
+              <div className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3">
+                <Label htmlFor="stay-signed-in" className="cursor-pointer text-[13px] font-normal text-muted-foreground">
+                  Stay signed in
+                </Label>
+                <Switch
+                  id="stay-signed-in"
+                  checked={staySignedIn}
+                  onCheckedChange={setStaySignedInState}
+                />
               </div>
 
               <Button type="submit" className="h-11 w-full btn-glow" disabled={loading}>
