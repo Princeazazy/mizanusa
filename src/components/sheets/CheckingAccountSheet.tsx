@@ -186,7 +186,7 @@ export const CheckingAccountSheet = ({
                 <TableRow key={index} className="hover:bg-muted/30 transition-colors">
                   <TableCell className="font-mono text-sm text-muted-foreground">{transaction.date}</TableCell>
                   <TableCell className="font-medium">{transaction.description}</TableCell>
-                  <TableCell className="font-mono text-sm text-muted-foreground">
+                  <TableCell className="hidden lg:table-cell font-mono text-sm text-muted-foreground">
                     {transaction.checkNumber || "—"}
                   </TableCell>
                   <TableCell>
@@ -194,18 +194,19 @@ export const CheckingAccountSheet = ({
                       {transaction.coaCode}
                     </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden md:table-cell">
                     <Badge className={`${getCategoryColor(transaction.category)} text-xs font-medium`}>
                       {transaction.category}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right font-semibold text-expense font-mono">
+                  <TableCell className="text-right font-semibold text-expense font-mono whitespace-nowrap">
                     ({formatCurrency(transaction.amount)})
                   </TableCell>
                 </TableRow>
               ))}
               <TableRow className="bg-expense-muted/40 font-bold border-t-2 border-expense/20">
-                <TableCell colSpan={5} className="text-expense">Total Withdrawals</TableCell>
+                <TableCell colSpan={3} className="text-expense">Total Withdrawals</TableCell>
+                <TableCell className="hidden md:table-cell" />
                 <TableCell className="text-right text-expense font-mono text-base">
                   ({formatCurrency(totalWithdrawals)})
                 </TableCell>
