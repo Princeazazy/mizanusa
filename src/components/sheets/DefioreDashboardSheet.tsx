@@ -193,7 +193,8 @@ export const DefioreDashboardSheet = ({ viewOnly = false }: DefioreDashboardShee
             },
           ]}
         />
-      </div>
+      </section>
+
     </motion.div>
   );
 };
