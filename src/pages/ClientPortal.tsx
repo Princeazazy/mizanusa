@@ -414,38 +414,20 @@ const ClientPortal = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center futuristic-bg relative overflow-hidden">
+      <div className="min-h-screen futuristic-bg">
         <div className="light-beam light-beam-left" />
         <div className="light-beam light-beam-right" />
-        
-        <motion.div
-          className="flex flex-col items-center gap-4 z-10"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="relative"
-          >
-            <img
-              src={mizanLogo}
-              alt="Mizan"
-              className="h-32 w-32 object-contain relative z-10 mix-blend-lighten logo-glow-pulse"
-            />
-          </motion.div>
-          <motion.div
-            className="flex items-center gap-2"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            <Sparkles className="h-4 w-4 text-primary" />
-            <p className="text-muted-foreground text-sm font-medium">Loading your portal...</p>
-          </motion.div>
-        </motion.div>
+        <div className="mx-auto max-w-[1600px] px-4 py-8 md:px-8" aria-busy="true" aria-label="Loading your portal">
+          <BrandLockup size="md" />
+          <div className="mt-6 h-8 w-72 max-w-full animate-pulse rounded-lg bg-white/[0.05]" />
+          <div className="mt-3 h-4 w-64 animate-pulse rounded bg-white/[0.04]" />
+          <div className="mt-8 h-12 w-full animate-pulse rounded-xl bg-white/[0.04]" />
+          <div className="mt-8 h-[420px] w-full animate-pulse rounded-2xl bg-white/[0.04]" />
+        </div>
       </div>
     );
   }
+
 
   if (!session) {
     return null;
