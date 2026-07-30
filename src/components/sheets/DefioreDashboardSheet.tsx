@@ -3,9 +3,11 @@ import { FuturisticCashFlowChart } from "@/components/FuturisticCashFlowChart";
 import { FuturisticStatusPanel } from "@/components/FuturisticStatusPanel";
 import { RevenueExpenseChart } from "@/components/charts/RevenueExpenseChart";
 import { NetIncomeTrendChart } from "@/components/charts/NetIncomeTrendChart";
-import { ExpenseCompositionBar } from "@/components/charts/ExpenseCompositionBar";
+import { CategoryDonut } from "@/components/charts/CategoryDonut";
 import { PLWaterfallChart } from "@/components/charts/PLWaterfallChart";
 import { SparklineRow, type SparkSeries } from "@/components/charts/SparklineRow";
+import { KpiBand } from "@/components/KpiBand";
+
 
 import {
   januaryDeposits, januaryWithdrawals, januarySummary,
@@ -124,24 +126,19 @@ export const DefioreDashboardSheet = ({ viewOnly = false }: DefioreDashboardShee
       transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
       className="space-y-8"
     >
-      {/* Editorial stat band — oversized figures, quiet labels */}
-      <section className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl bg-white/[0.06] sm:grid-cols-3">
-        {[
-          { k: "Cash In", v: formatCurrency(totalIncoming) },
-          { k: "Cash Out", v: formatCurrency(totalOutgoing) },
-          { k: "Net Movement", v: formatCurrency(netCashFlow), accent: true },
-        ].map((s) => (
-          <div key={s.k} className="min-w-0 bg-background/80 px-5 py-6 sm:px-7 sm:py-7">
-            <span className="eyebrow-label">{s.k}</span>
-            <div
-              className={`stat-display mt-3 truncate text-[24px] leading-none sm:text-[26px] xl:text-[30px] ${s.accent ? "text-primary" : ""}`}
-              title={s.v}
-            >
-              {s.v}
-            </div>
-          </div>
-        ))}
-      </section>
+      {/* KPI band — Origin hero figures, one featured halo card */}
+      <KpiBand
+        items={[
+          { label: "Cash In", value: formatCurrency(totalIncoming) },
+          { label: "Cash Out", value: formatCurrency(totalOutgoing), invertDelta: true },
+          {
+            label: "Net Movement",
+            value: formatCurrency(netCashFlow),
+            context: PERIOD,
+            featured: true,
+          },
+        ]}
+      />
 
       {/* Asymmetric chart grid */}
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_1fr]">
@@ -150,9 +147,10 @@ export const DefioreDashboardSheet = ({ viewOnly = false }: DefioreDashboardShee
       </section>
 
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_1.35fr]">
+        <CategoryDonut data={categorySlices} period={PERIOD} />
         <PLWaterfallChart steps={waterfallSteps} period={PERIOD} />
-        <ExpenseCompositionBar data={categorySlices} period={PERIOD} />
       </section>
+
 
       <SparklineRow series={sparkSeries} period={PERIOD} />
 

@@ -40,7 +40,7 @@ export const FuturisticCashFlowChart = ({
 
   return (
     <motion.div
-      className="glass-card p-6"
+      className="surface-panel halo-card p-6 sm:p-7"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

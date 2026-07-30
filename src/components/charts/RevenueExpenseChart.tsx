@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -12,6 +13,7 @@ import {
 import { ChartFrame, ChartSkeleton } from "./ChartFrame";
 import { SummaryRows } from "./CategoryLedger";
 import { SeriesTooltip } from "./SeriesTooltip";
+import { SegmentedRange, rangeOptionsFor } from "./CardChrome";
 import {
   CHART_HEIGHT,
   CHART_MARGIN,
@@ -58,12 +60,20 @@ export const RevenueExpenseChart = ({
   basis = "Cash basis · Bank statements",
   className,
 }: Props) => {
-  const hasData = data.some((d) => d.revenue !== 0 || d.expenses !== 0);
-  const totalRevenue = data.reduce((s, d) => s + d.revenue, 0);
-  const totalExpenses = data.reduce((s, d) => s + d.expenses, 0);
-  const avgRevenue = mean(data.map((d) => d.revenue));
-  const delta = periodDelta(data.map((d) => d.revenue));
-  const lastMonth = data[data.length - 1]?.month;
+  const rangeOptions = useMemo(() => rangeOptionsFor(data.length), [data.length]);
+  const [range, setRange] = useState("all");
+  const view = useMemo(() => {
+    const opt = rangeOptions.find((o) => o.id === range);
+    if (!opt?.points) return data;
+    return data.slice(Math.max(0, data.length - opt.points));
+  }, [data, range, rangeOptions]);
+
+  const hasData = view.some((d) => d.revenue !== 0 || d.expenses !== 0);
+  const totalRevenue = view.reduce((s, d) => s + d.revenue, 0);
+  const totalExpenses = view.reduce((s, d) => s + d.expenses, 0);
+  const avgRevenue = mean(view.map((d) => d.revenue));
+  const delta = periodDelta(view.map((d) => d.revenue));
+  const lastMonth = view[view.length - 1]?.month;
 
   return (
     <ChartFrame
@@ -75,6 +85,7 @@ export const RevenueExpenseChart = ({
       delta={hasData ? delta : undefined}
       meta={hasData ? `${fullCurrency(totalExpenses)} spent` : undefined}
       className={className}
+      controls={<SegmentedRange options={rangeOptions} value={range} onChange={setRange} />}
       footer={
         hasData ? (
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
@@ -98,7 +109,7 @@ export const RevenueExpenseChart = ({
         <ChartSkeleton />
       ) : (
         <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
-          <BarChart data={data} margin={CHART_MARGIN} barGap={5}>
+          <BarChart data={view} margin={CHART_MARGIN} barGap={5}>
             <CartesianGrid stroke={chartColors.grid} vertical={false} strokeDasharray="0" />
             <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={false} dy={8} interval="preserveStartEnd" minTickGap={12} />
             <YAxis
@@ -135,7 +146,7 @@ export const RevenueExpenseChart = ({
                 position="top"
                 offset={8}
                 content={(props: any) => {
-                  if (props.index !== data.length - 1) return null;
+                  if (props.index !== view.length - 1) return null;
                   return (
                     <text
                       x={props.x + props.width / 2}
@@ -172,7 +183,7 @@ export const RevenueExpenseChart = ({
             <span className="w-16 shrink-0 text-right sm:w-20">Net</span>
           </div>
           <ul className="divide-y divide-white/[0.05]">
-            {data.map((d) => (
+            {view.map((d) => (
               <li key={d.month} className="flex items-center gap-3 py-2 text-[13px]">
                 <span className="min-w-0 flex-1 truncate text-foreground/85" title={d.month}>
                   {d.month}
@@ -205,7 +216,7 @@ export const RevenueExpenseChart = ({
       )}
       {hasData && lastMonth && (
         <p className="sr-only">
-          Revenue closed at {fullCurrency(data[data.length - 1].revenue)} in {lastMonth}.
+          Revenue closed at {fullCurrency(view[view.length - 1].revenue)} in {lastMonth}.
         </p>
       )}
     </ChartFrame>
