@@ -14,7 +14,7 @@ import { MarketingShell } from "@/components/marketing/MarketingShell";
 import { Section } from "@/components/marketing/Section";
 import { MizanBalance3D } from "@/components/brand/MizanBalance3D";
 import { RevenueExpenseChart } from "@/components/charts/RevenueExpenseChart";
-import { ExpenseCompositionBar } from "@/components/charts/ExpenseCompositionBar";
+import { CategoryDonut } from "@/components/charts/CategoryDonut";
 
 /** Illustrative figures for the product showcase — clearly labelled as a sample. */
 const SAMPLE_MONTHS = [
@@ -192,10 +192,11 @@ const MarketingHome = () => (
           period="Oct 1, 2025 – Mar 31, 2026"
           basis="Illustrative sample · Not client data"
         />
-        <ExpenseCompositionBar
+        <CategoryDonut
           data={SAMPLE_COMPOSITION}
           period="Oct 1, 2025 – Mar 31, 2026"
           basis="Illustrative sample · Not client data"
+          featured
         />
       </div>
 

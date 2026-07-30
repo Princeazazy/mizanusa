@@ -11,10 +11,10 @@
 @layer base {
   :root {
     /* Core surfaces — deep near-black with blue/violet undertone */
-    --background: 232 24% 5%;
+    --background: 230 20% 2.6%;
     --foreground: 226 22% 92%;
 
-    --card: 231 20% 8%;
+    --card: 230 16% 6.4%;
     --card-foreground: 226 22% 92%;
 
     --popover: 231 22% 9%;
@@ -41,7 +41,7 @@
     --input: 231 16% 13%;
     --ring: 172 78% 50%;
 
-    --radius: 1.125rem;
+    --radius: 1.375rem;
 
     /* Semantic */
     --success: 162 68% 44%;
@@ -77,6 +77,8 @@
     --glow-purple: 262 68% 60%;
     --glow-blue: 220 82% 58%;
     --glow-gold: 41 92% 60%;
+    --glow-violet: 268 76% 64%;
+    --gradient-halo: linear-gradient(135deg, hsl(var(--glow-cyan)) 0%, hsl(var(--glow-blue)) 48%, hsl(var(--glow-violet)) 100%);
 
     /* Chart palette */
     --chart-1: 172 78% 50%;
@@ -102,9 +104,9 @@
   }
 
   .dark {
-    --background: 232 24% 5%;
+    --background: 230 20% 2.6%;
     --foreground: 226 22% 92%;
-    --card: 231 20% 8%;
+    --card: 230 16% 6.4%;
     --card-foreground: 226 22% 92%;
     --popover: 231 22% 9%;
     --popover-foreground: 226 22% 92%;
@@ -659,24 +661,25 @@
      Editorial layer — depth, rhythm and typographic discipline
      ========================================================= */
 
-  /* Real depth: stacked shadows instead of blanket glassmorphism */
+  /* Base card — Origin language: near-black fill, large radius, hairline edge */
   .surface-panel {
     position: relative;
-    background: linear-gradient(180deg, hsl(231 20% 9.5%) 0%, hsl(231 22% 7.5%) 100%);
-    border: 1px solid hsl(0 0% 100% / 0.055);
-    border-radius: 18px;
+    background: linear-gradient(180deg, hsl(230 16% 7.6%) 0%, hsl(230 18% 5.6%) 100%);
+    border: 1px solid hsl(0 0% 100% / 0.07);
+    border-radius: 22px;
     box-shadow:
-      0 1px 0 0 hsl(0 0% 100% / 0.045) inset,
-      0 1px 2px hsl(232 40% 2% / 0.6),
-      0 8px 16px -6px hsl(232 40% 2% / 0.5),
-      0 24px 48px -18px hsl(232 40% 2% / 0.75);
+      0 1px 0 0 hsl(0 0% 100% / 0.04) inset,
+      0 1px 2px hsl(230 40% 1% / 0.6),
+      0 10px 22px -10px hsl(230 40% 1% / 0.55),
+      0 34px 64px -26px hsl(230 40% 1% / 0.8);
   }
 
   .surface-panel-flat {
-    background: hsl(231 20% 8%);
-    border: 1px solid hsl(0 0% 100% / 0.05);
-    border-radius: 14px;
+    background: hsl(230 16% 6.4%);
+    border: 1px solid hsl(0 0% 100% / 0.06);
+    border-radius: 18px;
   }
+
 
   /* Slight perspective tilt — used sparingly on clickable surfaces */
   .tilt-surface {
@@ -778,4 +781,148 @@
   .stagger-3 { animation-delay: 0.15s; }
   .stagger-4 { animation-delay: 0.2s; }
   .stagger-5 { animation-delay: 0.25s; }
+}
+
+@layer components {
+  /* =========================================================
+     Origin layer — featured halo cards, hero figures, chrome
+     ========================================================= */
+
+  /* Featured card: 1px cyan→blue→violet gradient border + soft outer bloom.
+     Border is painted by a masked pseudo-element so it follows any radius. */
+  .halo-card {
+    position: relative;
+    border-color: transparent !important;
+    box-shadow:
+      0 1px 0 0 hsl(0 0% 100% / 0.05) inset,
+      0 18px 44px -22px hsl(230 40% 1% / 0.85),
+      0 0 22px -6px hsl(var(--glow-blue) / 0.20),
+      0 0 60px -14px hsl(var(--glow-violet) / 0.22),
+      0 0 90px -20px hsl(var(--glow-cyan) / 0.16);
+    transition: box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .halo-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--gradient-halo);
+    opacity: 0.62;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
+    transition: opacity 260ms ease;
+  }
+
+  .halo-card:hover::before { opacity: 0.9; }
+
+  .halo-card:hover {
+    box-shadow:
+      0 1px 0 0 hsl(0 0% 100% / 0.06) inset,
+      0 22px 52px -22px hsl(230 40% 1% / 0.9),
+      0 0 26px -6px hsl(var(--glow-blue) / 0.3),
+      0 0 72px -14px hsl(var(--glow-violet) / 0.3),
+      0 0 110px -20px hsl(var(--glow-cyan) / 0.22);
+  }
+
+  /* ---------- Card chrome ---------- */
+  .card-label {
+    @apply text-[11px] font-medium uppercase text-muted-foreground;
+    letter-spacing: 0.16em;
+  }
+
+  .ghost-icon-btn {
+    @apply inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground/70;
+    background: hsl(0 0% 100% / 0.03);
+    border: 1px solid hsl(0 0% 100% / 0.06);
+    transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+  }
+
+  .ghost-icon-btn:hover {
+    @apply text-foreground;
+    background: hsl(0 0% 100% / 0.07);
+    border-color: hsl(0 0% 100% / 0.12);
+  }
+
+  /* Circular tinted icon chip for list rows */
+  .icon-chip {
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full;
+    background: hsl(var(--primary) / 0.12);
+    color: hsl(var(--primary));
+  }
+
+  .period-chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium text-muted-foreground;
+    background: hsl(0 0% 100% / 0.035);
+    border: 1px solid hsl(0 0% 100% / 0.07);
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- Segmented time-range control ---------- */
+  .segmented {
+    @apply inline-flex items-center gap-0.5 rounded-full p-1;
+    background: hsl(0 0% 100% / 0.03);
+    border: 1px solid hsl(0 0% 100% / 0.06);
+  }
+
+  .segment {
+    @apply rounded-full px-3 py-1 text-[11px] font-medium uppercase text-muted-foreground;
+    letter-spacing: 0.1em;
+    transition: color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .segment:hover:not(.active) { @apply text-foreground/80; }
+
+  .segment.active {
+    color: hsl(var(--foreground));
+    background: hsl(230 18% 12%);
+    box-shadow: inset 0 0 0 1px hsl(0 0% 100% / 0.08), 0 1px 2px hsl(230 40% 1% / 0.6);
+  }
+
+  /* ---------- Hero figure ---------- */
+  .hero-figure {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "ss01", "tnum";
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: hsl(var(--foreground));
+    font-size: clamp(1.75rem, 4.4vw, 2.5rem);
+  }
+
+  .delta-pill {
+    @apply inline-flex items-center gap-0.5 text-[12px] font-medium;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Quiet underlined text tabs */
+  .text-tab {
+    @apply relative pb-1.5 text-[12.5px] text-muted-foreground;
+    transition: color 160ms ease;
+  }
+
+  .text-tab:hover { @apply text-foreground/85; }
+
+  .text-tab.active { @apply text-foreground; }
+
+  .text-tab.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1.5px;
+    border-radius: 2px;
+    background: hsl(var(--primary));
+  }
+
+  @media print {
+    .halo-card { box-shadow: none !important; border: 1px solid #333 !important; }
+    .halo-card::before { display: none !important; }
+  }
 }

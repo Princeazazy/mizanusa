@@ -16,9 +16,10 @@ import { FuturisticCashFlowChart } from "@/components/FuturisticCashFlowChart";
 import { FuturisticStatusPanel } from "@/components/FuturisticStatusPanel";
 import { RevenueExpenseChart } from "@/components/charts/RevenueExpenseChart";
 import { NetIncomeTrendChart } from "@/components/charts/NetIncomeTrendChart";
-import { ExpenseCompositionBar } from "@/components/charts/ExpenseCompositionBar";
+import { CategoryDonut } from "@/components/charts/CategoryDonut";
 import { PLWaterfallChart } from "@/components/charts/PLWaterfallChart";
 import { SparklineRow, type SparkSeries } from "@/components/charts/SparklineRow";
+import { KpiBand } from "@/components/KpiBand";
 
 const PERIOD = "Oct 1 – Dec 31, 2025";
 
@@ -141,16 +142,29 @@ export const FuturisticDashboardSheet = ({ viewOnly = false }: FuturisticDashboa
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="space-y-6"
+      className="space-y-6 lg:space-y-8"
     >
+      <KpiBand
+        items={[
+          { label: "Cash In", value: formatCurrency(totalIncoming) },
+          { label: "Cash Out", value: formatCurrency(totalOutgoing), invertDelta: true },
+          {
+            label: "Net Movement",
+            value: formatCurrency(netCashFlow),
+            context: PERIOD,
+            featured: true,
+          },
+        ]}
+      />
+
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_1fr]">
         <RevenueExpenseChart data={monthly} period={PERIOD} />
         <NetIncomeTrendChart data={netTrend} period={PERIOD} />
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_1.35fr]">
+        <CategoryDonut data={categorySlices} period={PERIOD} />
         <PLWaterfallChart steps={waterfallSteps} period={PERIOD} />
-        <ExpenseCompositionBar data={categorySlices} period={PERIOD} />
       </div>
 
       <SparklineRow series={sparkSeries} period={PERIOD} />

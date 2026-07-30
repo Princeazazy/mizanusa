@@ -76,7 +76,7 @@ export const FuturisticStatusPanel = ({
 
   return (
     <motion.div
-      className="glass-card p-6"
+      className="surface-panel p-6 sm:p-7"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}

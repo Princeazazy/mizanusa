@@ -255,7 +255,7 @@ const Auth = () => {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto w-full max-w-[380px]"
+          className="surface-panel halo-card mx-auto w-full max-w-[400px] px-6 py-8 sm:px-8 sm:py-9"
         >
           <div className="lg:hidden">
             <span className="text-[15px] font-medium tracking-[-0.01em] text-foreground">Mizan</span>
