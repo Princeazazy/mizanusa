@@ -460,7 +460,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
                   <h4 className="text-foreground font-medium mb-2">
                     How can I help with {clientName}?
                   </h4>
-                  <p className="text-sm text-slate-400 mb-4">
+                  <p className="text-sm text-muted-foreground mb-4">
                     Upload statements, ask questions, or let me help manage your financial data.
                   </p>
                   <div className="flex flex-wrap gap-2 justify-center">
