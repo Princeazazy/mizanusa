@@ -397,6 +397,55 @@
     background-color: hsl(var(--primary) / 0.035);
   }
 
+  /* Statement section band — quiet eyebrow rule, never a colored block */
+  .section-band {
+    background: hsl(0 0% 100% / 0.03);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .section-band > td {
+    @apply text-[11px] font-medium uppercase text-primary/90;
+    letter-spacing: 0.16em;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .section-band:hover { background: hsl(0 0% 100% / 0.03); }
+
+  /* Statement grand total — the only place the accent lands hard */
+  .grand-band {
+    background: hsl(var(--primary) / 0.06);
+    border-top: 2px solid hsl(var(--primary) / 0.35);
+  }
+
+  .grand-band > td {
+    @apply text-[13px] font-semibold uppercase text-foreground;
+    letter-spacing: 0.08em;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+  }
+
+  .grand-band > td:last-child {
+    @apply text-base text-primary;
+    letter-spacing: normal;
+  }
+
+  .grand-band:hover { background: hsl(var(--primary) / 0.06); }
+
+  @media print {
+    .section-band > td,
+    .grand-band > td,
+    .grand-band > td:last-child {
+      color: #000 !important;
+      font-size: 10px !important;
+      padding-top: 1px !important;
+      padding-bottom: 1px !important;
+    }
+    .section-band, .grand-band { background: #f2f2f2 !important; }
+  }
+
+
   /* ---------- Background motion ---------- */
   .animated-gradient-bg {
     background: linear-gradient(
