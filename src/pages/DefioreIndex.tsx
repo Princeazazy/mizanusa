@@ -2,10 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, FileSpreadsheet, Presentation, Sparkles, Receipt, CreditCard, TrendingUp, Scale, ArrowDownUp, LayoutDashboard } from "lucide-react";
+import { Download, FileSpreadsheet, Presentation, Printer, Receipt, CreditCard, TrendingUp, Scale, ArrowDownUp, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { BrandLockup } from "@/components/brand/BrandLockup";
 import { FuturisticSidebar } from "@/components/FuturisticSidebar";
-import { FuturisticHeader } from "@/components/FuturisticHeader";
+import { FuturisticHeader, type SearchTarget } from "@/components/FuturisticHeader";
+
 import { CheckingAccountSheet } from "@/components/sheets/CheckingAccountSheet";
 import { InvoicesSheet } from "@/components/sheets/InvoicesSheet";
 import { CreditCardStatementSheet } from "@/components/sheets/CreditCardStatementSheet";
