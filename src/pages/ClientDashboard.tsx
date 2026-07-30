@@ -223,12 +223,8 @@ const ClientDashboard = () => {
           </motion.div>
         </div>
 
-        {/* Footer */}
-        <footer className="border-t border-border/30 py-4 mt-16">
-          <div className="max-w-[1600px] mx-auto px-8 text-center text-sm text-muted-foreground">
-            © 2025 Mizan. All rights reserved.
-          </div>
-        </footer>
+        <SiteFooter className="mt-16" />
+
       </div>
     </div>
   );
