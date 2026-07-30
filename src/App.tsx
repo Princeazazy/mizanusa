@@ -10,7 +10,12 @@ import DefioreIndex from "./pages/DefioreIndex";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import ClientPortal from "./pages/ClientPortal";
+import MarketingHome from "./pages/MarketingHome";
+import ServicesPage from "./pages/ServicesPage";
+import AboutPage from "./pages/AboutPage";
+import QuotePage from "./pages/QuotePage";
 import NotFound from "./pages/NotFound";
+
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { useAuth } from "./hooks/useAuth";
 import { useClientAuth } from "./hooks/useClientAuth";
@@ -76,9 +81,14 @@ const App = () => (
         <ErrorBoundary>
           <Routes>
 
-          <Route path="/" element={<AuthRoute />} />
+          <Route path="/" element={<MarketingHome />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/quote" element={<QuotePage />} />
+          <Route path="/contact" element={<Navigate to="/quote" replace />} />
           <Route path="/auth" element={<AuthRoute />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+
 
           <Route
             path="/clients"

@@ -171,6 +171,54 @@ export type Database = {
         }
         Relationships: []
       }
+      quote_requests: {
+        Row: {
+          business_name: string | null
+          created_at: string
+          email: string
+          handled_at: string | null
+          handled_by: string | null
+          id: string
+          industry: string
+          message: string | null
+          name: string
+          phone: string | null
+          situation: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          business_name?: string | null
+          created_at?: string
+          email: string
+          handled_at?: string | null
+          handled_by?: string | null
+          id?: string
+          industry: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          situation?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          business_name?: string | null
+          created_at?: string
+          email?: string
+          handled_at?: string | null
+          handled_by?: string | null
+          id?: string
+          industry?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          situation?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       uploaded_documents: {
         Row: {
           client_id: string
@@ -212,7 +260,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_mizan_accountant: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never

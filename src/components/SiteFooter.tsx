@@ -4,6 +4,12 @@ interface SiteFooterProps {
   className?: string;
 }
 
+const LINKS = [
+  { to: "/", label: "Mizan.com" },
+  { to: "/services", label: "Services" },
+  { to: "/quote", label: "Refer a business" },
+];
+
 export const SiteFooter = ({ className = "" }: SiteFooterProps) => (
   <footer className={`border-t border-white/[0.06] ${className}`}>
     <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-8 py-7 sm:flex-row sm:items-center sm:justify-between">
@@ -11,15 +17,18 @@ export const SiteFooter = ({ className = "" }: SiteFooterProps) => (
         <span className="text-[13px] font-medium tracking-[0.02em] text-foreground/80">Mizan</span>
         <span className="text-xs text-muted-foreground/70">Financial reporting &amp; reconciliation</span>
       </div>
-      <div className="flex items-center gap-6">
-        <Link
-          to="/auth?role=client"
-          className="text-xs tracking-[0.02em] text-muted-foreground transition-colors duration-150 hover:text-primary"
-        >
-          Client Portal
-        </Link>
+      <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-6 gap-y-2">
+        {LINKS.map((l) => (
+          <Link
+            key={l.to}
+            to={l.to}
+            className="text-xs tracking-[0.02em] text-muted-foreground transition-colors duration-150 hover:text-primary"
+          >
+            {l.label}
+          </Link>
+        ))}
         <span className="text-xs text-muted-foreground/60">© {new Date().getFullYear()} Mizan</span>
-      </div>
+      </nav>
     </div>
   </footer>
 );

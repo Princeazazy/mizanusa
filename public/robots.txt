@@ -12,3 +12,9 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /auth
+Disallow: /clients
+Disallow: /client-portal
+Disallow: /reset-password
+
+Sitemap: https://www.mizanusa.com/sitemap.xml
