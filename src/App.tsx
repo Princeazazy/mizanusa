@@ -10,16 +10,28 @@ import DefioreIndex from "./pages/DefioreIndex";
 import Auth from "./pages/Auth";
 import ClientPortal from "./pages/ClientPortal";
 import NotFound from "./pages/NotFound";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { useAuth } from "./hooks/useAuth";
 import { useClientAuth } from "./hooks/useClientAuth";
 
 const queryClient = new QueryClient();
 
 const RouteLoading = () => (
-  <div className="min-h-screen flex items-center justify-center futuristic-bg">
-    <p className="text-muted-foreground text-sm">Loading...</p>
+  <div className="min-h-screen futuristic-bg" aria-busy="true" aria-label="Loading">
+    <div className="light-beam light-beam-left" />
+    <div className="light-beam light-beam-right" />
+    <div className="mx-auto max-w-[1600px] px-6 py-8 sm:px-8">
+      <div className="h-10 w-40 animate-pulse rounded-lg bg-white/[0.05]" />
+      <div className="mt-8 h-9 w-64 animate-pulse rounded-lg bg-white/[0.05]" />
+      <div className="mt-3 h-4 w-80 max-w-full animate-pulse rounded bg-white/[0.04]" />
+      <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="h-[300px] animate-pulse rounded-2xl bg-white/[0.04] lg:col-span-2" />
+        <div className="h-[300px] animate-pulse rounded-2xl bg-white/[0.04]" />
+      </div>
+    </div>
   </div>
 );
+
 
 const AccountantRoute = ({ children }: { children: ReactNode }) => {
   const { user, loading: accountantLoading } = useAuth();
