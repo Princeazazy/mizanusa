@@ -42,7 +42,7 @@ export const ChartOfAccountsSheet = () => {
 
       {/* Revenue Accounts */}
       <Card>
-        <CardHeader className="bg-income/15 border-b">
+        <CardHeader className="border-b border-white/[0.06] bg-white/[0.015]">
           <CardTitle className="text-income">
             4000 Series - Revenue Accounts
           </CardTitle>
@@ -124,7 +124,7 @@ export const ChartOfAccountsSheet = () => {
 
       {/* Operating Expense Accounts */}
       <Card>
-        <CardHeader className="bg-expense/15 border-b">
+        <CardHeader className="border-b border-white/[0.06] bg-white/[0.015]">
           <CardTitle className="text-expense">
             6000 Series - Operating Expenses
           </CardTitle>

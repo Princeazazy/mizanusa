@@ -220,7 +220,7 @@ export const ReconciliationSheet = () => {
 
       {/* Deposit Verification */}
       <Card>
-        <CardHeader className="bg-income/15 border-b">
+        <CardHeader className="border-b border-white/[0.06] bg-white/[0.015]">
           <CardTitle className="flex items-center gap-2 text-income">
             <FileCheck className="h-5 w-5" />
             Deposit Verification Summary
