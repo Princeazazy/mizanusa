@@ -10,6 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import { ChartFrame, ChartSkeleton } from "./ChartFrame";
+import { SummaryRows } from "./CategoryLedger";
 import { SeriesTooltip } from "./SeriesTooltip";
 import {
   CHART_HEIGHT,
@@ -161,6 +162,46 @@ export const RevenueExpenseChart = ({
             />
           </BarChart>
         </ResponsiveContainer>
+      )}
+      {hasData && (
+        <div className="mt-5 border-t border-white/[0.06] px-4 pt-4 sm:px-6">
+          <div className="flex items-center gap-3 border-b border-white/[0.06] pb-2 text-[10px] uppercase tracking-[0.14em] text-muted-foreground/70">
+            <span className="min-w-0 flex-1 truncate">Period</span>
+            <span className="w-16 shrink-0 text-right sm:w-20">Revenue</span>
+            <span className="hidden w-16 shrink-0 text-right sm:inline sm:w-20">Expenses</span>
+            <span className="w-16 shrink-0 text-right sm:w-20">Net</span>
+          </div>
+          <ul className="divide-y divide-white/[0.05]">
+            {data.map((d) => (
+              <li key={d.month} className="flex items-center gap-3 py-2 text-[13px]">
+                <span className="min-w-0 flex-1 truncate text-foreground/85" title={d.month}>
+                  {d.month}
+                </span>
+                <span className="w-16 shrink-0 text-right tabular text-foreground sm:w-20">
+                  {compactCurrency(d.revenue)}
+                </span>
+                <span className="hidden w-16 shrink-0 text-right tabular text-muted-foreground sm:inline sm:w-20">
+                  {compactCurrency(d.expenses)}
+                </span>
+                <span
+                  className={`w-16 shrink-0 text-right tabular sm:w-20 ${
+                    d.revenue - d.expenses >= 0 ? "text-income" : "text-expense"
+                  }`}
+                >
+                  {compactCurrency(d.revenue - d.expenses)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <SummaryRows
+            className="mt-3 border-t border-white/[0.06] pt-2"
+            rows={[
+              { label: "Total revenue", value: fullCurrency(totalRevenue) },
+              { label: "Total expenses", value: fullCurrency(totalExpenses) },
+              { label: "Average revenue / period", value: fullCurrency(avgRevenue) },
+            ]}
+          />
+        </div>
       )}
       {hasData && lastMonth && (
         <p className="sr-only">

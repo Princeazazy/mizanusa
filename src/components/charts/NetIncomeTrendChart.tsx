@@ -10,6 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import { ChartFrame, ChartSkeleton } from "./ChartFrame";
+import { SummaryRows } from "./CategoryLedger";
 import { SeriesTooltip } from "./SeriesTooltip";
 import {
   CHART_HEIGHT,
@@ -148,7 +149,7 @@ export const NetIncomeTrendChart = ({
                 }}
               />
             )}
-            {peak && peak.month !== last?.month && (
+            {peak && peak.month !== last?.month && data.findIndex((d) => d.month === peak.month) > 0 && (
               <ReferenceDot
                 x={peak.month}
                 y={peak.net}
@@ -159,7 +160,12 @@ export const NetIncomeTrendChart = ({
                 isFront
                 label={{
                   value: `Peak ${compactCurrency(peak.net)}`,
-                  position: "top",
+                  position:
+                    data.findIndex((d) => d.month === peak.month) === 0
+                      ? "insideTopLeft"
+                      : "top",
+                  dx: data.findIndex((d) => d.month === peak.month) === 0 ? 6 : 0,
+                  dy: data.findIndex((d) => d.month === peak.month) === 0 ? -6 : 0,
                   offset: 10,
                   fill: "hsl(var(--muted-foreground))",
                   fontSize: 10,
@@ -168,6 +174,18 @@ export const NetIncomeTrendChart = ({
             )}
           </AreaChart>
         </ResponsiveContainer>
+      )}
+      {hasData && (
+        <div className="mt-5 border-t border-white/[0.06] px-6 pt-3">
+          <SummaryRows
+            rows={[
+              { label: "Total net income", value: fullCurrency(total) },
+              { label: "Average per period", value: fullCurrency(avg) },
+              ...(peak ? [{ label: `Largest period (${peak.month})`, value: fullCurrency(peak.net) }] : []),
+              ...(last ? [{ label: `Closing period (${last.month})`, value: fullCurrency(last.net) }] : []),
+            ]}
+          />
+        </div>
       )}
     </ChartFrame>
   );
