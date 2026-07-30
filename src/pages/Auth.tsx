@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import { MizanBalance3D } from "@/components/brand/MizanBalance3D";
 import { AppleGlyph, GoogleGlyph } from "@/components/brand/ProviderGlyphs";
 import { setStaySignedIn } from "@/lib/sessionPersistence";
+import { lovable } from "@/integrations/lovable/index";
 
 const SSO_SURFACE =
   "group relative flex h-11 w-full items-center rounded-xl border border-white/[0.07] bg-white/[0.04] px-4 text-[13.5px] font-medium text-foreground transition-all duration-200 hover:-translate-y-px hover:border-white/[0.12] hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/60 disabled:pointer-events-none disabled:opacity-60";
@@ -77,22 +78,27 @@ const Auth = () => {
     setOauthPending(provider);
     setStaySignedIn(staySignedIn);
 
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: { redirectTo: `${window.location.origin}/clients` },
+    const result = await lovable.auth.signInWithOAuth(provider, {
+      redirect_uri: window.location.origin,
     });
 
-    if (error) {
-      const notEnabled = /not enabled|unsupported provider|provider is not/i.test(error.message);
+    if (result.error) {
+      const message = result.error.message ?? "";
+      const notEnabled = /not enabled|unsupported provider|provider is not/i.test(message);
       toast({
         title: notEnabled ? "Provider not enabled yet" : "Sign-in failed",
         description: notEnabled
           ? `${provider === "apple" ? "Apple" : "Google"} sign-in has not been switched on for this workspace yet.`
-          : error.message,
+          : message || "Something went wrong. Please try again.",
         variant: "destructive",
       });
       setOauthPending(null);
+      return;
     }
+
+    if (result.redirected) return;
+
+    navigate("/clients");
   };
 
   const handleForgotPassword = async () => {
