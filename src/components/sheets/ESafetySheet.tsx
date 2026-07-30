@@ -92,7 +92,7 @@ const InspectionTable = ({ inspections, month }: InspectionTableProps) => {
                 <TableCell className="font-mono text-sm">{inspection.workOrder}</TableCell>
                 <TableCell className="font-medium">{inspection.customerName}</TableCell>
                 <TableCell className="font-mono text-xs">{inspection.vin}</TableCell>
-                <TableCell className="text-right text-green-600 font-medium">
+                <TableCell className="text-right text-income font-medium">
                   {formatCurrency(inspection.fee)}
                 </TableCell>
               </TableRow>
@@ -107,14 +107,14 @@ const InspectionTable = ({ inspections, month }: InspectionTableProps) => {
       </div>
 
       {/* Month Total */}
-      <div className="flex justify-between items-center bg-green-50 rounded-lg p-4">
+      <div className="flex justify-between items-center bg-income/15 rounded-lg p-4">
         <div>
           <p className="text-sm text-muted-foreground">{month} Total</p>
           <p className="text-lg font-bold">{inspections.length} Inspections</p>
         </div>
         <div className="text-right">
           <p className="text-sm text-muted-foreground">Revenue</p>
-          <p className="text-2xl font-bold text-green-600">
+          <p className="text-2xl font-bold text-income">
             {formatCurrency(inspections.length * 90)}
           </p>
         </div>
@@ -141,7 +141,7 @@ export const ESafetySheet = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{inspectionsSummary.october.count}</div>
-            <p className="text-sm text-green-600">{formatCurrency(inspectionsSummary.october.revenue)}</p>
+            <p className="text-sm text-income">{formatCurrency(inspectionsSummary.october.revenue)}</p>
           </CardContent>
         </Card>
         <Card>
@@ -150,7 +150,7 @@ export const ESafetySheet = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{inspectionsSummary.november.count}</div>
-            <p className="text-sm text-green-600">{formatCurrency(inspectionsSummary.november.revenue)}</p>
+            <p className="text-sm text-income">{formatCurrency(inspectionsSummary.november.revenue)}</p>
           </CardContent>
         </Card>
         <Card>
@@ -159,7 +159,7 @@ export const ESafetySheet = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{inspectionsSummary.december.count}</div>
-            <p className="text-sm text-green-600">{formatCurrency(inspectionsSummary.december.revenue)}</p>
+            <p className="text-sm text-income">{formatCurrency(inspectionsSummary.december.revenue)}</p>
           </CardContent>
         </Card>
         <Card className="bg-primary/5">
@@ -168,15 +168,15 @@ export const ESafetySheet = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{inspectionsSummary.total.count}</div>
-            <p className="text-sm font-semibold text-green-600">{formatCurrency(inspectionsSummary.total.revenue)}</p>
+            <p className="text-sm font-semibold text-income">{formatCurrency(inspectionsSummary.total.revenue)}</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Monthly Tabs */}
       <Card>
-        <CardHeader className="bg-blue-50 border-b">
-          <CardTitle className="flex items-center gap-2 text-blue-800">
+        <CardHeader className="bg-info/15 border-b">
+          <CardTitle className="flex items-center gap-2 text-info">
             <Car className="h-5 w-5" />
             Inspection Records by Month
           </CardTitle>
@@ -228,7 +228,7 @@ export const ESafetySheet = () => {
                 </TableCell>
                 <TableCell className="text-right">{formatCurrency(90)}</TableCell>
                 <TableCell className="text-right font-medium">{inspectionsSummary.total.count}</TableCell>
-                <TableCell className="text-right font-bold text-green-600">
+                <TableCell className="text-right font-bold text-income">
                   {formatCurrency(inspectionsSummary.total.revenue)}
                 </TableCell>
               </TableRow>

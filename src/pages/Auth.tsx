@@ -168,7 +168,7 @@ const Auth = () => {
           <h1 className="text-3xl font-bold text-foreground mb-3 tracking-tight">
             <span className="text-primary glow-text-cyan">Mizan</span>
           </h1>
-          <p className="text-primary/60 text-base mb-10">
+          <p className="text-base text-muted-foreground mb-10">
             Professional Financial Management System
           </p>
           
@@ -180,8 +180,8 @@ const Auth = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <Calculator className="h-7 w-7 text-primary mx-auto mb-2" />
-              <p className="text-primary/70 text-sm font-medium">P&L Statements</p>
+              <Calculator className="h-7 w-7 text-primary/80 mx-auto mb-2" />
+              <p className="text-sm font-medium text-foreground/80">P&L Statements</p>
             </motion.div>
             <motion.div 
               className="glass-card p-4 hover:border-primary/30 transition-colors"
@@ -189,8 +189,8 @@ const Auth = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <TrendingUp className="h-7 w-7 text-primary mx-auto mb-2" />
-              <p className="text-primary/70 text-sm font-medium">Cash Flow</p>
+              <TrendingUp className="h-7 w-7 text-primary/80 mx-auto mb-2" />
+              <p className="text-sm font-medium text-foreground/80">Cash Flow</p>
             </motion.div>
             <motion.div 
               className="glass-card p-4 hover:border-primary/30 transition-colors"
@@ -198,8 +198,8 @@ const Auth = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              <PieChart className="h-7 w-7 text-primary mx-auto mb-2" />
-              <p className="text-primary/70 text-sm font-medium">Balance Sheet</p>
+              <PieChart className="h-7 w-7 text-primary/80 mx-auto mb-2" />
+              <p className="text-sm font-medium text-foreground/80">Balance Sheet</p>
             </motion.div>
             <motion.div 
               className="glass-card p-4 hover:border-primary/30 transition-colors"
@@ -207,8 +207,8 @@ const Auth = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
-              <FileSpreadsheet className="h-7 w-7 text-primary mx-auto mb-2" />
-              <p className="text-primary/70 text-sm font-medium">Reconciliation</p>
+              <FileSpreadsheet className="h-7 w-7 text-primary/80 mx-auto mb-2" />
+              <p className="text-sm font-medium text-foreground/80">Reconciliation</p>
             </motion.div>
           </div>
         </motion.div>
@@ -232,10 +232,10 @@ const Auth = () => {
                   className="h-32 w-32 object-contain mx-auto mix-blend-lighten logo-glow-pulse"
                 />
               </div>
-              <CardTitle className="text-xl font-semibold text-primary">
+              <CardTitle className="text-xl font-semibold text-foreground">
                 Sign In
               </CardTitle>
-              <CardDescription className="text-primary/60">
+              <CardDescription className="text-muted-foreground">
                 Access your financial workbook
               </CardDescription>
             </CardHeader>
@@ -244,11 +244,11 @@ const Auth = () => {
               {/* Login Type Tabs */}
               <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "accountant" | "client")} className="w-full">
                 <TabsList className="w-full mb-6 bg-primary/5">
-                  <TabsTrigger value="accountant" className="flex-1 gap-2 data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <TabsTrigger value="accountant" className="flex-1 gap-2 data-[state=active]:bg-white/[0.06] data-[state=active]:text-foreground">
                     <Briefcase className="h-4 w-4" />
                     Accountant
                   </TabsTrigger>
-                  <TabsTrigger value="client" className="flex-1 gap-2 data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <TabsTrigger value="client" className="flex-1 gap-2 data-[state=active]:bg-white/[0.06] data-[state=active]:text-foreground">
                     <User className="h-4 w-4" />
                     Client
                   </TabsTrigger>
@@ -258,36 +258,36 @@ const Auth = () => {
                 <TabsContent value="accountant">
                   <form onSubmit={handleAccountantLogin} className="space-y-5">
                     <div className="space-y-2">
-                      <Label htmlFor="login-email" className="text-primary/80 text-sm">Email</Label>
+                      <Label htmlFor="login-email" className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Email</Label>
                       <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/60" />
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
                           id="login-email"
                           type="email"
                           placeholder="accountant@example.com"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="pl-10 bg-primary/5 border-primary/30 text-foreground placeholder:text-primary/40 focus:border-primary focus:ring-primary/20"
+                          className="pl-10"
                         />
                       </div>
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="login-password" className="text-primary/80 text-sm">Password</Label>
+                      <Label htmlFor="login-password" className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Password</Label>
                       <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/60" />
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
                           id="login-password"
                           type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="pl-10 pr-10 bg-primary/5 border-primary/30 text-foreground placeholder:text-primary/40 focus:border-primary focus:ring-primary/20"
+                          className="pl-10 pr-10"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/50 hover:text-primary transition-colors"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-150"
                         >
                           {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
@@ -304,7 +304,7 @@ const Auth = () => {
                     </Button>
                   </form>
                   
-                  <p className="text-center text-primary/40 text-xs mt-6">
+                  <p className="text-center text-xs text-muted-foreground mt-6">
                     Authorized personnel only
                   </p>
                 </TabsContent>
@@ -313,36 +313,36 @@ const Auth = () => {
                 <TabsContent value="client">
                   <form onSubmit={handleClientLogin} className="space-y-5">
                     <div className="space-y-2">
-                      <Label htmlFor="client-username" className="text-primary/80 text-sm">Username</Label>
+                      <Label htmlFor="client-username" className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Username</Label>
                       <div className="relative">
-                        <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/60" />
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
                           id="client-username"
                           type="text"
                           placeholder="Your username"
                           value={clientUsername}
                           onChange={(e) => setClientUsername(e.target.value)}
-                          className="pl-10 bg-primary/5 border-primary/30 text-foreground placeholder:text-primary/40 focus:border-primary focus:ring-primary/20"
+                          className="pl-10"
                         />
                       </div>
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="client-password" className="text-primary/80 text-sm">Password</Label>
+                      <Label htmlFor="client-password" className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Password</Label>
                       <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/60" />
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
                           id="client-password"
                           type={showClientPassword ? "text" : "password"}
                           placeholder="••••••••"
                           value={clientPassword}
                           onChange={(e) => setClientPassword(e.target.value)}
-                          className="pl-10 pr-10 bg-primary/5 border-primary/30 text-foreground placeholder:text-primary/40 focus:border-primary focus:ring-primary/20"
+                          className="pl-10 pr-10"
                         />
                         <button
                           type="button"
                           onClick={() => setShowClientPassword(!showClientPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/50 hover:text-primary transition-colors"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-150"
                         >
                           {showClientPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
@@ -359,7 +359,7 @@ const Auth = () => {
                     </Button>
                   </form>
                   
-                  <p className="text-center text-primary/40 text-xs mt-6">
+                  <p className="text-center text-xs text-muted-foreground mt-6">
                     Client portal access only
                   </p>
                 </TabsContent>
@@ -370,7 +370,7 @@ const Auth = () => {
         
         {/* Footer */}
         <div className="absolute bottom-6 left-0 right-0 text-center">
-          <p className="text-primary/30 text-xs">
+          <p className="text-xs text-muted-foreground/70">
             © 2025 Mizan. All rights reserved.
           </p>
         </div>

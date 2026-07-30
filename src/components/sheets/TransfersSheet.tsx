@@ -106,7 +106,7 @@ export const TransfersSheet = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">
+            <div className="text-2xl font-bold text-expense">
               {formatCurrency(totalToSavings)}
             </div>
           </CardContent>
@@ -119,7 +119,7 @@ export const TransfersSheet = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-2xl font-bold text-income">
               {formatCurrency(totalFromSavings)}
             </div>
           </CardContent>
@@ -132,7 +132,7 @@ export const TransfersSheet = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${netTransfer >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <div className={`text-2xl font-bold ${netTransfer >= 0 ? 'text-income' : 'text-expense'}`}>
               {formatCurrency(netTransfer)}
             </div>
           </CardContent>
@@ -162,10 +162,10 @@ export const TransfersSheet = () => {
             <TableBody>
               <TableRow>
                 <TableCell className="font-medium">October 2025</TableCell>
-                <TableCell className="text-right text-red-600">
+                <TableCell className="text-right text-expense">
                   ({formatCurrency(calcMonthToSavings(octoberTransfers))})
                 </TableCell>
-                <TableCell className="text-right text-green-600">
+                <TableCell className="text-right text-income">
                   {formatCurrency(calcMonthFromSavings(octoberTransfers))}
                 </TableCell>
                 <TableCell className="text-right font-medium">
@@ -174,10 +174,10 @@ export const TransfersSheet = () => {
               </TableRow>
               <TableRow>
                 <TableCell className="font-medium">November 2025</TableCell>
-                <TableCell className="text-right text-red-600">
+                <TableCell className="text-right text-expense">
                   ({formatCurrency(calcMonthToSavings(novemberTransfers))})
                 </TableCell>
-                <TableCell className="text-right text-green-600">
+                <TableCell className="text-right text-income">
                   {formatCurrency(calcMonthFromSavings(novemberTransfers))}
                 </TableCell>
                 <TableCell className="text-right font-medium">
@@ -186,10 +186,10 @@ export const TransfersSheet = () => {
               </TableRow>
               <TableRow>
                 <TableCell className="font-medium">December 2025</TableCell>
-                <TableCell className="text-right text-red-600">
+                <TableCell className="text-right text-expense">
                   ({formatCurrency(calcMonthToSavings(decemberTransfers))})
                 </TableCell>
-                <TableCell className="text-right text-green-600">
+                <TableCell className="text-right text-income">
                   {formatCurrency(calcMonthFromSavings(decemberTransfers))}
                 </TableCell>
                 <TableCell className="text-right font-medium">
@@ -198,8 +198,8 @@ export const TransfersSheet = () => {
               </TableRow>
               <TableRow className="font-bold bg-muted/50">
                 <TableCell>Total Q4 2025</TableCell>
-                <TableCell className="text-right text-red-600">({formatCurrency(totalToSavings)})</TableCell>
-                <TableCell className="text-right text-green-600">{formatCurrency(totalFromSavings)}</TableCell>
+                <TableCell className="text-right text-expense">({formatCurrency(totalToSavings)})</TableCell>
+                <TableCell className="text-right text-income">{formatCurrency(totalFromSavings)}</TableCell>
                 <TableCell className="text-right">{formatCurrency(netTransfer)}</TableCell>
               </TableRow>
             </TableBody>
@@ -208,8 +208,8 @@ export const TransfersSheet = () => {
       </Card>
 
       {/* Note */}
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-        <p className="text-sm text-amber-800">
+      <div className="bg-warning/15 border border-warning/30 rounded-lg p-4">
+        <p className="text-sm text-warning">
           <strong>Note:</strong> Inter-account transfers are tracked separately and are not included in 
           the income or expense totals on the monthly checking account sheets. These transfers represent 
           movement of funds between accounts rather than actual income or expenses.

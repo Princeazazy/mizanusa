@@ -250,7 +250,7 @@ const ClientPortal = () => {
             .font-semibold { font-weight: 600; }
             .font-bold { font-weight: 700; }
             .font-mono { font-family: 'SF Mono', 'Consolas', monospace; }
-            .text-destructive, [style*="color: red"], .text-red-500 { color: #dc2626 !important; }
+            .text-destructive, [style*="color: red"], .text-expense { color: #dc2626 !important; }
             .border-t-2 { border-top: 2px solid #0d9488 !important; }
             .border-t-4, .border-double { border-top: 4px double #0d9488 !important; }
             .uppercase { text-transform: uppercase; }
