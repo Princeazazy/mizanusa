@@ -119,26 +119,31 @@ export const DefioreDashboardSheet = ({ viewOnly = false }: DefioreDashboardShee
 
       {/* Asymmetric chart grid */}
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_1fr]">
-        <RevenueExpenseChart data={monthly} />
-        <NetIncomeTrendChart data={netTrend} />
+        <RevenueExpenseChart data={monthly} period={PERIOD} />
+        <NetIncomeTrendChart data={netTrend} period={PERIOD} />
       </section>
 
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_1.35fr]">
-        <ExpenseBreakdownChart data={categorySlices} />
-        <div className="grid grid-cols-1 gap-6">
-          <FuturisticCashFlowChart
-            data={{ incoming, outgoing, netBalance }}
-            netCashFlow={formatCurrency(netCashFlow)}
-            netCashFlowChange={0}
-            currentBalance={formatCurrency(marchSummary.endingBalance)}
-            currentBalanceChange={0}
-            freeCashFlow={formatCurrency(netCashFlow)}
-            freeCashFlowChange={0}
-            runway="—"
-            runwayChange={0}
-          />
-        </div>
+        <PLWaterfallChart steps={waterfallSteps} period={PERIOD} />
+        <ExpenseCompositionBar data={categorySlices} period={PERIOD} />
       </section>
+
+      <SparklineRow series={sparkSeries} period={PERIOD} />
+
+      <section className="grid grid-cols-1 gap-6">
+        <FuturisticCashFlowChart
+          data={{ incoming, outgoing, netBalance }}
+          netCashFlow={formatCurrency(netCashFlow)}
+          netCashFlowChange={0}
+          currentBalance={formatCurrency(marchSummary.endingBalance)}
+          currentBalanceChange={0}
+          freeCashFlow={formatCurrency(netCashFlow)}
+          freeCashFlowChange={0}
+          runway="—"
+          runwayChange={0}
+        />
+      </section>
+
 
       <section>
 
