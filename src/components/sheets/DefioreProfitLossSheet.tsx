@@ -135,8 +135,8 @@ export const DefioreProfitLossSheet = () => {
 
   return (
     <div className="space-y-6 print-compact-pnl">
-      <Card className="glass-card border-primary/20">
-        <CardHeader className="border-b border-border pb-4 print:pb-1">
+      <Card className="glass-card overflow-hidden">
+        <CardHeader className="border-b border-white/[0.08] bg-white/[0.02] pb-4 print:pb-1">
           <div className="text-center space-y-1 print:space-y-0">
             <CardTitle className="text-lg font-bold text-foreground print:text-sm">
               Defiore Carpentry LLC
