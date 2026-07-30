@@ -72,7 +72,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
+        <ErrorBoundary>
+          <Routes>
+
           <Route path="/" element={<AuthRoute />} />
           <Route path="/auth" element={<AuthRoute />} />
 
