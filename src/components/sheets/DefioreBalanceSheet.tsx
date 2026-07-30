@@ -30,9 +30,9 @@ export const DefioreBalanceSheet = () => {
         <p className="text-muted-foreground print:text-xs">Defiore Carpentry LLC — As of March 31, 2026</p>
       </div>
 
-      <Card className="glass-card border-primary/20">
-        <CardHeader className="bg-primary/5 border-b border-primary/10 print:py-2">
-          <CardTitle className="flex items-center gap-2 text-primary print:text-sm">
+      <Card className="glass-card overflow-hidden">
+        <CardHeader className="bg-white/[0.02] border-b border-white/[0.08] print:py-2">
+          <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground print:text-sm">
             <Building2 className="h-5 w-5 print:h-4 print:w-4" />
             Statement of Financial Position
           </CardTitle>
@@ -40,45 +40,45 @@ export const DefioreBalanceSheet = () => {
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className="bg-muted/30">
+              <TableRow className="table-header-row hover:bg-transparent">
                 <TableHead className="w-2/3 print:text-[10px] print:py-1">Account</TableHead>
                 <TableHead className="text-right print:text-[10px] print:py-1">Amount</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {/* Assets */}
-              <TableRow className="bg-blue-500/10 font-bold text-lg print:text-xs"><TableCell colSpan={2} className="print:py-1">ASSETS</TableCell></TableRow>
-              <TableRow className="bg-blue-500/5 font-semibold"><TableCell className="pl-4 print:py-0.5 print:text-[10px]">Current Assets</TableCell><TableCell /></TableRow>
-              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Wells Fargo Business Checking</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(checkingBalance)}</TableCell></TableRow>
-              <TableRow className="font-semibold bg-blue-500/10">
-                <TableCell className="pl-4 print:py-0.5 print:text-[10px]">Total Current Assets</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(totalCurrentAssets)}</TableCell>
+              <TableRow className="section-band"><TableCell colSpan={2} className="print:py-1">ASSETS</TableCell></TableRow>
+              <TableRow className="font-medium text-foreground/90 hover:bg-transparent"><TableCell className="pl-4 print:py-0.5 print:text-[10px]">Current Assets</TableCell><TableCell /></TableRow>
+              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Wells Fargo Business Checking</TableCell><TableCell className="text-right tabular print:py-0.5 print:text-[10px]">{fmt(checkingBalance)}</TableCell></TableRow>
+              <TableRow className="font-semibold border-t border-white/[0.10] bg-white/[0.025] hover:bg-transparent">
+                <TableCell className="pl-4 print:py-0.5 print:text-[10px]">Total Current Assets</TableCell><TableCell className="text-right tabular print:py-0.5 print:text-[10px]">{fmt(totalCurrentAssets)}</TableCell>
               </TableRow>
-              <TableRow className="border-t-4 font-bold text-lg print:text-xs bg-blue-500/15">
-                <TableCell className="print:py-1">TOTAL ASSETS</TableCell><TableCell className="text-right font-mono text-blue-400 print:py-1">{fmt(totalAssets)}</TableCell>
+              <TableRow className="grand-band">
+                <TableCell className="print:py-1">TOTAL ASSETS</TableCell><TableCell className="text-right tabular text-primary print:py-1">{fmt(totalAssets)}</TableCell>
               </TableRow>
 
               {/* Liabilities */}
-              <TableRow className="bg-red-500/10 font-bold text-lg print:text-xs"><TableCell colSpan={2} className="print:py-1">LIABILITIES</TableCell></TableRow>
+              <TableRow className="section-band"><TableCell colSpan={2} className="print:py-1">LIABILITIES</TableCell></TableRow>
               <TableRow className="bg-red-500/5 font-semibold"><TableCell className="pl-4 print:py-0.5 print:text-[10px]">Current Liabilities</TableCell><TableCell /></TableRow>
-              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Capital One Spark Classic (5155)</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(capOneBalance)}</TableCell></TableRow>
-              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Amex Business Platinum (51001)</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(amexPlatBalance)}</TableCell></TableRow>
-              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Amex Blue Business Cash (72000)</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(amexBlueBalance)}</TableCell></TableRow>
-              <TableRow className="font-semibold bg-red-500/10">
-                <TableCell className="pl-4 print:py-0.5 print:text-[10px]">Total Current Liabilities</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(totalCCLiabilities)}</TableCell>
+              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Capital One Spark Classic (5155)</TableCell><TableCell className="text-right tabular print:py-0.5 print:text-[10px]">{fmt(capOneBalance)}</TableCell></TableRow>
+              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Amex Business Platinum (51001)</TableCell><TableCell className="text-right tabular print:py-0.5 print:text-[10px]">{fmt(amexPlatBalance)}</TableCell></TableRow>
+              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Amex Blue Business Cash (72000)</TableCell><TableCell className="text-right tabular print:py-0.5 print:text-[10px]">{fmt(amexBlueBalance)}</TableCell></TableRow>
+              <TableRow className="font-semibold border-t border-white/[0.10] bg-white/[0.025] hover:bg-transparent">
+                <TableCell className="pl-4 print:py-0.5 print:text-[10px]">Total Current Liabilities</TableCell><TableCell className="text-right tabular print:py-0.5 print:text-[10px]">{fmt(totalCCLiabilities)}</TableCell>
               </TableRow>
-              <TableRow className="border-t-2 font-bold bg-red-500/15">
-                <TableCell className="print:py-1 print:text-xs">TOTAL LIABILITIES</TableCell><TableCell className="text-right font-mono text-red-400 print:py-1 print:text-xs">{fmt(totalLiabilities)}</TableCell>
+              <TableRow className="border-t border-white/[0.14] font-semibold bg-white/[0.03] hover:bg-transparent">
+                <TableCell className="print:py-1 print:text-xs">TOTAL LIABILITIES</TableCell><TableCell className="text-right tabular text-expense print:py-1 print:text-xs">{fmt(totalLiabilities)}</TableCell>
               </TableRow>
 
               {/* Equity */}
-              <TableRow className="bg-green-500/10 font-bold text-lg print:text-xs"><TableCell colSpan={2} className="print:py-1">EQUITY</TableCell></TableRow>
-              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Retained Earnings / Owner's Equity</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(totalEquity)}</TableCell></TableRow>
-              <TableRow className="font-semibold bg-green-500/10">
-                <TableCell className="pl-4 print:py-0.5 print:text-[10px]">Total Equity</TableCell><TableCell className="text-right font-mono print:py-0.5 print:text-[10px]">{fmt(totalEquity)}</TableCell>
+              <TableRow className="section-band"><TableCell colSpan={2} className="print:py-1">EQUITY</TableCell></TableRow>
+              <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Retained Earnings / Owner's Equity</TableCell><TableCell className="text-right tabular print:py-0.5 print:text-[10px]">{fmt(totalEquity)}</TableCell></TableRow>
+              <TableRow className="font-semibold border-t border-white/[0.10] bg-white/[0.025] hover:bg-transparent">
+                <TableCell className="pl-4 print:py-0.5 print:text-[10px]">Total Equity</TableCell><TableCell className="text-right tabular print:py-0.5 print:text-[10px]">{fmt(totalEquity)}</TableCell>
               </TableRow>
 
-              <TableRow className="border-t-4 font-bold text-lg print:text-xs bg-primary/10">
-                <TableCell className="print:py-1">TOTAL LIABILITIES & EQUITY</TableCell><TableCell className="text-right font-mono print:py-1">{fmt(totalLiabilities + totalEquity)}</TableCell>
+              <TableRow className="grand-band">
+                <TableCell className="print:py-1">TOTAL LIABILITIES & EQUITY</TableCell><TableCell className="text-right tabular print:py-1">{fmt(totalLiabilities + totalEquity)}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
