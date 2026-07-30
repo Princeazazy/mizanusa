@@ -14,8 +14,12 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"SF Pro Display"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-        mono: ['"SF Mono"', 'JetBrains Mono', 'Menlo', 'monospace'],
+        sans: ['Inter', '"SF Pro Display"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', '"SF Mono"', 'Menlo', 'monospace'],
+      },
+      letterSpacing: {
+        eyebrow: "0.18em",
+        tightest: "-0.03em",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -26,6 +30,7 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          glow: "hsl(var(--primary-glow))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
