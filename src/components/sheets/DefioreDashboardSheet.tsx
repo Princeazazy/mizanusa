@@ -15,6 +15,9 @@ import {
 
 type Txn = { date: string; amount: number; category?: string };
 
+const PERIOD = "Jan–Mar 2026";
+
+
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
 
