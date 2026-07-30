@@ -56,6 +56,16 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
     }
   }, [isOpen]);
 
+  // Always send the signed-in user's JWT so the backend can authenticate the caller
+  const getAuthHeader = async () => {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) {
+      throw new Error("You must be signed in to use the assistant.");
+    }
+    return `Bearer ${token}`;
+  };
+
   // Execute tool calls on the backend
   const executeActions = async (toolCalls: any[]) => {
     try {
@@ -63,7 +73,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: await getAuthHeader(),
         },
         body: JSON.stringify({ 
           clientId, 
@@ -107,7 +117,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token ?? ""}`,
         },
         body: JSON.stringify({ messages: allMessages, clientId }),
       });
