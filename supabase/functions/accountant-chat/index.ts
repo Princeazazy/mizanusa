@@ -244,9 +244,10 @@ serve(async (req) => {
           results.push({ 
             action: action.name, 
             success: false, 
-            error: err instanceof Error ? err.message : 'Unknown error'
+            error: "Action failed. Please try again."
           });
         }
+
       }
       
       return new Response(JSON.stringify({ results }), {
