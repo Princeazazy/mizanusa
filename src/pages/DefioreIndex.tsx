@@ -34,10 +34,14 @@ const SEARCH_TARGETS: SearchTarget[] = [
   { label: "February 2026 — Bank", value: "february", hint: "Checking account" },
   { label: "March 2026 — Bank", value: "march", hint: "Checking account" },
   { label: "Invoices", value: "invoices", hint: "Receivables" },
-  { label: "Profit & Loss", value: "profitloss", hint: "Q1 2026" },
-  { label: "Balance Sheet", value: "balancesheet", hint: "Q1 2026" },
-  { label: "Cash Flow", value: "cashflow", hint: "Q1 2026" },
+  { label: "Credit Card — January", value: "cc-january", hint: "Card activity" },
+  { label: "Credit Card — February", value: "cc-february", hint: "Card activity" },
+  { label: "Credit Card — March", value: "cc-march", hint: "Card activity" },
+  { label: "Profit & Loss", value: "pnl", hint: "Q1 2026" },
+  { label: "Balance Sheet", value: "balance-sheet", hint: "Q1 2026" },
+  { label: "Cash Flow", value: "cash-flow", hint: "Q1 2026" },
 ];
+
 
 
 const DefioreIndex = () => {
