@@ -173,12 +173,12 @@ export const CheckingAccountSheet = ({
           <Table>
             <TableHeader>
               <TableRow className="table-header-row">
-                <TableHead className="w-28 font-semibold">Date</TableHead>
+                <TableHead className="w-20 sm:w-28 font-semibold">Date</TableHead>
                 <TableHead className="font-semibold">Description</TableHead>
-                <TableHead className="w-20 font-semibold">Check #</TableHead>
+                <TableHead className="hidden lg:table-cell w-20 font-semibold">Check #</TableHead>
                 <TableHead className="w-20 font-semibold">COA</TableHead>
-                <TableHead className="font-semibold">Category</TableHead>
-                <TableHead className="text-right w-32 font-semibold">Amount</TableHead>
+                <TableHead className="hidden md:table-cell font-semibold">Category</TableHead>
+                <TableHead className="text-right w-28 sm:w-32 font-semibold">Amount</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
