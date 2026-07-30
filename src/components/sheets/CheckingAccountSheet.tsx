@@ -105,9 +105,9 @@ export const CheckingAccountSheet = ({
           <Table className="[&_th]:px-2 [&_td]:px-2 sm:[&_th]:px-4 sm:[&_td]:px-4">
             <TableHeader>
               <TableRow className="table-header-row">
-                <TableHead className="w-20 sm:w-28 font-semibold">Date</TableHead>
+                <TableHead className="w-14 sm:w-28 font-semibold">Date</TableHead>
                 <TableHead className="font-semibold">Description</TableHead>
-                <TableHead className="w-20 font-semibold">COA</TableHead>
+                <TableHead className="hidden sm:table-cell w-20 font-semibold">COA</TableHead>
                 <TableHead className="hidden md:table-cell font-semibold">Category</TableHead>
                 <TableHead className="text-right w-28 sm:w-32 font-semibold">Amount</TableHead>
               </TableRow>
@@ -116,8 +116,8 @@ export const CheckingAccountSheet = ({
               {actualDeposits.map((transaction, index) => (
                 <TableRow key={index} className="hover:bg-muted/30 transition-colors">
                   <TableCell className="font-mono text-sm text-muted-foreground">{transaction.date}</TableCell>
-                  <TableCell className="font-medium max-w-[130px] truncate sm:max-w-none sm:whitespace-normal" title={transaction.description}>{transaction.description}</TableCell>
-                  <TableCell>
+                  <TableCell className="font-medium max-w-[104px] truncate sm:max-w-none sm:whitespace-normal" title={transaction.description}>{transaction.description}</TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <Badge variant="outline" className="font-mono text-xs">
                       {transaction.coaCode}
                     </Badge>
@@ -133,7 +133,8 @@ export const CheckingAccountSheet = ({
                 </TableRow>
               ))}
               <TableRow className="bg-income-muted/40 font-bold border-t-2 border-income/20">
-                <TableCell colSpan={3} className="text-income">Total Deposits</TableCell>
+                <TableCell colSpan={2} className="text-income">Total Deposits</TableCell>
+                <TableCell className="hidden sm:table-cell" />
                 <TableCell className="hidden md:table-cell" />
                 <TableCell className="text-right text-income font-mono text-base">
                   {formatCurrency(totalDeposits)}
@@ -173,10 +174,10 @@ export const CheckingAccountSheet = ({
           <Table className="[&_th]:px-2 [&_td]:px-2 sm:[&_th]:px-4 sm:[&_td]:px-4">
             <TableHeader>
               <TableRow className="table-header-row">
-                <TableHead className="w-20 sm:w-28 font-semibold">Date</TableHead>
+                <TableHead className="w-14 sm:w-28 font-semibold">Date</TableHead>
                 <TableHead className="font-semibold">Description</TableHead>
                 <TableHead className="hidden lg:table-cell w-20 font-semibold">Check #</TableHead>
-                <TableHead className="w-20 font-semibold">COA</TableHead>
+                <TableHead className="hidden sm:table-cell w-20 font-semibold">COA</TableHead>
                 <TableHead className="hidden md:table-cell font-semibold">Category</TableHead>
                 <TableHead className="text-right w-28 sm:w-32 font-semibold">Amount</TableHead>
               </TableRow>
@@ -185,11 +186,11 @@ export const CheckingAccountSheet = ({
               {actualWithdrawals.map((transaction, index) => (
                 <TableRow key={index} className="hover:bg-muted/30 transition-colors">
                   <TableCell className="font-mono text-sm text-muted-foreground">{transaction.date}</TableCell>
-                  <TableCell className="font-medium max-w-[130px] truncate sm:max-w-none sm:whitespace-normal" title={transaction.description}>{transaction.description}</TableCell>
+                  <TableCell className="font-medium max-w-[104px] truncate sm:max-w-none sm:whitespace-normal" title={transaction.description}>{transaction.description}</TableCell>
                   <TableCell className="hidden lg:table-cell font-mono text-sm text-muted-foreground">
                     {transaction.checkNumber || "—"}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <Badge variant="outline" className="font-mono text-xs">
                       {transaction.coaCode}
                     </Badge>
@@ -207,7 +208,7 @@ export const CheckingAccountSheet = ({
               <TableRow className="bg-expense-muted/40 font-bold border-t-2 border-expense/20">
                 <TableCell colSpan={2} className="text-expense">Total Withdrawals</TableCell>
                 <TableCell className="hidden lg:table-cell" />
-                <TableCell />
+                <TableCell className="hidden sm:table-cell" />
                 <TableCell className="hidden md:table-cell" />
                 <TableCell className="text-right text-expense font-mono text-base">
                   ({formatCurrency(totalWithdrawals)})
