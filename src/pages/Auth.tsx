@@ -397,7 +397,10 @@ const Auth = () => {
               </div>
 
               <div className="space-y-2.5">
-                <Label htmlFor="client-password" className="eyebrow-label">Password</Label>
+                <div className="flex items-baseline justify-between">
+                  <Label htmlFor="client-password" className="eyebrow-label">Password</Label>
+                  <span className="text-[11.5px] text-muted-foreground/70">Issued by your accountant</span>
+                </div>
                 <div className="relative">
                   <Input
                     id="client-password"
