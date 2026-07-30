@@ -63,18 +63,19 @@ const DefioreIndex = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center futuristic-bg relative overflow-hidden">
+      <div className="min-h-screen futuristic-bg">
         <div className="light-beam light-beam-left" />
         <div className="light-beam light-beam-right" />
-        <motion.div className="flex flex-col items-center gap-4 z-10" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }}>
-            <img src={mizanLogo} alt="Mizan" className="h-32 w-32 object-contain relative z-10 mix-blend-lighten logo-glow-pulse" />
-          </motion.div>
-          <motion.div className="flex items-center gap-2" animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity }}>
-            <Sparkles className="h-4 w-4 text-primary" />
-            <p className="text-muted-foreground text-sm font-medium">Loading your workspace...</p>
-          </motion.div>
-        </motion.div>
+        <div className="mx-auto max-w-[1600px] px-6 py-8 sm:px-8" aria-busy="true" aria-label="Loading workbook">
+          <BrandLockup clientLogo={defioreLogo} clientName="Defiore Carpentry LLC" size="md" />
+          <div className="mt-8 h-9 w-64 animate-pulse rounded-lg bg-white/[0.05]" />
+          <div className="mt-3 h-4 w-96 max-w-full animate-pulse rounded bg-white/[0.04]" />
+          <div className="mt-8 h-12 w-full animate-pulse rounded-xl bg-white/[0.04]" />
+          <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_1fr]">
+            <div className="h-[360px] animate-pulse rounded-2xl bg-white/[0.04]" />
+            <div className="h-[360px] animate-pulse rounded-2xl bg-white/[0.04]" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -87,17 +88,44 @@ const DefioreIndex = () => {
       <div className="light-beam light-beam-right opacity-50" />
       <FuturisticSidebar onSignOut={handleSignOut} onTabChange={setActiveTab} />
       <div className="ml-16">
-        <motion.div className="max-w-[1600px] mx-auto px-8 py-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <FuturisticHeader title="Hi there!" subtitle="Here's Your Financial Workbook for" clientName="Defiore Carpentry LLC" clientLogo={defioreLogo} />
+        <motion.div className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <FuturisticHeader
+            title="Financial Workbook"
+            subtitle="Reconciled Q1 2026 records for"
+            clientName="Defiore Carpentry LLC"
+            clientLogo={defioreLogo}
+            searchTargets={SEARCH_TARGETS}
+            onTabChange={setActiveTab}
+            onSignOut={handleSignOut}
+            accountEmail={user?.email ?? undefined}
+          />
 
-          <div className="flex items-center gap-3 mb-8">
-            <Button variant="outline" className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50" onClick={() => toast({ title: "Coming Soon", description: "PowerPoint export for Defiore is under development." })}>
-              <Presentation className="h-4 w-4" />Export to PowerPoint
-            </Button>
-            <Button className="gap-2 btn-glow" onClick={() => toast({ title: "Coming Soon", description: "Excel export for Defiore is under development." })}>
-              <Download className="h-4 w-4" />Export to Excel
+          <div className="flex flex-wrap items-center gap-3 mb-8">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span tabIndex={0} className="inline-flex rounded-lg">
+                  <Button variant="outline" className="gap-2" disabled aria-disabled="true">
+                    <Presentation className="h-4 w-4" aria-hidden="true" />Export to PowerPoint
+                  </Button>
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>Branded deck export isn’t wired to the Defiore dataset yet.</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span tabIndex={0} className="inline-flex rounded-lg">
+                  <Button className="gap-2" disabled aria-disabled="true">
+                    <Download className="h-4 w-4" aria-hidden="true" />Export to Excel
+                  </Button>
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>Workbook export isn’t wired to the Defiore dataset yet.</TooltipContent>
+            </Tooltip>
+            <Button variant="outline" className="gap-2" onClick={() => window.print()}>
+              <Printer className="h-4 w-4" aria-hidden="true" />Print workbook
             </Button>
           </div>
+
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <div className="glass-card p-1.5 mb-8">
