@@ -112,9 +112,11 @@ const App = () => (
             }
           />
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ErrorBoundary>
       </BrowserRouter>
+
     </TooltipProvider>
   </QueryClientProvider>
 );
