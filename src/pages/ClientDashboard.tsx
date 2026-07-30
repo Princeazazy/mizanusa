@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Building2, Plus, Search } from "lucide-react";
+import { Plus, Search, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { FuturisticSidebar } from "@/components/FuturisticSidebar";
 import { FuturisticHeader } from "@/components/FuturisticHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import mizanLogo from "@/assets/mizan-logo-new.png";
+import { EmptyState } from "@/components/EmptyState";
+import { BrandLockup } from "@/components/brand/BrandLockup";
 
-// Mock client data - in the future this would come from the database
 const clients = [
   {
     id: "cvs",
@@ -20,7 +20,7 @@ const clients = [
     address: "715 Huntingdon Pike, Rockledge, PA 19046",
     memberNumber: "0021348405",
     status: "active" as const,
-    lastActivity: "2 hours ago",
+    lastActivity: "Q4 2025 reconciled",
   },
   {
     id: "defiore",
@@ -28,17 +28,10 @@ const clients = [
     address: "1162 S 12th St, Philadelphia, PA 19147",
     memberNumber: "9046528999",
     status: "active" as const,
-    lastActivity: "Just added",
-  },
-  {
-    id: "coming-soon-1",
-    name: "Coming Soon",
-    address: "New client onboarding",
-    memberNumber: "—",
-    status: "pending" as const,
-    lastActivity: "—",
+    lastActivity: "Q1 2026 reconciled",
   },
 ];
+
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
