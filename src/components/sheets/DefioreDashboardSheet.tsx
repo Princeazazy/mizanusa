@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { FuturisticCashFlowChart } from "@/components/FuturisticCashFlowChart";
-import { FuturisticDonutChart } from "@/components/FuturisticDonutChart";
 import { FuturisticStatusPanel } from "@/components/FuturisticStatusPanel";
 import { RevenueExpenseChart } from "@/components/charts/RevenueExpenseChart";
 import { NetIncomeTrendChart } from "@/components/charts/NetIncomeTrendChart";
