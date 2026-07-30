@@ -33,7 +33,7 @@ export const FuturisticSidebar = ({ onSignOut, onTabChange }: FuturisticSidebarP
       ? [
           { icon: LayoutGrid, label: "Overview", description: "Financial dashboard overview", tab: "dashboard" },
           { icon: List, label: "Transactions", description: "Reconciled bank transactions", tab: location.pathname === "/defiore" ? "january" : "october" },
-          { icon: FileText, label: "Reports", description: "P&L, balance sheet and cash flow", tab: "profitloss" },
+          { icon: FileText, label: "Reports", description: "P&L, balance sheet and cash flow", tab: location.pathname === "/defiore" ? "pnl" : "profitloss" },
         ]
       : []),
     { icon: Upload, label: "Documents", description: "Statement upload & document vault", unbuilt: true },
