@@ -113,40 +113,40 @@ export const DashboardSheet = () => {
       animate="show"
     >
       {/* Hero Header */}
-      <motion.div variants={item} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary/90 to-info/80 p-8 text-white">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-info/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-        
+      <motion.div variants={item} className="glass-card relative overflow-hidden p-8">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
+        <div className="absolute top-0 right-0 w-72 h-72 bg-primary/15 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-56 h-56 bg-info/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
+
         <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="h-5 w-5 text-warning animate-pulse" />
-            <span className="text-sm font-medium text-white/80">Q4 2025 Financial Overview</span>
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span className="eyebrow text-primary/90">Q4 2025 Financial Overview</span>
           </div>
-          <h2 className="text-3xl font-bold tracking-tight mb-4">Executive Summary</h2>
-          <p className="text-white/70 max-w-2xl">
+          <h2 className="text-3xl font-semibold tracking-tightest mb-3 text-foreground">Executive Summary</h2>
+          <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
             Complete financial analysis for October through December 2025. Track deposits, expenses, and monitor business performance in real-time.
           </p>
           
           {/* Quick Stats Row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-              <p className="text-white/60 text-xs font-medium mb-1">Net Change</p>
-              <p className={`text-2xl font-bold ${netChange >= 0 ? 'text-green-300' : 'text-red-300'}`}>
+            <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl p-4 border border-white/[0.08]">
+              <p className="eyebrow mb-1.5">Net Change</p>
+              <p className={`amount-large ${netChange >= 0 ? 'text-income' : 'text-expense'}`}>
                 {netChange >= 0 ? '+' : ''}{formatCompact(netChange)}
               </p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-              <p className="text-white/60 text-xs font-medium mb-1">Ending Balance</p>
-              <p className="text-2xl font-bold">{formatCompact(6434.50)}</p>
+            <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl p-4 border border-white/[0.08]">
+              <p className="eyebrow mb-1.5">Ending Balance</p>
+              <p className="amount-large text-foreground">{formatCompact(6434.50)}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-              <p className="text-white/60 text-xs font-medium mb-1">Inspections</p>
-              <p className="text-2xl font-bold">{inspectionsSummary.total.count}</p>
+            <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl p-4 border border-white/[0.08]">
+              <p className="eyebrow mb-1.5">Inspections</p>
+              <p className="amount-large text-foreground">{inspectionsSummary.total.count}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-              <p className="text-white/60 text-xs font-medium mb-1">Total Lookups</p>
-              <p className="text-2xl font-bold">{vituSummary.totalDLDVLookups + vituSummary.totalNMVTISInquiries}</p>
+            <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl p-4 border border-white/[0.08]">
+              <p className="eyebrow mb-1.5">Total Lookups</p>
+              <p className="amount-large text-foreground">{vituSummary.totalDLDVLookups + vituSummary.totalNMVTISInquiries}</p>
             </div>
           </div>
         </div>
