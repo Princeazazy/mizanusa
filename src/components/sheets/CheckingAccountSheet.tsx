@@ -205,7 +205,9 @@ export const CheckingAccountSheet = ({
                 </TableRow>
               ))}
               <TableRow className="bg-expense-muted/40 font-bold border-t-2 border-expense/20">
-                <TableCell colSpan={3} className="text-expense">Total Withdrawals</TableCell>
+                <TableCell colSpan={2} className="text-expense">Total Withdrawals</TableCell>
+                <TableCell className="hidden lg:table-cell" />
+                <TableCell />
                 <TableCell className="hidden md:table-cell" />
                 <TableCell className="text-right text-expense font-mono text-base">
                   ({formatCurrency(totalWithdrawals)})
