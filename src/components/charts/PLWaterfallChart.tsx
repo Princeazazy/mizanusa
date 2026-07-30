@@ -13,12 +13,12 @@ import {
 import { ChartFrame, ChartSkeleton } from "./ChartFrame";
 import { SeriesTooltip } from "./SeriesTooltip";
 import {
-  CHART_HEIGHT,
   CHART_MARGIN,
   axisTick,
   chartColors,
   compactCurrency,
   fullCurrency,
+  shortenLabel,
 } from "./chartTheme";
 
 export interface WaterfallStep {
@@ -36,7 +36,10 @@ interface Props {
   className?: string;
 }
 
-/** P&L bridge: revenue → COGS → gross profit → opex → net income. */
+/**
+ * Horizontal P&L / cash bridge. Categories live on the Y axis so long account
+ * names never collide — they are truncated with the full name in the tooltip.
+ */
 export const PLWaterfallChart = ({
   steps,
   period,
@@ -49,6 +52,7 @@ export const PLWaterfallChart = ({
       const value = running;
       return {
         name: s.name,
+        label: shortenLabel(s.name, 20),
         base: Math.min(0, value),
         span: Math.abs(value),
         amount: value,
@@ -60,6 +64,7 @@ export const PLWaterfallChart = ({
     running += s.amount;
     return {
       name: s.name,
+      label: shortenLabel(s.name, 20),
       base: Math.min(start, running),
       span: Math.abs(s.amount),
       amount: s.amount,
@@ -93,6 +98,7 @@ export const PLWaterfallChart = ({
   };
 
   const net = bars[bars.length - 1]?.cumulative ?? 0;
+  const chartHeight = Math.max(220, bars.length * 34 + 32);
 
   return (
     <ChartFrame
@@ -125,26 +131,33 @@ export const PLWaterfallChart = ({
       {!hasData ? (
         <ChartSkeleton label="No P&L activity" hint="Categorise transactions to build the bridge." />
       ) : (
-        <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
-          <BarChart data={bars} margin={CHART_MARGIN} barCategoryGap="22%">
-            <CartesianGrid stroke={chartColors.grid} vertical={false} />
+        <ResponsiveContainer width="100%" height={chartHeight}>
+          <BarChart
+            data={bars}
+            layout="vertical"
+            margin={{ ...CHART_MARGIN, right: 56, left: 2 }}
+            barCategoryGap="26%"
+          >
+            <CartesianGrid stroke={chartColors.grid} horizontal={false} />
             <XAxis
-              dataKey="name"
+              type="number"
               tick={{ ...axisTick, fontSize: 10.5 }}
               tickLine={false}
               axisLine={false}
-              dy={8}
-              interval={0}
-            />
-            <YAxis
-              tick={axisTick}
-              tickLine={false}
-              axisLine={false}
-              width={54}
               tickCount={4}
               tickFormatter={compactCurrency}
+              height={22}
             />
-            <ReferenceLine y={0} stroke="hsl(0 0% 100% / 0.14)" />
+            <YAxis
+              type="category"
+              dataKey="label"
+              tick={{ ...axisTick, fontSize: 10.5 }}
+              tickLine={false}
+              axisLine={false}
+              width={118}
+              interval={0}
+            />
+            <ReferenceLine x={0} stroke="hsl(0 0% 100% / 0.14)" />
             <Tooltip
               content={<WFTooltip />}
               cursor={{ fill: "hsl(0 0% 100% / 0.035)" }}
@@ -154,8 +167,8 @@ export const PLWaterfallChart = ({
             <Bar
               dataKey="span"
               stackId="wf"
-              radius={[3, 3, 0, 0]}
-              maxBarSize={52}
+              radius={[0, 3, 3, 0]}
+              maxBarSize={22}
               animationDuration={750}
               animationEasing="ease-out"
             >
@@ -164,18 +177,12 @@ export const PLWaterfallChart = ({
               ))}
               <LabelList
                 dataKey="amount"
-                content={(props: any) => (
-                  <text
-                    x={props.x + props.width / 2}
-                    y={props.y - 7}
-                    textAnchor="middle"
-                    fill="hsl(var(--muted-foreground))"
-                    fontSize={10.5}
-                    style={{ fontVariantNumeric: "tabular-nums" }}
-                  >
-                    {compactCurrency(props.value)}
-                  </text>
-                )}
+                position="right"
+                offset={8}
+                fill="hsl(var(--muted-foreground))"
+                fontSize={10.5}
+                style={{ fontVariantNumeric: "tabular-nums" }}
+                formatter={(v: number) => compactCurrency(v)}
               />
             </Bar>
           </BarChart>

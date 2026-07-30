@@ -96,7 +96,7 @@ export const NetIncomeTrendChart = ({
               </linearGradient>
             </defs>
             <CartesianGrid stroke={chartColors.grid} vertical={false} />
-            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={false} dy={8} />
+            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={false} dy={8} interval="preserveStartEnd" minTickGap={12} />
             <YAxis
               tick={axisTick}
               tickLine={false}

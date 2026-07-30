@@ -50,3 +50,29 @@ export const periodDelta = (values: number[]) => {
   if (first === 0) return null;
   return ((last - first) / Math.abs(first)) * 100;
 };
+
+/** Common finance label abbreviations applied before truncation. */
+const ABBREVIATIONS: [RegExp, string][] = [
+  [/\bTransfer(s)? Out\b.*/i, "Transfers Out"],
+  [/\bTransfer(s)? In\b.*/i, "Transfers In"],
+  [/\bOther Operating Expenses\b/i, "Other OpEx"],
+  [/\bOperating Expenses\b/i, "OpEx"],
+  [/\bTitle & Registration\b/i, "Title & Reg"],
+  [/\bInventory Purchases\b/i, "Inventory"],
+  [/\bCost of Goods Sold\b/i, "COGS"],
+  [/\bAccounts Payable\b/i, "AP"],
+  [/\bAccounts Receivable\b/i, "AR"],
+  [/\bGeneral & Administrative\b/i, "G&A"],
+];
+
+/** Abbreviate then ellipsis-truncate a category label to fit an axis. */
+export const shortenLabel = (label: string, max = 18) => {
+  let out = label;
+  for (const [pattern, replacement] of ABBREVIATIONS) {
+    if (pattern.test(out)) {
+      out = out.replace(pattern, replacement);
+      break;
+    }
+  }
+  return out.length > max ? `${out.slice(0, max - 1).trimEnd()}…` : out;
+};
