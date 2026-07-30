@@ -52,14 +52,14 @@ export const VituSheet = () => {
             <p className="text-sm text-muted-foreground">@ $2.00 each</p>
           </CardContent>
         </Card>
-        <Card className="bg-orange-50">
+        <Card className="bg-warning/15">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Q4 Total Expense
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">
+            <div className="text-2xl font-bold text-warning">
               {formatCurrency(vituSummary.quarterTotal)}
             </div>
           </CardContent>
@@ -103,9 +103,9 @@ export const VituSheet = () => {
                     </TableCell>
                   </TableRow>
                 ))}
-                <TableRow className="bg-orange-50 font-bold">
+                <TableRow className="bg-warning/15 font-bold">
                   <TableCell colSpan={3}>Invoice Total</TableCell>
-                  <TableCell className="text-right text-orange-600">
+                  <TableCell className="text-right text-warning">
                     {formatCurrency(invoice.total)}
                   </TableCell>
                 </TableRow>
@@ -154,7 +154,7 @@ export const VituSheet = () => {
                 <TableCell colSpan={2}>Q4 2025 Total</TableCell>
                 <TableCell className="text-right">{vituSummary.totalDLDVLookups}</TableCell>
                 <TableCell className="text-right">{vituSummary.totalNMVTISInquiries}</TableCell>
-                <TableCell className="text-right text-orange-600">
+                <TableCell className="text-right text-warning">
                   {formatCurrency(vituSummary.quarterTotal)}
                 </TableCell>
               </TableRow>
@@ -164,8 +164,8 @@ export const VituSheet = () => {
       </Card>
 
       {/* COA Reference */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-sm text-blue-800">
+      <div className="bg-info/15 border border-info/30 rounded-lg p-4">
+        <p className="text-sm text-info">
           <strong>Chart of Accounts Reference:</strong> All Vitu title service expenses are categorized 
           under COA Code <Badge variant="outline" className="font-mono mx-1">5120</Badge> - Title Lookup Services, 
           which falls under Cost of Goods Sold (COGS) for auto dealership operations.

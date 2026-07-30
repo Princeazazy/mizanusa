@@ -60,8 +60,8 @@ export const CreditCardStatementSheet = ({ statements, month, year }: Props) => 
         </Card>
         <Card className="glass-card border-border/30">
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-orange-500/10">
-              <DollarSign className="h-5 w-5 text-orange-500" />
+            <div className="p-2 rounded-lg bg-warning/10">
+              <DollarSign className="h-5 w-5 text-warning" />
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Total Balance</p>
@@ -71,8 +71,8 @@ export const CreditCardStatementSheet = ({ statements, month, year }: Props) => 
         </Card>
         <Card className="glass-card border-border/30">
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-emerald-500/10">
-              <TrendingUp className="h-5 w-5 text-emerald-500" />
+            <div className="p-2 rounded-lg bg-income/10">
+              <TrendingUp className="h-5 w-5 text-income" />
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Cards Active</p>
@@ -114,7 +114,7 @@ export const CreditCardStatementSheet = ({ statements, month, year }: Props) => 
                 </div>
                 <div className="p-3 rounded-lg bg-muted/30">
                   <p className="text-xs text-muted-foreground">Payments</p>
-                  <p className="font-medium text-emerald-500">{fmt(st.payments)}</p>
+                  <p className="font-medium text-income">{fmt(st.payments)}</p>
                 </div>
                 <div className="p-3 rounded-lg bg-muted/30">
                   <p className="text-xs text-muted-foreground">Fees</p>
@@ -148,7 +148,7 @@ export const CreditCardStatementSheet = ({ statements, month, year }: Props) => 
                             <Badge variant="outline" className="text-[10px]">{tx.category}</Badge>
                           </TableCell>
                           <TableCell className="text-xs">{tx.coaCode}</TableCell>
-                          <TableCell className={`text-xs text-right font-medium ${tx.amount < 0 ? "text-emerald-500" : ""}`}>
+                          <TableCell className={`text-xs text-right font-medium ${tx.amount < 0 ? "text-income" : ""}`}>
                             {fmt(tx.amount)}
                           </TableCell>
                         </TableRow>

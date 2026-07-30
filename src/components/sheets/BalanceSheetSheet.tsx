@@ -54,11 +54,11 @@ export const BalanceSheetSheet = () => {
             </TableHeader>
             <TableBody>
               {/* Assets */}
-              <TableRow className="bg-blue-50/50 font-bold text-lg">
+              <TableRow className="bg-info/50 font-bold text-lg">
                 <TableCell colSpan={2}>ASSETS</TableCell>
               </TableRow>
               
-              <TableRow className="bg-blue-50/30 font-semibold">
+              <TableRow className="bg-info/30 font-semibold">
                 <TableCell className="pl-4">Current Assets</TableCell>
                 <TableCell></TableCell>
               </TableRow>
@@ -66,21 +66,21 @@ export const BalanceSheetSheet = () => {
                 <TableCell className="pl-8">TruMark Business Checking</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(checkingBalance)}</TableCell>
               </TableRow>
-              <TableRow className="font-semibold bg-blue-50/50">
+              <TableRow className="font-semibold bg-info/50">
                 <TableCell className="pl-4">Total Current Assets</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(checkingBalance)}</TableCell>
               </TableRow>
 
-              <TableRow className="border-t-4 font-bold text-lg bg-blue-100">
+              <TableRow className="border-t-4 font-bold text-lg bg-info/15">
                 <TableCell>TOTAL ASSETS</TableCell>
-                <TableCell className="text-right font-mono text-blue-800">{formatCurrency(totalAssets)}</TableCell>
+                <TableCell className="text-right font-mono text-info">{formatCurrency(totalAssets)}</TableCell>
               </TableRow>
 
               {/* Liabilities */}
-              <TableRow className="bg-red-50/50 font-bold text-lg">
+              <TableRow className="bg-expense/50 font-bold text-lg">
                 <TableCell colSpan={2}>LIABILITIES</TableCell>
               </TableRow>
-              <TableRow className="bg-red-50/30 font-semibold">
+              <TableRow className="bg-expense/30 font-semibold">
                 <TableCell className="pl-4">Current Liabilities</TableCell>
                 <TableCell></TableCell>
               </TableRow>
@@ -88,20 +88,20 @@ export const BalanceSheetSheet = () => {
                 <TableCell className="pl-8 text-muted-foreground italic">No liabilities recorded</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(0)}</TableCell>
               </TableRow>
-              <TableRow className="font-semibold bg-red-50/50">
+              <TableRow className="font-semibold bg-expense/50">
                 <TableCell className="pl-4">Total Liabilities</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(totalLiabilities)}</TableCell>
               </TableRow>
 
               {/* Equity */}
-              <TableRow className="bg-green-50/50 font-bold text-lg">
+              <TableRow className="bg-income/50 font-bold text-lg">
                 <TableCell colSpan={2}>EQUITY</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell className="pl-8">Retained Earnings</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(totalEquity)}</TableCell>
               </TableRow>
-              <TableRow className="font-semibold bg-green-50/50">
+              <TableRow className="font-semibold bg-income/50">
                 <TableCell className="pl-4">Total Equity</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(totalEquity)}</TableCell>
               </TableRow>

@@ -99,7 +99,7 @@ export const ProfitLossSheet = () => {
             </TableHeader>
             <TableBody>
               {/* Revenue Section */}
-              <TableRow className="bg-green-50/50 font-semibold">
+              <TableRow className="bg-income/50 font-semibold">
                 <TableCell colSpan={3}>REVENUE</TableCell>
               </TableRow>
               <TableRow>
@@ -127,14 +127,14 @@ export const ProfitLossSheet = () => {
                 <TableCell className="text-right text-muted-foreground">4900</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(otherIncome)}</TableCell>
               </TableRow>
-              <TableRow className="border-t-2 font-bold bg-green-50">
+              <TableRow className="border-t-2 font-bold bg-income/15">
                 <TableCell>Total Revenue</TableCell>
                 <TableCell></TableCell>
-                <TableCell className="text-right font-mono text-green-700">{formatCurrency(totalRevenue)}</TableCell>
+                <TableCell className="text-right font-mono text-income">{formatCurrency(totalRevenue)}</TableCell>
               </TableRow>
 
               {/* COGS Section */}
-              <TableRow className="bg-orange-50/50 font-semibold">
+              <TableRow className="bg-warning/50 font-semibold">
                 <TableCell colSpan={3}>COST OF GOODS SOLD</TableCell>
               </TableRow>
               <TableRow>
@@ -152,23 +152,23 @@ export const ProfitLossSheet = () => {
                 <TableCell className="text-right text-muted-foreground">5120</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(titleLookup)}</TableCell>
               </TableRow>
-              <TableRow className="border-t-2 font-bold bg-orange-50">
+              <TableRow className="border-t-2 font-bold bg-warning/15">
                 <TableCell>Total Cost of Goods Sold</TableCell>
                 <TableCell></TableCell>
-                <TableCell className="text-right font-mono text-orange-700">({formatCurrency(totalCOGS)})</TableCell>
+                <TableCell className="text-right font-mono text-warning">({formatCurrency(totalCOGS)})</TableCell>
               </TableRow>
 
               {/* Gross Profit */}
-              <TableRow className="border-t-4 font-bold text-lg bg-blue-50">
+              <TableRow className="border-t-4 font-bold text-lg bg-info/15">
                 <TableCell>GROSS PROFIT</TableCell>
                 <TableCell></TableCell>
-                <TableCell className={`text-right font-mono ${grossProfit >= 0 ? 'text-blue-700' : 'text-red-700'}`}>
+                <TableCell className={`text-right font-mono ${grossProfit >= 0 ? 'text-info' : 'text-expense'}`}>
                   {formatCurrency(grossProfit)}
                 </TableCell>
               </TableRow>
 
               {/* Operating Expenses */}
-              <TableRow className="bg-red-50/50 font-semibold">
+              <TableRow className="bg-expense/50 font-semibold">
                 <TableCell colSpan={3}>OPERATING EXPENSES</TableCell>
               </TableRow>
               <TableRow>
@@ -221,17 +221,17 @@ export const ProfitLossSheet = () => {
                 <TableCell className="text-right text-muted-foreground">6800</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(otherExpenses)}</TableCell>
               </TableRow>
-              <TableRow className="border-t-2 font-bold bg-red-50">
+              <TableRow className="border-t-2 font-bold bg-expense/15">
                 <TableCell>Total Operating Expenses</TableCell>
                 <TableCell></TableCell>
-                <TableCell className="text-right font-mono text-red-700">({formatCurrency(totalOperatingExpenses)})</TableCell>
+                <TableCell className="text-right font-mono text-expense">({formatCurrency(totalOperatingExpenses)})</TableCell>
               </TableRow>
 
               {/* Net Income */}
               <TableRow className="border-t-4 font-bold text-xl bg-primary/10">
                 <TableCell className="py-4">NET INCOME</TableCell>
                 <TableCell></TableCell>
-                <TableCell className={`text-right font-mono py-4 ${netIncome >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                <TableCell className={`text-right font-mono py-4 ${netIncome >= 0 ? 'text-income' : 'text-expense'}`}>
                   {formatCurrency(netIncome)}
                 </TableCell>
               </TableRow>
@@ -242,25 +242,25 @@ export const ProfitLossSheet = () => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-green-50 border-green-200">
+        <Card className="bg-income/15 border-income/30">
           <CardContent className="pt-6 text-center">
-            <TrendingUp className="h-8 w-8 text-green-600 mx-auto mb-2" />
-            <p className="text-sm text-green-700 font-medium">Total Revenue</p>
-            <p className="text-2xl font-bold text-green-800">{formatCurrency(totalRevenue)}</p>
+            <TrendingUp className="h-8 w-8 text-income mx-auto mb-2" />
+            <p className="text-sm text-income font-medium">Total Revenue</p>
+            <p className="text-2xl font-bold text-income">{formatCurrency(totalRevenue)}</p>
           </CardContent>
         </Card>
-        <Card className="bg-orange-50 border-orange-200">
+        <Card className="bg-warning/15 border-warning/30">
           <CardContent className="pt-6 text-center">
-            <TrendingDown className="h-8 w-8 text-orange-600 mx-auto mb-2" />
-            <p className="text-sm text-orange-700 font-medium">Total Expenses</p>
-            <p className="text-2xl font-bold text-orange-800">{formatCurrency(totalCOGS + totalOperatingExpenses)}</p>
+            <TrendingDown className="h-8 w-8 text-warning mx-auto mb-2" />
+            <p className="text-sm text-warning font-medium">Total Expenses</p>
+            <p className="text-2xl font-bold text-warning">{formatCurrency(totalCOGS + totalOperatingExpenses)}</p>
           </CardContent>
         </Card>
-        <Card className={netIncome >= 0 ? "bg-blue-50 border-blue-200" : "bg-red-50 border-red-200"}>
+        <Card className={netIncome >= 0 ? "bg-info/15 border-info/30" : "bg-expense/15 border-expense/30"}>
           <CardContent className="pt-6 text-center">
-            <DollarSign className={`h-8 w-8 mx-auto mb-2 ${netIncome >= 0 ? 'text-blue-600' : 'text-red-600'}`} />
-            <p className={`text-sm font-medium ${netIncome >= 0 ? 'text-blue-700' : 'text-red-700'}`}>Net Income</p>
-            <p className={`text-2xl font-bold ${netIncome >= 0 ? 'text-blue-800' : 'text-red-800'}`}>{formatCurrency(netIncome)}</p>
+            <DollarSign className={`h-8 w-8 mx-auto mb-2 ${netIncome >= 0 ? 'text-info' : 'text-expense'}`} />
+            <p className={`text-sm font-medium ${netIncome >= 0 ? 'text-info' : 'text-expense'}`}>Net Income</p>
+            <p className={`text-2xl font-bold ${netIncome >= 0 ? 'text-info' : 'text-expense'}`}>{formatCurrency(netIncome)}</p>
           </CardContent>
         </Card>
       </div>

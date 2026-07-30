@@ -32,15 +32,15 @@ const getCategoryColor = (category: string) => {
   const colors: Record<string, string> = {
     "Credit Card Sales": "bg-income-muted text-income border-income/30",
     "Cash/Check Sales": "bg-info-muted text-info border-info/30",
-    "Venmo Sales": "bg-purple-50 text-purple-700 border-purple-200",
+    "Venmo Sales": "bg-info/15 text-info border-info/30",
     "Transfer In": "bg-muted text-muted-foreground border-border",
     "Inventory Purchases": "bg-expense-muted text-expense border-expense/30",
     "Title & Registration": "bg-warning-muted text-warning border-warning/30",
-    "Title Lookup Services": "bg-yellow-50 text-yellow-700 border-yellow-200",
-    "Utilities": "bg-cyan-50 text-cyan-700 border-cyan-200",
-    "Communications": "bg-indigo-50 text-indigo-700 border-indigo-200",
-    "Insurance": "bg-pink-50 text-pink-700 border-pink-200",
-    "Bank Fees": "bg-rose-50 text-rose-700 border-rose-200",
+    "Title Lookup Services": "bg-warning/15 text-warning border-warning/30",
+    "Utilities": "bg-info/15 text-info border-info/30",
+    "Communications": "bg-info/15 text-info border-info/30",
+    "Insurance": "bg-white/[0.03] text-foreground border-white/[0.08]",
+    "Bank Fees": "bg-expense/15 text-expense border-expense/30",
     "Transfer Out": "bg-muted text-muted-foreground border-border",
   };
   return colors[category] || "bg-muted text-muted-foreground border-border";

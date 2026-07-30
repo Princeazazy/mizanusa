@@ -58,7 +58,7 @@ export const ReconciliationSheet = () => {
           <CardHeader className="bg-primary/5 border-b">
             <div className="flex items-center justify-between">
               <CardTitle>October 2025 Reconciliation</CardTitle>
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
+              <Badge variant="outline" className="bg-income/15 text-income border-income/30">
                 <CheckCircle2 className="h-3 w-3 mr-1" />
                 Reconciled
               </Badge>
@@ -73,13 +73,13 @@ export const ReconciliationSheet = () => {
                     {formatCurrency(octoberSummary.beginningBalance)}
                   </TableCell>
                 </TableRow>
-                <TableRow className="text-green-600">
+                <TableRow className="text-income">
                   <TableCell className="font-medium">Add: Total Deposits</TableCell>
                   <TableCell className="text-right font-mono">
                     {formatCurrency(octTotalDeposits)}
                   </TableCell>
                 </TableRow>
-                <TableRow className="text-red-600">
+                <TableRow className="text-expense">
                   <TableCell className="font-medium">Less: Total Withdrawals</TableCell>
                   <TableCell className="text-right font-mono">
                     ({formatCurrency(octTotalWithdrawals)})
@@ -97,9 +97,9 @@ export const ReconciliationSheet = () => {
                     {formatCurrency(octoberSummary.statementEndingBalance)}
                   </TableCell>
                 </TableRow>
-                <TableRow className="bg-green-50">
+                <TableRow className="bg-income/15">
                   <TableCell className="font-bold">Difference</TableCell>
-                  <TableCell className="text-right font-mono font-bold text-green-700">
+                  <TableCell className="text-right font-mono font-bold text-income">
                     $0.00 ✓
                   </TableCell>
                 </TableRow>
@@ -113,7 +113,7 @@ export const ReconciliationSheet = () => {
           <CardHeader className="bg-primary/5 border-b">
             <div className="flex items-center justify-between">
               <CardTitle>November 2025 Reconciliation</CardTitle>
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
+              <Badge variant="outline" className="bg-income/15 text-income border-income/30">
                 <CheckCircle2 className="h-3 w-3 mr-1" />
                 Reconciled
               </Badge>
@@ -128,13 +128,13 @@ export const ReconciliationSheet = () => {
                     {formatCurrency(novemberSummary.beginningBalance)}
                   </TableCell>
                 </TableRow>
-                <TableRow className="text-green-600">
+                <TableRow className="text-income">
                   <TableCell className="font-medium">Add: Total Deposits</TableCell>
                   <TableCell className="text-right font-mono">
                     {formatCurrency(novTotalDeposits)}
                   </TableCell>
                 </TableRow>
-                <TableRow className="text-red-600">
+                <TableRow className="text-expense">
                   <TableCell className="font-medium">Less: Total Withdrawals</TableCell>
                   <TableCell className="text-right font-mono">
                     ({formatCurrency(novTotalWithdrawals)})
@@ -152,9 +152,9 @@ export const ReconciliationSheet = () => {
                     {formatCurrency(novemberSummary.statementEndingBalance)}
                   </TableCell>
                 </TableRow>
-                <TableRow className="bg-green-50">
+                <TableRow className="bg-income/15">
                   <TableCell className="font-bold">Difference</TableCell>
-                  <TableCell className="text-right font-mono font-bold text-green-700">
+                  <TableCell className="text-right font-mono font-bold text-income">
                     $0.00 ✓
                   </TableCell>
                 </TableRow>
@@ -167,7 +167,7 @@ export const ReconciliationSheet = () => {
           <CardHeader className="bg-primary/5 border-b">
             <div className="flex items-center justify-between">
               <CardTitle>December 2025 Reconciliation</CardTitle>
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
+              <Badge variant="outline" className="bg-income/15 text-income border-income/30">
                 <CheckCircle2 className="h-3 w-3 mr-1" />
                 Reconciled
               </Badge>
@@ -182,13 +182,13 @@ export const ReconciliationSheet = () => {
                     {formatCurrency(decemberSummary.beginningBalance)}
                   </TableCell>
                 </TableRow>
-                <TableRow className="text-green-600">
+                <TableRow className="text-income">
                   <TableCell className="font-medium">Add: Total Deposits</TableCell>
                   <TableCell className="text-right font-mono">
                     {formatCurrency(decTotalDeposits)}
                   </TableCell>
                 </TableRow>
-                <TableRow className="text-red-600">
+                <TableRow className="text-expense">
                   <TableCell className="font-medium">Less: Total Withdrawals</TableCell>
                   <TableCell className="text-right font-mono">
                     ({formatCurrency(decTotalWithdrawals)})
@@ -206,9 +206,9 @@ export const ReconciliationSheet = () => {
                     {formatCurrency(decemberSummary.statementEndingBalance)}
                   </TableCell>
                 </TableRow>
-                <TableRow className="bg-green-50">
+                <TableRow className="bg-income/15">
                   <TableCell className="font-bold">Difference</TableCell>
-                  <TableCell className="text-right font-mono font-bold text-green-700">
+                  <TableCell className="text-right font-mono font-bold text-income">
                     $0.00 ✓
                   </TableCell>
                 </TableRow>
@@ -220,8 +220,8 @@ export const ReconciliationSheet = () => {
 
       {/* Deposit Verification */}
       <Card>
-        <CardHeader className="bg-green-50 border-b">
-          <CardTitle className="flex items-center gap-2 text-green-800">
+        <CardHeader className="bg-income/15 border-b">
+          <CardTitle className="flex items-center gap-2 text-income">
             <FileCheck className="h-5 w-5" />
             Deposit Verification Summary
           </CardTitle>
@@ -240,11 +240,11 @@ export const ReconciliationSheet = () => {
               <TableRow>
                 <TableCell className="font-medium">October 2025</TableCell>
                 <TableCell className="text-right">{octDepositCount}</TableCell>
-                <TableCell className="text-right font-mono text-green-600">
+                <TableCell className="text-right font-mono text-income">
                   {formatCurrency(octTotalDeposits)}
                 </TableCell>
                 <TableCell className="text-center">
-                  <Badge variant="outline" className="bg-green-50 text-green-700">
+                  <Badge variant="outline" className="bg-income/15 text-income">
                     ✓ Matches Statement
                   </Badge>
                 </TableCell>
@@ -252,11 +252,11 @@ export const ReconciliationSheet = () => {
               <TableRow>
                 <TableCell className="font-medium">November 2025</TableCell>
                 <TableCell className="text-right">{novDepositCount}</TableCell>
-                <TableCell className="text-right font-mono text-green-600">
+                <TableCell className="text-right font-mono text-income">
                   {formatCurrency(novTotalDeposits)}
                 </TableCell>
                 <TableCell className="text-center">
-                  <Badge variant="outline" className="bg-green-50 text-green-700">
+                  <Badge variant="outline" className="bg-income/15 text-income">
                     ✓ Matches Statement
                   </Badge>
                 </TableCell>
@@ -264,11 +264,11 @@ export const ReconciliationSheet = () => {
               <TableRow>
                 <TableCell className="font-medium">December 2025</TableCell>
                 <TableCell className="text-right">{decDepositCount}</TableCell>
-                <TableCell className="text-right font-mono text-green-600">
+                <TableCell className="text-right font-mono text-income">
                   {formatCurrency(decTotalDeposits)}
                 </TableCell>
                 <TableCell className="text-center">
-                  <Badge variant="outline" className="bg-green-50 text-green-700">
+                  <Badge variant="outline" className="bg-income/15 text-income">
                     ✓ Matches Statement
                   </Badge>
                 </TableCell>
@@ -276,11 +276,11 @@ export const ReconciliationSheet = () => {
               <TableRow className="font-bold bg-muted/50">
                 <TableCell>Total</TableCell>
                 <TableCell className="text-right">{octDepositCount + novDepositCount + decDepositCount}</TableCell>
-                <TableCell className="text-right font-mono text-green-600">
+                <TableCell className="text-right font-mono text-income">
                   {formatCurrency(octTotalDeposits + novTotalDeposits + decTotalDeposits)}
                 </TableCell>
                 <TableCell className="text-center">
-                  <Badge variant="outline" className="bg-green-50 text-green-700">
+                  <Badge variant="outline" className="bg-income/15 text-income">
                     ✓ All Verified
                   </Badge>
                 </TableCell>
@@ -309,31 +309,31 @@ export const ReconciliationSheet = () => {
             <TableBody>
               <TableRow>
                 <TableCell className="font-medium">Bank Deposits</TableCell>
-                <TableCell className="text-right text-green-600">
+                <TableCell className="text-right text-income">
                   {formatCurrency(octTotalDeposits)}
                 </TableCell>
-                <TableCell className="text-right text-green-600">
+                <TableCell className="text-right text-income">
                   {formatCurrency(novTotalDeposits)}
                 </TableCell>
-                <TableCell className="text-right text-green-600">
+                <TableCell className="text-right text-income">
                   {formatCurrency(decTotalDeposits)}
                 </TableCell>
-                <TableCell className="text-right font-bold text-green-600">
+                <TableCell className="text-right font-bold text-income">
                   {formatCurrency(octTotalDeposits + novTotalDeposits + decTotalDeposits)}
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell className="font-medium">Bank Withdrawals</TableCell>
-                <TableCell className="text-right text-red-600">
+                <TableCell className="text-right text-expense">
                   ({formatCurrency(octTotalWithdrawals)})
                 </TableCell>
-                <TableCell className="text-right text-red-600">
+                <TableCell className="text-right text-expense">
                   ({formatCurrency(novTotalWithdrawals)})
                 </TableCell>
-                <TableCell className="text-right text-red-600">
+                <TableCell className="text-right text-expense">
                   ({formatCurrency(decTotalWithdrawals)})
                 </TableCell>
-                <TableCell className="text-right font-bold text-red-600">
+                <TableCell className="text-right font-bold text-expense">
                   ({formatCurrency(octTotalWithdrawals + novTotalWithdrawals + decTotalWithdrawals)})
                 </TableCell>
               </TableRow>

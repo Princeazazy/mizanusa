@@ -42,11 +42,11 @@ export const InvoicesSheet = ({ invoices, title = "Invoices" }: InvoicesSheetPro
         </div>
         <div className="glass-card p-4 text-center">
           <p className="text-xs text-muted-foreground uppercase tracking-wider">Total Paid</p>
-          <p className="text-2xl font-bold text-emerald-400 mt-1">{fmt(totalPaid)}</p>
+          <p className="text-2xl font-bold text-income mt-1">{fmt(totalPaid)}</p>
         </div>
         <div className="glass-card p-4 text-center">
           <p className="text-xs text-muted-foreground uppercase tracking-wider">Outstanding</p>
-          <p className={`text-2xl font-bold mt-1 ${totalOutstanding > 0 ? "text-amber-400" : "text-emerald-400"}`}>
+          <p className={`text-2xl font-bold mt-1 ${totalOutstanding > 0 ? "text-warning" : "text-income"}`}>
             {fmt(totalOutstanding)}
           </p>
         </div>
@@ -77,15 +77,15 @@ export const InvoicesSheet = ({ invoices, title = "Invoices" }: InvoicesSheetPro
                 <TableCell className="text-foreground max-w-[200px] truncate">{inv.billTo.split("–")[0].trim()}</TableCell>
                 <TableCell className="text-foreground max-w-[200px] truncate">{inv.description}</TableCell>
                 <TableCell className="text-right font-medium text-foreground">{fmt(inv.total)}</TableCell>
-                <TableCell className="text-right font-medium text-emerald-400">{fmt(inv.paidTotal)}</TableCell>
+                <TableCell className="text-right font-medium text-income">{fmt(inv.paidTotal)}</TableCell>
                 <TableCell className="text-center">
                   <Badge
                     variant={inv.status === "paid" ? "default" : inv.status === "partial" ? "secondary" : "destructive"}
                     className={
                       inv.status === "paid"
-                        ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                        ? "bg-income/20 text-income border-income/30"
                         : inv.status === "unpaid"
-                          ? "bg-amber-500/20 text-amber-400 border-amber-500/30"
+                          ? "bg-warning/20 text-warning border-warning/30"
                           : ""
                     }
                   >
@@ -115,8 +115,8 @@ export const InvoicesSheet = ({ invoices, title = "Invoices" }: InvoicesSheetPro
                     variant="outline"
                     className={
                       inv.status === "paid"
-                        ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-                        : "bg-amber-500/20 text-amber-400 border-amber-500/30"
+                        ? "bg-income/20 text-income border-income/30"
+                        : "bg-warning/20 text-warning border-warning/30"
                     }
                   >
                     {inv.status === "paid" ? "Paid" : "Unpaid"}
@@ -175,7 +175,7 @@ export const InvoicesSheet = ({ invoices, title = "Invoices" }: InvoicesSheetPro
                       {inv.payments.map((p, i) => (
                         <div key={i} className="flex justify-between text-sm">
                           <span className="text-muted-foreground">{p.date} – {p.method}</span>
-                          <span className="text-emerald-400">{fmt(p.amount)}</span>
+                          <span className="text-income">{fmt(p.amount)}</span>
                         </div>
                       ))}
                     </div>
