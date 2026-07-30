@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { BrandLockup } from "@/components/brand/BrandLockup";
 import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Sparkles, LogOut, Eye, Printer, CreditCard, ArrowDownUp, FileDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { exportToExcel } from "@/lib/exportToExcel";
@@ -506,7 +508,7 @@ const ClientPortal = () => {
               <FileDown className="h-4 w-4" aria-hidden="true" />
               Download PDF
             </Button>
-            {isCvs ? (
+            {isCVS ? (
               <>
                 <Button
                   variant="outline"
