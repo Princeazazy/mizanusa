@@ -13,8 +13,14 @@ import {
 } from "@/data/bankTransactions";
 
 import { FuturisticCashFlowChart } from "@/components/FuturisticCashFlowChart";
-import { FuturisticDonutChart } from "@/components/FuturisticDonutChart";
 import { FuturisticStatusPanel } from "@/components/FuturisticStatusPanel";
+import { RevenueExpenseChart } from "@/components/charts/RevenueExpenseChart";
+import { NetIncomeTrendChart } from "@/components/charts/NetIncomeTrendChart";
+import { ExpenseCompositionBar } from "@/components/charts/ExpenseCompositionBar";
+import { PLWaterfallChart } from "@/components/charts/PLWaterfallChart";
+import { SparklineRow, type SparkSeries } from "@/components/charts/SparklineRow";
+
+const PERIOD = "Oct\u2013Dec 2025";
 
 type Txn = { date: string; amount: number; category?: string };
 
@@ -104,39 +110,68 @@ export const FuturisticDashboardSheet = ({ viewOnly = false }: FuturisticDashboa
       color: `hsl(var(--chart-${idx + 1}))`,
     }));
 
+  const sum = (txns: Txn[]) => txns.reduce((t, x) => t + x.amount, 0);
+
+  const monthly = [
+    { month: "Oct", revenue: sum(octoberDeposits as unknown as Txn[]), expenses: sum(octoberWithdrawals as unknown as Txn[]) },
+    { month: "Nov", revenue: sum(novemberDeposits as unknown as Txn[]), expenses: sum(novemberWithdrawals as unknown as Txn[]) },
+    { month: "Dec", revenue: sum(decemberDeposits as unknown as Txn[]), expenses: sum(decemberWithdrawals as unknown as Txn[]) },
+  ];
+  const netTrend = monthly.map((m) => ({ month: m.month, net: m.revenue - m.expenses }));
+  const categorySlices = topCats.map((c) => ({ name: c.name, value: c.amount }));
+
+  const namedCatTotal = topCats.reduce((t, c) => t + c.amount, 0);
+  const otherOutflow = totalOutgoing - namedCatTotal;
+  const waterfallSteps = [
+    { name: "Cash In", amount: totalIncoming },
+    ...topCats.map((c) => ({ name: c.name, amount: -c.amount })),
+    ...(otherOutflow > 0.005 ? [{ name: "Other Outflow", amount: -otherOutflow }] : []),
+    { name: "Net Movement", amount: netCashFlow, total: true },
+  ];
+
+  const sparkSeries: SparkSeries[] = [
+    { label: "Cash In", values: monthly.map((m) => m.revenue) },
+    { label: "Cash Out", values: monthly.map((m) => m.expenses), invertDelta: true },
+    { label: "Net Movement", values: netTrend.map((n) => n.net) },
+    { label: "Ending Balance", values: [netBalance[3], netBalance[7], netBalance[11]] },
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="grid grid-cols-1 xl:grid-cols-3 gap-6"
+      className="space-y-6"
     >
-      <div className="xl:col-span-1">
-        <FuturisticCashFlowChart
-          data={{ incoming, outgoing, netBalance }}
-          netCashFlow={formatCurrency(netCashFlow)}
-          netCashFlowChange={22.4}
-          currentBalance={formatCurrency(decemberSummary.endingBalance)}
-          currentBalanceChange={-14.2}
-          freeCashFlow={formatCurrency(netCashFlow)}
-          freeCashFlowChange={-62.4}
-          runway="12.5"
-          runwayChange={3.1}
-        />
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_1fr]">
+        <RevenueExpenseChart data={monthly} period={PERIOD} />
+        <NetIncomeTrendChart data={netTrend} period={PERIOD} />
       </div>
 
-      <div className="xl:col-span-1">
-        <FuturisticDonutChart
-          title="Top Expense Categories"
-          totalValue={formatCurrency(totalOutgoing)}
-          totalLabel="Total Expenses"
-          change={5.2}
-          categories={topCats}
-        />
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_1.35fr]">
+        <PLWaterfallChart steps={waterfallSteps} period={PERIOD} />
+        <ExpenseCompositionBar data={categorySlices} period={PERIOD} />
       </div>
 
-      <div className="xl:col-span-1">
-        <FuturisticStatusPanel
+      <SparklineRow series={sparkSeries} period={PERIOD} />
+
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <div className="xl:col-span-2">
+          <FuturisticCashFlowChart
+            data={{ incoming, outgoing, netBalance }}
+            netCashFlow={formatCurrency(netCashFlow)}
+            netCashFlowChange={0}
+            currentBalance={formatCurrency(decemberSummary.endingBalance)}
+            currentBalanceChange={0}
+            freeCashFlow={formatCurrency(netCashFlow)}
+            freeCashFlowChange={0}
+            runway="\u2014"
+            runwayChange={0}
+          />
+        </div>
+
+        <div className="xl:col-span-1">
+          <FuturisticStatusPanel
           statusItems={[
             { label: "My Taxes", status: "on-track", statusLabel: "On Track" },
             { label: "Acct. Connections", status: "optimal", statusLabel: "Optimal" },
@@ -198,7 +233,8 @@ export const FuturisticDashboardSheet = ({ viewOnly = false }: FuturisticDashboa
               description: "Upload latest statement PDFs for reconciliation.",
             },
           ]}
-        />
+          />
+        </div>
       </div>
     </motion.div>
   );

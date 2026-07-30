@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Building2, Plus, Search } from "lucide-react";
+import { Plus, Search, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { FuturisticSidebar } from "@/components/FuturisticSidebar";
 import { FuturisticHeader } from "@/components/FuturisticHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import mizanLogo from "@/assets/mizan-logo-new.png";
+import { EmptyState } from "@/components/EmptyState";
+import { BrandLockup } from "@/components/brand/BrandLockup";
 
-// Mock client data - in the future this would come from the database
 const clients = [
   {
     id: "cvs",
@@ -20,7 +20,7 @@ const clients = [
     address: "715 Huntingdon Pike, Rockledge, PA 19046",
     memberNumber: "0021348405",
     status: "active" as const,
-    lastActivity: "2 hours ago",
+    lastActivity: "Q4 2025 reconciled",
   },
   {
     id: "defiore",
@@ -28,17 +28,10 @@ const clients = [
     address: "1162 S 12th St, Philadelphia, PA 19147",
     memberNumber: "9046528999",
     status: "active" as const,
-    lastActivity: "Just added",
-  },
-  {
-    id: "coming-soon-1",
-    name: "Coming Soon",
-    address: "New client onboarding",
-    memberNumber: "—",
-    status: "pending" as const,
-    lastActivity: "—",
+    lastActivity: "Q1 2026 reconciled",
   },
 ];
+
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
@@ -96,20 +89,22 @@ const ClientDashboard = () => {
 
   if (checkingAuth) {
     return (
-      <div className="min-h-screen flex items-center justify-center futuristic-bg">
+      <div className="min-h-screen futuristic-bg">
         <div className="light-beam light-beam-left" />
         <div className="light-beam light-beam-right" />
-        <div className="animate-pulse flex flex-col items-center gap-4 z-10">
-          <img
-            src={mizanLogo}
-            alt="Mizan"
-            className="h-24 w-24 object-contain mix-blend-lighten logo-glow-pulse"
-          />
-          <p className="text-muted-foreground text-sm">Loading...</p>
+        <div className="mx-auto max-w-[1600px] px-8 py-8" aria-busy="true" aria-label="Loading clients">
+          <BrandLockup size="md" />
+          <div className="mt-8 h-9 w-56 animate-pulse rounded-lg bg-white/[0.05]" />
+          <div className="mt-3 h-4 w-80 animate-pulse rounded bg-white/[0.04]" />
+          <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="h-[320px] animate-pulse rounded-2xl bg-white/[0.04] lg:col-span-2" />
+            <div className="h-[320px] animate-pulse rounded-2xl bg-white/[0.04]" />
+          </div>
         </div>
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen futuristic-bg relative overflow-hidden">
@@ -131,31 +126,38 @@ const ClientDashboard = () => {
             {/* Header */}
             <FuturisticHeader
               title="Your Clients"
-              subtitle="Select a client to view their financial workbook"
-              showDatePicker={false}
+              subtitle="Select a client to open their financial workbook."
+              onSignOut={handleSignOut}
             />
 
             {/* Search and Actions */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search
+                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+                  aria-hidden="true"
+                />
                 <Input
-                  placeholder="Search clients..."
+                  placeholder="Search clients…"
+                  aria-label="Search clients by name or address"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-input border-border/50 text-foreground placeholder:text-muted-foreground w-72 focus:border-primary/50"
+                  className="w-full pl-10 sm:w-72"
                 />
               </div>
-              <Button 
-                className="gap-2 btn-glow"
-                onClick={() => toast({
-                  title: "Coming Soon",
-                  description: "Add Client feature is under development.",
-                })}
-              >
-                <Plus className="h-4 w-4" />
-                Add Client
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span tabIndex={0} className="inline-flex rounded-lg">
+                    <Button className="gap-2" disabled aria-disabled="true">
+                      <Plus className="h-4 w-4" aria-hidden="true" />
+                      Add Client
+                    </Button>
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Client onboarding isn’t built yet — new clients are added by Mizan directly.
+                </TooltipContent>
+              </Tooltip>
             </div>
 
             {/* Client roster — editorial, asymmetric */}
@@ -173,28 +175,26 @@ const ClientDashboard = () => {
                     <button
                       type="button"
                       onClick={() => handleClientClick(client.id)}
-                      className={`surface-panel tilt-surface flex h-full w-full flex-col justify-between text-left ${
-                        feature ? "p-9" : "p-7"
-                      } ${client.status === "pending" ? "opacity-55" : ""}`}
+                      aria-label={`Open the ${client.name} workbook`}
+                      className={`surface-panel tilt-surface flex h-full w-full flex-col justify-between text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                        feature ? "p-7 sm:p-9" : "p-6 sm:p-7"
+                      }`}
                     >
                       <div className="flex items-start justify-between gap-6">
                         <span className="stat-display text-[13px] text-muted-foreground/60">
                           {String(index + 1).padStart(2, "0")}
                         </span>
-                        {client.status === "active" ? (
-                          <span className="badge-status badge-on-track">
-                            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                            Active
-                          </span>
-                        ) : (
-                          <span className="badge-status badge-tasks">Pending</span>
-                        )}
+                        <span className="badge-status badge-on-track">
+                          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                          Active
+                        </span>
                       </div>
 
-                      <div className={feature ? "mt-16" : "mt-10"}>
+
+                      <div className={feature ? "mt-12 sm:mt-16" : "mt-8 sm:mt-10"}>
                         <h3
                           className={`headline-editorial text-foreground ${
-                            feature ? "text-[30px]" : "text-[19px]"
+                            feature ? "text-[24px] sm:text-[30px]" : "text-[18px] sm:text-[19px]"
                           }`}
                         >
                           {client.name}
@@ -205,7 +205,7 @@ const ClientDashboard = () => {
                       </div>
 
                       <div className="rule-hairline mt-7" />
-                      <div className="mt-4 flex items-center justify-between text-[11.5px] text-muted-foreground/70">
+                      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-[11.5px] text-muted-foreground/70">
                         <span className="tabular">#{client.memberNumber}</span>
                         <span>{client.lastActivity}</span>
                       </div>
@@ -215,12 +215,19 @@ const ClientDashboard = () => {
               })}
             </div>
 
-
             {filteredClients.length === 0 && (
-              <div className="text-center py-16">
-                <p className="text-muted-foreground">No clients found matching your search.</p>
-              </div>
+              <EmptyState
+                icon={Users}
+                title="No clients match that search"
+                description={`Nothing found for “${searchQuery}”. Clear the search to see every client on the roster.`}
+                action={
+                  <Button variant="outline" size="sm" onClick={() => setSearchQuery("")}>
+                    Clear search
+                  </Button>
+                }
+              />
             )}
+
           </motion.div>
         </div>
 

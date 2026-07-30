@@ -3,7 +3,10 @@ import { FuturisticCashFlowChart } from "@/components/FuturisticCashFlowChart";
 import { FuturisticStatusPanel } from "@/components/FuturisticStatusPanel";
 import { RevenueExpenseChart } from "@/components/charts/RevenueExpenseChart";
 import { NetIncomeTrendChart } from "@/components/charts/NetIncomeTrendChart";
-import { ExpenseBreakdownChart } from "@/components/charts/ExpenseBreakdownChart";
+import { ExpenseCompositionBar } from "@/components/charts/ExpenseCompositionBar";
+import { PLWaterfallChart } from "@/components/charts/PLWaterfallChart";
+import { SparklineRow, type SparkSeries } from "@/components/charts/SparklineRow";
+
 import {
   januaryDeposits, januaryWithdrawals, januarySummary,
   februaryDeposits, februaryWithdrawals,
@@ -11,6 +14,9 @@ import {
 } from "@/data/defioreBankTransactions";
 
 type Txn = { date: string; amount: number; category?: string };
+
+const PERIOD = "Jan–Mar 2026";
+
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
@@ -92,6 +98,25 @@ export const DefioreDashboardSheet = ({ viewOnly = false }: DefioreDashboardShee
   const netTrend = monthly.map((m) => ({ month: m.month, net: m.revenue - m.expenses }));
   const categorySlices = topCats.map((c) => ({ name: c.name, value: c.amount }));
 
+  // Cash bridge: opening cash in, top expense categories out, closing net movement.
+  const namedCatTotal = topCats.reduce((s, c) => s + c.amount, 0);
+  const otherOutflow = totalOutgoing - namedCatTotal;
+  const waterfallSteps = [
+    { name: "Cash In", amount: totalIncoming },
+    ...topCats.map((c) => ({ name: c.name, amount: -c.amount })),
+    ...(otherOutflow > 0.005 ? [{ name: "Other Outflow", amount: -otherOutflow }] : []),
+    { name: "Net Movement", amount: netCashFlow, total: true },
+  ];
+
+  const sparkSeries: SparkSeries[] = [
+    { label: "Cash In", values: monthly.map((m) => m.revenue) },
+    { label: "Cash Out", values: monthly.map((m) => m.expenses), invertDelta: true },
+    { label: "Net Movement", values: netTrend.map((n) => n.net) },
+    { label: "Ending Balance", values: [netBalance[3], netBalance[7], netBalance[11]] },
+  ];
+
+
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -119,26 +144,31 @@ export const DefioreDashboardSheet = ({ viewOnly = false }: DefioreDashboardShee
 
       {/* Asymmetric chart grid */}
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_1fr]">
-        <RevenueExpenseChart data={monthly} />
-        <NetIncomeTrendChart data={netTrend} />
+        <RevenueExpenseChart data={monthly} period={PERIOD} />
+        <NetIncomeTrendChart data={netTrend} period={PERIOD} />
       </section>
 
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_1.35fr]">
-        <ExpenseBreakdownChart data={categorySlices} />
-        <div className="grid grid-cols-1 gap-6">
-          <FuturisticCashFlowChart
-            data={{ incoming, outgoing, netBalance }}
-            netCashFlow={formatCurrency(netCashFlow)}
-            netCashFlowChange={0}
-            currentBalance={formatCurrency(marchSummary.endingBalance)}
-            currentBalanceChange={0}
-            freeCashFlow={formatCurrency(netCashFlow)}
-            freeCashFlowChange={0}
-            runway="—"
-            runwayChange={0}
-          />
-        </div>
+        <PLWaterfallChart steps={waterfallSteps} period={PERIOD} />
+        <ExpenseCompositionBar data={categorySlices} period={PERIOD} />
       </section>
+
+      <SparklineRow series={sparkSeries} period={PERIOD} />
+
+      <section className="grid grid-cols-1 gap-6">
+        <FuturisticCashFlowChart
+          data={{ incoming, outgoing, netBalance }}
+          netCashFlow={formatCurrency(netCashFlow)}
+          netCashFlowChange={0}
+          currentBalance={formatCurrency(marchSummary.endingBalance)}
+          currentBalanceChange={0}
+          freeCashFlow={formatCurrency(netCashFlow)}
+          freeCashFlowChange={0}
+          runway="—"
+          runwayChange={0}
+        />
+      </section>
+
 
       <section>
 

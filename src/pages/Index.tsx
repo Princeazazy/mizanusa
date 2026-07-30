@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Sparkles } from "lucide-react";
+import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Printer } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { exportToExcel } from "@/lib/exportToExcel";
 import { exportToPowerPoint } from "@/lib/exportToPowerPoint";
+import { BrandLockup } from "@/components/brand/BrandLockup";
 import { FuturisticSidebar } from "@/components/FuturisticSidebar";
-import { FuturisticHeader } from "@/components/FuturisticHeader";
+import { FuturisticHeader, type SearchTarget } from "@/components/FuturisticHeader";
+
 import cvsLogo from "@/assets/cvs-logo.png";
 import { FuturisticDashboardSheet } from "@/components/sheets/FuturisticDashboardSheet";
 import { CheckingAccountSheet } from "@/components/sheets/CheckingAccountSheet";
@@ -35,6 +37,23 @@ import {
   novemberSummary,
   decemberSummary,
 } from "@/data/bankTransactions";
+
+const SEARCH_TARGETS: SearchTarget[] = [
+  { label: "Dashboard", value: "dashboard", hint: "Overview & charts" },
+  { label: "October 2025 — Bank", value: "october", hint: "Checking account" },
+  { label: "November 2025 — Bank", value: "november", hint: "Checking account" },
+  { label: "December 2025 — Bank", value: "december", hint: "Checking account" },
+  { label: "Transfers", value: "transfers", hint: "Inter-account movement" },
+  { label: "E-Safety Inspections", value: "esafety", hint: "Inspection revenue" },
+  { label: "Title Revenue", value: "titlerevenue", hint: "Title & tag income" },
+  { label: "Vitu Statements", value: "vitu", hint: "Vendor billing" },
+  { label: "Chart of Accounts", value: "coa", hint: "COA coding" },
+  { label: "Reconciliation", value: "reconciliation", hint: "Bank tie-out" },
+  { label: "Profit & Loss", value: "profitloss", hint: "Q4 2025" },
+  { label: "Balance Sheet", value: "balancesheet", hint: "Q4 2025" },
+  { label: "Cash Flow", value: "cashflow", hint: "Q4 2025" },
+];
+
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -74,39 +93,23 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center futuristic-bg relative overflow-hidden">
-        {/* Light beams */}
+      <div className="min-h-screen futuristic-bg">
         <div className="light-beam light-beam-left" />
         <div className="light-beam light-beam-right" />
-        
-        <motion.div
-          className="flex flex-col items-center gap-4 z-10"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="relative"
-          >
-            <img
-              src={mizanLogo}
-              alt="Mizan"
-              className="h-32 w-32 object-contain relative z-10 mix-blend-lighten logo-glow-pulse"
-            />
-          </motion.div>
-          <motion.div
-            className="flex items-center gap-2"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            <Sparkles className="h-4 w-4 text-primary" />
-            <p className="text-muted-foreground text-sm font-medium">Loading your workspace...</p>
-          </motion.div>
-        </motion.div>
+        <div className="mx-auto max-w-[1600px] px-6 py-8 sm:px-8" aria-busy="true" aria-label="Loading workbook">
+          <BrandLockup clientLogo={cvsLogo} clientName="CVS Auto Sales Inc." size="md" />
+          <div className="mt-8 h-9 w-64 animate-pulse rounded-lg bg-white/[0.05]" />
+          <div className="mt-3 h-4 w-96 max-w-full animate-pulse rounded bg-white/[0.04]" />
+          <div className="mt-8 h-12 w-full animate-pulse rounded-xl bg-white/[0.04]" />
+          <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_1fr]">
+            <div className="h-[360px] animate-pulse rounded-2xl bg-white/[0.04]" />
+            <div className="h-[360px] animate-pulse rounded-2xl bg-white/[0.04]" />
+          </div>
+        </div>
       </div>
     );
   }
+
 
   if (!user) {
     return null;
@@ -131,30 +134,39 @@ const Index = () => {
         >
           {/* Header */}
           <FuturisticHeader
-            title="Hi there!"
-            subtitle="Here's Your Financial Workbook for"
+            title="Financial Workbook"
+            subtitle="Reconciled Q4 2025 records for"
             clientName="CVS Auto Sales Inc."
             clientLogo={cvsLogo}
+            searchTargets={SEARCH_TARGETS}
+            onTabChange={setActiveTab}
+            onSignOut={handleSignOut}
+            accountEmail={user?.email ?? undefined}
           />
 
           {/* Action buttons */}
-          <div className="flex items-center gap-3 mb-8">
-            <Button 
-              variant="outline" 
-              className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
+          <div className="flex flex-wrap items-center gap-3 mb-8">
+            <Button
+              variant="outline"
+              className="gap-2"
               onClick={() => exportToPowerPoint({ clientName: 'CVS Auto Sales Inc.', clientLogoPath: '/cvs-logo.png', fileName: 'CVS_Auto_Sales_Q4_2025_Financial_Report.pptx' })}
             >
-              <Presentation className="h-4 w-4" />
+              <Presentation className="h-4 w-4" aria-hidden="true" />
               Export to PowerPoint
             </Button>
-            <Button 
+            <Button
               className="gap-2 btn-glow"
               onClick={() => exportToExcel({ clientName: 'CVS Auto Sales Inc.', fileName: 'CVS_Auto_Sales_Q4_2025_Bookkeeping.xlsx' })}
             >
-              <Download className="h-4 w-4" />
+              <Download className="h-4 w-4" aria-hidden="true" />
               Export to Excel
             </Button>
+            <Button variant="outline" className="gap-2" onClick={() => window.print()}>
+              <Printer className="h-4 w-4" aria-hidden="true" />
+              Print workbook
+            </Button>
           </div>
+
 
           {/* Sheet Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

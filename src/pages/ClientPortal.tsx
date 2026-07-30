@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { BrandLockup } from "@/components/brand/BrandLockup";
 import { Download, LayoutDashboard, FileSpreadsheet, ArrowLeftRight, Car, FileText, BookOpen, CheckSquare, Receipt, Presentation, TrendingUp, Scale, Banknote, Sparkles, LogOut, Eye, Printer, CreditCard, ArrowDownUp, FileDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { exportToExcel } from "@/lib/exportToExcel";
@@ -229,16 +231,11 @@ const ClientPortal = () => {
               height: 112px;
             }
             .divider {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              width: 72px;
-              height: 136px;
-              font-size: 38px;
-              font-weight: 300;
-              line-height: 1;
-              color: #0d9488;
-              transform: translateY(-2px);
+              display: block;
+              width: 1px;
+              height: 96px;
+              margin: 0 auto;
+              background: #cbd5e1;
             }
             table { width: 100%; border-collapse: collapse; margin: 12px 0; }
             th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; font-size: 12px; color: #1e293b; }
@@ -268,7 +265,7 @@ const ClientPortal = () => {
               <div class="logo-slot logo-slot--left">
                 <img src="${printMizanLogo}" alt="Mizan USA" class="mizan-logo" />
               </div>
-              <span class="divider">×</span>
+              <span class="divider" aria-hidden="true"></span>
               <div class="logo-slot logo-slot--right">
                 <img src="${activeClientLogo}" alt="${clientName}" class="client-logo" />
               </div>
@@ -323,7 +320,7 @@ const ClientPortal = () => {
             <div style="display:flex;align-items:center;justify-content:flex-end;padding-right:10px;">
               <img src="${mizanLogo}" alt="Mizan USA" style="height:136px;max-width:320px;width:auto;object-fit:contain;" crossorigin="anonymous" />
             </div>
-            <span style="display:flex;align-items:center;justify-content:center;width:72px;height:136px;font-size:38px;font-weight:300;color:#0d9488;">×</span>
+            <span style="display:block;width:1px;height:96px;margin:0 auto;background:#cbd5e1;"></span>
             <div style="display:flex;align-items:center;justify-content:flex-start;padding-left:10px;">
               <img src="${activeClientLogo}" alt="${clientName}" style="height:112px;max-width:240px;width:auto;object-fit:contain;" crossorigin="anonymous" />
             </div>
@@ -412,38 +409,20 @@ const ClientPortal = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center futuristic-bg relative overflow-hidden">
+      <div className="min-h-screen futuristic-bg">
         <div className="light-beam light-beam-left" />
         <div className="light-beam light-beam-right" />
-        
-        <motion.div
-          className="flex flex-col items-center gap-4 z-10"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="relative"
-          >
-            <img
-              src={mizanLogo}
-              alt="Mizan"
-              className="h-32 w-32 object-contain relative z-10 mix-blend-lighten logo-glow-pulse"
-            />
-          </motion.div>
-          <motion.div
-            className="flex items-center gap-2"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            <Sparkles className="h-4 w-4 text-primary" />
-            <p className="text-muted-foreground text-sm font-medium">Loading your portal...</p>
-          </motion.div>
-        </motion.div>
+        <div className="mx-auto max-w-[1600px] px-4 py-8 md:px-8" aria-busy="true" aria-label="Loading your portal">
+          <BrandLockup size="md" />
+          <div className="mt-6 h-8 w-72 max-w-full animate-pulse rounded-lg bg-white/[0.05]" />
+          <div className="mt-3 h-4 w-64 animate-pulse rounded bg-white/[0.04]" />
+          <div className="mt-8 h-12 w-full animate-pulse rounded-xl bg-white/[0.04]" />
+          <div className="mt-8 h-[420px] w-full animate-pulse rounded-2xl bg-white/[0.04]" />
+        </div>
       </div>
     );
   }
+
 
   if (!session) {
     return null;
@@ -464,71 +443,94 @@ const ClientPortal = () => {
           transition={{ duration: 0.5 }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-4">
-              <img
-                src={isDefiore ? defioreLogo : isTest ? mizanLogo : cvsLogo}
-                alt={clientName || "Client"}
-                className="h-14 w-auto object-contain"
+          <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0">
+              <BrandLockup
+                clientLogo={isTest ? undefined : isDefiore ? defioreLogo : cvsLogo}
+                clientName={clientName || "Client"}
+                eyebrow="Prepared for"
+                size="md"
               />
-              <div>
-                <h1 className="text-2xl font-bold text-foreground">
-                  Welcome, <span className="text-primary glow-text-cyan">{clientName}</span>
-                </h1>
-                <p className="text-sm text-muted-foreground">Client Portal - View Only</p>
-              </div>
+              <h1 className="headline-editorial mt-5 text-[24px] text-foreground sm:text-[28px]">
+                Welcome, <span className="text-primary">{clientName}</span>
+              </h1>
+              <p className="mt-1.5 text-[13px] text-muted-foreground">
+                Client portal — your reconciled records, view only.
+              </p>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-warning/10 border border-warning/30">
-                <Eye className="h-4 w-4 text-warning" />
-                <span className="text-xs font-medium text-warning">View Only Mode</span>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 rounded-full border border-warning/30 bg-warning/10 px-3 py-1.5">
+                <Eye className="h-4 w-4 text-warning" aria-hidden="true" />
+                <span className="text-xs font-medium text-warning">View only</span>
               </div>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
                 onClick={handleSignOut}
-                className="gap-2 glass-card border-border/50 hover:border-destructive/50 hover:text-destructive"
+                className="gap-2 hover:border-destructive/50 hover:text-destructive"
               >
-                <LogOut className="h-4 w-4" />
-                Sign Out
+                <LogOut className="h-4 w-4" aria-hidden="true" />
+                Sign out
               </Button>
             </div>
           </div>
 
           {/* Action buttons - only exports */}
-          <div className="flex items-center gap-3 mb-8 flex-wrap">
-            <Button 
-              variant="outline" 
-              className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
-              onClick={handlePrint}
-            >
-              <Printer className="h-4 w-4" />
+          <div className="mb-8 flex flex-wrap items-center gap-3">
+            <Button variant="outline" className="gap-2" onClick={handlePrint}>
+              <Printer className="h-4 w-4" aria-hidden="true" />
               Print {getTabLabel(isDefiore && activeTab === "reconciliation" ? "january" : activeTab)}
             </Button>
-            <Button 
-              variant="outline" 
-              className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
-              onClick={handleDownloadPDF}
-            >
-              <FileDown className="h-4 w-4" />
+            <Button variant="outline" className="gap-2" onClick={handleDownloadPDF}>
+              <FileDown className="h-4 w-4" aria-hidden="true" />
               Download PDF
             </Button>
-            <Button 
-              variant="outline" 
-              className="gap-2 glass-card border-border/50 hover:border-primary/50 hover:bg-accent/50"
-              onClick={() => exportToPowerPoint({ clientName: clientName || 'Client', clientLogoPath: isDefiore ? '/defiore-logo.png' : '/cvs-logo.png', fileName: `${clientName}_Financial_Report.pptx` })}
-            >
-              <Presentation className="h-4 w-4" />
-              Export to PowerPoint
-            </Button>
-            <Button 
-              className="gap-2 btn-glow"
-              onClick={() => exportToExcel({ clientName: clientName || 'Client', fileName: `${clientName}_Bookkeeping.xlsx` })}
-            >
-              <Download className="h-4 w-4" />
-              Export to Excel
-            </Button>
+            {isCVS ? (
+              <>
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => exportToPowerPoint({ clientName: clientName || 'Client', clientLogoPath: '/cvs-logo.png', fileName: `${clientName}_Financial_Report.pptx` })}
+                >
+                  <Presentation className="h-4 w-4" aria-hidden="true" />
+                  Export to PowerPoint
+                </Button>
+                <Button
+                  className="gap-2 btn-glow"
+                  onClick={() => exportToExcel({ clientName: clientName || 'Client', fileName: `${clientName}_Bookkeeping.xlsx` })}
+                >
+                  <Download className="h-4 w-4" aria-hidden="true" />
+                  Export to Excel
+                </Button>
+              </>
+            ) : (
+              <>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span tabIndex={0} className="inline-flex rounded-lg">
+                      <Button variant="outline" className="gap-2" disabled aria-disabled="true">
+                        <Presentation className="h-4 w-4" aria-hidden="true" />
+                        Export to PowerPoint
+                      </Button>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>Deck export isn’t available for this engagement yet — use Print or Download PDF.</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span tabIndex={0} className="inline-flex rounded-lg">
+                      <Button className="gap-2" disabled aria-disabled="true">
+                        <Download className="h-4 w-4" aria-hidden="true" />
+                        Export to Excel
+                      </Button>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>Workbook export isn’t available for this engagement yet — use Print or Download PDF.</TooltipContent>
+                </Tooltip>
+              </>
+            )}
           </div>
+
 
           {/* Sheet Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
