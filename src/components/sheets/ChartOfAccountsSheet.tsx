@@ -13,14 +13,14 @@ import { chartOfAccounts, getAccountsByType } from "@/data/chartOfAccounts";
 
 const getTypeBadgeColor = (type: string) => {
   const colors: Record<string, string> = {
-    "Revenue": "bg-green-100 text-green-800",
-    "COGS": "bg-orange-100 text-orange-800",
-    "Expense": "bg-red-100 text-red-800",
-    "Asset": "bg-blue-100 text-blue-800",
-    "Liability": "bg-purple-100 text-purple-800",
-    "Equity": "bg-cyan-100 text-cyan-800",
+    "Revenue": "bg-income/10 text-income border border-income/25",
+    "COGS": "bg-warning/10 text-warning border border-warning/25",
+    "Expense": "bg-expense/10 text-expense border border-expense/25",
+    "Asset": "bg-info/10 text-info border border-info/25",
+    "Liability": "bg-primary/10 text-primary border border-primary/25",
+    "Equity": "bg-accent text-accent-foreground border border-border",
   };
-  return colors[type] || "bg-gray-100 text-gray-800";
+  return colors[type] || "bg-muted text-muted-foreground border border-border";
 };
 
 export const ChartOfAccountsSheet = () => {
@@ -166,8 +166,8 @@ export const ChartOfAccountsSheet = () => {
       {/* Other Accounts */}
       {otherAccounts.length > 0 && (
         <Card>
-          <CardHeader className="bg-gray-50 border-b">
-            <CardTitle className="text-gray-800">
+          <CardHeader className="bg-muted/20 border-b">
+            <CardTitle className="text-foreground">
               Other Accounts
             </CardTitle>
           </CardHeader>
