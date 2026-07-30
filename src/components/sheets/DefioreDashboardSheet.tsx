@@ -79,36 +79,67 @@ export const DefioreDashboardSheet = ({ viewOnly = false }: DefioreDashboardShee
       color: `hsl(var(--chart-${idx + 1}))`,
     }));
 
+  const sum = (txns: Txn[]) => txns.reduce((s, t) => s + t.amount, 0);
+
+  const monthly = [
+    { month: "Jan", revenue: sum(januaryDeposits as unknown as Txn[]), expenses: sum(januaryWithdrawals as unknown as Txn[]) },
+    { month: "Feb", revenue: sum(februaryDeposits as unknown as Txn[]), expenses: sum(februaryWithdrawals as unknown as Txn[]) },
+    { month: "Mar", revenue: sum(marchDeposits as unknown as Txn[]), expenses: sum(marchWithdrawals as unknown as Txn[]) },
+  ];
+
+  const netTrend = monthly.map((m) => ({ month: m.month, net: m.revenue - m.expenses }));
+  const categorySlices = topCats.map((c) => ({ name: c.name, value: c.amount }));
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35 }}
-      className="grid grid-cols-1 xl:grid-cols-3 gap-6"
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      className="space-y-8"
     >
-      <div className="xl:col-span-1">
-        <FuturisticCashFlowChart
-          data={{ incoming, outgoing, netBalance }}
-          netCashFlow={formatCurrency(netCashFlow)}
-          netCashFlowChange={0}
-          currentBalance={formatCurrency(marchSummary.endingBalance)}
-          currentBalanceChange={0}
-          freeCashFlow={formatCurrency(netCashFlow)}
-          freeCashFlowChange={0}
-          runway="—"
-          runwayChange={0}
-        />
-      </div>
+      {/* Editorial stat band — oversized figures, quiet labels */}
+      <section className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl bg-white/[0.06] sm:grid-cols-3">
+        {[
+          { k: "Cash In", v: formatCurrency(totalIncoming) },
+          { k: "Cash Out", v: formatCurrency(totalOutgoing) },
+          { k: "Net Movement", v: formatCurrency(netCashFlow), accent: true },
+        ].map((s) => (
+          <div key={s.k} className="bg-background/80 px-7 py-7">
+            <span className="eyebrow-label">{s.k}</span>
+            <div
+              className={`stat-display mt-3 text-[30px] leading-none ${s.accent ? "text-primary" : ""}`}
+            >
+              {s.v}
+            </div>
+          </div>
+        ))}
+      </section>
 
-      <div className="xl:col-span-1">
-        <FuturisticDonutChart
-          title="Top Expense Categories"
-          totalValue={formatCurrency(totalOutgoing)}
-          totalLabel="Total Expenses"
-          change={0}
-          categories={topCats}
-        />
-      </div>
+      {/* Asymmetric chart grid */}
+      <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_1fr]">
+        <RevenueExpenseChart data={monthly} />
+        <NetIncomeTrendChart data={netTrend} />
+      </section>
+
+      <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_1.35fr]">
+        <ExpenseBreakdownChart data={categorySlices} />
+        <div className="grid grid-cols-1 gap-6">
+          <FuturisticCashFlowChart
+            data={{ incoming, outgoing, netBalance }}
+            netCashFlow={formatCurrency(netCashFlow)}
+            netCashFlowChange={0}
+            currentBalance={formatCurrency(marchSummary.endingBalance)}
+            currentBalanceChange={0}
+            freeCashFlow={formatCurrency(netCashFlow)}
+            freeCashFlowChange={0}
+            runway="—"
+            runwayChange={0}
+          />
+        </div>
+      </section>
+
+      <section className="grid grid-cols-1 gap-6">
+
 
       <div className="xl:col-span-1">
         <FuturisticStatusPanel
