@@ -28,6 +28,18 @@ import {
 import { defioreInvoices } from "@/data/defioreInvoices";
 import { januaryCreditCards, februaryCreditCards, marchCreditCards } from "@/data/defioreCreditCardTransactions";
 
+const SEARCH_TARGETS: SearchTarget[] = [
+  { label: "Dashboard", value: "dashboard", hint: "Overview & charts" },
+  { label: "January 2026 — Bank", value: "january", hint: "Checking account" },
+  { label: "February 2026 — Bank", value: "february", hint: "Checking account" },
+  { label: "March 2026 — Bank", value: "march", hint: "Checking account" },
+  { label: "Invoices", value: "invoices", hint: "Receivables" },
+  { label: "Profit & Loss", value: "profitloss", hint: "Q1 2026" },
+  { label: "Balance Sheet", value: "balancesheet", hint: "Q1 2026" },
+  { label: "Cash Flow", value: "cashflow", hint: "Q1 2026" },
+];
+
+
 const DefioreIndex = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [bankOpen, setBankOpen] = useState(false);
