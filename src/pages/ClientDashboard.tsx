@@ -12,6 +12,8 @@ import { FuturisticHeader } from "@/components/FuturisticHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { EmptyState } from "@/components/EmptyState";
 import { BrandLockup } from "@/components/brand/BrandLockup";
+import { LeadsPanel } from "@/components/admin/LeadsPanel";
+
 
 const clients = [
   {
@@ -227,6 +229,10 @@ const ClientDashboard = () => {
                 }
               />
             )}
+
+            <LeadsPanel />
+
+
 
           </motion.div>
         </div>
