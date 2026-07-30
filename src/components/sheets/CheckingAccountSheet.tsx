@@ -95,8 +95,8 @@ export const CheckingAccountSheet = ({
 
       {/* Income Section */}
       <Card className="shadow-card overflow-hidden">
-        <CardHeader className="bg-income-muted/60 border-b border-income/20">
-          <CardTitle className="flex items-center gap-2.5 text-income">
+        <CardHeader className="border-b border-white/[0.06] bg-white/[0.015]">
+          <CardTitle className="flex items-center gap-2.5 text-[15px] font-medium tracking-[-0.01em] text-foreground">
             <TrendingUp className="h-5 w-5" />
             Income (Deposits)
           </CardTitle>
@@ -162,8 +162,8 @@ export const CheckingAccountSheet = ({
 
       {/* Expense Section */}
       <Card className="shadow-card overflow-hidden">
-        <CardHeader className="bg-expense-muted/60 border-b border-expense/20">
-          <CardTitle className="flex items-center gap-2.5 text-expense">
+        <CardHeader className="border-b border-white/[0.06] bg-white/[0.015]">
+          <CardTitle className="flex items-center gap-2.5 text-[15px] font-medium tracking-[-0.01em] text-foreground">
             <TrendingDown className="h-5 w-5" />
             Expenses (Withdrawals)
           </CardTitle>
