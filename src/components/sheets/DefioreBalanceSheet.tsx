@@ -59,7 +59,7 @@ export const DefioreBalanceSheet = () => {
 
               {/* Liabilities */}
               <TableRow className="section-band"><TableCell colSpan={2} className="print:py-1">LIABILITIES</TableCell></TableRow>
-              <TableRow className="bg-red-500/5 font-semibold"><TableCell className="pl-4 print:py-0.5 print:text-[10px]">Current Liabilities</TableCell><TableCell /></TableRow>
+              <TableRow className="font-medium text-foreground/90 hover:bg-transparent"><TableCell className="pl-4 print:py-0.5 print:text-[10px]">Current Liabilities</TableCell><TableCell /></TableRow>
               <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Capital One Spark Classic (5155)</TableCell><TableCell className="text-right tabular print:py-0.5 print:text-[10px]">{fmt(capOneBalance)}</TableCell></TableRow>
               <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Amex Business Platinum (51001)</TableCell><TableCell className="text-right tabular print:py-0.5 print:text-[10px]">{fmt(amexPlatBalance)}</TableCell></TableRow>
               <TableRow><TableCell className="pl-8 print:pl-6 print:py-0.5 print:text-[10px]">Amex Blue Business Cash (72000)</TableCell><TableCell className="text-right tabular print:py-0.5 print:text-[10px]">{fmt(amexBlueBalance)}</TableCell></TableRow>
