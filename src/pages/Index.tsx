@@ -38,6 +38,23 @@ import {
   decemberSummary,
 } from "@/data/bankTransactions";
 
+const SEARCH_TARGETS: SearchTarget[] = [
+  { label: "Dashboard", value: "dashboard", hint: "Overview & charts" },
+  { label: "October 2025 — Bank", value: "october", hint: "Checking account" },
+  { label: "November 2025 — Bank", value: "november", hint: "Checking account" },
+  { label: "December 2025 — Bank", value: "december", hint: "Checking account" },
+  { label: "Transfers", value: "transfers", hint: "Inter-account movement" },
+  { label: "E-Safety Inspections", value: "esafety", hint: "Inspection revenue" },
+  { label: "Title Revenue", value: "titlerevenue", hint: "Title & tag income" },
+  { label: "Vitu Statements", value: "vitu", hint: "Vendor billing" },
+  { label: "Chart of Accounts", value: "coa", hint: "COA coding" },
+  { label: "Reconciliation", value: "reconciliation", hint: "Bank tie-out" },
+  { label: "Profit & Loss", value: "profitloss", hint: "Q4 2025" },
+  { label: "Balance Sheet", value: "balancesheet", hint: "Q4 2025" },
+  { label: "Cash Flow", value: "cashflow", hint: "Q4 2025" },
+];
+
+
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [q4Open, setQ4Open] = useState(false);
