@@ -107,7 +107,7 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
         dpr={dpr}
         shadows
         gl={{ antialias: true, alpha: true }}
-        camera={{ position: [0, 0.9, 5.4], fov: 34 }}
+        camera={{ position: [0, 1.1, 8.2], fov: 30 }}
       >
         <Suspense fallback={null}>
           <Rig />
