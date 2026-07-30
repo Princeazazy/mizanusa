@@ -8,6 +8,7 @@ import ClientDashboard from "./pages/ClientDashboard";
 import Index from "./pages/Index";
 import DefioreIndex from "./pages/DefioreIndex";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import ClientPortal from "./pages/ClientPortal";
 import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -77,6 +78,7 @@ const App = () => (
 
           <Route path="/" element={<AuthRoute />} />
           <Route path="/auth" element={<AuthRoute />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           <Route
             path="/clients"
