@@ -138,10 +138,8 @@ export const DefioreDashboardSheet = ({ viewOnly = false }: DefioreDashboardShee
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-6">
+      <section>
 
-
-      <div className="xl:col-span-1">
         <FuturisticStatusPanel
           statusItems={[
             { label: "My Taxes", status: "on-track", statusLabel: "On Track" },
