@@ -104,30 +104,30 @@ export const DefioreProfitLossSheet = () => {
   // ROW COMPONENTS
   // ═══════════════════════════════════════
   const SectionHeader = ({ children }: { children: string }) => (
-    <TableRow className="border-b border-border">
-      <TableCell colSpan={2} className="font-bold text-sm text-foreground pt-4 pb-1 uppercase tracking-wide print:text-[10px] print:pt-1 print:pb-0">
+    <TableRow className="border-b border-white/[0.08] hover:bg-transparent">
+      <TableCell colSpan={2} className="bg-white/[0.02] font-medium text-[11px] text-primary/90 pt-4 pb-1.5 uppercase tracking-[0.16em] print:text-[10px] print:pt-1 print:pb-0 print:text-black">
         {children}
       </TableCell>
     </TableRow>
   );
 
   const LineItem = ({ label, amount, indent = false, bold = false }: { label: string; amount: number; indent?: boolean; bold?: boolean }) => (
-    <TableRow className="border-0">
-      <TableCell className={`py-1 print:py-0 print:text-[10px] ${indent ? "pl-10 print:pl-6" : "pl-6 print:pl-4"} ${bold ? "font-semibold" : ""}`}>
+    <TableRow className="border-0 transition-colors duration-150 hover:bg-primary/[0.04]">
+      <TableCell className={`py-1.5 text-[13px] text-foreground/85 print:py-0 print:text-[10px] ${indent ? "pl-10 print:pl-6" : "pl-6 print:pl-4"} ${bold ? "font-semibold text-foreground" : ""}`}>
         {label}
       </TableCell>
-      <TableCell className={`py-1 print:py-0 print:text-[10px] text-right font-mono ${bold ? "font-semibold" : ""}`}>
+      <TableCell className={`py-1.5 pr-6 text-[13px] tabular text-right text-foreground/85 print:py-0 print:pr-4 print:text-[10px] ${bold ? "font-semibold text-foreground" : ""}`}>
         {fmt(amount)}
       </TableCell>
     </TableRow>
   );
 
   const TotalLine = ({ label, amount, isGrand = false, borderStyle = "single" }: { label: string; amount: number; isGrand?: boolean; borderStyle?: "single" | "double" }) => (
-    <TableRow className={`${borderStyle === "double" ? "border-t-4 border-double" : "border-t-2"} border-border`}>
-      <TableCell className={`py-2 print:py-0.5 print:text-[10px] pl-6 print:pl-4 ${isGrand ? "font-bold text-base print:text-xs" : "font-semibold"}`}>
+    <TableRow className={`${borderStyle === "double" ? "border-t-[3px] border-double border-primary/40" : "border-t border-white/[0.14]"} ${isGrand ? "bg-primary/[0.05]" : ""} hover:bg-transparent`}>
+      <TableCell className={`py-2.5 pl-6 uppercase tracking-[0.08em] print:py-0.5 print:text-[10px] print:pl-4 print:normal-case ${isGrand ? "text-[13px] font-semibold text-foreground print:text-xs" : "text-[12px] font-medium text-foreground/90"}`}>
         {label}
       </TableCell>
-      <TableCell className={`py-2 print:py-0.5 print:text-[10px] text-right font-mono ${isGrand ? "font-bold text-base print:text-xs" : "font-semibold"} ${amount < 0 ? "text-destructive" : ""}`}>
+      <TableCell className={`py-2.5 pr-6 tabular text-right print:py-0.5 print:pr-4 print:text-[10px] ${isGrand ? "text-base font-semibold text-primary print:text-xs print:text-black" : "text-[13px] font-semibold text-foreground"} ${amount < 0 ? "!text-expense" : ""}`}>
         {amount < 0 ? `(${fmt(Math.abs(amount))})` : fmt(amount)}
       </TableCell>
     </TableRow>
