@@ -170,8 +170,8 @@ export const FuturisticDashboardSheet = ({ viewOnly = false }: FuturisticDashboa
           />
         </div>
 
-      <div className="xl:col-span-1">
-        <FuturisticStatusPanel
+        <div className="xl:col-span-1">
+          <FuturisticStatusPanel
           statusItems={[
             { label: "My Taxes", status: "on-track", statusLabel: "On Track" },
             { label: "Acct. Connections", status: "optimal", statusLabel: "Optimal" },
@@ -233,7 +233,8 @@ export const FuturisticDashboardSheet = ({ viewOnly = false }: FuturisticDashboa
               description: "Upload latest statement PDFs for reconciliation.",
             },
           ]}
-        />
+          />
+        </div>
       </div>
     </motion.div>
   );
