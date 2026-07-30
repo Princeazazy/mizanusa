@@ -148,7 +148,7 @@ export const DefioreProfitLossSheet = () => {
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className="border-b-2 border-border">
+              <TableRow className="table-header-row hover:bg-transparent">
                 <TableHead className="w-3/4 text-xs uppercase tracking-wider text-muted-foreground">Account</TableHead>
                 <TableHead className="text-right text-xs uppercase tracking-wider text-muted-foreground">Amount</TableHead>
               </TableRow>
