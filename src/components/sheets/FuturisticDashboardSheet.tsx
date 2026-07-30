@@ -20,7 +20,7 @@ import { ExpenseCompositionBar } from "@/components/charts/ExpenseCompositionBar
 import { PLWaterfallChart } from "@/components/charts/PLWaterfallChart";
 import { SparklineRow, type SparkSeries } from "@/components/charts/SparklineRow";
 
-const PERIOD = "Oct\u2013Dec 2025";
+const PERIOD = "Oct 1 – Dec 31, 2025";
 
 type Txn = { date: string; amount: number; category?: string };
 

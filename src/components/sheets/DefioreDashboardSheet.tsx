@@ -15,7 +15,7 @@ import {
 
 type Txn = { date: string; amount: number; category?: string };
 
-const PERIOD = "Jan–Mar 2026";
+const PERIOD = "Jan 1 – Mar 31, 2026";
 
 
 const formatCurrency = (value: number) =>
@@ -131,10 +131,11 @@ export const DefioreDashboardSheet = ({ viewOnly = false }: DefioreDashboardShee
           { k: "Cash Out", v: formatCurrency(totalOutgoing) },
           { k: "Net Movement", v: formatCurrency(netCashFlow), accent: true },
         ].map((s) => (
-          <div key={s.k} className="bg-background/80 px-7 py-7">
+          <div key={s.k} className="min-w-0 bg-background/80 px-5 py-6 sm:px-7 sm:py-7">
             <span className="eyebrow-label">{s.k}</span>
             <div
-              className={`stat-display mt-3 text-[30px] leading-none ${s.accent ? "text-primary" : ""}`}
+              className={`stat-display mt-3 truncate text-[24px] leading-none sm:text-[26px] xl:text-[30px] ${s.accent ? "text-primary" : ""}`}
+              title={s.v}
             >
               {s.v}
             </div>

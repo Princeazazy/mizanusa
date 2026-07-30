@@ -159,31 +159,31 @@ export const FuturisticCashFlowChart = ({
       </div>
 
       {/* Stats grid */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 [&>*]:min-w-0">
         <div>
           <p className="text-xs text-muted-foreground mb-1">Net Cash Flow</p>
-          <p className="text-xl font-bold text-foreground">{netCashFlow}</p>
+          <p className="truncate text-lg font-bold text-foreground sm:text-xl" title={netCashFlow}>{netCashFlow}</p>
           <p className={`text-xs ${netCashFlowChange > 0 ? "text-income" : "text-expense"}`}>
             {netCashFlowChange > 0 ? "↑" : "↓"} {Math.abs(netCashFlowChange)}%
           </p>
         </div>
         <div>
           <p className="text-xs text-muted-foreground mb-1">Current Cash Balance</p>
-          <p className="text-xl font-bold text-foreground">{currentBalance}</p>
+          <p className="truncate text-lg font-bold text-foreground sm:text-xl" title={currentBalance}>{currentBalance}</p>
           <p className={`text-xs ${currentBalanceChange > 0 ? "text-expense" : "text-income"}`}>
             {currentBalanceChange > 0 ? "↓" : "↑"} {Math.abs(currentBalanceChange)}%
           </p>
         </div>
         <div>
           <p className="text-xs text-muted-foreground mb-1">Free Cash Flow</p>
-          <p className="text-xl font-bold text-foreground">{freeCashFlow}</p>
+          <p className="truncate text-lg font-bold text-foreground sm:text-xl" title={freeCashFlow}>{freeCashFlow}</p>
           <p className={`text-xs ${freeCashFlowChange > 0 ? "text-expense" : "text-income"}`}>
             {freeCashFlowChange > 0 ? "↓" : "↑"} {Math.abs(freeCashFlowChange)}%
           </p>
         </div>
         <div>
           <p className="text-xs text-muted-foreground mb-1">Runway (Months)</p>
-          <p className="text-xl font-bold text-foreground">{runway}</p>
+          <p className="truncate text-lg font-bold text-foreground sm:text-xl" title={runway}>{runway}</p>
           <p className={`text-xs ${runwayChange > 0 ? "text-income" : "text-expense"}`}>
             {runwayChange > 0 ? "↑" : "↓"} {Math.abs(runwayChange)}%
           </p>

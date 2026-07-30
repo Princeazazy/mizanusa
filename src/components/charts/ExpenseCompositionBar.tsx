@@ -1,5 +1,6 @@
 import { ChartFrame, ChartSkeleton } from "./ChartFrame";
 import { fullCurrency } from "./chartTheme";
+import { CategoryLedger, SummaryRows } from "./CategoryLedger";
 
 export interface CompositionSlice {
   name: string;
@@ -81,25 +82,22 @@ export const ExpenseCompositionBar = ({
             ))}
           </div>
 
-          {/* Ranked ledger */}
-          <ul className="mt-5 divide-y divide-white/[0.05]">
-            {slices.map((s, i) => (
-              <li key={s.name} className="flex items-center gap-4 py-2.5 text-[13px]">
-                <i
-                  className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
-                  style={{ background: rampColor(i) }}
-                  aria-hidden="true"
-                />
-                <span className="min-w-0 flex-1 truncate text-foreground/85">{s.name}</span>
-                <span className="shrink-0 tabular text-muted-foreground">
-                  {((s.value / total) * 100).toFixed(1)}%
-                </span>
-                <span className="w-24 shrink-0 text-right tabular text-foreground">
-                  {fullCurrency(s.value)}
-                </span>
-              </li>
-            ))}
-          </ul>
+          {/* Ranked ledger — Monarch-style aligned columns */}
+          <CategoryLedger
+            className="mt-5"
+            rows={slices.map((sl, i) => ({ name: sl.name, value: sl.value, color: rampColor(i) }))}
+            total={total}
+          />
+
+          <SummaryRows
+            className="mt-3 border-t border-white/[0.06] pt-2"
+            rows={[
+              { label: "Categories", value: String(slices.length) },
+              { label: "Largest category", value: fullCurrency(slices[0]?.value ?? 0) },
+              { label: "Average per category", value: fullCurrency(total / slices.length) },
+              { label: "Total expenses", value: fullCurrency(total) },
+            ]}
+          />
         </div>
       )}
     </ChartFrame>
