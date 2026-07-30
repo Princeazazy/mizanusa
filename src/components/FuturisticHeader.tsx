@@ -269,6 +269,10 @@ export const FuturisticHeader = ({
           <HelpCircle className="h-5 w-5" />
         </Button>
 
+        {/* Client access — always available */}
+        <ClientLoginButton className="ml-1" />
+
+
         {/* User avatar */}
         <button 
           className="flex items-center gap-3 ml-2"
