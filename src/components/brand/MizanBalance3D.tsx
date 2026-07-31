@@ -101,55 +101,113 @@ const Suspension = ({ radius, height }: { radius: number; height: number }) => (
   </group>
 );
 
-const CoinStack = () => (
-  <group position={[0, 0.02, 0]}>
-    {[0, 1, 2, 3].map((i) => (
-      <mesh
-        key={i}
-        position={[i % 2 === 0 ? 0.004 : -0.004, 0.012 + i * 0.019, i === 2 ? 0.006 : 0]}
-        rotation={[0, i * 0.5, 0]}
-        castShadow
-      >
-        <cylinderGeometry args={[0.145 - i * 0.006, 0.145 - i * 0.006, 0.017, 40]} />
-        <meshPhysicalMaterial {...GOLD} />
+const BILL = {
+  color: "#8d9c88",
+  roughness: 0.92,
+  metalness: 0,
+} as const;
+
+const BAND = {
+  color: "#c8cfc4",
+  roughness: 0.85,
+  metalness: 0,
+} as const;
+
+const PAPER = {
+  color: "#f4f2ec",
+  roughness: 0.95,
+  metalness: 0,
+} as const;
+
+const COVER = {
+  color: "#15181e",
+  roughness: 0.7,
+  metalness: 0.05,
+} as const;
+
+/** A banded bundle of bills: slim slab, striated edges, strap around the middle. */
+const BillBundle = ({ h = 0.05 }: { h?: number }) => (
+  <group>
+    <mesh castShadow>
+      <boxGeometry args={[0.3, h, 0.14]} />
+      <meshStandardMaterial {...BILL} />
+    </mesh>
+    {/* faint edge striations suggesting many bill edges */}
+    {[-0.0165, -0.0055, 0.0055, 0.0165].map((y) => (
+      <mesh key={y} position={[0, y * (h / 0.05), 0.0705]}>
+        <planeGeometry args={[0.298, 0.0035]} />
+        <meshStandardMaterial color="#6d7a69" roughness={0.95} />
       </mesh>
     ))}
+    {[-0.0165, -0.0055, 0.0055, 0.0165].map((y) => (
+      <mesh key={`b${y}`} position={[0, y * (h / 0.05), -0.0705]} rotation={[0, Math.PI, 0]}>
+        <planeGeometry args={[0.298, 0.0035]} />
+        <meshStandardMaterial color="#6d7a69" roughness={0.95} />
+      </mesh>
+    ))}
+    {/* band strap */}
+    <mesh>
+      <boxGeometry args={[0.062, h + 0.004, 0.145]} />
+      <meshStandardMaterial {...BAND} />
+    </mesh>
   </group>
 );
 
-const LedgerTablet = () => {
-  const grid = useRef<MeshStandardMaterial>(null);
-  useFrame((state) => {
-    if (grid.current)
-      grid.current.emissiveIntensity = 0.5 + Math.sin(state.clock.elapsedTime * 0.5) * 0.12;
-  });
-  return (
-    <group position={[0, 0.055, 0]} rotation={[0, 0.36, -0.06]}>
+const CashStack = () => (
+  <group position={[0, 0.034, 0]} scale={1.28}>
+    <group position={[0, 0, 0]} rotation={[0, 0.06, 0]}>
+      <BillBundle />
+    </group>
+    <group position={[0.008, 0.052, -0.006]} rotation={[0, -0.14, 0]}>
+      <BillBundle h={0.046} />
+    </group>
+    <group position={[-0.012, 0.1, 0.01]} rotation={[0, 0.34, 0]}>
+      <BillBundle h={0.042} />
+    </group>
+  </group>
+);
+
+/** Closed ledger book with a teal spine, topped by a short stack of ruled sheets. */
+const BooksStack = () => (
+  <group position={[0, 0.034, 0]} rotation={[0, 0.3, 0]} scale={1.22}>
+    {/* ledger book base */}
+    <mesh castShadow>
+      <boxGeometry args={[0.36, 0.085, 0.26]} />
+      <meshStandardMaterial {...COVER} />
+    </mesh>
+    <mesh position={[-0.183, 0, 0]}>
+      <boxGeometry args={[0.009, 0.08, 0.255]} />
+      <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={0.35} roughness={0.6} />
+    </mesh>
+    {/* page block peeking out of the cover */}
+    <mesh position={[0.006, 0, 0]}>
+      <boxGeometry args={[0.352, 0.056, 0.248]} />
+      <meshStandardMaterial {...PAPER} />
+    </mesh>
+
+    {/* sheets on top, slightly offset and rotated */}
+    <group position={[0.01, 0.055, 0.008]} rotation={[0, -0.16, 0]}>
       <mesh castShadow>
-        <boxGeometry args={[0.44, 0.018, 0.31]} />
-        <meshPhysicalMaterial {...BODY_DARK} />
-      </mesh>
-      {/* faint ledger rows */}
-      {[-0.09, -0.03, 0.03, 0.09].map((z) => (
-        <mesh key={z} position={[0, 0.0105, z]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[0.34, 0.006]} />
-          <meshStandardMaterial
-            ref={grid}
-            color={ACCENT}
-            emissive={ACCENT}
-            emissiveIntensity={0.5}
-            roughness={0.5}
-          />
-        </mesh>
-      ))}
-      {/* single column rule */}
-      <mesh position={[0.09, 0.0105, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[0.005, 0.24]} />
-        <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={0.35} />
+        <boxGeometry args={[0.31, 0.014, 0.22]} />
+        <meshStandardMaterial {...PAPER} />
       </mesh>
     </group>
-  );
-};
+    <group position={[-0.014, 0.075, -0.012]} rotation={[0, 0.22, 0]}>
+      <mesh castShadow>
+        <boxGeometry args={[0.31, 0.014, 0.22]} />
+        <meshStandardMaterial {...PAPER} />
+      </mesh>
+      {/* faint ruled lines on the top sheet */}
+      {[-0.06, -0.02, 0.02, 0.06].map((z) => (
+        <mesh key={z} position={[0, 0.0045, z]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.24, 0.0045]} />
+          <meshStandardMaterial color="#9aa6b4" roughness={0.9} />
+        </mesh>
+      ))}
+    </group>
+  </group>
+);
+
 
 const PanAssembly = ({
   x,
@@ -209,9 +267,9 @@ const Balance = ({ reduced, simple }: SceneProps) => {
 
     if (beam.current && !reduced) {
       const target =
-        (Math.sin(t * 0.32) * 0.032 + Math.sin(t * 0.11 + 1.2) * 0.012) *
-        (0.75 + 0.25 * Math.cos(t * 0.07));
-      tilt.current += (target - tilt.current) * (1 - Math.pow(0.001, d));
+        (Math.sin(t * 0.22) * 0.006 + Math.sin(t * 0.09 + 1.2) * 0.0025) *
+        (0.8 + 0.2 * Math.cos(t * 0.05));
+      tilt.current += (target - tilt.current) * (1 - Math.pow(0.01, d));
       beam.current.rotation.z = tilt.current;
       // pans hang plumb regardless of beam tilt
       beam.current.children.forEach((child, i) => {
@@ -314,10 +372,10 @@ const Balance = ({ reduced, simple }: SceneProps) => {
           </mesh>
         </group>
         <PanAssembly x={-1.3}>
-          <CoinStack />
+          <CashStack />
         </PanAssembly>
         <PanAssembly x={1.3}>
-          <LedgerTablet />
+          <BooksStack />
         </PanAssembly>
       </group>
 
