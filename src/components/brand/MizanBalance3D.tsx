@@ -1,15 +1,15 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, Sparkles } from "@react-three/drei";
-import { AdditiveBlending, CanvasTexture } from "three";
-import type { Group, Mesh, MeshStandardMaterial, PointLight } from "three";
+import { Vector2 } from "three";
+import type { Group, MeshStandardMaterial, PointLight } from "three";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 
 /**
- * Mizan (ميزان) — the balance scale.
- * A cinematic, softly-lit brushed-titanium balance used as the brand object.
- * Restrained: reflections and light do the work, not neon.
+ * Mizan (ميزان) — a classical apothecary balance.
+ * Brushed titanium, polished accents, faint teal inlay. Fully transparent canvas:
+ * any bloom is CSS on the page so it can never reveal a canvas edge.
  */
 
 const BODY = {
@@ -37,6 +37,13 @@ const POLISHED = {
   clearcoatRoughness: 0.08,
 } as const;
 
+const GOLD = {
+  color: "#c9a86a",
+  metalness: 1,
+  roughness: 0.24,
+  clearcoat: 0.6,
+} as const;
+
 const ACCENT = "#2ee6c5";
 const RIM = "#8b7dff";
 
@@ -45,53 +52,131 @@ interface SceneProps {
   simple: boolean;
 }
 
-const Pan = ({ x, tilt }: { x: number; tilt: number }) => (
-  <group position={[x, -0.62, 0]}>
-    {[-0.28, 0, 0.28].map((offset, i) => (
-      <mesh key={i} position={[offset * 0.7, 0.31, i === 1 ? 0.24 : -0.08]}>
-        <cylinderGeometry args={[0.009, 0.009, 0.62, 8]} />
-        <meshPhysicalMaterial {...POLISHED} />
-      </mesh>
-    ))}
-    <mesh rotation={[Math.PI, 0, 0]} castShadow>
-      <coneGeometry args={[0.52, 0.16, 48, 1, true]} />
-      <meshPhysicalMaterial {...BODY} side={2} />
-    </mesh>
-    <mesh position={[0, 0.001, 0]} castShadow>
-      <cylinderGeometry args={[0.52, 0.52, 0.014, 48]} />
-      <meshPhysicalMaterial {...BODY} />
-    </mesh>
-    <mesh position={[0, 0.012, 0]}>
-      <torusGeometry args={[0.52, 0.012, 12, 64]} />
+/** Shallow weighing dish: lathe profile, wide and shallow, with a thin lip. */
+const DishGeometry = ({ radius = 0.5 }: { radius?: number }) => {
+  const points = useMemo(() => {
+    const pts: Vector2[] = [];
+    const steps = 16;
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const r = radius * t;
+      // gentle bowl curve, very shallow
+      const y = Math.pow(t, 2.1) * radius * 0.2;
+      pts.push(new Vector2(r, y));
+    }
+    // thin lip turning slightly up and back under itself
+    pts.push(new Vector2(radius * 1.02, radius * 0.235));
+    pts.push(new Vector2(radius * 1.0, radius * 0.245));
+    pts.push(new Vector2(radius * 0.985, radius * 0.215));
+    return pts;
+  }, [radius]);
+
+  return <latheGeometry args={[points, 72]} />;
+};
+
+/** Three fine chains converging from the dish rim to a hook at the beam end. */
+const Suspension = ({ radius, height }: { radius: number; height: number }) => (
+  <group>
+    {[0, (2 * Math.PI) / 3, (4 * Math.PI) / 3].map((a, i) => {
+      const x = Math.cos(a) * radius;
+      const z = Math.sin(a) * radius;
+      const len = Math.sqrt(height * height + radius * radius);
+      const mid: [number, number, number] = [x / 2, height / 2, z / 2];
+      // orient the rod along (−x, height, −z)
+      const tilt = Math.atan2(radius, height);
+      return (
+        <group key={i} position={mid} rotation={[0, -a, 0]}>
+          <mesh rotation={[0, 0, tilt]}>
+            <cylinderGeometry args={[0.006, 0.006, len, 6]} />
+            <meshPhysicalMaterial {...POLISHED} />
+          </mesh>
+        </group>
+      );
+    })}
+    {/* convergence ring / hook at the top */}
+    <mesh position={[0, height + 0.03, 0]} rotation={[Math.PI / 2, 0, 0]}>
+      <torusGeometry args={[0.032, 0.008, 10, 28]} />
       <meshPhysicalMaterial {...POLISHED} />
     </mesh>
-    {/* orb of "data" resting in the pan */}
-    <Orb tilt={tilt} color={x < 0 ? ACCENT : RIM} sign={x < 0 ? 1 : -1} />
   </group>
 );
 
-const Orb = ({ tilt, color, sign }: { tilt: number; color: string; sign: number }) => {
-  const mat = useRef<MeshStandardMaterial>(null);
-  const light = useRef<PointLight>(null);
-  useFrame(() => {
-    const w = 0.5 + Math.max(0, sign * tilt * 12);
-    if (mat.current) mat.current.emissiveIntensity = 0.7 + w * 0.9;
-    if (light.current) light.current.intensity = 0.6 + w * 1.4;
+const CoinStack = () => (
+  <group position={[0, 0.02, 0]}>
+    {[0, 1, 2, 3].map((i) => (
+      <mesh
+        key={i}
+        position={[i % 2 === 0 ? 0.004 : -0.004, 0.012 + i * 0.019, i === 2 ? 0.006 : 0]}
+        rotation={[0, i * 0.5, 0]}
+        castShadow
+      >
+        <cylinderGeometry args={[0.145 - i * 0.006, 0.145 - i * 0.006, 0.017, 40]} />
+        <meshPhysicalMaterial {...GOLD} />
+      </mesh>
+    ))}
+  </group>
+);
+
+const LedgerTablet = () => {
+  const grid = useRef<MeshStandardMaterial>(null);
+  useFrame((state) => {
+    if (grid.current)
+      grid.current.emissiveIntensity = 0.5 + Math.sin(state.clock.elapsedTime * 0.5) * 0.12;
   });
   return (
-    <group position={[0, 0.13, 0]}>
-      <mesh>
-        <sphereGeometry args={[0.13, 32, 32]} />
-        <meshStandardMaterial
-          ref={mat}
-          color={color}
-          emissive={color}
-          emissiveIntensity={1}
-          roughness={0.25}
-          metalness={0.1}
-        />
+    <group position={[0, 0.055, 0]} rotation={[0, 0.36, -0.06]}>
+      <mesh castShadow>
+        <boxGeometry args={[0.44, 0.018, 0.31]} />
+        <meshPhysicalMaterial {...BODY_DARK} />
       </mesh>
-      <pointLight ref={light} color={color} distance={1.6} intensity={1} />
+      {/* faint ledger rows */}
+      {[-0.09, -0.03, 0.03, 0.09].map((z) => (
+        <mesh key={z} position={[0, 0.0105, z]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.34, 0.006]} />
+          <meshStandardMaterial
+            ref={grid}
+            color={ACCENT}
+            emissive={ACCENT}
+            emissiveIntensity={0.5}
+            roughness={0.5}
+          />
+        </mesh>
+      ))}
+      {/* single column rule */}
+      <mesh position={[0.09, 0.0105, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[0.005, 0.24]} />
+        <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={0.35} />
+      </mesh>
+    </group>
+  );
+};
+
+const PanAssembly = ({
+  x,
+  children,
+}: {
+  x: number;
+  children?: React.ReactNode;
+}) => {
+  const radius = 0.5;
+  const drop = 0.78;
+  return (
+    <group position={[x, 0, 0]}>
+      <group position={[0, -drop, 0]}>
+        <mesh castShadow receiveShadow>
+          <DishGeometry radius={radius} />
+          <meshPhysicalMaterial {...BODY} side={2} />
+        </mesh>
+        <mesh position={[0, radius * 0.235, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[radius * 1.01, 0.007, 10, 72]} />
+          <meshPhysicalMaterial {...POLISHED} />
+        </mesh>
+
+        <group position={[0, radius * 0.225, 0]}>
+          <Suspension radius={radius * 0.94} height={drop - 0.06 - radius * 0.225} />
+        </group>
+        {children}
+      </group>
     </group>
   );
 };
@@ -99,8 +184,9 @@ const Orb = ({ tilt, color, sign }: { tilt: number; color: string; sign: number 
 const Balance = ({ reduced, simple }: SceneProps) => {
   const group = useRef<Group>(null);
   const beam = useRef<Group>(null);
+  const needle = useRef<Group>(null);
   const inlay = useRef<MeshStandardMaterial>(null);
-  const sweep = useRef<Mesh>(null);
+  const sweep = useRef<PointLight>(null);
   const tilt = useRef(0);
   const { pointer } = useThree();
 
@@ -109,12 +195,12 @@ const Balance = ({ reduced, simple }: SceneProps) => {
     const d = Math.min(delta, 0.05);
 
     if (group.current) {
-      group.current.rotation.y += d * 0.14;
+      group.current.rotation.y += d * 0.11;
       if (!reduced) {
-        group.current.position.y += (Math.sin(t * 0.5) * 0.035 - group.current.position.y) * 0.06;
+        group.current.position.y += (Math.sin(t * 0.5) * 0.03 - group.current.position.y) * 0.06;
         if (!simple) {
-          const tx = pointer.y * 0.09;
-          const tz = -pointer.x * 0.07;
+          const tx = pointer.y * 0.07;
+          const tz = -pointer.x * 0.055;
           group.current.rotation.x += (tx - group.current.rotation.x) * 0.05;
           group.current.rotation.z += (tz - group.current.rotation.z) * 0.05;
         }
@@ -122,138 +208,129 @@ const Balance = ({ reduced, simple }: SceneProps) => {
     }
 
     if (beam.current && !reduced) {
-      // damped see-saw: two slow harmonics so it never reads mechanical
       const target =
-        (Math.sin(t * 0.38) * 0.052 + Math.sin(t * 0.13 + 1.2) * 0.018) *
+        (Math.sin(t * 0.32) * 0.032 + Math.sin(t * 0.11 + 1.2) * 0.012) *
         (0.75 + 0.25 * Math.cos(t * 0.07));
       tilt.current += (target - tilt.current) * (1 - Math.pow(0.001, d));
       beam.current.rotation.z = tilt.current;
+      // pans hang plumb regardless of beam tilt
       beam.current.children.forEach((child, i) => {
-        if (i > 0) child.rotation.z = -tilt.current * 0.85;
+        if (i > 0) child.rotation.z = -tilt.current;
       });
+      if (needle.current) needle.current.rotation.z = tilt.current;
     }
 
-    if (inlay.current) {
-      inlay.current.emissiveIntensity = 0.55 + Math.sin(t * 0.6) * 0.18;
-    }
+    if (inlay.current) inlay.current.emissiveIntensity = 0.5 + Math.sin(t * 0.6) * 0.15;
 
-    // slow light sweep across the metal, ~8s cadence
     if (sweep.current) {
-      const p = (t % 8) / 8;
-      sweep.current.position.x = -5 + p * 10;
-      const m = sweep.current.material as MeshStandardMaterial;
-      m.opacity = Math.sin(Math.PI * p) * 0.5;
+      const p = (t % 9) / 9;
+      sweep.current.position.x = -3.6 + p * 7.2;
+      sweep.current.intensity = Math.sin(Math.PI * p) * 5.5;
     }
   });
 
   return (
     <group ref={group} position={[0, 0.15, 0]}>
-      {/* plinth */}
-      <mesh position={[0, -1.32, 0]} receiveShadow castShadow>
-        <cylinderGeometry args={[0.72, 0.86, 0.09, 64]} />
+      {/* two-step plinth */}
+      <mesh position={[0, -1.4, 0]} receiveShadow castShadow>
+        <cylinderGeometry args={[0.62, 0.68, 0.05, 64]} />
         <meshPhysicalMaterial {...BODY_DARK} />
       </mesh>
-      <mesh position={[0, -1.276, 0]}>
-        <torusGeometry args={[0.72, 0.012, 12, 80]} />
-        <meshPhysicalMaterial {...POLISHED} />
+      <mesh position={[0, -1.33, 0]} receiveShadow castShadow>
+        <cylinderGeometry args={[0.42, 0.52, 0.09, 64]} />
+        <meshPhysicalMaterial {...BODY_DARK} />
       </mesh>
-      {/* column */}
-      <mesh position={[0, -0.5, 0]} castShadow>
-        <cylinderGeometry args={[0.055, 0.075, 1.58, 32]} />
-        <meshPhysicalMaterial {...BODY} />
-      </mesh>
-      {/* finial */}
-      <mesh position={[0, 0.34, 0]} castShadow>
-        <sphereGeometry args={[0.085, 32, 32]} />
+      <mesh position={[0, -1.283, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.42, 0.007, 10, 72]} />
         <meshPhysicalMaterial {...POLISHED} />
       </mesh>
 
-      <group ref={beam} position={[0, 0.28, 0]}>
+
+      {/* slender column */}
+      <mesh position={[0, -0.5, 0]} castShadow>
+        <cylinderGeometry args={[0.042, 0.066, 1.54, 40]} />
+        <meshPhysicalMaterial {...BODY} />
+      </mesh>
+
+      {/* pivot fork */}
+      {[-0.075, 0.075].map((z) => (
+        <mesh key={z} position={[0, 0.2, z]} rotation={[0.12 * Math.sign(z), 0, 0]} castShadow>
+          <cylinderGeometry args={[0.016, 0.02, 0.3, 16]} />
+          <meshPhysicalMaterial {...BODY} />
+        </mesh>
+      ))}
+      <mesh position={[0, 0.3, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.028, 0.028, 0.2, 24]} />
+        <meshPhysicalMaterial {...POLISHED} />
+      </mesh>
+
+      {/* indicator needle descending from the pivot */}
+      <group ref={needle} position={[0, 0.3, 0.11]}>
+        <mesh position={[0, -0.22, 0]}>
+          <cylinderGeometry args={[0.004, 0.011, 0.44, 10]} />
+          <meshPhysicalMaterial {...POLISHED} />
+        </mesh>
+        <mesh position={[0, -0.45, 0]}>
+          <sphereGeometry args={[0.015, 16, 16]} />
+          <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={0.8} />
+        </mesh>
+      </group>
+      {/* fixed reference scale plate behind the needle */}
+      <mesh position={[0, -0.02, 0.145]} rotation={[0, 0, 0]}>
+        <boxGeometry args={[0.22, 0.012, 0.006]} />
+        <meshPhysicalMaterial {...BODY_DARK} />
+      </mesh>
+
+      <group ref={beam} position={[0, 0.3, 0]}>
         <group>
-          {/* beam */}
+          {/* tapered beam: two cones meeting at the centre */}
+          {[-1, 1].map((s) => (
+            <mesh key={s} position={[s * 0.65, 0, 0]} rotation={[0, 0, (s * Math.PI) / 2]} castShadow>
+              <cylinderGeometry args={[0.014, 0.036, 1.3, 28]} />
+              <meshPhysicalMaterial {...BODY} />
+            </mesh>
+          ))}
           <mesh rotation={[0, 0, Math.PI / 2]} castShadow>
-            <cylinderGeometry args={[0.034, 0.034, 2.5, 32]} />
-            <meshPhysicalMaterial {...BODY} />
+            <cylinderGeometry args={[0.036, 0.036, 0.16, 28]} />
+            <meshPhysicalMaterial {...POLISHED} />
           </mesh>
-          {/* polished beam caps */}
-          {[-1.25, 1.25].map((x) => (
-            <mesh key={x} position={[x, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-              <cylinderGeometry args={[0.045, 0.045, 0.07, 24]} />
+          {/* end caps / hook points */}
+          {[-1.3, 1.3].map((x) => (
+            <mesh key={x} position={[x, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+              <torusGeometry args={[0.026, 0.007, 10, 24]} />
               <meshPhysicalMaterial {...POLISHED} />
             </mesh>
           ))}
-          {/* faint teal emissive inlay along the beam */}
-          <mesh position={[0, 0.032, 0]} rotation={[0, 0, Math.PI / 2]}>
-            <cylinderGeometry args={[0.006, 0.006, 2.3, 8]} />
+          {/* faint teal inlay along the beam */}
+          <mesh position={[0, 0.03, 0]} rotation={[0, 0, Math.PI / 2]}>
+            <cylinderGeometry args={[0.005, 0.005, 2.4, 8]} />
             <meshStandardMaterial
               ref={inlay}
               color={ACCENT}
               emissive={ACCENT}
-              emissiveIntensity={0.6}
+              emissiveIntensity={0.55}
               roughness={0.4}
             />
           </mesh>
         </group>
-        <Pan x={-1.25} tilt={tilt.current} />
-        <Pan x={1.25} tilt={tilt.current} />
+        <PanAssembly x={-1.3}>
+          <CoinStack />
+        </PanAssembly>
+        <PanAssembly x={1.3}>
+          <LedgerTablet />
+        </PanAssembly>
       </group>
 
-      {/* light sweep card (additive highlight travelling over the metal) */}
-      <mesh ref={sweep} position={[0, -0.3, 2.6]} rotation={[0, 0, 0.35]}>
-        <planeGeometry args={[0.5, 5]} />
-        <meshBasicMaterial color="#dfe8ff" transparent opacity={0} depthWrite={false} />
-      </mesh>
+      {/* travelling specular highlight — a real moving light, so nothing can
+          ever paint a rectangle over the transparent canvas */}
+      <pointLight ref={sweep} position={[0, 0.1, 2.4]} color="#dfe8ff" intensity={0} distance={9} />
+
     </group>
   );
 };
 
-/** Soft radial-gradient sprite — a volumetric-looking bloom with no hard edge. */
-const GlowSprite = ({
-  color,
-  radius,
-  opacity,
-  position,
-}: {
-  color: string;
-  radius: number;
-  opacity: number;
-  position: [number, number, number];
-}) => {
-  const texture = useMemo(() => {
-    const size = 256;
-    const canvas = document.createElement("canvas");
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext("2d")!;
-    const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-    g.addColorStop(0, "rgba(255,255,255,1)");
-    g.addColorStop(0.35, "rgba(255,255,255,0.42)");
-    g.addColorStop(0.7, "rgba(255,255,255,0.1)");
-    g.addColorStop(1, "rgba(255,255,255,0)");
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, size, size);
-    return new CanvasTexture(canvas);
-  }, []);
-
-  return (
-    <mesh position={position}>
-      <planeGeometry args={[radius * 2, radius * 2]} />
-      <meshBasicMaterial
-        map={texture}
-        color={color}
-        transparent
-        opacity={opacity}
-        depthWrite={false}
-        blending={AdditiveBlending}
-      />
-    </mesh>
-  );
-};
-
 const Rig = ({ reduced, simple }: SceneProps) => (
-
   <>
-    {/* procedural studio env — reflections without a network HDRI */}
     <Environment resolution={256} frames={1}>
       <Lightformer intensity={2.4} position={[0, 4, 3]} scale={[10, 4, 1]} color="#eef3ff" />
       <Lightformer intensity={1.1} position={[-5, 1, 2]} scale={[6, 6, 1]} color="#5d7fb8" />
@@ -261,28 +338,23 @@ const Rig = ({ reduced, simple }: SceneProps) => (
       <Lightformer intensity={0.6} position={[0, -3, 2]} scale={[10, 4, 1]} color="#1b2230" />
     </Environment>
 
-    <ambientLight intensity={0.22} />
+    <ambientLight intensity={0.2} />
     <directionalLight position={[3.5, 5, 3]} intensity={1.9} castShadow shadow-mapSize={[512, 512]} />
-    <directionalLight position={[-2.5, 2, -4]} intensity={1.5} color={RIM} />
+    <directionalLight position={[-2.5, 2, -4]} intensity={1.4} color={RIM} />
     <directionalLight position={[-4, 1.2, 2.5]} intensity={0.4} color="#8fb4c8" />
-
-    {/* volumetric-looking glow behind the object */}
-    <GlowSprite color={RIM} radius={4.2} opacity={0.4} position={[0, -0.1, -2.6]} />
-    <GlowSprite color={ACCENT} radius={2.6} opacity={0.28} position={[0, -0.5, -2.4]} />
-
 
     <Balance reduced={reduced} simple={simple} />
 
     {!simple && !reduced && (
-      <Sparkles count={60} scale={[7, 5, 5]} size={2.2} speed={0.25} opacity={0.5} color="#cfd8ff" />
+      <Sparkles count={22} scale={[6, 4, 4]} size={1.6} speed={0.18} opacity={0.28} color="#cfd8ff" />
     )}
 
     <ContactShadows
-      position={[0, -1.42, 0]}
-      opacity={0.5}
-      scale={7}
-      blur={3.4}
-      far={3}
+      position={[0, -1.44, 0]}
+      opacity={0.45}
+      scale={5.4}
+      blur={3.6}
+      far={2.4}
       resolution={256}
       color="#000000"
     />
@@ -320,12 +392,34 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
   }, []);
 
   return (
-    <div ref={host} className={className} aria-hidden="true">
+    <div ref={host} className={`relative ${className ?? ""}`} aria-hidden="true">
+      {/* CSS bloom — composites with the page background, fades to full transparency
+          well inside its own bounds so no rectangle can ever be visible. */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2"
+        style={{
+          background:
+            "radial-gradient(closest-side, hsl(252 70% 62% / 0.13), hsl(252 70% 62% / 0.04) 34%, transparent 58%)",
+          filter: "blur(28px)",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute left-1/2 top-[58%] h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2"
+        style={{
+          background:
+            "radial-gradient(closest-side, hsl(168 78% 54% / 0.1), transparent 52%)",
+          filter: "blur(26px)",
+        }}
+      />
       <Canvas
+        className="relative"
         dpr={isMobile ? [1, 1.5] : dpr}
         shadows
         frameloop={visible ? "always" : "never"}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        onCreated={({ gl }) => {
+          gl.setClearAlpha(0);
+        }}
         camera={{ position: [0, 1.1, 8.2], fov: 30 }}
       >
         <Suspense fallback={null}>
