@@ -85,6 +85,10 @@ export const RevenueExpenseChart = ({
       delta={hasData ? delta : undefined}
       meta={hasData ? `${fullCurrency(totalExpenses)} spent` : undefined}
       className={className}
+      exportData={{
+        columns: ["Period", "Revenue", "Expenses", "Net"],
+        rows: view.map((d) => [d.month, d.revenue, d.expenses, d.revenue - d.expenses]),
+      }}
       controls={<SegmentedRange options={rangeOptions} value={range} onChange={setRange} />}
       footer={
         hasData ? (
