@@ -176,7 +176,7 @@ export const ChartFrame = ({
     </>
   );
 
-  const header = (
+  const renderHeader = (inDialog: boolean) => (
     <figcaption className="px-6 pt-7 sm:px-7">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
@@ -187,11 +187,13 @@ export const ChartFrame = ({
             </p>
           )}
         </div>
-        {actions ?? (
-          <span data-export-hide="true">
-            <CardHeaderActions onExpand={() => setExpanded(true)} menu={menu} />
-          </span>
-        )}
+        {inDialog
+          ? null
+          : (actions ?? (
+              <span data-export-hide="true">
+                <CardHeaderActions onExpand={() => setExpanded(true)} menu={menu} />
+              </span>
+            ))}
       </div>
 
       {value && (
@@ -218,7 +220,7 @@ export const ChartFrame = ({
           className,
         )}
       >
-        {header}
+        {renderHeader(false)}
         <div className="mt-6 h-px w-full bg-white/[0.055]" />
         <div className="flex-1 px-2 pb-6 pt-6">{children}</div>
         {footer && (
@@ -235,7 +237,7 @@ export const ChartFrame = ({
             {[eyebrow, period, basis].filter(Boolean).join(" · ") || "Expanded chart view"}
           </DialogDescription>
           <div className="flex min-w-0 flex-col">
-            {header}
+            {renderHeader(true)}
             <div className="mt-6 h-px w-full bg-white/[0.055]" />
             <div className="min-w-0 flex-1 overflow-x-hidden px-2 pb-8 pt-8">
               {expanded ? children : null}
