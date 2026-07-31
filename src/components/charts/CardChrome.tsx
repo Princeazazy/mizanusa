@@ -1,39 +1,62 @@
 import { ReactNode } from "react";
-import { ChevronDown, Maximize2, MoreHorizontal } from "lucide-react";
+import { Maximize2, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 /** Small-caps letter-spaced card label — the Origin header language. */
 export const CardLabel = ({ children, className }: { children: ReactNode; className?: string }) => (
   <span className={cn("card-label block truncate", className)}>{children}</span>
 );
 
-/** Quiet ghost icon buttons that live on the right of a card header. */
+/**
+ * Ghost icon buttons on the right of a card header. Each button only renders
+ * when it has real behaviour attached — no decorative controls.
+ */
 export const CardHeaderActions = ({
   onExpand,
-  onMenu,
+  menu,
   className,
 }: {
   onExpand?: () => void;
-  onMenu?: () => void;
+  /** Dropdown menu items. Omit to hide the kebab entirely. */
+  menu?: ReactNode;
   className?: string;
-}) => (
-  <div className={cn("flex shrink-0 items-center gap-1.5 print:hidden", className)}>
-    <button type="button" className="ghost-icon-btn" aria-label="Expand card" onClick={onExpand}>
-      <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
-    </button>
-    <button type="button" className="ghost-icon-btn" aria-label="Card options" onClick={onMenu}>
-      <MoreHorizontal className="h-4 w-4" aria-hidden="true" />
-    </button>
-  </div>
-);
+}) => {
+  if (!onExpand && !menu) return null;
+  return (
+    <div className={cn("flex shrink-0 items-center gap-1.5 print:hidden", className)}>
+      {onExpand && (
+        <button type="button" className="ghost-icon-btn" aria-label="Expand card" onClick={onExpand}>
+          <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
+        </button>
+      )}
+      {menu && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button type="button" className="ghost-icon-btn" aria-label="Card options">
+              <MoreHorizontal className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-52">
+            {menu}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+    </div>
+  );
+};
 
-/** Period context chip, e.g. "vs. April". Decorative dropdown affordance only. */
-export const PeriodChip = ({ label, withCaret = false }: { label: string; withCaret?: boolean }) => (
+/** Period context chip, e.g. "vs. April". */
+export const PeriodChip = ({ label }: { label: string }) => (
   <span className="period-chip max-w-full" title={label}>
     <span className="truncate">{label}</span>
-    {withCaret && <ChevronDown className="h-3 w-3 shrink-0 opacity-70" aria-hidden="true" />}
   </span>
 );
+
 
 /**
  * Origin hero-number pattern: large light numeral, small coloured delta,
