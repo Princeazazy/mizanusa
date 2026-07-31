@@ -45,7 +45,11 @@ const AccountantRoute = ({ children }: { children: ReactNode }) => {
 
   if (accountantLoading || clientLoading) return <RouteLoading />;
   if (isClientAuthenticated) return <Navigate to="/client-portal" replace />;
-  if (!user) return <Navigate to="/auth" replace />;
+  if (!user) return <Navigate to="/auth?role=bookkeeper" replace />;
+  // Federated (Google/Apple) identities are client-side only — never practice access.
+  if (isOAuthIdentity(user.app_metadata) || !isAccountantEmail(user.email)) {
+    return <Navigate to="/auth?role=client" replace />;
+  }
 
   return <>{children}</>;
 };
@@ -56,9 +60,11 @@ const ClientRoute = ({ children }: { children: ReactNode }) => {
 
   if (accountantLoading || clientLoading) return <RouteLoading />;
   if (isClientAuthenticated) return <>{children}</>;
-  if (user) return <Navigate to="/clients" replace />;
+  if (user && !isOAuthIdentity(user.app_metadata) && isAccountantEmail(user.email)) {
+    return <Navigate to="/clients" replace />;
+  }
 
-  return <Navigate to="/auth" replace />;
+  return <Navigate to="/auth?role=client" replace />;
 };
 
 const AuthRoute = () => {
@@ -67,10 +73,14 @@ const AuthRoute = () => {
 
   if (accountantLoading || clientLoading) return <RouteLoading />;
   if (isClientAuthenticated) return <Navigate to="/client-portal" replace />;
-  if (user) return <Navigate to="/clients" replace />;
+  if (user && !isOAuthIdentity(user.app_metadata) && isAccountantEmail(user.email)) {
+    return <Navigate to="/clients" replace />;
+  }
 
+  // OAuth identities stay here so the EIN company-linking step can run.
   return <Auth />;
 };
+
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
