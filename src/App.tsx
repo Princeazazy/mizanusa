@@ -17,6 +17,7 @@ import QuotePage from "./pages/QuotePage";
 import NotFound from "./pages/NotFound";
 
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { LoginNavProvider } from "./components/auth/LoginNav";
 import { useAuth } from "./hooks/useAuth";
 import { useClientAuth } from "./hooks/useClientAuth";
 import { isAccountantEmail, isOAuthIdentity } from "./lib/accountants";
@@ -91,6 +92,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ErrorBoundary>
+          <LoginNavProvider>
           <Routes>
 
           <Route path="/" element={<MarketingHome />} />
@@ -138,6 +140,7 @@ const App = () => (
 
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </LoginNavProvider>
         </ErrorBoundary>
       </BrowserRouter>
 

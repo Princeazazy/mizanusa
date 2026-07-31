@@ -2,8 +2,9 @@ import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import mizanMark from "@/assets/mizan-mark.png";
 import { MarketingHeader } from "./MarketingHeader";
+import { LoginLink, LoginRole } from "@/components/auth/LoginNav";
 
-const COLUMNS: { heading: string; links: { to: string; label: string }[] }[] = [
+const COLUMNS: { heading: string; links: { to?: string; role?: LoginRole; label: string }[] }[] = [
   {
     heading: "Firm",
     links: [
@@ -16,8 +17,8 @@ const COLUMNS: { heading: string; links: { to: string; label: string }[] }[] = [
     heading: "Engage",
     links: [
       { to: "/quote", label: "Request a quote" },
-      { to: "/auth?role=client", label: "Client login" },
-      { to: "/auth?role=bookkeeper", label: "Bookkeeper login" },
+      { role: "client", label: "Client login" },
+      { role: "bookkeeper", label: "Bookkeeper login" },
     ],
   },
 
@@ -46,13 +47,22 @@ export const MarketingFooter = () => (
             <span className="eyebrow-label">{col.heading}</span>
             <ul className="mt-4 space-y-2.5">
               {col.links.map((l) => (
-                <li key={l.to + l.label}>
-                  <Link
-                    to={l.to}
-                    className="text-[13.5px] text-muted-foreground transition-colors duration-150 hover:text-primary"
-                  >
-                    {l.label}
-                  </Link>
+                <li key={(l.to ?? l.role) + l.label}>
+                  {l.role ? (
+                    <LoginLink
+                      role={l.role}
+                      className="text-left text-[13.5px] text-muted-foreground transition-colors duration-150 hover:text-primary"
+                    >
+                      {l.label}
+                    </LoginLink>
+                  ) : (
+                    <Link
+                      to={l.to!}
+                      className="text-[13.5px] text-muted-foreground transition-colors duration-150 hover:text-primary"
+                    >
+                      {l.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import mizanMark from "@/assets/mizan-mark.png";
+import { LoginLink } from "@/components/auth/LoginNav";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -75,18 +76,18 @@ export const MarketingHeader = () => {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Link
-            to="/auth?role=bookkeeper"
+          <LoginLink
+            role="bookkeeper"
             className="rounded-lg px-3 py-2 text-[12.5px] text-muted-foreground/75 transition-colors duration-150 hover:text-foreground"
           >
             Bookkeeper login
-          </Link>
-          <Link
-            to="/auth?role=client"
+          </LoginLink>
+          <LoginLink
+            role="client"
             className="rounded-lg px-3.5 py-2 text-[13.5px] text-muted-foreground transition-colors duration-150 hover:text-foreground"
           >
             Client login
-          </Link>
+          </LoginLink>
           <Link
             to="/quote"
             className="btn-glow inline-flex items-center rounded-xl bg-primary px-4 py-2.5 text-[13.5px] font-medium text-primary-foreground transition-transform duration-150 hover:-translate-y-px"
@@ -125,12 +126,12 @@ export const MarketingHeader = () => {
                 {item.label}
               </NavLink>
             ))}
-            <Link to="/auth?role=client" className="border-b border-white/[0.05] py-3.5 text-[15px] text-muted-foreground">
+            <LoginLink role="client" className="border-b border-white/[0.05] py-3.5 text-left text-[15px] text-muted-foreground">
               Client login
-            </Link>
-            <Link to="/auth?role=bookkeeper" className="border-b border-white/[0.05] py-3.5 text-[15px] text-muted-foreground/80">
+            </LoginLink>
+            <LoginLink role="bookkeeper" className="border-b border-white/[0.05] py-3.5 text-left text-[15px] text-muted-foreground/80">
               Bookkeeper login
-            </Link>
+            </LoginLink>
 
           </nav>
           <Link
