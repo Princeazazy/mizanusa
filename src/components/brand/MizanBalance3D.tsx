@@ -231,18 +231,19 @@ const Balance = ({ reduced, simple }: SceneProps) => {
   return (
     <group ref={group} position={[0, 0.15, 0]}>
       {/* two-step plinth */}
-      <mesh position={[0, -1.38, 0]} receiveShadow castShadow>
-        <cylinderGeometry args={[0.82, 0.9, 0.055, 64]} />
+      <mesh position={[0, -1.4, 0]} receiveShadow castShadow>
+        <cylinderGeometry args={[0.62, 0.68, 0.05, 64]} />
         <meshPhysicalMaterial {...BODY_DARK} />
       </mesh>
-      <mesh position={[0, -1.31, 0]} receiveShadow castShadow>
-        <cylinderGeometry args={[0.6, 0.72, 0.09, 64]} />
-        <meshPhysicalMaterial {...BODY} />
+      <mesh position={[0, -1.33, 0]} receiveShadow castShadow>
+        <cylinderGeometry args={[0.42, 0.52, 0.09, 64]} />
+        <meshPhysicalMaterial {...BODY_DARK} />
       </mesh>
-      <mesh position={[0, -1.262, 0]}>
-        <torusGeometry args={[0.6, 0.008, 10, 72]} />
+      <mesh position={[0, -1.283, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.42, 0.007, 10, 72]} />
         <meshPhysicalMaterial {...POLISHED} />
       </mesh>
+
 
       {/* slender column */}
       <mesh position={[0, -0.5, 0]} castShadow>
