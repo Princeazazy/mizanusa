@@ -109,6 +109,10 @@ export const PLWaterfallChart = ({
       value={hasData ? fullCurrency(net) : undefined}
       meta={hasData ? "Net result" : undefined}
       className={className}
+      exportData={{
+        columns: ["Step", "Amount", "Running total"],
+        rows: bars.map((b) => [b.name, b.amount, b.cumulative]),
+      }}
       footer={
         hasData ? (
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">

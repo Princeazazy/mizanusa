@@ -100,6 +100,12 @@ export const NetIncomeTrendChart = ({
       delta={hasData ? delta : undefined}
       meta={hasData ? `${view.length} periods · avg ${compactCurrency(avg)}` : undefined}
       className={className}
+      exportData={{
+        columns: hasCompare ? ["Period", "Net", "Prior period"] : ["Period", "Net"],
+        rows: view.map((d) =>
+          hasCompare ? [d.month, d.net, d.compare ?? ""] : [d.month, d.net],
+        ),
+      }}
       controls={
         <SegmentedRange options={rangeOptions} value={range} onChange={setRange} />
       }

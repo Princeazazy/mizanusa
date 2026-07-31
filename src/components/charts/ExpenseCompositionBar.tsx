@@ -56,6 +56,14 @@ export const ExpenseCompositionBar = ({
       value={hasData ? fullCurrency(total) : undefined}
       meta={hasData ? `${slices.length} categories` : undefined}
       className={className}
+      exportData={{
+        columns: ["Category", "Amount", "Share %"],
+        rows: slices.map((s) => [
+          s.name,
+          s.value,
+          total ? ((s.value / total) * 100).toFixed(1) : "0.0",
+        ]),
+      }}
     >
       {!hasData ? (
         <ChartSkeleton

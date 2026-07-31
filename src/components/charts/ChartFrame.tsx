@@ -1,7 +1,15 @@
-import { ReactNode } from "react";
-import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { ReactNode, useCallback, useRef, useState } from "react";
+import { ArrowDownRight, ArrowUpRight, ClipboardCopy, Download, Printer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CardHeaderActions, CardLabel, HeroFigure } from "./CardChrome";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { toast } from "@/hooks/use-toast";
+
+export interface ChartExportData {
+  columns: string[];
+  rows: (string | number)[][];
+}
 
 interface ChartFrameProps {
   eyebrow?: string;
@@ -23,6 +31,8 @@ interface ChartFrameProps {
   controls?: ReactNode;
   /** Replaces the default ghost icon buttons. */
   actions?: ReactNode;
+  /** Underlying series, enabling the "Copy figures" menu action. */
+  exportData?: ChartExportData;
   children: ReactNode;
   className?: string;
 }
@@ -51,10 +61,16 @@ export const DeltaBadge = ({
   );
 };
 
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
 /**
- * Origin-style chart container: small-caps label with ghost controls, a hero
- * figure with coloured delta, then the visualisation. `featured` adds the
- * cyan→blue→violet gradient border and outer bloom.
+ * Origin-style chart container: small-caps label with working ghost controls,
+ * a hero figure with coloured delta, then the visualisation. `featured` adds
+ * the cyan→blue→violet gradient border and outer bloom.
  */
 export const ChartFrame = ({
   eyebrow,
@@ -69,16 +85,98 @@ export const ChartFrame = ({
   featured = false,
   controls,
   actions,
+  exportData,
   children,
   className = "",
-}: ChartFrameProps) => (
-  <figure
-    className={cn(
-      "surface-panel flex flex-col overflow-hidden print:border print:border-neutral-300 print:bg-white print:shadow-none",
-      featured && "halo-card",
-      className,
-    )}
-  >
+}: ChartFrameProps) => {
+  const cardRef = useRef<HTMLElement | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  const fileBase = `${slugify(title)}${period ? `-${slugify(period)}` : ""}`;
+
+  const downloadPng = useCallback(async () => {
+    const node = cardRef.current;
+    if (!node) return;
+    try {
+      const { toPng } = await import("html-to-image");
+      const dataUrl = await toPng(node, {
+        pixelRatio: 2,
+        backgroundColor: "#0A0B0F",
+        filter: (el) =>
+          !(el instanceof HTMLElement && el.dataset.exportHide === "true"),
+      });
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = `${fileBase}.png`;
+      a.click();
+      toast({ title: "Image downloaded", description: `${fileBase}.png` });
+    } catch {
+      toast({ title: "Could not export image", variant: "destructive" });
+    }
+  }, [fileBase]);
+
+  const copyFigures = useCallback(async () => {
+    if (!exportData) return;
+    const tsv = [exportData.columns, ...exportData.rows]
+      .map((r) => r.join("\t"))
+      .join("\n");
+    try {
+      await navigator.clipboard.writeText(tsv);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = tsv;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+    toast({
+      title: "Figures copied",
+      description: `${exportData.rows.length} rows ready to paste into Excel.`,
+    });
+  }, [exportData]);
+
+  const printCard = useCallback(() => {
+    const node = cardRef.current;
+    if (!node) return;
+    const win = window.open("", "_blank", "width=1100,height=850");
+    if (!win) {
+      toast({
+        title: "Allow pop-ups to print",
+        description: "Your browser blocked the print window.",
+        variant: "destructive",
+      });
+      return;
+    }
+    win.document.write(
+      `<!doctype html><html><head><title>${title}${period ? ` · ${period}` : ""}</title>${document.head.innerHTML}</head><body style="background:#0A0B0F;margin:0;padding:24px"><div style="max-width:1000px;margin:0 auto">${node.outerHTML}</div></body></html>`,
+    );
+    win.document.close();
+    win.focus();
+    setTimeout(() => win.print(), 600);
+  }, [title, period]);
+
+  const menu = (
+    <>
+      <DropdownMenuItem onSelect={() => void downloadPng()}>
+        <Download className="mr-2 h-4 w-4" aria-hidden="true" />
+        Download PNG
+      </DropdownMenuItem>
+      {exportData && exportData.rows.length > 0 && (
+        <DropdownMenuItem onSelect={() => void copyFigures()}>
+          <ClipboardCopy className="mr-2 h-4 w-4" aria-hidden="true" />
+          Copy figures
+        </DropdownMenuItem>
+      )}
+      <DropdownMenuItem onSelect={() => printCard()}>
+        <Printer className="mr-2 h-4 w-4" aria-hidden="true" />
+        Print
+      </DropdownMenuItem>
+    </>
+  );
+
+  const renderHeader = (inDialog: boolean) => (
     <figcaption className="px-6 pt-7 sm:px-7">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
@@ -89,7 +187,13 @@ export const ChartFrame = ({
             </p>
           )}
         </div>
-        {actions ?? <CardHeaderActions />}
+        {inDialog
+          ? null
+          : (actions ?? (
+              <span data-export-hide="true">
+                <CardHeaderActions onExpand={() => setExpanded(true)} menu={menu} />
+              </span>
+            ))}
       </div>
 
       {value && (
@@ -104,15 +208,52 @@ export const ChartFrame = ({
       {meta && <div className="mt-2 text-xs text-muted-foreground tabular">{meta}</div>}
       {controls && <div className="mt-5">{controls}</div>}
     </figcaption>
-    <div className="mt-6 h-px w-full bg-white/[0.055]" />
-    <div className="flex-1 px-2 pb-6 pt-6">{children}</div>
-    {footer && (
-      <div className="border-t border-white/[0.05] px-6 py-3.5 text-[11px] text-muted-foreground sm:px-7">
-        {footer}
-      </div>
-    )}
-  </figure>
-);
+  );
+
+  return (
+    <>
+      <figure
+        ref={cardRef}
+        className={cn(
+          "surface-panel flex flex-col overflow-hidden print:border print:border-neutral-300 print:bg-white print:shadow-none",
+          featured && "halo-card",
+          className,
+        )}
+      >
+        {renderHeader(false)}
+        <div className="mt-6 h-px w-full bg-white/[0.055]" />
+        <div className="flex-1 px-2 pb-6 pt-6">{children}</div>
+        {footer && (
+          <div className="border-t border-white/[0.05] px-6 py-3.5 text-[11px] text-muted-foreground sm:px-7">
+            {footer}
+          </div>
+        )}
+      </figure>
+
+      <Dialog open={expanded} onOpenChange={setExpanded}>
+        <DialogContent className="halo-card grid-cols-1 max-h-[90vh] w-[95vw] max-w-[95vw] overflow-y-auto overflow-x-hidden rounded-[24px] border-0 bg-[hsl(var(--card))] p-0 sm:max-w-[95vw]">
+          <DialogTitle className="sr-only">{title}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {[eyebrow, period, basis].filter(Boolean).join(" · ") || "Expanded chart view"}
+          </DialogDescription>
+          <div className="flex min-w-0 flex-col">
+            {renderHeader(true)}
+            <div className="mt-6 h-px w-full bg-white/[0.055]" />
+            <div className="min-w-0 flex-1 overflow-x-hidden px-2 pb-8 pt-8">
+              {expanded ? children : null}
+            </div>
+            {footer && (
+              <div className="border-t border-white/[0.05] px-6 py-3.5 text-[11px] text-muted-foreground sm:px-7">
+                {footer}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+};
+
 
 /** Shape-matched skeleton used while a series is resolving. */
 export const ChartLoadingSkeleton = () => (
