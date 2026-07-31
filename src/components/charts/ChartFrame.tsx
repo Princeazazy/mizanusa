@@ -229,12 +229,12 @@ export const ChartFrame = ({
       </figure>
 
       <Dialog open={expanded} onOpenChange={setExpanded}>
-        <DialogContent className="halo-card max-h-[90vh] w-[95vw] max-w-[95vw] overflow-y-auto overflow-x-hidden rounded-[24px] border-0 bg-[hsl(var(--card))] p-0 sm:max-w-[95vw]">
+        <DialogContent className="halo-card grid-cols-1 max-h-[90vh] w-[95vw] max-w-[95vw] overflow-y-auto overflow-x-hidden rounded-[24px] border-0 bg-[hsl(var(--card))] p-0 sm:max-w-[95vw]">
           <DialogTitle className="sr-only">{title}</DialogTitle>
           <DialogDescription className="sr-only">
             {[eyebrow, period, basis].filter(Boolean).join(" · ") || "Expanded chart view"}
           </DialogDescription>
-          <div className="flex flex-col">
+          <div className="flex min-w-0 flex-col">
             {header}
             <div className="mt-6 h-px w-full bg-white/[0.055]" />
             <div className="min-w-0 flex-1 overflow-x-hidden px-2 pb-8 pt-8">
