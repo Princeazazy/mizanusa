@@ -19,6 +19,8 @@ import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { useAuth } from "./hooks/useAuth";
 import { useClientAuth } from "./hooks/useClientAuth";
+import { isAccountantEmail, isOAuthIdentity } from "./lib/accountants";
+
 
 const queryClient = new QueryClient();
 
