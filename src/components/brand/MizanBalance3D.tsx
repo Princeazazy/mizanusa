@@ -262,7 +262,7 @@ const Rig = ({ reduced, simple }: SceneProps) => (
     </Environment>
 
     <ambientLight intensity={0.22} />
-    <directionalLight position={[3.5, 5, 3]} intensity={1.9} castShadow shadow-mapSize={[1024, 1024]} />
+    <directionalLight position={[3.5, 5, 3]} intensity={1.9} castShadow shadow-mapSize={[512, 512]} />
     <directionalLight position={[-2.5, 2, -4]} intensity={1.5} color={RIM} />
     <directionalLight position={[-4, 1.2, 2.5]} intensity={0.4} color="#8fb4c8" />
 
@@ -283,7 +283,7 @@ const Rig = ({ reduced, simple }: SceneProps) => (
       scale={7}
       blur={3.4}
       far={3}
-      resolution={512}
+      resolution={256}
       color="#000000"
     />
   </>
