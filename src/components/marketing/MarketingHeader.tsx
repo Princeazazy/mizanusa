@@ -76,7 +76,13 @@ export const MarketingHeader = () => {
 
         <div className="hidden items-center gap-2 md:flex">
           <Link
-            to="/auth"
+            to="/auth?role=bookkeeper"
+            className="rounded-lg px-3 py-2 text-[12.5px] text-muted-foreground/75 transition-colors duration-150 hover:text-foreground"
+          >
+            Bookkeeper login
+          </Link>
+          <Link
+            to="/auth?role=client"
             className="rounded-lg px-3.5 py-2 text-[13.5px] text-muted-foreground transition-colors duration-150 hover:text-foreground"
           >
             Client login
@@ -88,6 +94,7 @@ export const MarketingHeader = () => {
             Get a quote
           </Link>
         </div>
+
 
         <button
           type="button"
