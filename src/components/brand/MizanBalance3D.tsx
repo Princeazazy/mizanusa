@@ -267,9 +267,9 @@ const Balance = ({ reduced, simple }: SceneProps) => {
 
     if (beam.current && !reduced) {
       const target =
-        (Math.sin(t * 0.32) * 0.032 + Math.sin(t * 0.11 + 1.2) * 0.012) *
-        (0.75 + 0.25 * Math.cos(t * 0.07));
-      tilt.current += (target - tilt.current) * (1 - Math.pow(0.001, d));
+        (Math.sin(t * 0.22) * 0.006 + Math.sin(t * 0.09 + 1.2) * 0.0025) *
+        (0.8 + 0.2 * Math.cos(t * 0.05));
+      tilt.current += (target - tilt.current) * (1 - Math.pow(0.01, d));
       beam.current.rotation.z = tilt.current;
       // pans hang plumb regardless of beam tilt
       beam.current.children.forEach((child, i) => {
