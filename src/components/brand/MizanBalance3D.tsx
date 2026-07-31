@@ -114,7 +114,7 @@ const BAND = {
 } as const;
 
 const PAPER = {
-  color: "#eceae4",
+  color: "#f4f2ec",
   roughness: 0.95,
   metalness: 0,
 } as const;
@@ -172,29 +172,29 @@ const BooksStack = () => (
   <group position={[0, 0.034, 0]} rotation={[0, 0.3, 0]} scale={1.22}>
     {/* ledger book base */}
     <mesh castShadow>
-      <boxGeometry args={[0.36, 0.055, 0.26]} />
+      <boxGeometry args={[0.36, 0.085, 0.26]} />
       <meshStandardMaterial {...COVER} />
     </mesh>
     <mesh position={[-0.183, 0, 0]}>
-      <boxGeometry args={[0.008, 0.05, 0.255]} />
+      <boxGeometry args={[0.009, 0.08, 0.255]} />
       <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={0.35} roughness={0.6} />
     </mesh>
     {/* page block peeking out of the cover */}
     <mesh position={[0.006, 0, 0]}>
-      <boxGeometry args={[0.352, 0.036, 0.248]} />
+      <boxGeometry args={[0.352, 0.056, 0.248]} />
       <meshStandardMaterial {...PAPER} />
     </mesh>
 
     {/* sheets on top, slightly offset and rotated */}
-    <group position={[0.01, 0.036, 0.008]} rotation={[0, -0.16, 0]}>
+    <group position={[0.01, 0.055, 0.008]} rotation={[0, -0.16, 0]}>
       <mesh castShadow>
-        <boxGeometry args={[0.31, 0.008, 0.22]} />
+        <boxGeometry args={[0.31, 0.014, 0.22]} />
         <meshStandardMaterial {...PAPER} />
       </mesh>
     </group>
-    <group position={[-0.014, 0.046, -0.012]} rotation={[0, 0.22, 0]}>
+    <group position={[-0.014, 0.075, -0.012]} rotation={[0, 0.22, 0]}>
       <mesh castShadow>
-        <boxGeometry args={[0.31, 0.008, 0.22]} />
+        <boxGeometry args={[0.31, 0.014, 0.22]} />
         <meshStandardMaterial {...PAPER} />
       </mesh>
       {/* faint ruled lines on the top sheet */}
