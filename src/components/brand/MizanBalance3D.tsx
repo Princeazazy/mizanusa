@@ -172,7 +172,9 @@ const PanAssembly = ({
           <meshPhysicalMaterial {...POLISHED} />
         </mesh>
 
-        <Suspension radius={radius * 0.94} height={drop - 0.06} />
+        <group position={[0, radius * 0.225, 0]}>
+          <Suspension radius={radius * 0.94} height={drop - 0.06 - radius * 0.225} />
+        </group>
         {children}
       </group>
     </group>
