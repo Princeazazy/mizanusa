@@ -54,6 +54,7 @@ export type Database = {
           client_id: string
           client_name: string
           created_at: string | null
+          ein: string | null
           id: string
           is_active: boolean | null
           password_hash: string
@@ -64,6 +65,7 @@ export type Database = {
           client_id: string
           client_name: string
           created_at?: string | null
+          ein?: string | null
           id?: string
           is_active?: boolean | null
           password_hash: string
@@ -74,11 +76,69 @@ export type Database = {
           client_id?: string
           client_name?: string
           created_at?: string | null
+          ein?: string | null
           id?: string
           is_active?: boolean | null
           password_hash?: string
           updated_at?: string | null
           username?: string
+        }
+        Relationships: []
+      }
+      client_identity_links: {
+        Row: {
+          client_id: string
+          client_name: string
+          created_at: string
+          id: string
+          linked_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          client_name: string
+          created_at?: string
+          id?: string
+          linked_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          client_name?: string
+          created_at?: string
+          id?: string
+          linked_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      client_link_attempts: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          matched_client_id: string | null
+          success: boolean
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          matched_client_id?: string | null
+          success?: boolean
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          matched_client_id?: string | null
+          success?: boolean
+          user_id?: string
         }
         Relationships: []
       }

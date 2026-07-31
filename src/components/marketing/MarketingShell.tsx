@@ -16,9 +16,11 @@ const COLUMNS: { heading: string; links: { to: string; label: string }[] }[] = [
     heading: "Engage",
     links: [
       { to: "/quote", label: "Request a quote" },
-      { to: "/auth", label: "Client login" },
+      { to: "/auth?role=client", label: "Client login" },
+      { to: "/auth?role=bookkeeper", label: "Bookkeeper login" },
     ],
   },
+
 ];
 
 export const MarketingFooter = () => (

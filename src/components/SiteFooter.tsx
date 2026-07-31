@@ -8,7 +8,10 @@ const LINKS = [
   { to: "/", label: "Mizan.com" },
   { to: "/services", label: "Services" },
   { to: "/quote", label: "Refer a business" },
+  { to: "/auth?role=client", label: "Client login" },
+  { to: "/auth?role=bookkeeper", label: "Bookkeeper login" },
 ];
+
 
 export const SiteFooter = ({ className = "" }: SiteFooterProps) => (
   <footer className={`border-t border-white/[0.06] ${className}`}>
