@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useClientAuth } from "@/hooks/useClientAuth";
+import { isAccountantEmail, isOAuthIdentity } from "@/lib/accountants";
 
 export type LoginRole = "client" | "bookkeeper";
 
@@ -41,8 +42,11 @@ export const LoginNavProvider = ({ children }: { children: ReactNode }) => {
 
   const requestLogin = useCallback(
     (role: LoginRole) => {
+      // A bookkeeper session is a password sign-in on an authorised practice email.
+      const isBookkeeper =
+        !!user && !isOAuthIdentity(user.app_metadata) && isAccountantEmail(user.email);
       const needsSwitch =
-        (role === "client" && !!user) || (role === "bookkeeper" && isClientAuthenticated);
+        (role === "client" && isBookkeeper) || (role === "bookkeeper" && isClientAuthenticated);
 
       if (needsSwitch) {
         setPending(role);

@@ -14,6 +14,7 @@ import { AppleGlyph, GoogleGlyph } from "@/components/brand/ProviderGlyphs";
 import { setStaySignedIn } from "@/lib/sessionPersistence";
 import { lovable } from "@/integrations/lovable/index";
 import { isAccountantEmail, isOAuthIdentity } from "@/lib/accountants";
+import { useLoginNav } from "@/components/auth/LoginNav";
 
 const SSO_SURFACE =
   "group relative flex h-11 w-full items-center rounded-xl border border-white/[0.07] bg-white/[0.04] px-4 text-[13.5px] font-medium text-foreground transition-all duration-200 hover:-translate-y-px hover:border-white/[0.12] hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/60 disabled:pointer-events-none disabled:opacity-60";
@@ -63,6 +64,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { login: clientLogin, isAuthenticated: isClientAuthenticated, loading: clientAuthLoading } = useClientAuth();
+  const { requestLogin } = useLoginNav();
 
   useEffect(() => {
     if (roleParam === "client") setMode("client");
@@ -321,7 +323,7 @@ const Auth = () => {
       <div className="mt-8 space-y-4">
         <button
           type="button"
-          onClick={() => setMode("client")}
+          onClick={() => requestLogin("client")}
           className="group flex w-full items-center gap-4 rounded-2xl border border-primary/25 bg-primary/[0.06] p-5 text-left transition-all duration-200 hover:-translate-y-px hover:border-primary/45 hover:bg-primary/[0.09] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/60"
         >
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
@@ -338,7 +340,7 @@ const Auth = () => {
 
         <button
           type="button"
-          onClick={() => setMode("bookkeeper")}
+          onClick={() => requestLogin("bookkeeper")}
           className="group flex w-full items-center gap-4 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5 text-left transition-all duration-200 hover:-translate-y-px hover:border-white/[0.14] hover:bg-white/[0.045] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/60"
         >
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/[0.06] text-foreground/80">
