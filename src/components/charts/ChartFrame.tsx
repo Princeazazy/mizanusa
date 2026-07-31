@@ -234,10 +234,10 @@ export const ChartFrame = ({
           <DialogDescription className="sr-only">
             {[eyebrow, period, basis].filter(Boolean).join(" · ") || "Expanded chart view"}
           </DialogDescription>
-          <div className="flex min-h-[80vh] flex-col">
+          <div className="flex flex-col">
             {header}
             <div className="mt-6 h-px w-full bg-white/[0.055]" />
-            <div className="flex-1 px-2 pb-8 pt-8 [&_.recharts-responsive-container]:!h-[52vh]">
+            <div className="flex-1 px-2 pb-8 pt-8 [&_.recharts-responsive-container]:!h-[420px] [&_.recharts-wrapper]:!h-[420px]">
               {expanded ? children : null}
             </div>
             {footer && (
