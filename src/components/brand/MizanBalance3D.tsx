@@ -372,10 +372,10 @@ const Balance = ({ reduced, simple }: SceneProps) => {
           </mesh>
         </group>
         <PanAssembly x={-1.3}>
-          <CoinStack />
+          <CashStack />
         </PanAssembly>
         <PanAssembly x={1.3}>
-          <LedgerTablet />
+          <BooksStack />
         </PanAssembly>
       </group>
 
