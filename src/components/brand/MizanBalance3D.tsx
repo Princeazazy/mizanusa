@@ -221,14 +221,9 @@ const Rig = ({ reduced, simple }: SceneProps) => (
     <directionalLight position={[-4, 1.2, 2.5]} intensity={0.4} color="#8fb4c8" />
 
     {/* volumetric-looking glow behind the object */}
-    <mesh position={[0, -0.1, -2.6]}>
-      <circleGeometry args={[3.6, 64]} />
-      <meshBasicMaterial color={RIM} transparent opacity={0.1} depthWrite={false} />
-    </mesh>
-    <mesh position={[0, -0.4, -2.4]}>
-      <circleGeometry args={[2.2, 64]} />
-      <meshBasicMaterial color={ACCENT} transparent opacity={0.07} depthWrite={false} />
-    </mesh>
+    <GlowSprite color={RIM} radius={4.2} opacity={0.4} position={[0, -0.1, -2.6]} />
+    <GlowSprite color={ACCENT} radius={2.6} opacity={0.28} position={[0, -0.5, -2.4]} />
+
 
     <Balance reduced={reduced} simple={simple} />
 
