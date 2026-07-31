@@ -107,6 +107,14 @@ export const CategoryDonut = ({
       basis={basis}
       featured={featured}
       className={className}
+      exportData={{
+        columns: ["Category", "Amount", "Share %"],
+        rows: slices.map((s) => [
+          s.name,
+          s.value,
+          total ? ((s.value / total) * 100).toFixed(1) : "0.0",
+        ]),
+      }}
       controls={
         hasData ? (
           <TextTabs
