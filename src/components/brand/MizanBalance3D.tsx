@@ -399,7 +399,7 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
         className="pointer-events-none absolute left-1/2 top-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2"
         style={{
           background:
-            "radial-gradient(closest-side, hsl(252 70% 62% / 0.16), hsl(252 70% 62% / 0.05) 42%, transparent 68%)",
+            "radial-gradient(closest-side, hsl(252 70% 62% / 0.13), hsl(252 70% 62% / 0.04) 34%, transparent 58%)",
           filter: "blur(28px)",
         }}
       />
@@ -407,7 +407,7 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
         className="pointer-events-none absolute left-1/2 top-[58%] h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2"
         style={{
           background:
-            "radial-gradient(closest-side, hsl(168 78% 54% / 0.12), transparent 62%)",
+            "radial-gradient(closest-side, hsl(168 78% 54% / 0.1), transparent 52%)",
           filter: "blur(26px)",
         }}
       />
