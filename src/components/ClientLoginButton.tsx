@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
+import { useLoginNav } from "@/components/auth/LoginNav";
 
 interface ClientLoginButtonProps {
   className?: string;
@@ -7,12 +7,12 @@ interface ClientLoginButtonProps {
 
 /** Persistent, high-contrast client entry point. Present in every page header. */
 export const ClientLoginButton = ({ className = "" }: ClientLoginButtonProps) => {
-  const navigate = useNavigate();
+  const { requestLogin } = useLoginNav();
 
   return (
     <button
       type="button"
-      onClick={() => navigate("/auth?role=client")}
+      onClick={() => requestLogin("client")}
       className={`group inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-[12.5px] font-medium tracking-[0.01em] text-background transition-all duration-200 hover:bg-primary hover:shadow-[0_6px_22px_-6px_hsl(var(--primary)/0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${className}`}
     >
       Client Login
