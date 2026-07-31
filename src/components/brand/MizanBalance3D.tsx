@@ -1,7 +1,9 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, Sparkles } from "@react-three/drei";
+import { AdditiveBlending, CanvasTexture } from "three";
 import type { Group, Mesh, MeshStandardMaterial, PointLight } from "three";
+
 import { useIsMobile } from "@/hooks/use-mobile";
 
 /**
