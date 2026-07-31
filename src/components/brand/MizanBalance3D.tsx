@@ -154,7 +154,7 @@ const BillBundle = ({ h = 0.05 }: { h?: number }) => (
 );
 
 const CashStack = () => (
-  <group position={[0, 0.032, 0]}>
+  <group position={[0, 0.034, 0]} scale={1.28}>
     <group position={[0, 0, 0]} rotation={[0, 0.06, 0]}>
       <BillBundle />
     </group>
@@ -169,7 +169,7 @@ const CashStack = () => (
 
 /** Closed ledger book with a teal spine, topped by a short stack of ruled sheets. */
 const BooksStack = () => (
-  <group position={[0, 0.032, 0]} rotation={[0, 0.3, 0]}>
+  <group position={[0, 0.034, 0]} rotation={[0, 0.3, 0]} scale={1.22}>
     {/* ledger book base */}
     <mesh castShadow>
       <boxGeometry args={[0.36, 0.055, 0.26]} />
