@@ -125,9 +125,13 @@ export const MarketingHeader = () => {
                 {item.label}
               </NavLink>
             ))}
-            <Link to="/auth" className="border-b border-white/[0.05] py-3.5 text-[15px] text-muted-foreground">
+            <Link to="/auth?role=client" className="border-b border-white/[0.05] py-3.5 text-[15px] text-muted-foreground">
               Client login
             </Link>
+            <Link to="/auth?role=bookkeeper" className="border-b border-white/[0.05] py-3.5 text-[15px] text-muted-foreground/80">
+              Bookkeeper login
+            </Link>
+
           </nav>
           <Link
             to="/quote"
