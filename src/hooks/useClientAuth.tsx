@@ -8,10 +8,21 @@ export interface ClientSession {
 }
 
 const STORAGE_KEY = "client_session";
+const CHANGE_EVENT = "mizan:client-session-changed";
+
+/** Let every mounted useClientAuth instance re-read the stored session. */
+const broadcastChange = () => {
+  try {
+    window.dispatchEvent(new Event(CHANGE_EVENT));
+  } catch {
+    /* no-op */
+  }
+};
 
 /** Persist a portal session issued outside the username/password form (e.g. EIN linking). */
 export const storeClientSession = (session: ClientSession) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+  broadcastChange();
 };
 
 
@@ -70,6 +81,17 @@ export const useClientAuth = () => {
     };
 
     checkSession();
+
+    const onChange = () => {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) {
+        setSession(null);
+        return;
+      }
+      void checkSession();
+    };
+    window.addEventListener(CHANGE_EVENT, onChange);
+    return () => window.removeEventListener(CHANGE_EVENT, onChange);
   }, [validateSession]);
 
   const login = async (username: string, password: string): Promise<{ success: boolean; error?: string }> => {
@@ -98,6 +120,7 @@ export const useClientAuth = () => {
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newSession));
       setSession(newSession);
+      broadcastChange();
 
       return { success: true };
     } catch (error) {
@@ -123,6 +146,7 @@ export const useClientAuth = () => {
     }
     localStorage.removeItem(STORAGE_KEY);
     setSession(null);
+    broadcastChange();
   };
 
   return {
