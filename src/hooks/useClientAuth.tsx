@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-interface ClientSession {
+export interface ClientSession {
   sessionToken: string;
   clientId: string;
   clientName: string;
@@ -8,6 +8,12 @@ interface ClientSession {
 }
 
 const STORAGE_KEY = "client_session";
+
+/** Persist a portal session issued outside the username/password form (e.g. EIN linking). */
+export const storeClientSession = (session: ClientSession) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+};
+
 
 export const useClientAuth = () => {
   const [session, setSession] = useState<ClientSession | null>(null);
