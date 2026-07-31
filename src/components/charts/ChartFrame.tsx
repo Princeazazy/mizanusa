@@ -229,7 +229,7 @@ export const ChartFrame = ({
       </figure>
 
       <Dialog open={expanded} onOpenChange={setExpanded}>
-        <DialogContent className="halo-card max-h-[90vh] w-[95vw] max-w-[95vw] overflow-y-auto rounded-[24px] border-0 bg-[hsl(var(--card))] p-0 sm:max-w-[95vw]">
+        <DialogContent className="halo-card max-h-[90vh] w-[95vw] max-w-[95vw] overflow-y-auto overflow-x-hidden rounded-[24px] border-0 bg-[hsl(var(--card))] p-0 sm:max-w-[95vw]">
           <DialogTitle className="sr-only">{title}</DialogTitle>
           <DialogDescription className="sr-only">
             {[eyebrow, period, basis].filter(Boolean).join(" · ") || "Expanded chart view"}
@@ -237,7 +237,7 @@ export const ChartFrame = ({
           <div className="flex flex-col">
             {header}
             <div className="mt-6 h-px w-full bg-white/[0.055]" />
-            <div className="flex-1 px-2 pb-8 pt-8 [&_.recharts-responsive-container]:!h-[420px] [&_.recharts-wrapper]:!h-[420px]">
+            <div className="min-w-0 flex-1 overflow-x-hidden px-2 pb-8 pt-8">
               {expanded ? children : null}
             </div>
             {footer && (
