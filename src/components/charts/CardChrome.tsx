@@ -102,7 +102,7 @@ export const HeroFigure = ({
           </span>
         )}
       </div>
-      {contextLabel && <PeriodChip label={contextLabel} withCaret />}
+      {contextLabel && <PeriodChip label={contextLabel} />}
     </div>
   );
 };
