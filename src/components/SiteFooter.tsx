@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { LoginLink } from "@/components/auth/LoginNav";
 
 interface SiteFooterProps {
   className?: string;
@@ -8,10 +9,10 @@ const LINKS = [
   { to: "/", label: "Mizan.com" },
   { to: "/services", label: "Services" },
   { to: "/quote", label: "Refer a business" },
-  { to: "/auth?role=client", label: "Client login" },
-  { to: "/auth?role=bookkeeper", label: "Bookkeeper login" },
 ];
 
+const linkClass =
+  "text-xs tracking-[0.02em] text-muted-foreground transition-colors duration-150 hover:text-primary";
 
 export const SiteFooter = ({ className = "" }: SiteFooterProps) => (
   <footer className={`border-t border-white/[0.06] ${className}`}>
@@ -22,14 +23,16 @@ export const SiteFooter = ({ className = "" }: SiteFooterProps) => (
       </div>
       <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-6 gap-y-2">
         {LINKS.map((l) => (
-          <Link
-            key={l.to}
-            to={l.to}
-            className="text-xs tracking-[0.02em] text-muted-foreground transition-colors duration-150 hover:text-primary"
-          >
+          <Link key={l.to} to={l.to} className={linkClass}>
             {l.label}
           </Link>
         ))}
+        <LoginLink role="client" className={linkClass}>
+          Client login
+        </LoginLink>
+        <LoginLink role="bookkeeper" className={linkClass}>
+          Bookkeeper login
+        </LoginLink>
         <span className="text-xs text-muted-foreground/60">© {new Date().getFullYear()} Mizan</span>
       </nav>
     </div>
