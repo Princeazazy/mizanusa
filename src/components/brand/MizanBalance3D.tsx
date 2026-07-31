@@ -205,7 +205,51 @@ const Balance = ({ reduced, simple }: SceneProps) => {
   );
 };
 
+/** Soft radial-gradient sprite — a volumetric-looking bloom with no hard edge. */
+const GlowSprite = ({
+  color,
+  radius,
+  opacity,
+  position,
+}: {
+  color: string;
+  radius: number;
+  opacity: number;
+  position: [number, number, number];
+}) => {
+  const texture = useMemo(() => {
+    const size = 256;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d")!;
+    const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+    g.addColorStop(0, "rgba(255,255,255,1)");
+    g.addColorStop(0.35, "rgba(255,255,255,0.42)");
+    g.addColorStop(0.7, "rgba(255,255,255,0.1)");
+    g.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, size, size);
+    return new CanvasTexture(canvas);
+  }, []);
+
+  return (
+    <mesh position={position}>
+      <planeGeometry args={[radius * 2, radius * 2]} />
+      <meshBasicMaterial
+        map={texture}
+        color={color}
+        transparent
+        opacity={opacity}
+        depthWrite={false}
+        blending={AdditiveBlending}
+      />
+    </mesh>
+  );
+};
+
 const Rig = ({ reduced, simple }: SceneProps) => (
+
   <>
     {/* procedural studio env — reflections without a network HDRI */}
     <Environment resolution={256} frames={1}>
