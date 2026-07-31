@@ -101,112 +101,145 @@ const Suspension = ({ radius, height }: { radius: number; height: number }) => (
   </group>
 );
 
-const BILL = {
-  color: "#8d9c88",
-  roughness: 0.92,
-  metalness: 0,
-} as const;
-
 const BAND = {
-  color: "#c8cfc4",
+  color: "#e8e6dd",
   roughness: 0.85,
   metalness: 0,
 } as const;
 
 const PAPER = {
-  color: "#f4f2ec",
+  color: "#e6e4dc",
   roughness: 0.95,
   metalness: 0,
 } as const;
 
 const COVER = {
-  color: "#15181e",
-  roughness: 0.7,
-  metalness: 0.05,
+  color: "#2c313c",
+  roughness: 0.68,
+  metalness: 0.08,
 } as const;
 
-/** A banded bundle of bills: slim slab, striated edges, strap around the middle. */
-const BillBundle = ({ h = 0.05 }: { h?: number }) => (
-  <group>
-    <mesh castShadow>
-      <boxGeometry args={[0.3, h, 0.14]} />
-      <meshStandardMaterial {...BILL} />
-    </mesh>
-    {/* faint edge striations suggesting many bill edges */}
-    {[-0.0165, -0.0055, 0.0055, 0.0165].map((y) => (
-      <mesh key={y} position={[0, y * (h / 0.05), 0.0705]}>
-        <planeGeometry args={[0.298, 0.0035]} />
-        <meshStandardMaterial color="#6d7a69" roughness={0.95} />
+/** A banded bundle of bills: bill-proportioned slab, striated edges, currency strap. */
+const BillBundle = ({ h = 0.042, tone = "#7a8a72" }: { h?: number; tone?: string }) => {
+  const w = 0.3;
+  const dz = w / 2.35;
+  return (
+    <group>
+      <mesh castShadow receiveShadow>
+        <boxGeometry args={[w, h, dz]} />
+        <meshStandardMaterial color={tone} roughness={0.9} metalness={0} />
       </mesh>
-    ))}
-    {[-0.0165, -0.0055, 0.0055, 0.0165].map((y) => (
-      <mesh key={`b${y}`} position={[0, y * (h / 0.05), -0.0705]} rotation={[0, Math.PI, 0]}>
-        <planeGeometry args={[0.298, 0.0035]} />
-        <meshStandardMaterial color="#6d7a69" roughness={0.95} />
+      {/* faint edge striations suggesting many bill edges */}
+      {[-1, 1].map((s) =>
+        [-0.3, -0.1, 0.1, 0.3].map((f) => (
+          <mesh
+            key={`${s}${f}`}
+            position={[0, f * h, s * (dz / 2 + 0.0005)]}
+            rotation={[0, s > 0 ? 0 : Math.PI, 0]}
+          >
+            <planeGeometry args={[w * 0.99, h * 0.09]} />
+            <meshStandardMaterial color="#5f6d5b" roughness={0.95} />
+          </mesh>
+        )),
+      )}
+      {/* currency strap around the middle */}
+      <mesh>
+        <boxGeometry args={[w * 0.2, h + 0.003, dz + 0.004]} />
+        <meshStandardMaterial {...BAND} />
       </mesh>
-    ))}
-    {/* band strap */}
-    <mesh>
-      <boxGeometry args={[0.062, h + 0.004, 0.145]} />
-      <meshStandardMaterial {...BAND} />
-    </mesh>
-  </group>
-);
+    </group>
+  );
+};
+
+const BUNDLES: { y: number; x: number; z: number; r: number; h: number; tone: string }[] = [
+  { y: 0, x: 0, z: 0, r: 0.05, h: 0.042, tone: "#78886f" },
+  { y: 0.044, x: 0.009, z: -0.006, r: -0.11, h: 0.04, tone: "#7f8e77" },
+  { y: 0.086, x: -0.008, z: 0.008, r: 0.16, h: 0.038, tone: "#758468" },
+  { y: 0.126, x: 0.006, z: 0.004, r: -0.06, h: 0.036, tone: "#7c8b74" },
+  { y: 0.164, x: -0.011, z: -0.009, r: 0.27, h: 0.034, tone: "#82907a" },
+];
 
 const CashStack = () => (
-  <group position={[0, 0.034, 0]} scale={1.28}>
-    <group position={[0, 0, 0]} rotation={[0, 0.06, 0]}>
-      <BillBundle />
-    </group>
-    <group position={[0.008, 0.052, -0.006]} rotation={[0, -0.14, 0]}>
-      <BillBundle h={0.046} />
-    </group>
-    <group position={[-0.012, 0.1, 0.01]} rotation={[0, 0.34, 0]}>
-      <BillBundle h={0.042} />
-    </group>
+  <group position={[0, 0.03, 0]} scale={1.2}>
+    {BUNDLES.map((b, i) => (
+      <group key={i} position={[b.x, b.y, b.z]} rotation={[0, b.r, 0]}>
+        <BillBundle h={b.h} tone={b.tone} />
+      </group>
+    ))}
   </group>
 );
 
-/** Closed ledger book with a teal spine, topped by a short stack of ruled sheets. */
+/** Tidy pile of ruled sheets topped by a closed ledger book and a slim pen. */
 const BooksStack = () => (
-  <group position={[0, 0.034, 0]} rotation={[0, 0.3, 0]} scale={1.22}>
-    {/* ledger book base */}
-    <mesh castShadow>
-      <boxGeometry args={[0.36, 0.085, 0.26]} />
-      <meshStandardMaterial {...COVER} />
-    </mesh>
-    <mesh position={[-0.183, 0, 0]}>
-      <boxGeometry args={[0.009, 0.08, 0.255]} />
-      <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={0.35} roughness={0.6} />
-    </mesh>
-    {/* page block peeking out of the cover */}
-    <mesh position={[0.006, 0, 0]}>
-      <boxGeometry args={[0.352, 0.056, 0.248]} />
-      <meshStandardMaterial {...PAPER} />
-    </mesh>
-
-    {/* sheets on top, slightly offset and rotated */}
-    <group position={[0.01, 0.055, 0.008]} rotation={[0, -0.16, 0]}>
-      <mesh castShadow>
-        <boxGeometry args={[0.31, 0.014, 0.22]} />
+  <group position={[0, 0.03, 0]} rotation={[0, 0.3, 0]} scale={1.16}>
+    {/* loose sheets, slightly misaligned */}
+    <group position={[0.012, 0.007, 0.01]} rotation={[0, -0.14, 0]}>
+      <mesh castShadow receiveShadow>
+        <boxGeometry args={[0.34, 0.014, 0.24]} />
         <meshStandardMaterial {...PAPER} />
       </mesh>
     </group>
-    <group position={[-0.014, 0.075, -0.012]} rotation={[0, 0.22, 0]}>
+    <group position={[-0.01, 0.022, -0.008]} rotation={[0, 0.1, 0]}>
       <mesh castShadow>
-        <boxGeometry args={[0.31, 0.014, 0.22]} />
+        <boxGeometry args={[0.34, 0.014, 0.24]} />
         <meshStandardMaterial {...PAPER} />
       </mesh>
-      {/* faint ruled lines on the top sheet */}
-      {[-0.06, -0.02, 0.02, 0.06].map((z) => (
-        <mesh key={z} position={[0, 0.0045, z]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[0.24, 0.0045]} />
-          <meshStandardMaterial color="#9aa6b4" roughness={0.9} />
+    </group>
+    <group position={[0.004, 0.038, 0.004]} rotation={[0, -0.05, 0]}>
+      <mesh castShadow>
+        <boxGeometry args={[0.34, 0.014, 0.24]} />
+        <meshStandardMaterial {...PAPER} />
+      </mesh>
+      {/* faint teal ledger rows on the top sheet */}
+      {[-0.075, -0.025, 0.025, 0.075].map((z) => (
+        <mesh key={z} position={[0, 0.0075, z]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.27, 0.005]} />
+          <meshStandardMaterial
+            color={ACCENT}
+            emissive={ACCENT}
+            emissiveIntensity={0.32}
+            roughness={0.9}
+          />
         </mesh>
       ))}
     </group>
+
+    {/* closed ledger book on top */}
+    <group position={[-0.004, 0.068, -0.004]} rotation={[0, 0.16, 0]}>
+      <mesh castShadow>
+        <boxGeometry args={[0.3, 0.044, 0.215]} />
+        <meshStandardMaterial {...COVER} />
+      </mesh>
+      {/* page block */}
+      <mesh position={[0.006, 0, 0]}>
+        <boxGeometry args={[0.294, 0.03, 0.208]} />
+        <meshStandardMaterial {...PAPER} />
+      </mesh>
+      {/* teal spine */}
+      <mesh position={[-0.152, 0, 0]}>
+        <boxGeometry args={[0.009, 0.042, 0.212]} />
+        <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={0.3} roughness={0.6} />
+      </mesh>
+      {/* embossed rule across the cover */}
+      <mesh position={[0, 0.0225, 0.045]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[0.2, 0.004]} />
+        <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={0.28} />
+      </mesh>
+      {/* slim pen resting diagonally */}
+      <group position={[0.01, 0.03, -0.03]} rotation={[0, 0.5, 0]}>
+        <mesh rotation={[0, 0, Math.PI / 2]} castShadow>
+          <cylinderGeometry args={[0.0075, 0.0075, 0.2, 14]} />
+          <meshPhysicalMaterial color="#1b1f27" metalness={0.7} roughness={0.28} />
+        </mesh>
+        <mesh position={[0.075, 0.006, 0]} rotation={[0, 0, Math.PI / 2]}>
+          <boxGeometry args={[0.004, 0.05, 0.006]} />
+          <meshPhysicalMaterial {...POLISHED} />
+        </mesh>
+      </group>
+    </group>
   </group>
 );
+
 
 
 const PanAssembly = ({
