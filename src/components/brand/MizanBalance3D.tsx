@@ -167,10 +167,11 @@ const PanAssembly = ({
           <DishGeometry radius={radius} />
           <meshPhysicalMaterial {...BODY} side={2} />
         </mesh>
-        <mesh position={[0, radius * 0.235, 0]}>
+        <mesh position={[0, radius * 0.235, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <torusGeometry args={[radius * 1.01, 0.007, 10, 72]} />
           <meshPhysicalMaterial {...POLISHED} />
         </mesh>
+
         <Suspension radius={radius * 0.94} height={drop - 0.06} />
         {children}
       </group>
