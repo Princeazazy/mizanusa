@@ -320,11 +320,10 @@ const Balance = ({ reduced, simple }: SceneProps) => {
         </PanAssembly>
       </group>
 
-      {/* travelling specular highlight */}
-      <mesh ref={sweep} position={[0, -0.3, 2.6]} rotation={[0, 0, 0.35]}>
-        <planeGeometry args={[0.5, 5]} />
-        <meshBasicMaterial color="#dfe8ff" transparent opacity={0} depthWrite={false} />
-      </mesh>
+      {/* travelling specular highlight — a real moving light, so nothing can
+          ever paint a rectangle over the transparent canvas */}
+      <pointLight ref={sweep} position={[0, 0.1, 2.4]} color="#dfe8ff" intensity={0} distance={9} />
+
     </group>
   );
 };
