@@ -2,7 +2,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, Sparkles } from "@react-three/drei";
 import { Vector2 } from "three";
-import type { Group, Mesh, MeshStandardMaterial } from "three";
+import type { Group, MeshStandardMaterial, PointLight } from "three";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -184,7 +184,7 @@ const Balance = ({ reduced, simple }: SceneProps) => {
   const beam = useRef<Group>(null);
   const needle = useRef<Group>(null);
   const inlay = useRef<MeshStandardMaterial>(null);
-  const sweep = useRef<Mesh>(null);
+  const sweep = useRef<PointLight>(null);
   const tilt = useRef(0);
   const { pointer } = useThree();
 
@@ -222,9 +222,8 @@ const Balance = ({ reduced, simple }: SceneProps) => {
 
     if (sweep.current) {
       const p = (t % 9) / 9;
-      sweep.current.position.x = -5 + p * 10;
-      const m = sweep.current.material as MeshStandardMaterial;
-      m.opacity = Math.sin(Math.PI * p) * 0.4;
+      sweep.current.position.x = -3.6 + p * 7.2;
+      sweep.current.intensity = Math.sin(Math.PI * p) * 5.5;
     }
   });
 
