@@ -50,8 +50,8 @@ const BRUSHED = {
   color: "#5b6272",
   metalness: 0.95,
   roughness: 0.38,
-  anisotropy: 0.7,
-  anisotropyRotation: Math.PI / 2,
+  // NOTE: no anisotropy/sheen/transmission — those need material extensions that
+  // many mobile GPUs/drivers don't support and can throw at shader compile time.
 } as const;
 
 const GOLD = {
@@ -91,14 +91,17 @@ const getGlowTexture = () => {
   return glowTexture;
 };
 
-/** True only when a real WebGL context can actually be created in this browser. */
+type GLSupport = { ok: boolean; reason?: string };
+
 /**
- * True capability probe: webgl2 first, then webgl / experimental-webgl.
- * Software rendering is NOT a failure — a slow-but-working context still gets
- * the real scene (at reduced quality), so `failIfMajorPerformanceCaveat` is off.
+ * three.js r163+ (we run 0.169) requires a WebGL2 context — WebGL1 support was
+ * removed upstream, so a webgl1-only device genuinely cannot run the scene and
+ * must get the poster. Software rendering is NOT a failure: a slow-but-working
+ * context still gets the real scene (hence failIfMajorPerformanceCaveat: false).
  */
-const detectWebGL = () => {
-  if (typeof window === "undefined" || typeof document === "undefined") return false;
+const detectWebGL = (): GLSupport => {
+  if (typeof window === "undefined" || typeof document === "undefined")
+    return { ok: false, reason: "no DOM (server render)" };
   const attrs: WebGLContextAttributes = {
     failIfMajorPerformanceCaveat: false,
     alpha: true,
@@ -107,17 +110,19 @@ const detectWebGL = () => {
   };
   try {
     const canvas = document.createElement("canvas");
-    const gl =
-      canvas.getContext("webgl2", attrs) ||
-      canvas.getContext("webgl", attrs) ||
-      canvas.getContext("experimental-webgl", attrs);
-    return !!gl;
-  } catch {
-    return false;
+    if (canvas.getContext("webgl2", attrs)) return { ok: true };
+    const gl1 =
+      canvas.getContext("webgl", attrs) || canvas.getContext("experimental-webgl", attrs);
+    return {
+      ok: false,
+      reason: gl1
+        ? "WebGL2 unavailable (device exposes WebGL1 only; three.js 0.169 requires WebGL2)"
+        : "WebGL unavailable (no context could be created)",
+    };
+  } catch (err) {
+    return { ok: false, reason: `WebGL probe threw: ${(err as Error)?.message ?? err}` };
   }
 };
-
-
 
 /** Tiny additive glow halo attached to an emissive element. */
 const GlowSprite = ({
@@ -706,14 +711,60 @@ const CameraDrift = ({ reduced }: { reduced: boolean }) => {
 };
 
 
+/**
+ * Boundary for a single OPTIONAL scene feature (env map, contact shadows).
+ * These rely on render targets (half-float / depth) that some mobile GPUs
+ * reject. When one fails we drop just that feature — never the whole scene.
+ */
+class FeatureBoundary extends Component<
+  { children: ReactNode; fallback?: ReactNode; label: string },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch(error: Error) {
+    console.warn(
+      `[MizanBalance3D] optional feature "${this.props.label}" disabled: ${error?.message ?? error}`,
+    );
+  }
+  render() {
+    return this.state.failed ? this.props.fallback ?? null : this.props.children;
+  }
+}
+
+/** Plain-light stand-in when the environment map can't be generated. */
+const FlatLights = () => (
+  <>
+    <hemisphereLight args={["#cfe0ff", "#0a0d14", 0.55]} />
+    <directionalLight position={[2.4, 3.2, 3.4]} intensity={1.1} color="#e8efff" />
+  </>
+);
+
+/** Blurred ellipse stand-in when ContactShadows' render target fails. */
+const SimpleShadow = () => {
+  const tex = getGlowTexture();
+  if (!tex) return null;
+  return (
+    <sprite position={[0, -1.44, 0]} scale={[3.6, 1.1, 1]}>
+      <spriteMaterial map={tex} color="#000000" opacity={0.5} transparent depthWrite={false} />
+    </sprite>
+  );
+};
+
 const Rig = ({ reduced, simple }: SceneProps) => (
   <>
-    <Environment resolution={256} frames={1}>
+    <FeatureBoundary label="environment-map" fallback={<FlatLights />}>
+    <Suspense fallback={null}>
+    <Environment resolution={simple ? 128 : 256} frames={1}>
       <Lightformer intensity={2.2} position={[0, 4, 3]} scale={[10, 4, 1]} color="#e8efff" />
       <Lightformer intensity={1.5} position={[-6, 1.5, -2]} scale={[7, 7, 1]} color="#6d8fd8" />
       <Lightformer intensity={1.9} position={[5, 0.6, 2]} scale={[6, 6, 1]} color="#ffd9a0" />
       <Lightformer intensity={0.25} position={[0, -3, 2]} scale={[10, 4, 1]} color="#0b0e15" />
     </Environment>
+    </Suspense>
+    </FeatureBoundary>
 
     <ambientLight intensity={0.09} />
     <directionalLight position={[3.6, 4.4, 2.6]} intensity={1.5} color="#ffe3b8" castShadow shadow-mapSize={[512, 512]} />
@@ -723,15 +774,17 @@ const Rig = ({ reduced, simple }: SceneProps) => (
     <CameraDrift reduced={reduced} />
     <Balance reduced={reduced} simple={simple} />
 
-    <ContactShadows
-      position={[0, -1.46, 0]}
-      opacity={0.42}
-      scale={4.2}
-      blur={3.2}
-      far={2.4}
-      resolution={256}
-      color="#000000"
-    />
+    <FeatureBoundary label="contact-shadows" fallback={<SimpleShadow />}>
+      <ContactShadows
+        position={[0, -1.46, 0]}
+        opacity={0.42}
+        scale={4.2}
+        blur={3.2}
+        far={2.4}
+        resolution={simple ? 128 : 256}
+        color="#000000"
+      />
+    </FeatureBoundary>
 
   </>
 );
@@ -756,7 +809,11 @@ class SceneBoundary extends Component<
   }
 
   componentDidCatch(error: Error) {
-    if (import.meta.env.DEV) console.warn("3D hero unavailable, using poster:", error.message);
+    console.warn(
+      "[MizanBalance3D] Poster fallback engaged: scene threw —",
+      error?.message ?? error,
+      error?.stack ?? "",
+    );
   }
 
   render() {
@@ -831,7 +888,9 @@ const BalanceScene = ({
           antialias: true,
           alpha: true,
           premultipliedAlpha: false,
-          powerPreference: "high-performance",
+          // Some Android drivers refuse a discrete/high-performance context and
+          // fail creation outright; "default" is the safe, universally honored value.
+          powerPreference: "default",
           failIfMajorPerformanceCaveat: false,
         }}
         onCreated={({ gl }) => {
@@ -843,6 +902,11 @@ const BalanceScene = ({
           const canvas = gl.domElement;
           const onLost = (event: Event) => {
             event.preventDefault();
+            const reason =
+              event.type === "webglcontextlost"
+                ? "context lost"
+                : `context creation error: ${(event as WebGLContextEvent).statusMessage ?? "unknown"}`;
+            console.warn(`[MizanBalance3D] Poster fallback engaged: ${reason}`);
             onContextLost();
           };
           canvas.addEventListener("webglcontextlost", onLost, false);
@@ -863,9 +927,10 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
   const [webgl, setWebgl] = useState<boolean | null>(null);
   const [lost, setLost] = useState(false);
   useEffect(() => {
-    const ok = detectWebGL();
-    setWebgl(ok);
-    if (!ok) console.info("[MizanBalance3D] Poster fallback engaged: WebGL unavailable");
+    const support = detectWebGL();
+    setWebgl(support.ok);
+    if (!support.ok)
+      console.warn(`[MizanBalance3D] Poster fallback engaged: ${support.reason}`);
   }, []);
 
   const poster = <BalancePoster className={className} />;
@@ -875,10 +940,7 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
     <SceneBoundary fallback={poster}>
       <BalanceScene
         className={className}
-        onContextLost={() => {
-          console.info("[MizanBalance3D] Poster fallback engaged: context lost");
-          setLost(true);
-        }}
+        onContextLost={() => setLost(true)}
       />
     </SceneBoundary>
   );
