@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { SectionBoundary } from "@/components/marketing/SectionBoundary";
+
 
 /** Consistent editorial section wrapper for the marketing routes. */
 export const Section = ({
@@ -35,7 +37,7 @@ export const Section = ({
         )}
       </div>
     )}
-    {children}
+    {children && <SectionBoundary label={eyebrow ?? id}>{children}</SectionBoundary>}
   </section>
 );
 

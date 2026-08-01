@@ -13,6 +13,8 @@ import {
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 import { Section } from "@/components/marketing/Section";
 import { MizanBalance3D } from "@/components/brand/MizanBalance3D";
+import { SectionBoundary } from "@/components/marketing/SectionBoundary";
+
 import { RevenueExpenseChart } from "@/components/charts/RevenueExpenseChart";
 import { CategoryDonut } from "@/components/charts/CategoryDonut";
 
@@ -149,8 +151,11 @@ const MarketingHome = () => (
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           className="relative mx-auto h-[340px] w-full max-w-[620px] sm:h-[480px] lg:h-[600px]"
         >
-          <MizanBalance3D className="h-full w-full" />
+          <SectionBoundary label="hero-sculpture">
+            <MizanBalance3D className="h-full w-full" />
+          </SectionBoundary>
         </motion.div>
+
       </div>
     </section>
 
