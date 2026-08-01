@@ -606,7 +606,7 @@ const Rig = ({ reduced, simple }: SceneProps) => (
     />
 
     {!simple && (
-      <EffectComposer disableNormalPass multisampling={0}>
+      <EffectComposer enableNormalPass={false} multisampling={0}>
         <Bloom
           intensity={0.85}
           luminanceThreshold={0.72}
