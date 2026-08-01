@@ -749,7 +749,7 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
           gl.setClearColor(new Color("#000000"), 0);
           gl.setClearAlpha(0);
         }}
-        camera={{ position: [0, 1.05, 8.2], fov: 34 }}
+        camera={{ position: [0, 1.15, 9.4], fov: 34 }}
       >
         <Suspense fallback={null}>
           <Rig reduced={reduced} simple={isMobile} />
