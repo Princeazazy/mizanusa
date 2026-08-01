@@ -862,14 +862,24 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
   // Probe once on the client; SSR/no-WebGL renders the poster straight away.
   const [webgl, setWebgl] = useState<boolean | null>(null);
   const [lost, setLost] = useState(false);
-  useEffect(() => setWebgl(detectWebGL()), []);
+  useEffect(() => {
+    const ok = detectWebGL();
+    setWebgl(ok);
+    if (!ok) console.info("[MizanBalance3D] Poster fallback engaged: WebGL unavailable");
+  }, []);
 
   const poster = <BalancePoster className={className} />;
   if (webgl !== true || lost) return poster;
 
   return (
     <SceneBoundary fallback={poster}>
-      <BalanceScene className={className} onContextLost={() => setLost(true)} />
+      <BalanceScene
+        className={className}
+        onContextLost={() => {
+          console.info("[MizanBalance3D] Poster fallback engaged: context lost");
+          setLost(true);
+        }}
+      />
     </SceneBoundary>
   );
 };
