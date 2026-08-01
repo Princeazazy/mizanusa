@@ -92,22 +92,31 @@ const getGlowTexture = () => {
 };
 
 /** True only when a real WebGL context can actually be created in this browser. */
+/**
+ * True capability probe: webgl2 first, then webgl / experimental-webgl.
+ * Software rendering is NOT a failure — a slow-but-working context still gets
+ * the real scene (at reduced quality), so `failIfMajorPerformanceCaveat` is off.
+ */
 const detectWebGL = () => {
   if (typeof window === "undefined" || typeof document === "undefined") return false;
+  const attrs: WebGLContextAttributes = {
+    failIfMajorPerformanceCaveat: false,
+    alpha: true,
+    antialias: false,
+    powerPreference: "default",
+  };
   try {
     const canvas = document.createElement("canvas");
     const gl =
-      canvas.getContext("webgl2") ||
-      canvas.getContext("webgl") ||
-      canvas.getContext("experimental-webgl");
-    if (!gl) return false;
-    const lose = (gl as WebGLRenderingContext).getExtension?.("WEBGL_lose_context");
-    lose?.loseContext?.();
-    return true;
+      canvas.getContext("webgl2", attrs) ||
+      canvas.getContext("webgl", attrs) ||
+      canvas.getContext("experimental-webgl", attrs);
+    return !!gl;
   } catch {
     return false;
   }
 };
+
 
 
 /** Tiny additive glow halo attached to an emissive element. */
@@ -853,14 +862,24 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
   // Probe once on the client; SSR/no-WebGL renders the poster straight away.
   const [webgl, setWebgl] = useState<boolean | null>(null);
   const [lost, setLost] = useState(false);
-  useEffect(() => setWebgl(detectWebGL()), []);
+  useEffect(() => {
+    const ok = detectWebGL();
+    setWebgl(ok);
+    if (!ok) console.info("[MizanBalance3D] Poster fallback engaged: WebGL unavailable");
+  }, []);
 
   const poster = <BalancePoster className={className} />;
   if (webgl !== true || lost) return poster;
 
   return (
     <SceneBoundary fallback={poster}>
-      <BalanceScene className={className} onContextLost={() => setLost(true)} />
+      <BalanceScene
+        className={className}
+        onContextLost={() => {
+          console.info("[MizanBalance3D] Poster fallback engaged: context lost");
+          setLost(true);
+        }}
+      />
     </SceneBoundary>
   );
 };
