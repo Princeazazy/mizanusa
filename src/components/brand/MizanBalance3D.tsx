@@ -561,13 +561,6 @@ const Balance = ({ reduced, simple }: SceneProps) => {
         </PanAssembly>
       </group>
 
-      {!simple && (
-        <group ref={stream} position={[0, 0.05, 0]}>
-          <DataStream count={38} color={ACCENT} seed={0} />
-          <DataStream count={8} color="#e6c67f" seed={1} />
-        </group>
-      )}
-
       <pointLight ref={sweep} position={[0, 0.1, 2.4]} color="#dfe8ff" intensity={0} distance={9} />
     </group>
   );
