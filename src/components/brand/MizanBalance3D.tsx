@@ -755,7 +755,10 @@ class SceneBoundary extends Component<
   }
 }
 
-const BalanceScene = ({ className }: MizanBalance3DProps) => {
+const BalanceScene = ({
+  className,
+  onContextLost,
+}: MizanBalance3DProps & { onContextLost: () => void }) => {
   const dpr = useMemo<[number, number]>(() => [1, 2], []);
   const isMobile = useIsMobile();
   const host = useRef<HTMLDivElement>(null);
@@ -825,6 +828,16 @@ const BalanceScene = ({ className }: MizanBalance3DProps) => {
         onCreated={({ gl }) => {
           gl.setClearColor(new Color("#000000"), 0);
           gl.setClearAlpha(0);
+          // A phone GPU can drop the context at any time (backgrounding, memory
+          // pressure, driver reset). Swap to the poster instead of rendering a
+          // dead black canvas or letting three.js throw on the next frame.
+          const canvas = gl.domElement;
+          const onLost = (event: Event) => {
+            event.preventDefault();
+            onContextLost();
+          };
+          canvas.addEventListener("webglcontextlost", onLost, false);
+          canvas.addEventListener("webglcontextcreationerror", onLost, false);
         }}
         camera={{ position: [0, 1.15, 9.4], fov: 34 }}
       >
@@ -839,17 +852,19 @@ const BalanceScene = ({ className }: MizanBalance3DProps) => {
 export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
   // Probe once on the client; SSR/no-WebGL renders the poster straight away.
   const [webgl, setWebgl] = useState<boolean | null>(null);
+  const [lost, setLost] = useState(false);
   useEffect(() => setWebgl(detectWebGL()), []);
 
   const poster = <BalancePoster className={className} />;
-  if (webgl !== true) return poster;
+  if (webgl !== true || lost) return poster;
 
   return (
     <SceneBoundary fallback={poster}>
-      <BalanceScene className={className} />
+      <BalanceScene className={className} onContextLost={() => setLost(true)} />
     </SceneBoundary>
   );
 };
+
 
 
 export default MizanBalance3D;
