@@ -147,19 +147,25 @@ const ClientDashboard = () => {
                   className="w-full pl-10 sm:w-72"
                 />
               </div>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span tabIndex={0} className="inline-flex rounded-lg">
-                    <Button className="gap-2" disabled aria-disabled="true">
-                      <Plus className="h-4 w-4" aria-hidden="true" />
-                      Add Client
-                    </Button>
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent>
-                  Client onboarding isn’t built yet — new clients are added by Mizan directly.
-                </TooltipContent>
-              </Tooltip>
+              <div className="flex flex-wrap items-center gap-2">
+                <Button variant="outline" className="gap-2" onClick={() => navigate("/books")}>
+                  <BrainCircuit className="h-4 w-4" aria-hidden="true" />
+                  Books (AI drafting)
+                </Button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span tabIndex={0} className="inline-flex rounded-lg">
+                      <Button className="gap-2" disabled aria-disabled="true">
+                        <Plus className="h-4 w-4" aria-hidden="true" />
+                        Add Client
+                      </Button>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Client onboarding isn’t built yet — new clients are added by Mizan directly.
+                  </TooltipContent>
+                </Tooltip>
+              </div>
             </div>
 
             {/* Client roster — editorial, asymmetric */}
