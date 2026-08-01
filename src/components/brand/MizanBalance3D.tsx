@@ -91,12 +91,6 @@ const getGlowTexture = () => {
   return glowTexture;
 };
 
-/** True only when a real WebGL context can actually be created in this browser. */
-/**
- * True capability probe: webgl2 first, then webgl / experimental-webgl.
- * Software rendering is NOT a failure — a slow-but-working context still gets
- * the real scene (at reduced quality), so `failIfMajorPerformanceCaveat` is off.
- */
 type GLSupport = { ok: boolean; reason?: string };
 
 /**
