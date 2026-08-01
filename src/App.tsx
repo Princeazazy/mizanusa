@@ -114,6 +114,14 @@ const App = () => (
             }
           />
           <Route
+            path="/books"
+            element={
+              <AccountantRoute>
+                <BooksPage />
+              </AccountantRoute>
+            }
+          />
+          <Route
             path="/cvs"
             element={
               <AccountantRoute>
