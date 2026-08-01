@@ -560,7 +560,7 @@ const Balance = ({ reduced, simple }: SceneProps) => {
               key={a}
               position={[Math.cos(a) * 0.575, -1.363, Math.sin(a) * 0.575]}
             >
-              <GlowSprite scale={0.3} opacity={0.4} />
+              <GlowSprite scale={0.2} opacity={0.22} />
             </group>
           );
         })}
