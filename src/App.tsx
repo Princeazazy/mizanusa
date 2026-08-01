@@ -10,6 +10,7 @@ import DefioreIndex from "./pages/DefioreIndex";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import ClientPortal from "./pages/ClientPortal";
+import BooksPage from "./pages/BooksPage";
 import MarketingHome from "./pages/MarketingHome";
 import ServicesPage from "./pages/ServicesPage";
 import AboutPage from "./pages/AboutPage";
@@ -109,6 +110,14 @@ const App = () => (
             element={
               <AccountantRoute>
                 <ClientDashboard />
+              </AccountantRoute>
+            }
+          />
+          <Route
+            path="/books"
+            element={
+              <AccountantRoute>
+                <BooksPage />
               </AccountantRoute>
             }
           />
