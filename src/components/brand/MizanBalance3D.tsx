@@ -97,8 +97,17 @@ const getGlowTexture = () => {
  * Software rendering is NOT a failure — a slow-but-working context still gets
  * the real scene (at reduced quality), so `failIfMajorPerformanceCaveat` is off.
  */
-const detectWebGL = () => {
-  if (typeof window === "undefined" || typeof document === "undefined") return false;
+type GLSupport = { ok: boolean; reason?: string };
+
+/**
+ * three.js r163+ (we run 0.169) requires a WebGL2 context — WebGL1 support was
+ * removed upstream, so a webgl1-only device genuinely cannot run the scene and
+ * must get the poster. Software rendering is NOT a failure: a slow-but-working
+ * context still gets the real scene (hence failIfMajorPerformanceCaveat: false).
+ */
+const detectWebGL = (): GLSupport => {
+  if (typeof window === "undefined" || typeof document === "undefined")
+    return { ok: false, reason: "no DOM (server render)" };
   const attrs: WebGLContextAttributes = {
     failIfMajorPerformanceCaveat: false,
     alpha: true,
@@ -107,17 +116,19 @@ const detectWebGL = () => {
   };
   try {
     const canvas = document.createElement("canvas");
-    const gl =
-      canvas.getContext("webgl2", attrs) ||
-      canvas.getContext("webgl", attrs) ||
-      canvas.getContext("experimental-webgl", attrs);
-    return !!gl;
-  } catch {
-    return false;
+    if (canvas.getContext("webgl2", attrs)) return { ok: true };
+    const gl1 =
+      canvas.getContext("webgl", attrs) || canvas.getContext("experimental-webgl", attrs);
+    return {
+      ok: false,
+      reason: gl1
+        ? "WebGL2 unavailable (device exposes WebGL1 only; three.js 0.169 requires WebGL2)"
+        : "WebGL unavailable (no context could be created)",
+    };
+  } catch (err) {
+    return { ok: false, reason: `WebGL probe threw: ${(err as Error)?.message ?? err}` };
   }
 };
-
-
 
 /** Tiny additive glow halo attached to an emissive element. */
 const GlowSprite = ({
@@ -883,7 +894,9 @@ const BalanceScene = ({
           antialias: true,
           alpha: true,
           premultipliedAlpha: false,
-          powerPreference: "high-performance",
+          // Some Android drivers refuse a discrete/high-performance context and
+          // fail creation outright; "default" is the safe, universally honored value.
+          powerPreference: "default",
           failIfMajorPerformanceCaveat: false,
         }}
         onCreated={({ gl }) => {
@@ -920,12 +933,10 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
   const [webgl, setWebgl] = useState<boolean | null>(null);
   const [lost, setLost] = useState(false);
   useEffect(() => {
-    const ok = detectWebGL();
-    setWebgl(ok);
-    if (!ok)
-      console.warn(
-        "[MizanBalance3D] Poster fallback engaged: WebGL unavailable (no webgl2/webgl/experimental-webgl context could be created)",
-      );
+    const support = detectWebGL();
+    setWebgl(support.ok);
+    if (!support.ok)
+      console.warn(`[MizanBalance3D] Poster fallback engaged: ${support.reason}`);
   }, []);
 
   const poster = <BalancePoster className={className} />;
