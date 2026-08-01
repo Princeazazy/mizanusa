@@ -432,7 +432,6 @@ const Balance = ({ reduced, simple }: SceneProps) => {
     const sColumn = stage(0.16, 0.5);
     const sBeam = stage(0.4, 0.78);
     const sPans = stage(0.6, 0.9);
-    const sStream = stage(0.82, 1);
 
     if (plinth.current) {
       plinth.current.position.y = -0.16 * (1 - sPlinth);
@@ -440,7 +439,6 @@ const Balance = ({ reduced, simple }: SceneProps) => {
     }
     if (column.current) column.current.scale.y = 0.04 + 0.96 * sColumn;
     if (pivot.current) pivot.current.scale.setScalar(0.001 + 0.999 * sColumn);
-    if (stream.current) stream.current.visible = sStream > 0.01;
 
     if (group.current) {
       group.current.rotation.y += d * 0.1;
