@@ -29,6 +29,7 @@ export const FuturisticSidebar = ({ onSignOut, onTabChange }: FuturisticSidebarP
 
   const navItems: NavItem[] = [
     { icon: Home, label: "Clients", description: "Return to the client roster", path: "/clients" },
+    { icon: BrainCircuit, label: "Books", description: "AI-drafted bookkeeping review queue", path: "/books" },
     ...(onWorkbook && onTabChange
       ? [
           { icon: LayoutGrid, label: "Overview", description: "Financial dashboard overview", tab: "dashboard" },
