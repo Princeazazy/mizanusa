@@ -178,7 +178,7 @@ const CoinStack = ({ count = 6, r = 0.052 }: { count?: number; r?: number }) => 
 );
 
 const CashStack = () => (
-  <group position={[0, 0.03, 0]} scale={1.45}>
+  <group position={[0, 0.055, 0]} scale={1.45}>
     {/* banded bill bundles, offset to leave room for coins */}
     <group position={[-0.045, 0, 0.02]}>
       {BUNDLES.map((b, i) => (
@@ -262,7 +262,7 @@ const LedgerBook = ({
 
 /** A fuller bookkeeping pile: ruled sheets, a stack of ledgers, one leaning book, a pen. */
 const BooksStack = () => (
-  <group position={[0, 0.03, 0]} rotation={[0, 0.3, 0]} scale={1.42}>
+  <group position={[0, 0.05, 0]} rotation={[0, 0.3, 0]} scale={1.42}>
     {/* loose ruled sheets at the base */}
     <group position={[0.012, 0.007, 0.012]} rotation={[0, -0.14, 0]}>
       <mesh castShadow receiveShadow>
@@ -317,7 +317,7 @@ const BooksStack = () => (
     </group>
 
     {/* one book leaning against the stack */}
-    <group position={[0.2, 0.055, 0.115]} rotation={[0, -0.7, -0.42]}>
+    <group position={[0.185, 0.078, 0.1]} rotation={[0, -0.7, -0.3]}>
       <LedgerBook w={0.26} d={0.185} h={0.04} cover={2} />
     </group>
   </group>
