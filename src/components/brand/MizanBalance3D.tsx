@@ -401,57 +401,6 @@ const Beam = ({ inlay }: { inlay: React.RefObject<MeshStandardMaterial> }) => {
   );
 };
 
-const STREAM_CURVE = new CatmullRomCurve3([
-  new Vector3(1.16, -0.6, 0.05),
-  new Vector3(0.95, 0.05, 0.12),
-  new Vector3(0.35, 0.72, 0.1),
-  new Vector3(-0.35, 0.74, -0.06),
-  new Vector3(-0.95, 0.08, -0.1),
-  new Vector3(-1.16, -0.6, -0.03),
-]);
-
-const dummy = new Object3D();
-
-/** Fine luminous motes flowing from the ledger pan into the cash pan. */
-const DataStream = ({ count, color, seed }: { count: number; color: string; seed: number }) => {
-  const mesh = useRef<InstancedMesh>(null);
-  const offsets = useMemo(
-    () => Array.from({ length: count }, (_, i) => (i + seed * 0.37) / count),
-    [count, seed],
-  );
-
-  useFrame((state) => {
-    const m = mesh.current;
-    if (!m) return;
-    const t = state.clock.getElapsedTime();
-    for (let i = 0; i < count; i++) {
-      const p = (offsets[i] + t * 0.045) % 1;
-      const pos = STREAM_CURVE.getPoint(p);
-      const wob = Math.sin(t * 0.9 + i * 2.3) * 0.018;
-      dummy.position.set(pos.x, pos.y + wob, pos.z + Math.cos(t * 0.7 + i) * 0.02);
-      const fade = Math.sin(Math.PI * Math.min(1, Math.max(0, p))) * 0.85 + 0.15;
-      const s = (0.0075 + (i % 3) * 0.0022) * fade;
-      dummy.scale.setScalar(s);
-      dummy.updateMatrix();
-      m.setMatrixAt(i, dummy.matrix);
-    }
-    m.instanceMatrix.needsUpdate = true;
-  });
-
-  return (
-    <instancedMesh ref={mesh} args={[undefined, undefined, count]} frustumCulled={false}>
-      <sphereGeometry args={[1, 8, 8]} />
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={3.2}
-        toneMapped={false}
-        transparent
-        opacity={0.9}
-      />
-    </instancedMesh>
-  );
-};
 
 const easeOutExpo = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
