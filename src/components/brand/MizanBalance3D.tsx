@@ -638,22 +638,32 @@ const Balance = ({ reduced, simple }: SceneProps) => {
   );
 };
 
-/** Slow cinematic drift: gentle orbital sway plus a breathing dolly. */
+/** Slow cinematic drift: gentle orbital sway plus a breathing dolly.
+ *  The base distance is fit to the canvas aspect ratio so the full object
+ *  (pans + plinth) always stays inside the frame at every breakpoint. */
+const HALF_W = 2.55; // world half-width of the sculpture incl. pans
+const HALF_H = 2.05; // world half-height incl. plinth + shadow
 const CameraDrift = ({ reduced }: { reduced: boolean }) => {
   const target = useMemo(() => new Vector3(0, 0.1, 0), []);
   useFrame((state) => {
-    if (reduced) return;
-    const t = state.clock.getElapsedTime();
+    const aspect = state.size.width / Math.max(1, state.size.height);
+    const tanHalfFov = Math.tan((34 * Math.PI) / 360);
+    const distForHeight = HALF_H / tanHalfFov;
+    const distForWidth = HALF_W / (tanHalfFov * aspect);
+    const base = Math.max(distForHeight, distForWidth) * 1.06;
+
+    const t = reduced ? 0 : state.clock.getElapsedTime();
     const yaw = Math.sin(t * 0.07) * 0.075;
-    const dist = 8.6 + Math.sin(t * 0.05 + 1.1) * 0.34;
+    const dist = base + (reduced ? 0 : Math.sin(t * 0.05 + 1.1) * 0.3);
     const x = Math.sin(yaw) * dist;
     const z = Math.cos(yaw) * dist;
-    const y = 1.05 + Math.sin(t * 0.045) * 0.12;
-    state.camera.position.lerp(new Vector3(x, y, z), 0.02);
+    const y = 1.05 + (reduced ? 0 : Math.sin(t * 0.045) * 0.12);
+    state.camera.position.lerp(new Vector3(x, y, z), reduced ? 1 : 0.03);
     state.camera.lookAt(target);
   });
   return null;
 };
+
 
 const Rig = ({ reduced, simple }: SceneProps) => (
   <>
