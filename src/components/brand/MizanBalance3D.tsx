@@ -600,10 +600,6 @@ const Rig = ({ reduced, simple }: SceneProps) => (
     <CameraDrift reduced={reduced} />
     <Balance reduced={reduced} simple={simple} />
 
-    {!simple && !reduced && (
-      <Sparkles count={20} scale={[6, 4, 4]} size={1.5} speed={0.16} opacity={0.24} color="#cfd8ff" />
-    )}
-
     <ContactShadows
       position={[0, -1.46, 0]}
       opacity={0.5}
