@@ -553,6 +553,17 @@ const Balance = ({ reduced, simple }: SceneProps) => {
             toneMapped={false}
           />
         </mesh>
+        {Array.from({ length: 14 }).map((_, i) => {
+          const a = (i / 14) * Math.PI * 2;
+          return (
+            <group
+              key={a}
+              position={[Math.cos(a) * 0.575, -1.363, Math.sin(a) * 0.575]}
+            >
+              <GlowSprite scale={0.3} opacity={0.4} />
+            </group>
+          );
+        })}
         <mesh position={[0, -1.325, 0]} receiveShadow castShadow>
           <cylinderGeometry args={[0.36, 0.5, 0.08, 72]} />
           <meshPhysicalMaterial {...OBSIDIAN_SOFT} />
@@ -588,15 +599,18 @@ const Balance = ({ reduced, simple }: SceneProps) => {
             <cylinderGeometry args={[0.0035, 0.01, 0.44, 12]} />
             <meshPhysicalMaterial {...GOLD} />
           </mesh>
-          <mesh position={[0, -0.45, 0]}>
-            <sphereGeometry args={[0.014, 16, 16]} />
-            <meshStandardMaterial
-              color={ACCENT}
-              emissive={ACCENT}
-              emissiveIntensity={2.6}
-              toneMapped={false}
-            />
-          </mesh>
+          <group position={[0, -0.45, 0]}>
+            <mesh>
+              <sphereGeometry args={[0.014, 16, 16]} />
+              <meshStandardMaterial
+                color={ACCENT}
+                emissive={ACCENT}
+                emissiveIntensity={2.6}
+                toneMapped={false}
+              />
+            </mesh>
+            <GlowSprite scale={0.34} opacity={0.85} />
+          </group>
         </group>
         <mesh position={[0, -0.02, 0.145]}>
           <boxGeometry args={[0.2, 0.01, 0.006]} />
@@ -606,6 +620,11 @@ const Balance = ({ reduced, simple }: SceneProps) => {
 
       <group ref={beam} position={[0, 0.3, 0]}>
         <Beam inlay={inlay} />
+        {[-0.86, -0.43, 0, 0.43, 0.86].map((x) => (
+          <group key={x} position={[x, 0.032, 0]}>
+            <GlowSprite scale={0.24} opacity={0.5} />
+          </group>
+        ))}
         <PanAssembly x={-1.3}>
           <CashStack />
         </PanAssembly>
@@ -626,7 +645,7 @@ const CameraDrift = ({ reduced }: { reduced: boolean }) => {
     if (reduced) return;
     const t = state.clock.getElapsedTime();
     const yaw = Math.sin(t * 0.07) * 0.075;
-    const dist = 8.2 + Math.sin(t * 0.05 + 1.1) * 0.34;
+    const dist = 8.6 + Math.sin(t * 0.05 + 1.1) * 0.34;
     const x = Math.sin(yaw) * dist;
     const z = Math.cos(yaw) * dist;
     const y = 1.05 + Math.sin(t * 0.045) * 0.12;
@@ -655,9 +674,9 @@ const Rig = ({ reduced, simple }: SceneProps) => (
 
     <ContactShadows
       position={[0, -1.46, 0]}
-      opacity={0.5}
-      scale={5.4}
-      blur={3.8}
+      opacity={0.42}
+      scale={4.2}
+      blur={3.2}
       far={2.4}
       resolution={256}
       color="#000000"
@@ -730,7 +749,7 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
           gl.setClearColor(new Color("#000000"), 0);
           gl.setClearAlpha(0);
         }}
-        camera={{ position: [0, 1.05, 8.2], fov: 30 }}
+        camera={{ position: [0, 1.05, 8.2], fov: 34 }}
       >
         <Suspense fallback={null}>
           <Rig reduced={reduced} simple={isMobile} />
