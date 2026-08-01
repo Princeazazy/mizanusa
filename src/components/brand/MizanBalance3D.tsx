@@ -1,8 +1,15 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer } from "@react-three/drei";
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import { CatmullRomCurve3, Color, MathUtils, Vector2, Vector3 } from "three";
+import {
+  AdditiveBlending,
+  CanvasTexture,
+  CatmullRomCurve3,
+  Color,
+  MathUtils,
+  Vector2,
+  Vector3,
+} from "three";
 import type { Group, Mesh, MeshStandardMaterial, PointLight } from "three";
 
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -47,6 +54,52 @@ const GOLD = {
 
 const ACCENT = "#2ee6c5";
 const RIM = "#8b7dff";
+
+/**
+ * Soft radial glow texture generated offscreen. Alpha reaches EXACTLY zero well
+ * inside the sprite bounds (~60% of the radius), so a sprite can never paint a
+ * visible edge or square. Replaces the postprocessing bloom pass entirely.
+ */
+let glowTexture: CanvasTexture | null = null;
+const getGlowTexture = () => {
+  if (glowTexture) return glowTexture;
+  const size = 128;
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext("2d")!;
+  const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size * 0.3);
+  g.addColorStop(0, "rgba(255,255,255,0.85)");
+  g.addColorStop(0.35, "rgba(255,255,255,0.28)");
+  g.addColorStop(0.7, "rgba(255,255,255,0.05)");
+  g.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+  glowTexture = new CanvasTexture(canvas);
+  return glowTexture;
+};
+
+/** Tiny additive glow halo attached to an emissive element. */
+const GlowSprite = ({
+  scale = 0.3,
+  color = ACCENT,
+  opacity = 0.9,
+}: {
+  scale?: number;
+  color?: string;
+  opacity?: number;
+}) => (
+  <sprite scale={[scale, scale, scale]}>
+    <spriteMaterial
+      map={getGlowTexture()}
+      color={color}
+      transparent
+      opacity={opacity}
+      blending={AdditiveBlending}
+      depthWrite={false}
+      toneMapped={false}
+    />
+  </sprite>
+);
 
 interface SceneProps {
   reduced: boolean;
@@ -500,6 +553,17 @@ const Balance = ({ reduced, simple }: SceneProps) => {
             toneMapped={false}
           />
         </mesh>
+        {Array.from({ length: 14 }).map((_, i) => {
+          const a = (i / 14) * Math.PI * 2;
+          return (
+            <group
+              key={a}
+              position={[Math.cos(a) * 0.575, -1.363, Math.sin(a) * 0.575]}
+            >
+              <GlowSprite scale={0.2} opacity={0.22} />
+            </group>
+          );
+        })}
         <mesh position={[0, -1.325, 0]} receiveShadow castShadow>
           <cylinderGeometry args={[0.36, 0.5, 0.08, 72]} />
           <meshPhysicalMaterial {...OBSIDIAN_SOFT} />
@@ -535,15 +599,18 @@ const Balance = ({ reduced, simple }: SceneProps) => {
             <cylinderGeometry args={[0.0035, 0.01, 0.44, 12]} />
             <meshPhysicalMaterial {...GOLD} />
           </mesh>
-          <mesh position={[0, -0.45, 0]}>
-            <sphereGeometry args={[0.014, 16, 16]} />
-            <meshStandardMaterial
-              color={ACCENT}
-              emissive={ACCENT}
-              emissiveIntensity={2.6}
-              toneMapped={false}
-            />
-          </mesh>
+          <group position={[0, -0.45, 0]}>
+            <mesh>
+              <sphereGeometry args={[0.014, 16, 16]} />
+              <meshStandardMaterial
+                color={ACCENT}
+                emissive={ACCENT}
+                emissiveIntensity={2.6}
+                toneMapped={false}
+              />
+            </mesh>
+            <GlowSprite scale={0.34} opacity={0.85} />
+          </group>
         </group>
         <mesh position={[0, -0.02, 0.145]}>
           <boxGeometry args={[0.2, 0.01, 0.006]} />
@@ -553,6 +620,11 @@ const Balance = ({ reduced, simple }: SceneProps) => {
 
       <group ref={beam} position={[0, 0.3, 0]}>
         <Beam inlay={inlay} />
+        {[-0.86, -0.43, 0, 0.43, 0.86].map((x) => (
+          <group key={x} position={[x, 0.032, 0]}>
+            <GlowSprite scale={0.24} opacity={0.5} />
+          </group>
+        ))}
         <PanAssembly x={-1.3}>
           <CashStack />
         </PanAssembly>
@@ -573,7 +645,7 @@ const CameraDrift = ({ reduced }: { reduced: boolean }) => {
     if (reduced) return;
     const t = state.clock.getElapsedTime();
     const yaw = Math.sin(t * 0.07) * 0.075;
-    const dist = 8.2 + Math.sin(t * 0.05 + 1.1) * 0.34;
+    const dist = 8.6 + Math.sin(t * 0.05 + 1.1) * 0.34;
     const x = Math.sin(yaw) * dist;
     const z = Math.cos(yaw) * dist;
     const y = 1.05 + Math.sin(t * 0.045) * 0.12;
@@ -602,25 +674,14 @@ const Rig = ({ reduced, simple }: SceneProps) => (
 
     <ContactShadows
       position={[0, -1.46, 0]}
-      opacity={0.5}
-      scale={5.4}
-      blur={3.8}
+      opacity={0.42}
+      scale={4.2}
+      blur={3.2}
       far={2.4}
       resolution={256}
       color="#000000"
     />
 
-    {!simple && (
-      <EffectComposer enableNormalPass={false} multisampling={0}>
-        <Bloom
-          intensity={0.85}
-          luminanceThreshold={0.72}
-          luminanceSmoothing={0.28}
-          mipmapBlur
-          radius={0.7}
-        />
-      </EffectComposer>
-    )}
   </>
 );
 
@@ -688,7 +749,7 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
           gl.setClearColor(new Color("#000000"), 0);
           gl.setClearAlpha(0);
         }}
-        camera={{ position: [0, 1.05, 8.2], fov: 30 }}
+        camera={{ position: [0, 1.05, 8.2], fov: 34 }}
       >
         <Suspense fallback={null}>
           <Rig reduced={reduced} simple={isMobile} />
