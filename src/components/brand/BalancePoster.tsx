@@ -10,8 +10,8 @@ const css = `
   50% { transform: translateY(-6px) }
 }
 @keyframes mzRock {
-  0%, 100% { transform: rotate(-0.85deg) }
-  50% { transform: rotate(0.85deg) }
+  0%, 100% { transform: rotate(-1.5deg) }
+  50% { transform: rotate(1.5deg) }
 }
 @keyframes mzPulse {
   0%, 100% { opacity: 0.35 }
@@ -26,7 +26,7 @@ const css = `
   50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06) }
 }
 .mz-float { animation: mzFloat 7s ease-in-out infinite }
-.mz-rock { transform-box: fill-box; transform-origin: 50% 6%; animation: mzRock 9s ease-in-out infinite }
+.mz-rock { transform-box: fill-box; transform-origin: 50% 6%; animation: mzRock 8s ease-in-out infinite }
 .mz-pulse { animation: mzPulse 4.2s ease-in-out infinite }
 .mz-pulse-slow { animation: mzPulse 6.5s ease-in-out infinite }
 .mz-sheen { animation: mzSheen 8s ease-in-out infinite alternate }
