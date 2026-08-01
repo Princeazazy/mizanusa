@@ -1,4 +1,4 @@
-import { Home, LayoutGrid, List, FileText, Upload, Link2, Settings, LogOut } from "lucide-react";
+import { Home, LayoutGrid, List, FileText, Upload, Link2, Settings, LogOut, BrainCircuit } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
