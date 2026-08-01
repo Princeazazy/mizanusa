@@ -158,39 +158,126 @@ const BillBundle = ({ h = 0.042, tone = "#7a8a72" }: { h?: number; tone?: string
 };
 
 const BUNDLES: { y: number; x: number; z: number; r: number; h: number; tone: string }[] = [
-  { y: 0, x: 0, z: 0, r: 0.05, h: 0.042, tone: "#78886f" },
-  { y: 0.044, x: 0.009, z: -0.006, r: -0.11, h: 0.04, tone: "#7f8e77" },
-  { y: 0.086, x: -0.008, z: 0.008, r: 0.16, h: 0.038, tone: "#758468" },
-  { y: 0.126, x: 0.006, z: 0.004, r: -0.06, h: 0.036, tone: "#7c8b74" },
-  { y: 0.164, x: -0.011, z: -0.009, r: 0.27, h: 0.034, tone: "#82907a" },
+  { y: 0, x: 0, z: 0, r: 0.05, h: 0.044, tone: "#8fa383" },
+  { y: 0.046, x: 0.01, z: -0.007, r: -0.11, h: 0.042, tone: "#99ad8d" },
+  { y: 0.09, x: -0.009, z: 0.009, r: 0.16, h: 0.04, tone: "#889c7d" },
+  { y: 0.131, x: 0.007, z: 0.005, r: -0.06, h: 0.038, tone: "#93a788" },
+  { y: 0.17, x: -0.012, z: -0.01, r: 0.27, h: 0.036, tone: "#9db191" },
+  { y: 0.207, x: 0.008, z: 0.011, r: -0.2, h: 0.034, tone: "#8ea281" },
 ];
 
-const CashStack = () => (
-  <group position={[0, 0.03, 0]} scale={1.2}>
-    {BUNDLES.map((b, i) => (
-      <group key={i} position={[b.x, b.y, b.z]} rotation={[0, b.r, 0]}>
-        <BillBundle h={b.h} tone={b.tone} />
-      </group>
+/** A short stack of gold coins. */
+const CoinStack = ({ count = 6, r = 0.052 }: { count?: number; r?: number }) => (
+  <group>
+    {Array.from({ length: count }).map((_, i) => (
+      <mesh key={i} position={[0, 0.0105 * i + 0.005, 0]} rotation={[0, i * 0.4, 0]} castShadow>
+        <cylinderGeometry args={[r, r, 0.0095, 34]} />
+        <meshPhysicalMaterial {...GOLD} />
+      </mesh>
     ))}
   </group>
 );
 
-/** Sheets of ledger paper topped by an obsidian ledger book with gold corners. */
+const CashStack = () => (
+  <group position={[0, 0.03, 0]} scale={1.45}>
+    {/* banded bill bundles, offset to leave room for coins */}
+    <group position={[-0.045, 0, 0.02]}>
+      {BUNDLES.map((b, i) => (
+        <group key={i} position={[b.x, b.y, b.z]} rotation={[0, b.r, 0]}>
+          <BillBundle h={b.h} tone={b.tone} />
+        </group>
+      ))}
+    </group>
+
+    {/* coin stacks leaning against the bills */}
+    <group position={[0.17, 0, -0.07]}>
+      <CoinStack count={7} />
+    </group>
+    <group position={[0.16, 0, 0.08]}>
+      <CoinStack count={4} r={0.048} />
+    </group>
+    {/* a couple of loose coins lying flat */}
+    <mesh position={[0.24, 0.006, 0.02]} rotation={[0, 0.6, 0]} castShadow>
+      <cylinderGeometry args={[0.05, 0.05, 0.0095, 34]} />
+      <meshPhysicalMaterial {...GOLD} />
+    </mesh>
+    <mesh position={[-0.19, 0.006, -0.11]} rotation={[0, 0.2, 0]} castShadow>
+      <cylinderGeometry args={[0.047, 0.047, 0.0095, 34]} />
+      <meshPhysicalMaterial {...GOLD} />
+    </mesh>
+  </group>
+);
+
+const COVERS = [
+  { color: "#12151d", metalness: 0.4, roughness: 0.3, clearcoat: 0.8 },
+  { color: "#17222a", metalness: 0.35, roughness: 0.34, clearcoat: 0.7 },
+  { color: "#221a20", metalness: 0.35, roughness: 0.36, clearcoat: 0.7 },
+] as const;
+
+/** A closed ledger book: cover, page block, gold spine and corner details. */
+const LedgerBook = ({
+  w = 0.3,
+  d = 0.215,
+  h = 0.044,
+  cover = 0,
+  ruled = false,
+}: {
+  w?: number;
+  d?: number;
+  h?: number;
+  cover?: number;
+  ruled?: boolean;
+}) => (
+  <group>
+    <mesh castShadow receiveShadow>
+      <boxGeometry args={[w, h, d]} />
+      <meshPhysicalMaterial {...COVERS[cover % COVERS.length]} />
+    </mesh>
+    <mesh position={[0.006, 0, 0]}>
+      <boxGeometry args={[w * 0.98, h * 0.68, d * 0.97]} />
+      <meshStandardMaterial {...PAPER} />
+    </mesh>
+    <mesh position={[-w / 2 - 0.0015, 0, 0]}>
+      <boxGeometry args={[0.009, h * 0.96, d * 0.99]} />
+      <meshPhysicalMaterial {...GOLD} />
+    </mesh>
+    {[
+      [w * 0.43, d * 0.42],
+      [w * 0.43, -d * 0.42],
+      [-w * 0.37, d * 0.42],
+      [-w * 0.37, -d * 0.42],
+    ].map(([x, z]) => (
+      <mesh key={`${x}${z}`} position={[x, h / 2 + 0.0008, z]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[w * 0.1, w * 0.1]} />
+        <meshPhysicalMaterial {...GOLD} />
+      </mesh>
+    ))}
+    {ruled && (
+      <mesh position={[0, h / 2 + 0.0006, d * 0.2]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[w * 0.66, 0.004]} />
+        <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={0.9} />
+      </mesh>
+    )}
+  </group>
+);
+
+/** A fuller bookkeeping pile: ruled sheets, a stack of ledgers, one leaning book, a pen. */
 const BooksStack = () => (
-  <group position={[0, 0.03, 0]} rotation={[0, 0.3, 0]} scale={1.16}>
-    <group position={[0.012, 0.007, 0.01]} rotation={[0, -0.14, 0]}>
+  <group position={[0, 0.03, 0]} rotation={[0, 0.3, 0]} scale={1.42}>
+    {/* loose ruled sheets at the base */}
+    <group position={[0.012, 0.007, 0.012]} rotation={[0, -0.14, 0]}>
       <mesh castShadow receiveShadow>
         <boxGeometry args={[0.34, 0.014, 0.24]} />
         <meshStandardMaterial {...PAPER} />
       </mesh>
     </group>
-    <group position={[-0.01, 0.022, -0.008]} rotation={[0, 0.1, 0]}>
+    <group position={[-0.012, 0.022, -0.01]} rotation={[0, 0.1, 0]}>
       <mesh castShadow>
         <boxGeometry args={[0.34, 0.014, 0.24]} />
         <meshStandardMaterial {...PAPER} />
       </mesh>
     </group>
-    <group position={[0.004, 0.038, 0.004]} rotation={[0, -0.05, 0]}>
+    <group position={[0.004, 0.037, 0.004]} rotation={[0, -0.05, 0]}>
       <mesh castShadow>
         <boxGeometry args={[0.34, 0.014, 0.24]} />
         <meshStandardMaterial {...PAPER} />
@@ -201,45 +288,24 @@ const BooksStack = () => (
           <meshStandardMaterial
             color={ACCENT}
             emissive={ACCENT}
-            emissiveIntensity={0.5}
+            emissiveIntensity={0.6}
             roughness={0.9}
           />
         </mesh>
       ))}
     </group>
 
-    {/* closed obsidian ledger book */}
+    {/* stack of three ledgers, each slightly rotated */}
     <group position={[-0.004, 0.068, -0.004]} rotation={[0, 0.16, 0]}>
-      <mesh castShadow>
-        <boxGeometry args={[0.3, 0.044, 0.215]} />
-        <meshPhysicalMaterial {...OBSIDIAN_SOFT} />
-      </mesh>
-      <mesh position={[0.006, 0, 0]}>
-        <boxGeometry args={[0.294, 0.03, 0.208]} />
-        <meshStandardMaterial {...PAPER} />
-      </mesh>
-      {/* gold spine + corner details */}
-      <mesh position={[-0.152, 0, 0]}>
-        <boxGeometry args={[0.009, 0.042, 0.212]} />
-        <meshPhysicalMaterial {...GOLD} />
-      </mesh>
-      {[
-        [0.13, 0.09],
-        [0.13, -0.09],
-        [-0.11, 0.09],
-        [-0.11, -0.09],
-      ].map(([x, z]) => (
-        <mesh key={`${x}${z}`} position={[x, 0.0228, z]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[0.03, 0.03]} />
-          <meshPhysicalMaterial {...GOLD} />
-        </mesh>
-      ))}
-      <mesh position={[0, 0.0226, 0.045]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[0.2, 0.004]} />
-        <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={0.6} />
-      </mesh>
-      {/* slim pen */}
-      <group position={[0.01, 0.03, -0.03]} rotation={[0, 0.5, 0]}>
+      <LedgerBook w={0.33} d={0.235} h={0.05} cover={1} />
+    </group>
+    <group position={[0.008, 0.117, 0.008]} rotation={[0, -0.22, 0]}>
+      <LedgerBook w={0.31} d={0.222} h={0.046} cover={2} />
+    </group>
+    <group position={[-0.006, 0.163, -0.006]} rotation={[0, 0.34, 0]}>
+      <LedgerBook w={0.29} d={0.208} h={0.042} cover={0} ruled />
+      {/* slim pen resting on the top book */}
+      <group position={[0.01, 0.028, -0.03]} rotation={[0, 0.5, 0]}>
         <mesh rotation={[0, 0, Math.PI / 2]} castShadow>
           <cylinderGeometry args={[0.0075, 0.0075, 0.2, 14]} />
           <meshPhysicalMaterial color="#0c0e13" metalness={0.7} roughness={0.2} clearcoat={1} />
@@ -249,6 +315,11 @@ const BooksStack = () => (
           <meshPhysicalMaterial {...GOLD} />
         </mesh>
       </group>
+    </group>
+
+    {/* one book leaning against the stack */}
+    <group position={[0.2, 0.055, 0.115]} rotation={[0, -0.7, -0.42]}>
+      <LedgerBook w={0.26} d={0.185} h={0.04} cover={2} />
     </group>
   </group>
 );
