@@ -1,17 +1,16 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ContactShadows, Environment, Lightformer, Sparkles } from "@react-three/drei";
+import { ContactShadows, Environment, Lightformer } from "@react-three/drei";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import { CatmullRomCurve3, Color, MathUtils, Object3D, Vector2, Vector3 } from "three";
-import type { Group, InstancedMesh, Mesh, MeshStandardMaterial, PointLight } from "three";
+import { CatmullRomCurve3, Color, MathUtils, Vector2, Vector3 } from "three";
+import type { Group, Mesh, MeshStandardMaterial, PointLight } from "three";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 
 /**
  * Mizan (ميزان) — a balance scale reinterpreted as a brand sculpture:
- * obsidian body with high clearcoat, polished gold accents, a teal emissive
- * inlay, and a slow stream of luminous motes flowing from the ledger pan into
- * the cash pan. Canvas stays fully transparent; page bloom is CSS.
+ * obsidian body with high clearcoat, polished gold accents, and a teal emissive
+ * inlay. Canvas stays fully transparent; page bloom is CSS.
  */
 
 const OBSIDIAN = {
