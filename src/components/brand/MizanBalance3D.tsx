@@ -721,7 +721,31 @@ interface MizanBalance3DProps {
   className?: string;
 }
 
-export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
+/**
+ * Silent boundary: any throw inside the 3D subtree (WebGL context creation,
+ * shader compile, three.js internals) degrades to the static poster instead of
+ * bubbling to the page-level ErrorBoundary.
+ */
+class SceneBoundary extends Component<
+  { children: ReactNode; fallback: ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: Error) {
+    if (import.meta.env.DEV) console.warn("3D hero unavailable, using poster:", error.message);
+  }
+
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
+
+const BalanceScene = ({ className }: MizanBalance3DProps) => {
   const dpr = useMemo<[number, number]>(() => [1, 2], []);
   const isMobile = useIsMobile();
   const host = useRef<HTMLDivElement>(null);
@@ -729,16 +753,26 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
+    if (typeof window.matchMedia !== "function") return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const onChange = () => setReduced(mq.matches);
     onChange();
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+    // Safari < 14 and some Android WebViews only expose the legacy listener API.
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    }
+    mq.addListener?.(onChange);
+    return () => mq.removeListener?.(onChange);
   }, []);
 
   useEffect(() => {
     const el = host.current;
     if (!el) return;
+    if (typeof IntersectionObserver !== "function") {
+      setVisible(true);
+      return;
+    }
     const io = new IntersectionObserver(
       (entries) => setVisible(entries.some((e) => e.isIntersecting)),
       { threshold: 0.05 },
@@ -776,6 +810,7 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
           alpha: true,
           premultipliedAlpha: false,
           powerPreference: "high-performance",
+          failIfMajorPerformanceCaveat: false,
         }}
         onCreated={({ gl }) => {
           gl.setClearColor(new Color("#000000"), 0);
@@ -790,5 +825,21 @@ export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
     </div>
   );
 };
+
+export const MizanBalance3D = ({ className }: MizanBalance3DProps) => {
+  // Probe once on the client; SSR/no-WebGL renders the poster straight away.
+  const [webgl, setWebgl] = useState<boolean | null>(null);
+  useEffect(() => setWebgl(detectWebGL()), []);
+
+  const poster = <BalancePoster className={className} />;
+  if (webgl !== true) return poster;
+
+  return (
+    <SceneBoundary fallback={poster}>
+      <BalanceScene className={className} />
+    </SceneBoundary>
+  );
+};
+
 
 export default MizanBalance3D;
