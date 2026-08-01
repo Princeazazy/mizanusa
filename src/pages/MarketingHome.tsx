@@ -147,7 +147,7 @@ const MarketingHome = () => (
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto h-[300px] w-full max-w-[540px] sm:h-[420px] lg:h-[520px]"
+          className="relative mx-auto h-[340px] w-full max-w-[620px] sm:h-[480px] lg:h-[600px]"
         >
           <MizanBalance3D className="h-full w-full" />
         </motion.div>
