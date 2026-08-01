@@ -66,7 +66,10 @@ const getGlowTexture = () => {
   const size = 128;
   const canvas = document.createElement("canvas");
   canvas.width = canvas.height = size;
-  const ctx = canvas.getContext("2d")!;
+  const ctx = canvas.getContext("2d");
+  // Some mobile browsers refuse extra 2D contexts under memory pressure — an
+  // untextured sprite is fine, a thrown error is not.
+  if (!ctx) return null;
   const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size * 0.3);
   g.addColorStop(0, "rgba(255,255,255,0.85)");
   g.addColorStop(0.35, "rgba(255,255,255,0.28)");
@@ -77,6 +80,25 @@ const getGlowTexture = () => {
   glowTexture = new CanvasTexture(canvas);
   return glowTexture;
 };
+
+/** True only when a real WebGL context can actually be created in this browser. */
+const detectWebGL = () => {
+  if (typeof window === "undefined" || typeof document === "undefined") return false;
+  try {
+    const canvas = document.createElement("canvas");
+    const gl =
+      canvas.getContext("webgl2") ||
+      canvas.getContext("webgl") ||
+      canvas.getContext("experimental-webgl");
+    if (!gl) return false;
+    const lose = (gl as WebGLRenderingContext).getExtension?.("WEBGL_lose_context");
+    lose?.loseContext?.();
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 
 /** Tiny additive glow halo attached to an emissive element. */
 const GlowSprite = ({
