@@ -1,17 +1,16 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ContactShadows, Environment, Lightformer, Sparkles } from "@react-three/drei";
+import { ContactShadows, Environment, Lightformer } from "@react-three/drei";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import { CatmullRomCurve3, Color, MathUtils, Object3D, Vector2, Vector3 } from "three";
-import type { Group, InstancedMesh, Mesh, MeshStandardMaterial, PointLight } from "three";
+import { CatmullRomCurve3, Color, MathUtils, Vector2, Vector3 } from "three";
+import type { Group, Mesh, MeshStandardMaterial, PointLight } from "three";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 
 /**
  * Mizan (ميزان) — a balance scale reinterpreted as a brand sculpture:
- * obsidian body with high clearcoat, polished gold accents, a teal emissive
- * inlay, and a slow stream of luminous motes flowing from the ledger pan into
- * the cash pan. Canvas stays fully transparent; page bloom is CSS.
+ * obsidian body with high clearcoat, polished gold accents, and a teal emissive
+ * inlay. Canvas stays fully transparent; page bloom is CSS.
  */
 
 const OBSIDIAN = {
@@ -402,57 +401,6 @@ const Beam = ({ inlay }: { inlay: React.RefObject<MeshStandardMaterial> }) => {
   );
 };
 
-const STREAM_CURVE = new CatmullRomCurve3([
-  new Vector3(1.16, -0.6, 0.05),
-  new Vector3(0.95, 0.05, 0.12),
-  new Vector3(0.35, 0.72, 0.1),
-  new Vector3(-0.35, 0.74, -0.06),
-  new Vector3(-0.95, 0.08, -0.1),
-  new Vector3(-1.16, -0.6, -0.03),
-]);
-
-const dummy = new Object3D();
-
-/** Fine luminous motes flowing from the ledger pan into the cash pan. */
-const DataStream = ({ count, color, seed }: { count: number; color: string; seed: number }) => {
-  const mesh = useRef<InstancedMesh>(null);
-  const offsets = useMemo(
-    () => Array.from({ length: count }, (_, i) => (i + seed * 0.37) / count),
-    [count, seed],
-  );
-
-  useFrame((state) => {
-    const m = mesh.current;
-    if (!m) return;
-    const t = state.clock.getElapsedTime();
-    for (let i = 0; i < count; i++) {
-      const p = (offsets[i] + t * 0.045) % 1;
-      const pos = STREAM_CURVE.getPoint(p);
-      const wob = Math.sin(t * 0.9 + i * 2.3) * 0.018;
-      dummy.position.set(pos.x, pos.y + wob, pos.z + Math.cos(t * 0.7 + i) * 0.02);
-      const fade = Math.sin(Math.PI * Math.min(1, Math.max(0, p))) * 0.85 + 0.15;
-      const s = (0.0075 + (i % 3) * 0.0022) * fade;
-      dummy.scale.setScalar(s);
-      dummy.updateMatrix();
-      m.setMatrixAt(i, dummy.matrix);
-    }
-    m.instanceMatrix.needsUpdate = true;
-  });
-
-  return (
-    <instancedMesh ref={mesh} args={[undefined, undefined, count]} frustumCulled={false}>
-      <sphereGeometry args={[1, 8, 8]} />
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={3.2}
-        toneMapped={false}
-        transparent
-        opacity={0.9}
-      />
-    </instancedMesh>
-  );
-};
 
 const easeOutExpo = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
@@ -466,7 +414,6 @@ const Balance = ({ reduced, simple }: SceneProps) => {
   const plinth = useRef<Group>(null);
   const column = useRef<Mesh>(null);
   const pivot = useRef<Group>(null);
-  const stream = useRef<Group>(null);
   const tilt = useRef(0);
   const intro = useRef(reduced ? 1 : 0);
   const { pointer } = useThree();
@@ -485,7 +432,6 @@ const Balance = ({ reduced, simple }: SceneProps) => {
     const sColumn = stage(0.16, 0.5);
     const sBeam = stage(0.4, 0.78);
     const sPans = stage(0.6, 0.9);
-    const sStream = stage(0.82, 1);
 
     if (plinth.current) {
       plinth.current.position.y = -0.16 * (1 - sPlinth);
@@ -493,7 +439,6 @@ const Balance = ({ reduced, simple }: SceneProps) => {
     }
     if (column.current) column.current.scale.y = 0.04 + 0.96 * sColumn;
     if (pivot.current) pivot.current.scale.setScalar(0.001 + 0.999 * sColumn);
-    if (stream.current) stream.current.visible = sStream > 0.01;
 
     if (group.current) {
       group.current.rotation.y += d * 0.1;
@@ -616,13 +561,6 @@ const Balance = ({ reduced, simple }: SceneProps) => {
         </PanAssembly>
       </group>
 
-      {!simple && (
-        <group ref={stream} position={[0, 0.05, 0]}>
-          <DataStream count={38} color={ACCENT} seed={0} />
-          <DataStream count={8} color="#e6c67f" seed={1} />
-        </group>
-      )}
-
       <pointLight ref={sweep} position={[0, 0.1, 2.4]} color="#dfe8ff" intensity={0} distance={9} />
     </group>
   );
@@ -661,10 +599,6 @@ const Rig = ({ reduced, simple }: SceneProps) => (
 
     <CameraDrift reduced={reduced} />
     <Balance reduced={reduced} simple={simple} />
-
-    {!simple && !reduced && (
-      <Sparkles count={20} scale={[6, 4, 4]} size={1.5} speed={0.16} opacity={0.24} color="#cfd8ff" />
-    )}
 
     <ContactShadows
       position={[0, -1.46, 0]}
