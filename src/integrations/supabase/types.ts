@@ -14,6 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
+      agent_runs: {
+        Row: {
+          ai_count: number
+          auto_count: number
+          client_id: string
+          created_at: string
+          error_count: number
+          error_message: string | null
+          finished_at: string | null
+          id: string
+          model: string | null
+          period: string
+          review_count: number
+          started_at: string
+          status: string
+          tier1_count: number
+          total_count: number
+          triggered_by: string | null
+        }
+        Insert: {
+          ai_count?: number
+          auto_count?: number
+          client_id: string
+          created_at?: string
+          error_count?: number
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          model?: string | null
+          period: string
+          review_count?: number
+          started_at?: string
+          status?: string
+          tier1_count?: number
+          total_count?: number
+          triggered_by?: string | null
+        }
+        Update: {
+          ai_count?: number
+          auto_count?: number
+          client_id?: string
+          created_at?: string
+          error_count?: number
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          model?: string | null
+          period?: string
+          review_count?: number
+          started_at?: string
+          status?: string
+          tier1_count?: number
+          total_count?: number
+          triggered_by?: string | null
+        }
+        Relationships: []
+      }
+      chart_accounts: {
+        Row: {
+          client_id: string
+          code: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          code: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          code?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           content: string
@@ -48,6 +141,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      client_context: {
+        Row: {
+          categorization_rules: Json
+          client_id: string
+          created_at: string
+          entity_type: string | null
+          id: string
+          industry: string | null
+          notes: string | null
+          updated_at: string
+          vendor_mappings: Json
+        }
+        Insert: {
+          categorization_rules?: Json
+          client_id: string
+          created_at?: string
+          entity_type?: string | null
+          id?: string
+          industry?: string | null
+          notes?: string | null
+          updated_at?: string
+          vendor_mappings?: Json
+        }
+        Update: {
+          categorization_rules?: Json
+          client_id?: string
+          created_at?: string
+          entity_type?: string | null
+          id?: string
+          industry?: string | null
+          notes?: string | null
+          updated_at?: string
+          vendor_mappings?: Json
+        }
+        Relationships: []
       }
       client_credentials: {
         Row: {
@@ -231,6 +360,33 @@ export type Database = {
         }
         Relationships: []
       }
+      import_profiles: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          mapping: Json
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          mapping?: Json
+          name?: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          mapping?: Json
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       quote_requests: {
         Row: {
           business_name: string | null
@@ -278,6 +434,106 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      transactions: {
+        Row: {
+          agent_run_id: string | null
+          amount: number
+          approved_account_id: string | null
+          client_id: string
+          created_at: string
+          dedupe_hash: string
+          description: string
+          direction: string
+          id: string
+          is_demo: boolean
+          payee: string | null
+          period: string
+          raw_row: Json
+          reviewed_at: string | null
+          reviewed_by: string | null
+          source: string
+          status: string
+          suggested_account_id: string | null
+          suggested_confidence: number | null
+          suggested_rationale: string | null
+          suggested_tier: string | null
+          txn_date: string
+          updated_at: string
+        }
+        Insert: {
+          agent_run_id?: string | null
+          amount: number
+          approved_account_id?: string | null
+          client_id: string
+          created_at?: string
+          dedupe_hash: string
+          description: string
+          direction: string
+          id?: string
+          is_demo?: boolean
+          payee?: string | null
+          period: string
+          raw_row?: Json
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source?: string
+          status?: string
+          suggested_account_id?: string | null
+          suggested_confidence?: number | null
+          suggested_rationale?: string | null
+          suggested_tier?: string | null
+          txn_date: string
+          updated_at?: string
+        }
+        Update: {
+          agent_run_id?: string | null
+          amount?: number
+          approved_account_id?: string | null
+          client_id?: string
+          created_at?: string
+          dedupe_hash?: string
+          description?: string
+          direction?: string
+          id?: string
+          is_demo?: boolean
+          payee?: string | null
+          period?: string
+          raw_row?: Json
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source?: string
+          status?: string
+          suggested_account_id?: string | null
+          suggested_confidence?: number | null
+          suggested_rationale?: string | null
+          suggested_tier?: string | null
+          txn_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_agent_run_id_fkey"
+            columns: ["agent_run_id"]
+            isOneToOne: false
+            referencedRelation: "agent_runs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_approved_account_id_fkey"
+            columns: ["approved_account_id"]
+            isOneToOne: false
+            referencedRelation: "chart_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_suggested_account_id_fkey"
+            columns: ["suggested_account_id"]
+            isOneToOne: false
+            referencedRelation: "chart_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       uploaded_documents: {
         Row: {
