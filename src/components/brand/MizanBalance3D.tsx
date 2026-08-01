@@ -536,7 +536,7 @@ const Balance = ({ reduced, simple }: SceneProps) => {
   });
 
   return (
-    <group ref={group} position={[0, 0.15, 0]}>
+    <group ref={group} position={[0, 0.15, 0]} scale={1.18}>
       {/* plinth with recessed glowing seam */}
       <group ref={plinth}>
         <mesh position={[0, -1.4, 0]} receiveShadow castShadow>
