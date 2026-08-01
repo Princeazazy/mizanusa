@@ -58,13 +58,15 @@ export async function fetchImportProfile(clientId: string) {
     .eq("name", "Default")
     .maybeSingle();
   if (error) throw error;
-  return (data?.mapping ?? null) as ColumnMapping | null;
+  return (data?.mapping ?? null) as unknown as ColumnMapping | null;
 }
 
 export async function saveImportProfile(clientId: string, mapping: ColumnMapping) {
   const { error } = await supabase
     .from("import_profiles")
-    .upsert({ client_id: clientId, name: "Default", mapping }, { onConflict: "client_id,name" });
+    .upsert([{ client_id: clientId, name: "Default", mapping: mapping as unknown as never }], {
+      onConflict: "client_id,name",
+    });
   if (error) throw error;
 }
 
