@@ -414,7 +414,6 @@ const Balance = ({ reduced, simple }: SceneProps) => {
   const plinth = useRef<Group>(null);
   const column = useRef<Mesh>(null);
   const pivot = useRef<Group>(null);
-  const stream = useRef<Group>(null);
   const tilt = useRef(0);
   const intro = useRef(reduced ? 1 : 0);
   const { pointer } = useThree();
