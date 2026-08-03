@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import mizanMark from "@/assets/mizan-mark.png";
 import { MarketingHeader } from "./MarketingHeader";
 import { LoginLink, LoginRole } from "@/components/auth/LoginNav";
+import { ParallaxField } from "./depth";
 
 const COLUMNS: { heading: string; links: { to?: string; role?: LoginRole; label: string }[] }[] = [
   {
@@ -85,9 +86,10 @@ export const MarketingFooter = () => (
 /** Shared chrome for every public marketing route. */
 export const MarketingShell = ({ children }: { children: ReactNode }) => (
   <div className="relative min-h-screen overflow-x-hidden futuristic-bg">
+    <ParallaxField />
     <div className="light-beam light-beam-left opacity-40" />
     <div className="light-beam light-beam-right opacity-40" />
-    <div className="relative">
+    <div className="relative z-[1]">
       <MarketingHeader />
       <main>{children}</main>
       <MarketingFooter />
