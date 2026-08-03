@@ -14,6 +14,7 @@ import { MarketingShell } from "@/components/marketing/MarketingShell";
 import { Section } from "@/components/marketing/Section";
 import { MizanBalance3D } from "@/components/brand/MizanBalance3D";
 import { SectionBoundary } from "@/components/marketing/SectionBoundary";
+import { DepthAccents, PerspectiveShowcase, TiltCard } from "@/components/marketing/depth";
 
 import { RevenueExpenseChart } from "@/components/charts/RevenueExpenseChart";
 import { CategoryDonut } from "@/components/charts/CategoryDonut";
@@ -165,22 +166,24 @@ const MarketingHome = () => (
       title="Bookkeeping held to an accountant’s evidence standard."
       lede="Most small-business books fall apart under review because the numbers were never tied to anything. We work the other way round: the documents come first."
     >
-      <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="depth-stage mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
         {PILLARS.map((p, i) => (
-          <motion.article
+          <motion.div
             key={p.title}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="surface-panel tilt-surface flex flex-col p-7"
+            className="min-w-0"
           >
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <p.icon className="h-[18px] w-[18px]" aria-hidden="true" />
-            </span>
-            <h3 className="headline-editorial mt-6 text-[18px] text-foreground">{p.title}</h3>
-            <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">{p.body}</p>
-          </motion.article>
+            <TiltCard as="article" className="surface-panel tilt-surface flex h-full flex-col overflow-hidden p-7">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <p.icon className="h-[18px] w-[18px]" aria-hidden="true" />
+              </span>
+              <h3 className="headline-editorial mt-6 text-[18px] text-foreground">{p.title}</h3>
+              <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">{p.body}</p>
+            </TiltCard>
+          </motion.div>
         ))}
       </div>
     </Section>
@@ -191,21 +194,23 @@ const MarketingHome = () => (
       title="You see the same reporting we do."
       lede="Clients get a private workbook with reconciled registers, categorised detail and full statements — not a PDF dropped in an inbox once a quarter."
     >
-      <div className="mt-14 grid grid-cols-1 gap-6 xl:grid-cols-[1.25fr_1fr]">
-        <RevenueExpenseChart
-          data={SAMPLE_MONTHS}
-          period="Oct 1, 2025 – Mar 31, 2026"
-          basis="Illustrative sample · Not client data"
-        />
-        <CategoryDonut
-          data={SAMPLE_COMPOSITION}
-          period="Oct 1, 2025 – Mar 31, 2026"
-          basis="Illustrative sample · Not client data"
-          featured
-        />
-      </div>
+      <PerspectiveShowcase className="mt-14">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.25fr_1fr]">
+          <RevenueExpenseChart
+            data={SAMPLE_MONTHS}
+            period="Oct 1, 2025 – Mar 31, 2026"
+            basis="Illustrative sample · Not client data"
+          />
+          <CategoryDonut
+            data={SAMPLE_COMPOSITION}
+            period="Oct 1, 2025 – Mar 31, 2026"
+            basis="Illustrative sample · Not client data"
+            featured
+          />
+        </div>
+      </PerspectiveShowcase>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="depth-stage mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
         {[
           {
             icon: BookOpen,
@@ -223,13 +228,13 @@ const MarketingHome = () => (
             body: "Read-only portal logins scoped to a single engagement. Clients never see another client’s data.",
           },
         ].map((f) => (
-          <div key={f.title} className="surface-panel-flat p-6">
+          <TiltCard key={f.title} max={3} className="surface-panel-flat h-full overflow-hidden p-6">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/[0.05] text-primary">
               <f.icon className="h-4 w-4" aria-hidden="true" />
             </span>
             <h3 className="mt-5 text-[15px] font-medium text-foreground">{f.title}</h3>
             <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">{f.body}</p>
-          </div>
+          </TiltCard>
         ))}
       </div>
     </Section>
@@ -304,14 +309,25 @@ const MarketingHome = () => (
 
     {/* ============================= Process ============================= */}
     <Section eyebrow="How it runs" title="Four steps from messy to closed.">
-      <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.05] sm:grid-cols-2 lg:grid-cols-4">
-        {PROCESS.map((p) => (
-          <div key={p.step} className="bg-[hsl(231_20%_8%)] p-7">
-            <span className="stat-display text-[13px] text-primary">{p.step}</span>
-            <h3 className="headline-editorial mt-5 text-[17px] text-foreground">{p.title}</h3>
-            <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{p.body}</p>
+      <div className="relative mt-14">
+        <DepthAccents
+          accents={[
+            { x: "-4%", y: "-18%", size: 260, depth: 0.5, tone: "primary" },
+            { x: "46%", y: "-30%", size: 160, depth: 0.28, tone: "neutral" },
+            { x: "84%", y: "70%", size: 300, depth: 0.44, tone: "primary" },
+          ]}
+        />
+        <PerspectiveShowcase restTiltX={6} restTiltY={-3}>
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.05] sm:grid-cols-2 lg:grid-cols-4">
+            {PROCESS.map((p) => (
+              <div key={p.step} className="bg-[hsl(231_20%_8%)] p-7">
+                <span className="stat-display text-[13px] text-primary">{p.step}</span>
+                <h3 className="headline-editorial mt-5 text-[17px] text-foreground">{p.title}</h3>
+                <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{p.body}</p>
+              </div>
+            ))}
           </div>
-        ))}
+        </PerspectiveShowcase>
       </div>
     </Section>
 

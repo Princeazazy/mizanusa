@@ -1,6 +1,7 @@
 import { Clock, MailCheck, ShieldCheck } from "lucide-react";
 import { MarketingShell } from "@/components/marketing/MarketingShell";
 import { QuoteForm } from "@/components/marketing/QuoteForm";
+import { TiltCard } from "@/components/marketing/depth";
 
 const ASSURANCES = [
   {
@@ -38,15 +39,15 @@ const QuotePage = () => (
     <section className="mx-auto grid max-w-[1280px] grid-cols-1 gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[1.35fr_0.65fr] lg:gap-10">
       <QuoteForm />
 
-      <aside className="min-w-0 space-y-6">
+      <aside className="depth-stage min-w-0 space-y-6">
         {ASSURANCES.map((a) => (
-          <div key={a.title} className="surface-panel-flat p-6">
+          <TiltCard key={a.title} max={3} className="surface-panel-flat overflow-hidden p-6">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <a.icon className="h-4 w-4" aria-hidden="true" />
             </span>
             <h2 className="mt-5 text-[15px] font-medium text-foreground">{a.title}</h2>
             <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">{a.body}</p>
-          </div>
+          </TiltCard>
         ))}
 
         <div className="surface-panel-flat p-6">
