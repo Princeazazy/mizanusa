@@ -194,21 +194,23 @@ const MarketingHome = () => (
       title="You see the same reporting we do."
       lede="Clients get a private workbook with reconciled registers, categorised detail and full statements — not a PDF dropped in an inbox once a quarter."
     >
-      <div className="mt-14 grid grid-cols-1 gap-6 xl:grid-cols-[1.25fr_1fr]">
-        <RevenueExpenseChart
-          data={SAMPLE_MONTHS}
-          period="Oct 1, 2025 – Mar 31, 2026"
-          basis="Illustrative sample · Not client data"
-        />
-        <CategoryDonut
-          data={SAMPLE_COMPOSITION}
-          period="Oct 1, 2025 – Mar 31, 2026"
-          basis="Illustrative sample · Not client data"
-          featured
-        />
-      </div>
+      <PerspectiveShowcase className="mt-14">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.25fr_1fr]">
+          <RevenueExpenseChart
+            data={SAMPLE_MONTHS}
+            period="Oct 1, 2025 – Mar 31, 2026"
+            basis="Illustrative sample · Not client data"
+          />
+          <CategoryDonut
+            data={SAMPLE_COMPOSITION}
+            period="Oct 1, 2025 – Mar 31, 2026"
+            basis="Illustrative sample · Not client data"
+            featured
+          />
+        </div>
+      </PerspectiveShowcase>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="depth-stage mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
         {[
           {
             icon: BookOpen,
@@ -226,13 +228,13 @@ const MarketingHome = () => (
             body: "Read-only portal logins scoped to a single engagement. Clients never see another client’s data.",
           },
         ].map((f) => (
-          <div key={f.title} className="surface-panel-flat p-6">
+          <TiltCard key={f.title} max={3} className="surface-panel-flat h-full overflow-hidden p-6">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/[0.05] text-primary">
               <f.icon className="h-4 w-4" aria-hidden="true" />
             </span>
             <h3 className="mt-5 text-[15px] font-medium text-foreground">{f.title}</h3>
             <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">{f.body}</p>
-          </div>
+          </TiltCard>
         ))}
       </div>
     </Section>
