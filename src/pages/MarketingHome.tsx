@@ -309,14 +309,25 @@ const MarketingHome = () => (
 
     {/* ============================= Process ============================= */}
     <Section eyebrow="How it runs" title="Four steps from messy to closed.">
-      <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.05] sm:grid-cols-2 lg:grid-cols-4">
-        {PROCESS.map((p) => (
-          <div key={p.step} className="bg-[hsl(231_20%_8%)] p-7">
-            <span className="stat-display text-[13px] text-primary">{p.step}</span>
-            <h3 className="headline-editorial mt-5 text-[17px] text-foreground">{p.title}</h3>
-            <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{p.body}</p>
+      <div className="relative mt-14">
+        <DepthAccents
+          accents={[
+            { x: "-4%", y: "-18%", size: 260, depth: 0.5, tone: "primary" },
+            { x: "46%", y: "-30%", size: 160, depth: 0.28, tone: "neutral" },
+            { x: "84%", y: "70%", size: 300, depth: 0.44, tone: "primary" },
+          ]}
+        />
+        <PerspectiveShowcase restTiltX={6} restTiltY={-3}>
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.05] sm:grid-cols-2 lg:grid-cols-4">
+            {PROCESS.map((p) => (
+              <div key={p.step} className="bg-[hsl(231_20%_8%)] p-7">
+                <span className="stat-display text-[13px] text-primary">{p.step}</span>
+                <h3 className="headline-editorial mt-5 text-[17px] text-foreground">{p.title}</h3>
+                <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{p.body}</p>
+              </div>
+            ))}
           </div>
-        ))}
+        </PerspectiveShowcase>
       </div>
     </Section>
 
