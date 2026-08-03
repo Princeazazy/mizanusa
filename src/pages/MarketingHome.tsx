@@ -14,6 +14,7 @@ import { MarketingShell } from "@/components/marketing/MarketingShell";
 import { Section } from "@/components/marketing/Section";
 import { MizanBalance3D } from "@/components/brand/MizanBalance3D";
 import { SectionBoundary } from "@/components/marketing/SectionBoundary";
+import { DepthAccents, PerspectiveShowcase, TiltCard } from "@/components/marketing/depth";
 
 import { RevenueExpenseChart } from "@/components/charts/RevenueExpenseChart";
 import { CategoryDonut } from "@/components/charts/CategoryDonut";
@@ -165,22 +166,24 @@ const MarketingHome = () => (
       title="Bookkeeping held to an accountant’s evidence standard."
       lede="Most small-business books fall apart under review because the numbers were never tied to anything. We work the other way round: the documents come first."
     >
-      <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="depth-stage mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
         {PILLARS.map((p, i) => (
-          <motion.article
+          <motion.div
             key={p.title}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="surface-panel tilt-surface flex flex-col p-7"
+            className="min-w-0"
           >
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <p.icon className="h-[18px] w-[18px]" aria-hidden="true" />
-            </span>
-            <h3 className="headline-editorial mt-6 text-[18px] text-foreground">{p.title}</h3>
-            <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">{p.body}</p>
-          </motion.article>
+            <TiltCard as="article" className="surface-panel tilt-surface flex h-full flex-col overflow-hidden p-7">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <p.icon className="h-[18px] w-[18px]" aria-hidden="true" />
+              </span>
+              <h3 className="headline-editorial mt-6 text-[18px] text-foreground">{p.title}</h3>
+              <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">{p.body}</p>
+            </TiltCard>
+          </motion.div>
         ))}
       </div>
     </Section>
