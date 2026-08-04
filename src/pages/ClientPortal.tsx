@@ -188,7 +188,7 @@ const ClientPortal = () => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>${getTabLabel(activeTab)} - ${clientName}</title>
+          <title>${escapeHtml(getTabLabel(activeTab))} - ${escapeHtml(clientName)}</title>
           <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; padding: 32px 36px; color: #1a1a2e; background: #ffffff; }
@@ -267,11 +267,11 @@ const ClientPortal = () => {
               </div>
               <span class="divider" aria-hidden="true"></span>
               <div class="logo-slot logo-slot--right">
-                <img src="${activeClientLogo}" alt="${clientName}" class="client-logo" />
+                <img src="${activeClientLogo}" alt="${escapeHtml(clientName)}" class="client-logo" />
               </div>
             </div>
-            <h1>${getTabLabel(activeTab)}</h1>
-            <p>${clientName}</p>
+            <h1>${escapeHtml(getTabLabel(activeTab))}</h1>
+            <p>${escapeHtml(clientName)}</p>
             <p style="margin-top: 4px; font-size: 12px; color: hsl(${printTheme.mutedForeground});">Printed on ${new Date().toLocaleDateString()}</p>
           </div>
           ${printContent.innerHTML}
@@ -322,11 +322,11 @@ const ClientPortal = () => {
             </div>
             <span style="display:block;width:1px;height:96px;margin:0 auto;background:#cbd5e1;"></span>
             <div style="display:flex;align-items:center;justify-content:flex-start;padding-left:10px;">
-              <img src="${activeClientLogo}" alt="${clientName}" style="height:112px;max-width:240px;width:auto;object-fit:contain;" crossorigin="anonymous" />
+              <img src="${activeClientLogo}" alt="${escapeHtml(clientName)}" style="height:112px;max-width:240px;width:auto;object-fit:contain;" crossorigin="anonymous" />
             </div>
           </div>
-          <h1 style="font-size:22px;color:#0d9488;margin-bottom:4px;font-weight:700;letter-spacing:0.5px;">${getTabLabel(isDefiore && activeTab === "reconciliation" ? "january" : activeTab)}</h1>
-          <p style="font-size:13px;color:#475569;">${clientName}</p>
+          <h1 style="font-size:22px;color:#0d9488;margin-bottom:4px;font-weight:700;letter-spacing:0.5px;">${escapeHtml(getTabLabel(isDefiore && activeTab === "reconciliation" ? "january" : activeTab))}</h1>
+          <p style="font-size:13px;color:#475569;">${escapeHtml(clientName)}</p>
           <p style="margin-top:4px;font-size:12px;color:#94a3b8;">Generated on ${new Date().toLocaleDateString()}</p>
         </div>
       `;
