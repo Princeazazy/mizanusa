@@ -271,6 +271,30 @@ export type Database = {
         }
         Relationships: []
       }
+      client_login_attempts: {
+        Row: {
+          created_at: string
+          id: string
+          ip_hash: string | null
+          success: boolean
+          username: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_hash?: string | null
+          success?: boolean
+          username?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_hash?: string | null
+          success?: boolean
+          username?: string | null
+        }
+        Relationships: []
+      }
       client_sessions: {
         Row: {
           client_id: string
@@ -384,6 +408,27 @@ export type Database = {
           mapping?: Json
           name?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      quote_attempts: {
+        Row: {
+          accepted: boolean
+          created_at: string
+          id: string
+          ip_hash: string
+        }
+        Insert: {
+          accepted?: boolean
+          created_at?: string
+          id?: string
+          ip_hash: string
+        }
+        Update: {
+          accepted?: boolean
+          created_at?: string
+          id?: string
+          ip_hash?: string
         }
         Relationships: []
       }

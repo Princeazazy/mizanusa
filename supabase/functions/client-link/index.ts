@@ -1,17 +1,7 @@
 // Links an OAuth-authenticated identity to a client company after EIN verification.
 // EINs are never sent to the browser — comparison happens here only.
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
-
-const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify(body), {
-    status,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
-  });
+import { createClient } from "npm:@supabase/supabase-js@2";
+import { buildCorsHeaders, jsonResponse } from "../_shared/cors.ts";
 
 const MAX_ATTEMPTS_PER_HOUR = 5;
 
@@ -20,7 +10,10 @@ const normalizeEin = (value: string) => value.replace(/\D/g, "");
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: buildCorsHeaders(req) });
+  }
+  if (req.method !== "POST") {
+    return jsonResponse(req, { error: "Method not allowed" }, 405);
   }
 
   try {
@@ -35,7 +28,7 @@ Deno.serve(async (req) => {
     // --- Authenticate the caller (OAuth / password Supabase identity) ---
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
-      return json({ error: "Unauthorized" }, 401);
+      return jsonResponse(req, { error: "Unauthorized" }, 401);
     }
 
     const anon = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -43,7 +36,7 @@ Deno.serve(async (req) => {
     });
     const { data: userData, error: userError } = await anon.auth.getUser();
     if (userError || !userData?.user) {
-      return json({ error: "Unauthorized" }, 401);
+      return jsonResponse(req, { error: "Unauthorized" }, 401);
     }
     const user = userData.user;
 
@@ -84,21 +77,21 @@ Deno.serve(async (req) => {
 
     // --- status: has this identity already been linked? ---
     if (action === "status") {
-      if (!existingLink) return json({ linked: false });
+      if (!existingLink) return jsonResponse(req, { linked: false });
       const session = await issueSession(existingLink.client_id, existingLink.client_name);
-      return json({ linked: true, ...session });
+      return jsonResponse(req, { linked: true, ...session });
     }
 
     // --- link: verify EIN, then permanently bind the identity ---
     if (action === "link") {
       if (existingLink) {
         const session = await issueSession(existingLink.client_id, existingLink.client_name);
-        return json({ linked: true, ...session });
+        return jsonResponse(req, { linked: true, ...session });
       }
 
       const digits = normalizeEin(typeof ein === "string" ? ein : "");
       if (digits.length !== 9) {
-        return json({ error: "Enter a valid EIN in the format XX-XXXXXXX." }, 400);
+        return jsonResponse(req, { error: "Enter a valid EIN in the format XX-XXXXXXX." }, 400);
       }
 
       // Rate limit: max attempts per identity per rolling hour
@@ -110,7 +103,7 @@ Deno.serve(async (req) => {
         .gte("created_at", since);
 
       if ((count ?? 0) >= MAX_ATTEMPTS_PER_HOUR) {
-        return json(
+        return jsonResponse(req, 
           { error: "Too many attempts. Please try again in an hour or contact your bookkeeper." },
           429,
         );
@@ -134,7 +127,7 @@ Deno.serve(async (req) => {
 
       if (!match) {
         console.log("EIN link attempt failed for user", user.id);
-        return json(
+        return jsonResponse(req, 
           { error: "We couldn't match that EIN — contact your bookkeeper." },
           403,
         );
@@ -151,12 +144,12 @@ Deno.serve(async (req) => {
       }
 
       const session = await issueSession(match.client_id, match.client_name);
-      return json({ linked: true, ...session });
+      return jsonResponse(req, { linked: true, ...session });
     }
 
-    return json({ error: "Invalid action" }, 400);
+    return jsonResponse(req, { error: "Invalid action" }, 400);
   } catch (error) {
     console.error("client-link error:", error);
-    return json({ error: "Account linking service error" }, 500);
+    return jsonResponse(req, { error: "Account linking service error" }, 500);
   }
 });
