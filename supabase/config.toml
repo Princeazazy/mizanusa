@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.client-link]
 verify_jwt = false
+
+[functions.quote-submit]
+verify_jwt = false

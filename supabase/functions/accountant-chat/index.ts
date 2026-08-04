@@ -1,10 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { buildCorsHeaders } from "../_shared/cors.ts";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+/**
+ * Practice-side allowlist. This function performs service-role writes, so a
+ * valid JWT is NOT sufficient authorization — the caller must be one of the
+ * two authorized accountants.
+ */
+const ACCOUNTANT_EMAILS = ["elazazy.ameer@gmail.com", "oamroamr114@gmail.com"];
 
 const SYSTEM_PROMPT = `You are Mizan AI, an expert accounting and bookkeeping assistant for professional accountants. You help with:
 
@@ -138,9 +141,13 @@ const tools = [
 ];
 
 serve(async (req) => {
+  // Origin-restricted CORS (Mizan-owned domains only), shared with the other functions.
+  const corsHeaders = buildCorsHeaders(req);
+
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
+
 
   try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
@@ -166,6 +173,23 @@ serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    // A valid session is not enough: this endpoint writes with the service role,
+    // so restrict it to the practice allowlist and never trust a client-supplied
+    // identity. Federated (Google/Apple) identities are client-side only.
+    const claims = claimsData.claims as Record<string, unknown>;
+    const callerEmail = String(claims.email ?? "").toLowerCase().trim();
+    const provider = String(
+      (claims.app_metadata as Record<string, unknown> | undefined)?.provider ?? "email",
+    );
+    if (provider !== "email" || !ACCOUNTANT_EMAILS.includes(callerEmail)) {
+      console.warn("accountant-chat: forbidden caller", claims.sub, provider);
+      return new Response(JSON.stringify({ error: "Forbidden" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const callerId = String(claims.sub);
 
     const { messages, clientId, executeActions } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
@@ -193,6 +217,7 @@ serve(async (req) => {
                 client_id: clientId,
                 name: name,
                 sheet_type: sheet_type,
+                created_by: callerId,
                 data: { columns, rows: initial_data || [] }
               })
               .select()

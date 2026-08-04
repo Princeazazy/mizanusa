@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
@@ -13,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 export const INDUSTRIES = [
@@ -64,8 +63,10 @@ const EMPTY = {
 };
 
 /**
- * Public lead capture. Writes to the quote_requests table via the anon insert
- * policy; server-side CHECK constraints mirror this client validation.
+ * Public lead capture. Submits through the `quote-submit` edge function, which
+ * is the only write path into quote_requests (the table has no anonymous grant).
+ * That function re-validates every field, enforces a per-visitor hourly throttle,
+ * and rejects the hidden honeypot field below.
  */
 export const QuoteForm = () => {
   const [values, setValues] = useState(EMPTY);
@@ -74,6 +75,9 @@ export const QuoteForm = () => {
   const [done, setDone] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  /** Bot trap — real users can't see or focus this input. */
+  const honeypotRef = useRef<HTMLInputElement>(null);
+  const mountedAt = useRef(Date.now());
 
   const set = (key: keyof typeof EMPTY) => (value: string) => {
     setValues((v) => ({ ...v, [key]: value }));
@@ -95,22 +99,42 @@ export const QuoteForm = () => {
 
     setSubmitting(true);
     const d = parsed.data;
-    const { error } = await supabase.from("quote_requests").insert({
-      name: d.name,
-      business_name: d.businessName || null,
-      industry: d.industry,
-      email: d.email,
-      phone: d.phone || null,
-      situation: d.situation || null,
-      message: d.message || null,
-    });
+
+    let ok = false;
+    let serverMessage: string | undefined;
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/quote-submit`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: d.name,
+            business_name: d.businessName || null,
+            industry: d.industry,
+            email: d.email,
+            phone: d.phone || null,
+            situation: d.situation || null,
+            message: d.message || null,
+            company_website: honeypotRef.current?.value ?? "",
+            elapsed_ms: Date.now() - mountedAt.current,
+          }),
+        },
+      );
+      const payload = await response.json().catch(() => ({}));
+      ok = response.ok && payload?.success === true;
+      if (!ok) serverMessage = typeof payload?.error === "string" ? payload.error : undefined;
+    } catch {
+      serverMessage = undefined;
+    }
     setSubmitting(false);
 
-    if (error) {
+    if (!ok) {
       toast({
         variant: "destructive",
         title: "We couldn’t send that",
-        description: "Something went wrong submitting your request. Please try again.",
+        description:
+          serverMessage ?? "Something went wrong submitting your request. Please try again.",
       });
       return;
     }
@@ -148,6 +172,24 @@ export const QuoteForm = () => {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="surface-panel p-6 sm:p-9">
+      {/* Honeypot: hidden from users and assistive tech, irresistible to bots. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none"
+        style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}
+      >
+        <label htmlFor="company_website">Company website</label>
+        <input
+          ref={honeypotRef}
+          id="company_website"
+          name="company_website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          defaultValue=""
+        />
+      </div>
+
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Field id="q-name" label="Your name" error={errors.name} required>
           <Input
