@@ -141,9 +141,13 @@ const tools = [
 ];
 
 serve(async (req) => {
+  // Origin-restricted CORS (Mizan-owned domains only), shared with the other functions.
+  const corsHeaders = buildCorsHeaders(req);
+
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
+
 
   try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
