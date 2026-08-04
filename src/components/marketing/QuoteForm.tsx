@@ -173,7 +173,11 @@ export const QuoteForm = () => {
   return (
     <form onSubmit={handleSubmit} noValidate className="surface-panel p-6 sm:p-9">
       {/* Honeypot: hidden from users and assistive tech, irresistible to bots. */}
-      <div aria-hidden="true" className="pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none"
+        style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}
+      >
         <label htmlFor="company_website">Company website</label>
         <input
           ref={honeypotRef}
