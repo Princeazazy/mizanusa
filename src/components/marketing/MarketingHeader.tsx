@@ -43,13 +43,13 @@ export const MarketingHeader = () => {
       <div className="mx-auto flex h-[74px] max-w-[1280px] items-center justify-between gap-6 px-5 sm:px-8">
         <Link
           to="/"
-          className="flex shrink-0 items-baseline gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+          className="flex shrink-0 items-baseline gap-3.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background"
           aria-label="Mizan — home"
         >
-          <img src={mizanMark} alt="" className="h-9 w-auto shrink-0 self-center object-contain" />
+          <img src={mizanMark} alt="" className="h-11 w-auto shrink-0 self-center object-contain" />
           <span className="flex flex-col leading-none">
-            <span className="text-[15px] font-medium tracking-[-0.01em] text-foreground">Mizan</span>
-            <span className="mt-1 text-[10px] uppercase tracking-[0.22em] text-muted-foreground/80">
+            <span className="text-[17px] font-medium tracking-[-0.01em] text-foreground">Mizan</span>
+            <span className="mt-1.5 text-[11px] uppercase tracking-[0.24em] text-muted-foreground/80">
               Bookkeeping
             </span>
           </span>
