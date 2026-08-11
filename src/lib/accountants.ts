@@ -16,3 +16,9 @@ export const isOAuthIdentity = (appMetadata?: { provider?: string } | null) => {
   const provider = appMetadata?.provider;
   return !!provider && provider !== "email";
 };
+
+/** Only this account can see inbound quote requests / leads. */
+export const LEAD_OWNER_EMAIL = "elazazy.ameer@gmail.com";
+
+export const isLeadOwnerEmail = (email?: string | null) =>
+  !!email && email.toLowerCase().trim() === LEAD_OWNER_EMAIL;
