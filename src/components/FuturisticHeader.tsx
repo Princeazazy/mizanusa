@@ -271,6 +271,18 @@ export const FuturisticHeader = ({
 
         <ClientLoginButton className="ml-1" />
 
+        {onSignOut && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onSignOut}
+            className="ml-1 hidden gap-2 hover:border-destructive/50 hover:text-destructive sm:inline-flex"
+          >
+            <LogOut className="h-4 w-4" aria-hidden="true" />
+            Sign out
+          </Button>
+        )}
+
         {/* Account menu */}
         <div className="relative">
           <button
