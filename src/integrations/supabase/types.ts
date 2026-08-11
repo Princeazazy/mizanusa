@@ -622,6 +622,7 @@ export type Database = {
     }
     Functions: {
       is_mizan_accountant: { Args: never; Returns: boolean }
+      is_mizan_lead_owner: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never

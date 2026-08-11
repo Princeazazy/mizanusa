@@ -13,6 +13,8 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { EmptyState } from "@/components/EmptyState";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { LeadsPanel } from "@/components/admin/LeadsPanel";
+import { useAuth } from "@/hooks/useAuth";
+import { isLeadOwnerEmail } from "@/lib/accountants";
 
 
 const clients = [
@@ -38,6 +40,8 @@ const clients = [
 const ClientDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
+  const canSeeLeads = isLeadOwnerEmail(user?.email);
   const [searchQuery, setSearchQuery] = useState("");
   const [checkingAuth, setCheckingAuth] = useState(true);
 
@@ -236,7 +240,7 @@ const ClientDashboard = () => {
               />
             )}
 
-            <LeadsPanel />
+            {canSeeLeads && <LeadsPanel />}
 
 
 
