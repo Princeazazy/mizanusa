@@ -240,7 +240,7 @@ const ClientDashboard = () => {
               />
             )}
 
-            <LeadsPanel />
+            {canSeeLeads && <LeadsPanel />}
 
 
 
