@@ -13,6 +13,8 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { EmptyState } from "@/components/EmptyState";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { LeadsPanel } from "@/components/admin/LeadsPanel";
+import { useAuth } from "@/hooks/useAuth";
+import { isLeadOwnerEmail } from "@/lib/accountants";
 
 
 const clients = [
