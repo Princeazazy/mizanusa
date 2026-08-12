@@ -69,24 +69,33 @@ export const ProfitLossSheet = () => {
   const bankFees = sumByCoaCode(allWithdrawals, "6600");
   const insurance = sumByCoaCode(allWithdrawals, "6700");
   const otherExpenses = sumByCoaCode(allWithdrawals, "6800");
-  const totalOperatingExpenses = totalRent + utilities + communications + officeSupplies + vehicleOperating + processingFees + bankFees + insurance + otherExpenses;
+  const meals = sumByCoaCode(allWithdrawals, "6310");
+  const licenses = sumByCoaCode(allWithdrawals, "6900");
+  const unclassified = sumByCoaCode(allWithdrawals, "6999");
+  const totalOperatingExpenses = totalRent + utilities + communications + officeSupplies + vehicleOperating + processingFees + bankFees + insurance + otherExpenses + meals + licenses + unclassified;
 
   const netIncome = grossProfit - totalOperatingExpenses;
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">Profit & Loss Statement</h2>
-        <p className="text-muted-foreground">CVS Auto Sales Inc. — Q4 2025 (October - December)</p>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">Profit &amp; Loss Statement</h2>
+          <p className="text-muted-foreground">
+            CVS Auto Sales Inc. — {period.label} ({period.monthsLabel})
+          </p>
+        </div>
+        <QuarterSelect value={periodKey} onChange={setPeriodKey} />
       </div>
 
       <Card className="shadow-card">
         <CardHeader className="bg-primary/5 border-b">
           <CardTitle className="flex items-center gap-2">
             <DollarSign className="h-5 w-5" />
-            Income Statement — Q4 2025
+            Income Statement — {period.label}
           </CardTitle>
         </CardHeader>
+
         <CardContent className="p-0">
           <Table>
             <TableHeader>
