@@ -37,13 +37,17 @@ import {
   novemberSummary,
   decemberSummary,
 } from "@/data/bankTransactions";
+import { cvs2026Months } from "@/data/cvs2026Transactions";
+import { Cvs2026TransfersSheet } from "@/components/sheets/Cvs2026TransfersSheet";
 
 const SEARCH_TARGETS: SearchTarget[] = [
   { label: "Dashboard", value: "dashboard", hint: "Overview & charts" },
   { label: "October 2025 — Bank", value: "october", hint: "Checking account" },
   { label: "November 2025 — Bank", value: "november", hint: "Checking account" },
   { label: "December 2025 — Bank", value: "december", hint: "Checking account" },
-  { label: "Transfers", value: "transfers", hint: "Inter-account movement" },
+  ...cvs2026Months.map((m) => ({ label: `${m.label} — Bank`, value: m.key, hint: "Checking account" })),
+  { label: "Transfers", value: "transfers", hint: "Inter-account movement (Q4 2025)" },
+  { label: "Transfers 2026", value: "transfers2026", hint: "Inter-account movement (2026 YTD)" },
   { label: "E-Safety Inspections", value: "esafety", hint: "Inspection revenue" },
   { label: "Title Revenue", value: "titlerevenue", hint: "Title & tag income" },
   { label: "Vitu Statements", value: "vitu", hint: "Vendor billing" },
@@ -58,7 +62,10 @@ const SEARCH_TARGETS: SearchTarget[] = [
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [q4Open, setQ4Open] = useState(false);
+  const [y26Open, setY26Open] = useState(false);
   const q4Ref = useRef<HTMLDivElement | null>(null);
+  const y26Ref = useRef<HTMLDivElement | null>(null);
+  const months2026 = cvs2026Months.map((m) => m.key);
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -75,6 +82,17 @@ const Index = () => {
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
   }, [q4Open]);
+
+  useEffect(() => {
+    if (!y26Open) return;
+    const onDocClick = (e: MouseEvent) => {
+      const el = y26Ref.current;
+      if (!el) return;
+      if (e.target instanceof Node && !el.contains(e.target)) setY26Open(false);
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [y26Open]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -135,7 +153,7 @@ const Index = () => {
           {/* Header */}
           <FuturisticHeader
             title="Financial Workbook"
-            subtitle="Reconciled Q4 2025 records for"
+            subtitle="Reconciled Q4 2025 & 2026 YTD records for"
             clientName="CVS Auto Sales Inc."
             clientLogo={cvsLogo}
             searchTargets={SEARCH_TARGETS}
@@ -234,12 +252,56 @@ const Index = () => {
                   )}
                 </div>
                 
+                {/* 2026 YTD Dropdown */}
+                <div className="relative" ref={y26Ref}>
+                  <TabsTrigger
+                    value="y2026"
+                    className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                    data-state={months2026.includes(activeTab) ? "active" : "inactive"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setY26Open((v) => !v);
+                      if (!months2026.includes(activeTab)) setActiveTab(months2026[0]);
+                    }}
+                  >
+                    <FileSpreadsheet className="h-4 w-4" />
+                    2026 YTD
+                    <svg className="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </TabsTrigger>
+                  {y26Open && (
+                    <div className="absolute top-full left-0 mt-1 glass-card z-50 min-w-[180px] p-1">
+                      {cvs2026Months.map((m) => (
+                        <button
+                          key={m.key}
+                          onClick={() => {
+                            setActiveTab(m.key);
+                            setY26Open(false);
+                          }}
+                          className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === m.key ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
+                        >
+                          <FileSpreadsheet className="h-4 w-4" />
+                          {m.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <TabsTrigger 
                   value="transfers" 
                   className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
                 >
                   <ArrowLeftRight className="h-4 w-4" />
                   Transfers
+                </TabsTrigger>
+                <TabsTrigger
+                  value="transfers2026"
+                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                >
+                  <ArrowLeftRight className="h-4 w-4" />
+                  Transfers 2026
                 </TabsTrigger>
                 <TabsTrigger 
                   value="esafety" 
@@ -348,6 +410,69 @@ const Index = () => {
                   />
                 </TabsContent>
                 
+                <TabsContent value="january2026" className="m-0">
+                  <CheckingAccountSheet
+                    month="January"
+                    year="2026"
+                    deposits={cvs2026Months[0].deposits}
+                    withdrawals={cvs2026Months[0].withdrawals}
+                    beginningBalance={cvs2026Months[0].beginningBalance}
+                    endingBalance={cvs2026Months[0].endingBalance}
+                    statementBalance={cvs2026Months[0].statementEndingBalance}
+                  />
+                </TabsContent>
+
+                <TabsContent value="february2026" className="m-0">
+                  <CheckingAccountSheet
+                    month="February"
+                    year="2026"
+                    deposits={cvs2026Months[1].deposits}
+                    withdrawals={cvs2026Months[1].withdrawals}
+                    beginningBalance={cvs2026Months[1].beginningBalance}
+                    endingBalance={cvs2026Months[1].endingBalance}
+                    statementBalance={cvs2026Months[1].statementEndingBalance}
+                  />
+                </TabsContent>
+
+                <TabsContent value="march2026" className="m-0">
+                  <CheckingAccountSheet
+                    month="March"
+                    year="2026"
+                    deposits={cvs2026Months[2].deposits}
+                    withdrawals={cvs2026Months[2].withdrawals}
+                    beginningBalance={cvs2026Months[2].beginningBalance}
+                    endingBalance={cvs2026Months[2].endingBalance}
+                    statementBalance={cvs2026Months[2].statementEndingBalance}
+                  />
+                </TabsContent>
+
+                <TabsContent value="april2026" className="m-0">
+                  <CheckingAccountSheet
+                    month="April"
+                    year="2026"
+                    deposits={cvs2026Months[3].deposits}
+                    withdrawals={cvs2026Months[3].withdrawals}
+                    beginningBalance={cvs2026Months[3].beginningBalance}
+                    endingBalance={cvs2026Months[3].endingBalance}
+                    statementBalance={cvs2026Months[3].statementEndingBalance}
+                  />
+                </TabsContent>
+
+                <TabsContent value="may2026" className="m-0">
+                  <CheckingAccountSheet
+                    month="May"
+                    year="2026"
+                    deposits={cvs2026Months[4].deposits}
+                    withdrawals={cvs2026Months[4].withdrawals}
+                    beginningBalance={cvs2026Months[4].beginningBalance}
+                    endingBalance={cvs2026Months[4].endingBalance}
+                    statementBalance={cvs2026Months[4].statementEndingBalance}
+                  />
+                </TabsContent>
+                <TabsContent value="transfers2026" className="m-0">
+                  <Cvs2026TransfersSheet />
+                </TabsContent>
+
                 <TabsContent value="transfers" className="m-0">
                   <TransfersSheet />
                 </TabsContent>
