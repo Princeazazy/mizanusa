@@ -17,6 +17,7 @@ import {
   novemberInspections, 
   decemberInspections,
   inspectionsSummary,
+  SALVAGE_INSPECTION_FEE,
   Inspection
 } from "@/data/esafetyInspections";
 
@@ -115,7 +116,7 @@ const InspectionTable = ({ inspections, month }: InspectionTableProps) => {
         <div className="text-right">
           <p className="text-sm text-muted-foreground">Revenue</p>
           <p className="text-2xl font-bold text-income">
-            {formatCurrency(inspections.length * 90)}
+            {formatCurrency(inspections.length * SALVAGE_INSPECTION_FEE)}
           </p>
         </div>
       </div>
@@ -226,7 +227,7 @@ export const ESafetySheet = () => {
                 <TableCell>
                   <Badge variant="outline" className="font-mono">4200</Badge>
                 </TableCell>
-                <TableCell className="text-right">{formatCurrency(90)}</TableCell>
+                <TableCell className="text-right">{formatCurrency(SALVAGE_INSPECTION_FEE)}</TableCell>
                 <TableCell className="text-right font-medium">{inspectionsSummary.total.count}</TableCell>
                 <TableCell className="text-right font-bold text-income">
                   {formatCurrency(inspectionsSummary.total.revenue)}
