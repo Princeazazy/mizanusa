@@ -53,17 +53,7 @@ export const cvsQuarters: QuarterPeriod[] = [
     beginningBalance: jan.beginningBalance,
     endingBalance: mar.endingBalance,
   },
-  {
-    key: "q2-2026",
-    label: "Q2 2026",
-    monthsLabel: "April – May 2026 (partial quarter)",
-    asOfLabel: "May 31, 2026",
-    beginningLabel: "04/01/2026",
-    deposits: [...apr.deposits, ...may.deposits],
-    withdrawals: [...apr.withdrawals, ...may.withdrawals],
-    beginningBalance: apr.beginningBalance,
-    endingBalance: may.endingBalance,
-  },
 ];
 
 export const defaultQuarter = cvsQuarters[cvsQuarters.length - 1];
+
