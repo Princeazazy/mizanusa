@@ -34,8 +34,11 @@ const sumByCoaCode = (transactions: any[], code: string) => {
 };
 
 export const ProfitLossSheet = () => {
-  const allDeposits = [...octoberDeposits, ...novemberDeposits, ...decemberDeposits];
-  const allWithdrawals = [...octoberWithdrawals, ...novemberWithdrawals, ...decemberWithdrawals];
+  const [periodKey, setPeriodKey] = useState(defaultQuarter.key);
+  const period = cvsQuarters.find((q) => q.key === periodKey) ?? defaultQuarter;
+  const allDeposits = period.deposits;
+  const allWithdrawals = period.withdrawals;
+
 
   // Revenue (4000 series)
   const creditCardSales = sumByCoaCode(allDeposits, "4100");
