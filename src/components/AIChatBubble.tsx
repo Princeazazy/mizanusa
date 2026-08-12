@@ -410,7 +410,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-24 h-24 rounded-full bg-card/90 backdrop-blur-sm border border-primary/50 shadow-2xl flex items-center justify-center hover:shadow-primary/50 transition-shadow overflow-hidden"
+            className="fixed bottom-6 right-6 z-[200] w-24 h-24 rounded-full bg-card/90 backdrop-blur-sm border border-primary/50 shadow-2xl flex items-center justify-center hover:shadow-primary/50 transition-shadow overflow-hidden"
           >
             <img
               src={mizanLogo}
@@ -430,7 +430,7 @@ export const AIChatBubble = ({ clientId, clientName }: AIChatBubbleProps) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed bottom-6 right-6 z-50 w-[420px] h-[600px] glass-card-solid rounded-[20px] shadow-prominent flex flex-col overflow-hidden"
+            className="fixed bottom-6 right-6 z-[200] w-[420px] h-[600px] glass-card-solid bg-background rounded-[20px] shadow-prominent flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary/[0.12] to-transparent border-b border-white/[0.08]">
