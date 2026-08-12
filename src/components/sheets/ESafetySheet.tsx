@@ -17,6 +17,7 @@ import {
   novemberInspections, 
   decemberInspections,
   inspectionsSummary,
+  SALVAGE_INSPECTION_FEE,
   Inspection
 } from "@/data/esafetyInspections";
 
