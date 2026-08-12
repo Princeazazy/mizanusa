@@ -526,8 +526,9 @@ const Index = () => {
                   Accountant Ready
                 </span>
                 <span className="badge-status bg-accent text-muted-foreground border-border">
-                  Q4 2025
+                  2025 &amp; 2026
                 </span>
+
               </div>
             </div>
           </div>
