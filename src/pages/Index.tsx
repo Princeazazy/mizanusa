@@ -190,7 +190,7 @@ const Index = () => {
 
           {/* Sheet Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <div className="glass-card p-1.5 mb-8">
+            <div className="glass-card p-1.5 mb-8 relative z-[60]">
               <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-transparent p-0">
                 <TabsTrigger 
                   value="dashboard" 
