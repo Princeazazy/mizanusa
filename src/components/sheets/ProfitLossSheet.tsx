@@ -229,6 +229,22 @@ export const ProfitLossSheet = () => {
                 <TableCell className="text-right text-muted-foreground">6800</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(otherExpenses)}</TableCell>
               </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Meals &amp; Entertainment</TableCell>
+                <TableCell className="text-right text-muted-foreground">6310</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(meals)}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Licenses, Bonds &amp; Notary</TableCell>
+                <TableCell className="text-right text-muted-foreground">6900</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(licenses)}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Unclassified Checks — Verify Payee</TableCell>
+                <TableCell className="text-right text-muted-foreground">6999</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(unclassified)}</TableCell>
+              </TableRow>
+
               <TableRow className="border-t-2 font-bold bg-expense/15">
                 <TableCell>Total Operating Expenses</TableCell>
                 <TableCell></TableCell>
