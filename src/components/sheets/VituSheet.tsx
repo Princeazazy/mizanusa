@@ -9,7 +9,9 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Receipt } from "lucide-react";
+import { useState } from "react";
 import { vituInvoices, vituSummary } from "@/data/vituStatements";
+import { vituInvoices2026, vituSummary2026 } from "@/data/cvsVitu2026";
 
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('en-US', {
@@ -18,14 +20,37 @@ const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
+const PERIODS = [
+  { key: "2026", label: "2026 YTD (Jan\u2013May)", invoices: vituInvoices2026, summary: vituSummary2026 },
+  { key: "q4-2025", label: "Q4 2025 (Oct\u2013Dec)", invoices: vituInvoices, summary: vituSummary },
+] as const;
+
 export const VituSheet = () => {
+  const [periodKey, setPeriodKey] = useState<string>("2026");
+  const period = PERIODS.find((p) => p.key === periodKey) ?? PERIODS[0];
+  const vituInvoicesActive = period.invoices;
+  const vituSummaryActive = period.summary;
+
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">Vitu Title Services</h2>
-        <p className="text-muted-foreground">
-          Title lookup and NMVTIS inquiry invoices for Q4 2025 | COA Code: 5120 - Title Lookup Services
-        </p>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">Vitu Title Services</h2>
+          <p className="text-muted-foreground">
+            Title lookup and NMVTIS inquiry invoices for {period.label} | COA Code: 5120 - Title Lookup Services
+          </p>
+        </div>
+        <div className="flex gap-1 rounded-xl border border-border/60 p-1">
+          {PERIODS.map((p) => (
+            <button
+              key={p.key}
+              onClick={() => setPeriodKey(p.key)}
+              className={`rounded-lg px-3 py-1.5 text-sm transition-colors ${periodKey === p.key ? "bg-primary/15 text-primary font-medium" : "text-muted-foreground hover:bg-accent/50"}`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Summary Cards */}
@@ -37,7 +62,7 @@ export const VituSheet = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{vituSummary.totalDLDVLookups}</div>
+            <div className="text-2xl font-bold">{vituSummaryActive.totalDLDVLookups}</div>
             <p className="text-sm text-muted-foreground">@ $2.00 each</p>
           </CardContent>
         </Card>
@@ -48,26 +73,26 @@ export const VituSheet = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{vituSummary.totalNMVTISInquiries}</div>
+            <div className="text-2xl font-bold">{vituSummaryActive.totalNMVTISInquiries}</div>
             <p className="text-sm text-muted-foreground">@ $2.00 each</p>
           </CardContent>
         </Card>
         <Card className="bg-warning/15">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Q4 Total Expense
+              Total Expense
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-warning">
-              {formatCurrency(vituSummary.quarterTotal)}
+              {formatCurrency(vituSummaryActive.quarterTotal)}
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Invoice Details */}
-      {vituInvoices.map((invoice) => (
+      {vituInvoicesActive.map((invoice) => (
         <Card key={invoice.invoiceNumber}>
           <CardHeader className="bg-muted/50 border-b">
             <div className="flex items-center justify-between">
@@ -120,7 +145,7 @@ export const VituSheet = () => {
         <CardHeader className="bg-primary/5 border-b">
           <CardTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5" />
-            Q4 2025 Summary
+            {period.label} Summary
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
@@ -135,7 +160,7 @@ export const VituSheet = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {vituInvoices.map((invoice) => (
+              {vituInvoicesActive.map((invoice) => (
                 <TableRow key={invoice.invoiceNumber}>
                   <TableCell className="font-medium">{invoice.month}</TableCell>
                   <TableCell className="font-mono">{invoice.invoiceNumber}</TableCell>
@@ -151,11 +176,11 @@ export const VituSheet = () => {
                 </TableRow>
               ))}
               <TableRow className="font-bold bg-muted/50">
-                <TableCell colSpan={2}>Q4 2025 Total</TableCell>
-                <TableCell className="text-right">{vituSummary.totalDLDVLookups}</TableCell>
-                <TableCell className="text-right">{vituSummary.totalNMVTISInquiries}</TableCell>
+                <TableCell colSpan={2}>{period.label} Total</TableCell>
+                <TableCell className="text-right">{vituSummaryActive.totalDLDVLookups}</TableCell>
+                <TableCell className="text-right">{vituSummaryActive.totalNMVTISInquiries}</TableCell>
                 <TableCell className="text-right text-warning">
-                  {formatCurrency(vituSummary.quarterTotal)}
+                  {formatCurrency(vituSummaryActive.quarterTotal)}
                 </TableCell>
               </TableRow>
             </TableBody>
