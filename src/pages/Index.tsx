@@ -200,83 +200,68 @@ const Index = () => {
                   Dashboard
                 </TabsTrigger>
                 
-                {/* Q4 2025 Dropdown */}
+                {/* 2025 Dropdown */}
                 <div className="relative" ref={q4Ref}>
-                  <TabsTrigger 
-                    value="q4-2025" 
-                    className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                    data-state={["october", "november", "december"].includes(activeTab) ? "active" : "inactive"}
-                    onClick={(e) => {
-                      e.preventDefault();
+                  <button
+                    type="button"
+                    className={`gap-2 futuristic-tab inline-flex items-center rounded-lg px-3 py-1.5 text-sm ${["october", "november", "december"].includes(activeTab) ? "bg-primary/20 text-primary" : "text-muted-foreground"}`}
+                    onClick={() => {
                       setQ4Open((v) => !v);
-                      if (!["october", "november", "december"].includes(activeTab)) setActiveTab("october");
+                      setY26Open(false);
                     }}
                   >
                     <FileSpreadsheet className="h-4 w-4" />
-                    Q4 2025
+                    2025
                     <svg className="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
-                  </TabsTrigger>
+                  </button>
                   {q4Open && (
-                    <div className="absolute top-full left-0 mt-1 glass-card z-50 min-w-[160px] p-1">
-                      <button
-                        onClick={() => {
-                          setActiveTab("october");
-                          setQ4Open(false);
-                        }}
-                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "october" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
-                      >
-                        <FileSpreadsheet className="h-4 w-4" />
-                        October 2025
-                      </button>
-                      <button
-                        onClick={() => {
-                          setActiveTab("november");
-                          setQ4Open(false);
-                        }}
-                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "november" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
-                      >
-                        <FileSpreadsheet className="h-4 w-4" />
-                        November 2025
-                      </button>
-                      <button
-                        onClick={() => {
-                          setActiveTab("december");
-                          setQ4Open(false);
-                        }}
-                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "december" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
-                      >
-                        <FileSpreadsheet className="h-4 w-4" />
-                        December 2025
-                      </button>
+                    <div className="absolute top-full left-0 mt-1 z-50 min-w-[180px] rounded-xl border border-border bg-popover p-1 shadow-2xl">
+                      {[
+                        { key: "october", label: "October 2025" },
+                        { key: "november", label: "November 2025" },
+                        { key: "december", label: "December 2025" },
+                      ].map((m) => (
+                        <button
+                          key={m.key}
+                          type="button"
+                          onClick={() => {
+                            setActiveTab(m.key);
+                            setQ4Open(false);
+                          }}
+                          className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === m.key ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}
+                        >
+                          <FileSpreadsheet className="h-4 w-4" />
+                          {m.label}
+                        </button>
+                      ))}
                     </div>
                   )}
                 </div>
                 
-                {/* 2026 YTD Dropdown */}
+                {/* 2026 Dropdown */}
                 <div className="relative" ref={y26Ref}>
-                  <TabsTrigger
-                    value="y2026"
-                    className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
-                    data-state={months2026.includes(activeTab) ? "active" : "inactive"}
-                    onClick={(e) => {
-                      e.preventDefault();
+                  <button
+                    type="button"
+                    className={`gap-2 futuristic-tab inline-flex items-center rounded-lg px-3 py-1.5 text-sm ${months2026.includes(activeTab) ? "bg-primary/20 text-primary" : "text-muted-foreground"}`}
+                    onClick={() => {
                       setY26Open((v) => !v);
-                      if (!months2026.includes(activeTab)) setActiveTab(months2026[0]);
+                      setQ4Open(false);
                     }}
                   >
                     <FileSpreadsheet className="h-4 w-4" />
-                    2026 YTD
+                    2026
                     <svg className="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
-                  </TabsTrigger>
+                  </button>
                   {y26Open && (
-                    <div className="absolute top-full left-0 mt-1 glass-card z-50 min-w-[180px] p-1">
+                    <div className="absolute top-full left-0 mt-1 z-50 min-w-[200px] rounded-xl border border-border bg-popover p-1 shadow-2xl">
                       {cvs2026Months.map((m) => (
                         <button
                           key={m.key}
+                          type="button"
                           onClick={() => {
                             setActiveTab(m.key);
                             setY26Open(false);
@@ -290,6 +275,7 @@ const Index = () => {
                     </div>
                   )}
                 </div>
+
 
                 <TabsTrigger 
                   value="transfers" 
