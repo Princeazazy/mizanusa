@@ -8,7 +8,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Building2 } from "lucide-react";
-import { decemberSummary } from "@/data/bankTransactions";
+import { useState } from "react";
+import { cvsQuarters, defaultQuarter } from "@/data/cvsQuarters";
+import { QuarterSelect } from "@/components/sheets/QuarterSelect";
 
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('en-US', {
@@ -18,8 +20,11 @@ const formatCurrency = (amount: number) => {
 };
 
 export const BalanceSheetSheet = () => {
+  const [periodKey, setPeriodKey] = useState(defaultQuarter.key);
+  const period = cvsQuarters.find((q) => q.key === periodKey) ?? defaultQuarter;
+
   // Only verified data from bank statements
-  const checkingBalance = decemberSummary.endingBalance; // 6,434.50
+  const checkingBalance = period.endingBalance;
 
   // Total Assets = only what we have verified
   const totalAssets = checkingBalance;
@@ -32,10 +37,16 @@ export const BalanceSheetSheet = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">Balance Sheet</h2>
-        <p className="text-muted-foreground">CVS Auto Sales Inc. — As of December 31, 2025</p>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">Balance Sheet</h2>
+          <p className="text-muted-foreground">
+            CVS Auto Sales Inc. — As of {period.asOfLabel}
+          </p>
+        </div>
+        <QuarterSelect value={periodKey} onChange={setPeriodKey} />
       </div>
+
 
       <Card className="shadow-card">
         <CardHeader className="bg-primary/5 border-b">
