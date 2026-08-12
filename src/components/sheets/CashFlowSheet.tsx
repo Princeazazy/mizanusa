@@ -8,16 +8,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ArrowDownUp } from "lucide-react";
-import {
-  octoberDeposits,
-  octoberWithdrawals,
-  novemberDeposits,
-  novemberWithdrawals,
-  decemberDeposits,
-  decemberWithdrawals,
-  octoberSummary,
-  decemberSummary,
-} from "@/data/bankTransactions";
+import { useState } from "react";
+import { cvsQuarters, defaultQuarter } from "@/data/cvsQuarters";
+import { QuarterSelect } from "@/components/sheets/QuarterSelect";
+
 
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('en-US', {
