@@ -8,14 +8,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { TrendingUp, TrendingDown, DollarSign } from "lucide-react";
-import {
-  octoberDeposits,
-  octoberWithdrawals,
-  novemberDeposits,
-  novemberWithdrawals,
-  decemberDeposits,
-  decemberWithdrawals,
-} from "@/data/bankTransactions";
+import { useState } from "react";
+import { cvsQuarters, defaultQuarter } from "@/data/cvsQuarters";
+import { QuarterSelect } from "@/components/sheets/QuarterSelect";
+
 
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('en-US', {
@@ -38,8 +34,11 @@ const sumByCoaCode = (transactions: any[], code: string) => {
 };
 
 export const ProfitLossSheet = () => {
-  const allDeposits = [...octoberDeposits, ...novemberDeposits, ...decemberDeposits];
-  const allWithdrawals = [...octoberWithdrawals, ...novemberWithdrawals, ...decemberWithdrawals];
+  const [periodKey, setPeriodKey] = useState(defaultQuarter.key);
+  const period = cvsQuarters.find((q) => q.key === periodKey) ?? defaultQuarter;
+  const allDeposits = period.deposits;
+  const allWithdrawals = period.withdrawals;
+
 
   // Revenue (4000 series)
   const creditCardSales = sumByCoaCode(allDeposits, "4100");
@@ -70,24 +69,33 @@ export const ProfitLossSheet = () => {
   const bankFees = sumByCoaCode(allWithdrawals, "6600");
   const insurance = sumByCoaCode(allWithdrawals, "6700");
   const otherExpenses = sumByCoaCode(allWithdrawals, "6800");
-  const totalOperatingExpenses = totalRent + utilities + communications + officeSupplies + vehicleOperating + processingFees + bankFees + insurance + otherExpenses;
+  const meals = sumByCoaCode(allWithdrawals, "6310");
+  const licenses = sumByCoaCode(allWithdrawals, "6900");
+  const unclassified = sumByCoaCode(allWithdrawals, "6999");
+  const totalOperatingExpenses = totalRent + utilities + communications + officeSupplies + vehicleOperating + processingFees + bankFees + insurance + otherExpenses + meals + licenses + unclassified;
 
   const netIncome = grossProfit - totalOperatingExpenses;
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">Profit & Loss Statement</h2>
-        <p className="text-muted-foreground">CVS Auto Sales Inc. — Q4 2025 (October - December)</p>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">Profit &amp; Loss Statement</h2>
+          <p className="text-muted-foreground">
+            CVS Auto Sales Inc. — {period.label} ({period.monthsLabel})
+          </p>
+        </div>
+        <QuarterSelect value={periodKey} onChange={setPeriodKey} />
       </div>
 
       <Card className="shadow-card">
         <CardHeader className="bg-primary/5 border-b">
           <CardTitle className="flex items-center gap-2">
             <DollarSign className="h-5 w-5" />
-            Income Statement — Q4 2025
+            Income Statement — {period.label}
           </CardTitle>
         </CardHeader>
+
         <CardContent className="p-0">
           <Table>
             <TableHeader>
@@ -221,6 +229,22 @@ export const ProfitLossSheet = () => {
                 <TableCell className="text-right text-muted-foreground">6800</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(otherExpenses)}</TableCell>
               </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Meals &amp; Entertainment</TableCell>
+                <TableCell className="text-right text-muted-foreground">6310</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(meals)}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Licenses, Bonds &amp; Notary</TableCell>
+                <TableCell className="text-right text-muted-foreground">6900</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(licenses)}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Unclassified Checks — Verify Payee</TableCell>
+                <TableCell className="text-right text-muted-foreground">6999</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(unclassified)}</TableCell>
+              </TableRow>
+
               <TableRow className="border-t-2 font-bold bg-expense/15">
                 <TableCell>Total Operating Expenses</TableCell>
                 <TableCell></TableCell>
