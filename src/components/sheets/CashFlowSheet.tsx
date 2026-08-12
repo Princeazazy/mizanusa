@@ -49,8 +49,12 @@ export const CashFlowSheet = () => {
   const vehicleOpPayments = sumByCoaCode(allWithdrawals, "6400");
   const feePayments = sumByCoaCode(allWithdrawals, "6500") + sumByCoaCode(allWithdrawals, "6600");
   const insurancePayments = sumByCoaCode(allWithdrawals, "6700");
-  const otherOpPayments = sumByCoaCode(allWithdrawals, "6800");
-  
+  const otherOpPayments =
+    sumByCoaCode(allWithdrawals, "6800") +
+    sumByCoaCode(allWithdrawals, "6310") +
+    sumByCoaCode(allWithdrawals, "6900") +
+    sumByCoaCode(allWithdrawals, "6999");
+
   const totalCashPayments = inventoryPayments + titleRegPayments + rentPayments + utilityPayments + commPayments + 
     suppliesPayments + vehicleOpPayments + feePayments + insurancePayments + otherOpPayments;
 
@@ -60,21 +64,30 @@ export const CashFlowSheet = () => {
   const equipmentPurchases = 0;
   const netCashFromInvesting = -equipmentPurchases;
 
-  // Financing Activities (none for this period)  
+  // Financing Activities
   const ownerContributions = 0;
-  const ownerDistributions = 0;
+  const ownerDistributions =
+    sumByCoaCode(allWithdrawals, "3900") +
+    sumByCoaCode(allWithdrawals, "5900") +
+    sumByCoaCode(allWithdrawals, "2100");
   const netCashFromFinancing = ownerContributions - ownerDistributions;
 
   const netChangeInCash = netCashFromOperating + netCashFromInvesting + netCashFromFinancing;
-  const beginningCash = octoberSummary.beginningBalance;
-  const endingCash = decemberSummary.endingBalance;
+  const beginningCash = period.beginningBalance;
+  const endingCash = period.endingBalance;
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">Statement of Cash Flows</h2>
-        <p className="text-muted-foreground">CVS Auto Sales Inc. — Q4 2025 (October - December)</p>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">Statement of Cash Flows</h2>
+          <p className="text-muted-foreground">
+            CVS Auto Sales Inc. — {period.label} ({period.monthsLabel})
+          </p>
+        </div>
+        <QuarterSelect value={periodKey} onChange={setPeriodKey} />
       </div>
+
 
       <Card className="shadow-card">
         <CardHeader className="bg-primary/5 border-b">
