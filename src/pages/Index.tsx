@@ -38,6 +38,7 @@ import {
   decemberSummary,
 } from "@/data/bankTransactions";
 import { cvs2026Months } from "@/data/cvs2026Transactions";
+import { DealerVituSheet } from "@/components/sheets/DealerVituSheet";
 import { Cvs2026TransfersSheet } from "@/components/sheets/Cvs2026TransfersSheet";
 
 const SEARCH_TARGETS: SearchTarget[] = [
@@ -48,6 +49,7 @@ const SEARCH_TARGETS: SearchTarget[] = [
   ...cvs2026Months.map((m) => ({ label: `${m.label} — Bank`, value: m.key, hint: "Checking account" })),
   { label: "Transfers", value: "transfers", hint: "Inter-account movement (Q4 2025)" },
   { label: "Transfers 2026", value: "transfers2026", hint: "Inter-account movement (2026 YTD)" },
+  { label: "Vitu Dealer 2026", value: "dealervitu", hint: "PennDOT title transactions" },
   { label: "E-Safety Inspections", value: "esafety", hint: "Inspection revenue" },
   { label: "Title Revenue", value: "titlerevenue", hint: "Title & tag income" },
   { label: "Vitu Statements", value: "vitu", hint: "Vendor billing" },
@@ -297,6 +299,13 @@ const Index = () => {
                   Transfers
                 </TabsTrigger>
                 <TabsTrigger
+                  value="dealervitu"
+                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                >
+                  <FileSpreadsheet className="h-4 w-4" />
+                  Vitu Dealer 2026
+                </TabsTrigger>
+                <TabsTrigger
                   value="transfers2026"
                   className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
                 >
@@ -469,6 +478,10 @@ const Index = () => {
                     statementBalance={cvs2026Months[4].statementEndingBalance}
                   />
                 </TabsContent>
+                <TabsContent value="dealervitu" className="m-0">
+                  <DealerVituSheet />
+                </TabsContent>
+
                 <TabsContent value="transfers2026" className="m-0">
                   <Cvs2026TransfersSheet />
                 </TabsContent>
