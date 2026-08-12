@@ -29,8 +29,16 @@ export const chartOfAccounts: COAEntry[] = [
   { code: "6500", name: "Credit Card Processing Fees", type: "Expense", description: "Merchant processing fees" },
   { code: "6600", name: "Bank Fees", type: "Expense", description: "Service charges, overdraft fees" },
   { code: "6700", name: "Insurance", type: "Expense", description: "IPFS, United Financial insurance" },
+  { code: "6310", name: "Meals & Refreshments", type: "Expense", description: "Dunkin, food purchases on the business card" },
   { code: "6800", name: "Other Operating Expenses", type: "Expense", description: "Miscellaneous operating costs" },
-  
+  { code: "6900", name: "Licenses, Bonds & Notary", type: "Expense", description: "Surety bonds, notary services, dealer compliance charges" },
+  { code: "6999", name: "Unclassified Check — Verify Payee", type: "Expense", description: "Drafts/checks cleared without a payee on the statement; pending client confirmation" },
+
+  // Non-operating / balance sheet activity
+  { code: "2100", name: "SBA EIDL Loan Payment", type: "Liability", description: "ACH SBA EIDL LOAN — principal & interest, not a P&L expense" },
+  { code: "3900", name: "Owner's Draw", type: "Equity", description: "Venmo/ACH payments to the owner" },
+  { code: "5900", name: "Personal (Non-Deductible)", type: "Expense", description: "Owner personal charges — excluded from the P&L" },
+
   // Transfer Account
   { code: "9999", name: "Inter-Account Transfers", type: "Asset", description: "Transfers between checking/savings" },
 ];
