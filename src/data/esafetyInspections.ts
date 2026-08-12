@@ -91,8 +91,8 @@ export const decemberInspections: Inspection[] = [
 ];
 
 export const inspectionsSummary = {
-  october: { count: 140, revenue: 12600.00 },
-  november: { count: 143, revenue: 12870.00 },
-  december: { count: 140, revenue: 12600.00 },
-  total: { count: 423, revenue: 38070.00 },
+  october: { count: 140, revenue: 140 * SALVAGE_INSPECTION_FEE },
+  november: { count: 143, revenue: 143 * SALVAGE_INSPECTION_FEE },
+  december: { count: 140, revenue: 140 * SALVAGE_INSPECTION_FEE },
+  total: { count: 423, revenue: 423 * SALVAGE_INSPECTION_FEE },
 };
