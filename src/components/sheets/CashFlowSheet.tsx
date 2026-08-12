@@ -225,11 +225,12 @@ export const CashFlowSheet = () => {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell className="font-semibold">Beginning Cash (10/01/2025)</TableCell>
+                <TableCell className="font-semibold">Beginning Cash ({period.beginningLabel})</TableCell>
                 <TableCell className="text-right font-mono text-foreground">{formatCurrency(beginningCash)}</TableCell>
               </TableRow>
               <TableRow className="border-t-2 font-bold text-lg bg-income/15">
-                <TableCell>ENDING CASH (12/31/2025)</TableCell>
+                <TableCell>ENDING CASH ({period.asOfLabel})</TableCell>
+
                 <TableCell className="text-right font-mono text-income">{formatCurrency(endingCash)}</TableCell>
               </TableRow>
             </TableBody>
