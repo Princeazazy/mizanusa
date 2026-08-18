@@ -1,4 +1,4 @@
-import { Home, LayoutGrid, List, FileText, Upload, Link2, Settings, LogOut, BrainCircuit } from "lucide-react";
+import { Home, LayoutGrid, List, FileText, Upload, Link2, Settings, LogOut, BrainCircuit, Receipt } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -30,6 +30,8 @@ export const FuturisticSidebar = ({ onSignOut, onTabChange }: FuturisticSidebarP
   const navItems: NavItem[] = [
     { icon: Home, label: "Clients", description: "Return to the client roster", path: "/clients" },
     { icon: BrainCircuit, label: "Books", description: "AI-drafted bookkeeping review queue", path: "/books" },
+    { icon: Receipt, label: "Invoicing", description: "Create and email client invoices", path: "/invoicing" },
+
     ...(onWorkbook && onTabChange
       ? [
           { icon: LayoutGrid, label: "Overview", description: "Financial dashboard overview", tab: "dashboard" },

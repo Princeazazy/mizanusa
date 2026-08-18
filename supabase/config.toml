@@ -11,3 +11,7 @@ verify_jwt = false
 
 [functions.quote-submit]
 verify_jwt = false
+
+[functions.invoicing]
+verify_jwt = false
+
