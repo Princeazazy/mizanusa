@@ -71,6 +71,39 @@ export type Database = {
         }
         Relationships: []
       }
+      billing_customers: {
+        Row: {
+          address: string | null
+          client_id: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          client_id: string
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          client_id?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       chart_accounts: {
         Row: {
           client_id: string
@@ -243,6 +276,139 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      client_invoice_items: {
+        Row: {
+          account_code: string | null
+          amount: number
+          created_at: string
+          description: string
+          id: string
+          invoice_id: string
+          quantity: number
+          rate: number
+          sort_order: number
+        }
+        Insert: {
+          account_code?: string | null
+          amount?: number
+          created_at?: string
+          description: string
+          id?: string
+          invoice_id: string
+          quantity?: number
+          rate?: number
+          sort_order?: number
+        }
+        Update: {
+          account_code?: string | null
+          amount?: number
+          created_at?: string
+          description?: string
+          id?: string
+          invoice_id?: string
+          quantity?: number
+          rate?: number
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_invoice_items_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "client_invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_invoices: {
+        Row: {
+          amount_paid: number
+          bill_to_address: string | null
+          bill_to_email: string | null
+          bill_to_name: string | null
+          client_id: string
+          created_at: string
+          created_by: string | null
+          created_via: string
+          currency: string
+          customer_id: string | null
+          due_date: string | null
+          id: string
+          invoice_number: string
+          issue_date: string
+          notes: string | null
+          paid_at: string | null
+          sent_at: string | null
+          status: string
+          subtotal: number
+          tax_amount: number
+          tax_rate: number
+          terms: string | null
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          amount_paid?: number
+          bill_to_address?: string | null
+          bill_to_email?: string | null
+          bill_to_name?: string | null
+          client_id: string
+          created_at?: string
+          created_by?: string | null
+          created_via?: string
+          currency?: string
+          customer_id?: string | null
+          due_date?: string | null
+          id?: string
+          invoice_number: string
+          issue_date?: string
+          notes?: string | null
+          paid_at?: string | null
+          sent_at?: string | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number
+          tax_rate?: number
+          terms?: string | null
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          amount_paid?: number
+          bill_to_address?: string | null
+          bill_to_email?: string | null
+          bill_to_name?: string | null
+          client_id?: string
+          created_at?: string
+          created_by?: string | null
+          created_via?: string
+          currency?: string
+          customer_id?: string | null
+          due_date?: string | null
+          id?: string
+          invoice_number?: string
+          issue_date?: string
+          notes?: string | null
+          paid_at?: string | null
+          sent_at?: string | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number
+          tax_rate?: number
+          terms?: string | null
+          total?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_invoices_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "billing_customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       client_link_attempts: {
         Row: {

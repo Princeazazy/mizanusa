@@ -21,6 +21,8 @@ import { ProfitLossSheet } from "@/components/sheets/ProfitLossSheet";
 import { BalanceSheetSheet } from "@/components/sheets/BalanceSheetSheet";
 import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
 import { InvoicesSheet } from "@/components/sheets/InvoicesSheet";
+import { InvoicingPanel } from "@/components/invoicing/InvoicingPanel";
+
 import { CreditCardStatementSheet } from "@/components/sheets/CreditCardStatementSheet";
 import { DefioreProfitLossSheet } from "@/components/sheets/DefioreProfitLossSheet";
 import { DefioreBalanceSheet } from "@/components/sheets/DefioreBalanceSheet";
@@ -111,6 +113,8 @@ const ClientPortal = () => {
       "cc-march": "Credit Cards – March 2026",
       march: "March 2026 - Checking Account",
       invoices: "Invoices",
+      billing: "Billing & Invoicing",
+
       pnl: "Profit & Loss – Q1 2026",
       "balance-sheet": "Balance Sheet – Q1 2026",
       "cash-flow": "Cash Flow – Q1 2026",
@@ -132,7 +136,7 @@ const ClientPortal = () => {
     if (loading || !session) return;
 
     const allowedTabs = isDefiore
-      ? new Set(["january", "february", "march", "cc-january", "cc-february", "cc-march", "invoices", "pnl", "balance-sheet", "cash-flow"])
+      ? new Set(["january", "february", "march", "cc-january", "cc-february", "cc-march", "invoices", "pnl", "balance-sheet", "cash-flow", "billing"])
       : isCVS
         ? new Set([
             "dashboard",
@@ -148,12 +152,14 @@ const ClientPortal = () => {
             "profitloss",
             "balancesheet",
             "cashflow",
+            "billing",
           ])
         : isTest
-          ? new Set(["january", "february", "march", "invoices", "pnl", "balance-sheet", "cash-flow"])
+          ? new Set(["january", "february", "march", "invoices", "pnl", "balance-sheet", "cash-flow", "billing"])
           : new Set<string>();
 
     if (!allowedTabs.has(activeTab)) {
+
       setActiveTab(isDefiore || isTest ? "january" : isCVS ? "dashboard" : "");
     }
   }, [activeTab, loading, session, isDefiore, isCVS, isTest]);
@@ -738,7 +744,13 @@ const ClientPortal = () => {
                     </TabsTrigger>
                   </>
                 )}
+
+                <TabsTrigger value="billing" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <Receipt className="h-4 w-4" />
+                  Billing & Invoicing
+                </TabsTrigger>
               </TabsList>
+
             </div>
 
             <AnimatePresence mode="wait">
@@ -835,7 +847,18 @@ const ClientPortal = () => {
                       <TabsContent value="cash-flow" className="m-0"><TestCashFlowSheet /></TabsContent>
                     </>
                   )}
+
+                  <TabsContent value="billing" className="m-0">
+                    {session?.clientId && (
+                      <InvoicingPanel
+                        clientId={session.clientId}
+                        clientName={session.clientName}
+                        sessionToken={session.sessionToken}
+                      />
+                    )}
+                  </TabsContent>
                 </div>
+
               </motion.div>
             </AnimatePresence>
           </Tabs>

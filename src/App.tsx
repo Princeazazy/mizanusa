@@ -11,6 +11,8 @@ import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import ClientPortal from "./pages/ClientPortal";
 import BooksPage from "./pages/BooksPage";
+import InvoicingPage from "./pages/InvoicingPage";
+
 import MarketingHome from "./pages/MarketingHome";
 import ServicesPage from "./pages/ServicesPage";
 import AboutPage from "./pages/AboutPage";
@@ -121,6 +123,15 @@ const App = () => (
               </AccountantRoute>
             }
           />
+          <Route
+            path="/invoicing"
+            element={
+              <AccountantRoute>
+                <InvoicingPage />
+              </AccountantRoute>
+            }
+          />
+
           <Route
             path="/cvs"
             element={
