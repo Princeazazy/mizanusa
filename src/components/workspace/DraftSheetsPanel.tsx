@@ -74,7 +74,7 @@ export const DraftSheetsPanel = ({ sheets, onChanged }: Props) => {
             className="flex min-w-0 flex-1 items-center gap-2 text-left"
           >
             <FileSpreadsheet className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-            <span className="truncate text-[13px] font-medium">{sheet.name}</span>
+            <span className="min-w-0 flex-1 truncate text-[13px] font-medium">{sheet.name}</span>
             <Badge variant="outline" className="shrink-0 text-[10px] uppercase tracking-wide">
               {TYPE_LABEL[sheet.sheet_type] ?? sheet.sheet_type}
             </Badge>
