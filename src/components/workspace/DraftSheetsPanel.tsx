@@ -74,16 +74,16 @@ export const DraftSheetsPanel = ({ sheets, onChanged }: Props) => {
             className="flex w-full items-start gap-2 text-left"
           >
             <FileSpreadsheet className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-            <span className="min-w-0 flex-1">
+            <div className="min-w-0 flex-1">
               <span className="block break-words text-[13px] font-medium">{sheet.name}</span>
-              <span className="mt-1 flex flex-wrap items-center gap-1.5">
+              <div className="mt-1 flex flex-wrap items-center gap-1.5">
                 <Badge variant="outline" className="text-[10px] uppercase tracking-wide">
                   {TYPE_LABEL[sheet.sheet_type] ?? sheet.sheet_type}
                 </Badge>
                 {sheet.period && <span className="text-[11px] text-muted-foreground">{sheet.period}</span>}
                 <span className="text-[11px] text-muted-foreground">{rows.length} rows</span>
-              </span>
-            </span>
+              </div>
+            </div>
             <ChevronDown className={cn("mt-0.5 h-4 w-4 shrink-0 transition-transform", isOpen && "rotate-180")} aria-hidden="true" />
           </button>
 
