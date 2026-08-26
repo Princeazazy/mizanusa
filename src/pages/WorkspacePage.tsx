@@ -55,6 +55,7 @@ const WorkspacePage = () => {
   const fileRef = useRef<HTMLInputElement>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const loadedThreadRef = useRef<string | null>(null);
 
   const client = BOOKS_CLIENTS.find((c) => c.id === clientId) ?? BOOKS_CLIENTS[0];
   const activeThread = threads.find((t) => t.id === threadId) ?? null;
