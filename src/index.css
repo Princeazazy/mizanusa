@@ -4,26 +4,26 @@
 
 /* =========================================================
    MIZAN — Premium Fintech Design System
-   Near-black blue/violet base, single luminous teal accent,
+   Near-black blue base, single luminous cyan accent (brand mark),
    tasteful glass surfaces, restrained motion.
    ========================================================= */
 
 @layer base {
   :root {
     /* Core surfaces — deep near-black with blue/violet undertone */
-    --background: 230 20% 2.6%;
+    --background: 205 26% 3.2%;
     --foreground: 226 22% 92%;
 
-    --card: 230 16% 6.4%;
+    --card: 205 20% 7%;
     --card-foreground: 226 22% 92%;
 
     --popover: 231 22% 9%;
     --popover-foreground: 226 22% 92%;
 
     /* Single refined accent — luminous teal */
-    --primary: 172 78% 50%;
+    --primary: 190 82% 48%;
     --primary-foreground: 232 30% 5%;
-    --primary-glow: 172 90% 62%;
+    --primary-glow: 189 88% 66%;
 
     --secondary: 231 16% 13%;
     --secondary-foreground: 226 16% 78%;
@@ -39,7 +39,7 @@
 
     --border: 231 14% 17%;
     --input: 231 16% 13%;
-    --ring: 172 78% 50%;
+    --ring: 190 82% 48%;
 
     --radius: 1.375rem;
 
@@ -65,15 +65,15 @@
     /* Sidebar */
     --sidebar-background: 233 26% 4%;
     --sidebar-foreground: 228 10% 58%;
-    --sidebar-primary: 172 78% 50%;
+    --sidebar-primary: 190 82% 48%;
     --sidebar-primary-foreground: 232 30% 5%;
     --sidebar-accent: 231 18% 11%;
     --sidebar-accent-foreground: 226 22% 92%;
     --sidebar-border: 231 14% 11%;
-    --sidebar-ring: 172 78% 50%;
+    --sidebar-ring: 190 82% 48%;
 
     /* Glow palette */
-    --glow-cyan: 172 78% 50%;
+    --glow-cyan: 190 82% 48%;
     --glow-purple: 262 68% 60%;
     --glow-blue: 220 82% 58%;
     --glow-gold: 41 92% 60%;
@@ -81,7 +81,7 @@
     --gradient-halo: linear-gradient(135deg, hsl(var(--glow-cyan)) 0%, hsl(var(--glow-blue)) 48%, hsl(var(--glow-violet)) 100%);
 
     /* Chart palette */
-    --chart-1: 172 78% 50%;
+    --chart-1: 190 82% 48%;
     --chart-2: 214 88% 62%;
     --chart-3: 162 68% 46%;
     --chart-4: 41 92% 58%;
@@ -89,7 +89,7 @@
     --chart-6: 262 68% 64%;
     --chart-net: 226 22% 95%;
 
-    --chart-incoming: 172 78% 50%;
+    --chart-incoming: 190 82% 48%;
     --chart-outgoing: 254 70% 65%;
 
     /* Composite tokens */
@@ -104,13 +104,13 @@
   }
 
   .dark {
-    --background: 230 20% 2.6%;
+    --background: 205 26% 3.2%;
     --foreground: 226 22% 92%;
-    --card: 230 16% 6.4%;
+    --card: 205 20% 7%;
     --card-foreground: 226 22% 92%;
     --popover: 231 22% 9%;
     --popover-foreground: 226 22% 92%;
-    --primary: 172 78% 50%;
+    --primary: 190 82% 48%;
     --primary-foreground: 232 30% 5%;
     --secondary: 231 16% 13%;
     --secondary-foreground: 226 16% 78%;
@@ -122,7 +122,7 @@
     --destructive-foreground: 0 0% 100%;
     --border: 231 14% 17%;
     --input: 231 16% 13%;
-    --ring: 172 78% 50%;
+    --ring: 190 82% 48%;
   }
 }
 
