@@ -12,6 +12,7 @@ import ResetPassword from "./pages/ResetPassword";
 import ClientPortal from "./pages/ClientPortal";
 import BooksPage from "./pages/BooksPage";
 import InvoicingPage from "./pages/InvoicingPage";
+import WorkspacePage from "./pages/WorkspacePage";
 
 import MarketingHome from "./pages/MarketingHome";
 import ServicesPage from "./pages/ServicesPage";
@@ -128,6 +129,22 @@ const App = () => (
             element={
               <AccountantRoute>
                 <InvoicingPage />
+              </AccountantRoute>
+            }
+          />
+          <Route
+            path="/workspace"
+            element={
+              <AccountantRoute>
+                <WorkspacePage />
+              </AccountantRoute>
+            }
+          />
+          <Route
+            path="/workspace/:threadId"
+            element={
+              <AccountantRoute>
+                <WorkspacePage />
               </AccountantRoute>
             }
           />

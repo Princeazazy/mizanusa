@@ -22,6 +22,7 @@ import { BalanceSheetSheet } from "@/components/sheets/BalanceSheetSheet";
 import { CashFlowSheet } from "@/components/sheets/CashFlowSheet";
 import { InvoicesSheet } from "@/components/sheets/InvoicesSheet";
 import { InvoicingPanel } from "@/components/invoicing/InvoicingPanel";
+import { PublishedSheets } from "@/components/workspace/PublishedSheets";
 
 import { CreditCardStatementSheet } from "@/components/sheets/CreditCardStatementSheet";
 import { DefioreProfitLossSheet } from "@/components/sheets/DefioreProfitLossSheet";
@@ -749,6 +750,10 @@ const ClientPortal = () => {
                   <Receipt className="h-4 w-4" />
                   Billing & Invoicing
                 </TabsTrigger>
+                <TabsTrigger value="new-reports" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                  <FileSpreadsheet className="h-4 w-4" />
+                  New Reports
+                </TabsTrigger>
               </TabsList>
 
             </div>
@@ -856,6 +861,10 @@ const ClientPortal = () => {
                         sessionToken={session.sessionToken}
                       />
                     )}
+                  </TabsContent>
+
+                  <TabsContent value="new-reports" className="m-0">
+                    {session?.sessionToken && <PublishedSheets sessionToken={session.sessionToken} />}
                   </TabsContent>
                 </div>
 
