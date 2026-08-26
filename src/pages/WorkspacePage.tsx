@@ -165,6 +165,7 @@ const WorkspacePage = () => {
         const thread = await createThread(clientId, null, text.slice(0, 60) || files[0]?.name || "New conversation");
         setThreads((prev) => [thread, ...prev]);
         id = thread.id;
+        loadedThreadRef.current = thread.id;
         navigate(`/workspace/${thread.id}`, { replace: true });
       } catch (e) {
         toast.error(e instanceof Error ? e.message : "Could not start a conversation");
