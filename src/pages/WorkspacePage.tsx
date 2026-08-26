@@ -88,12 +88,15 @@ const WorkspacePage = () => {
     void loadSheets();
   }, [loadThreads, loadSheets]);
 
-  // Load the messages for the thread named in the URL.
+  // Load the messages for the thread named in the URL. Threads created from the
+  // composer are marked as already loaded so the in-flight exchange is not wiped.
   useEffect(() => {
     if (!threadId) {
       setMessages([]);
       return;
     }
+    if (loadedThreadRef.current === threadId) return;
+    loadedThreadRef.current = threadId;
     let cancelled = false;
     setLoadingThread(true);
     fetchMessages(threadId)
