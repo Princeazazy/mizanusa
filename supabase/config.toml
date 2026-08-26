@@ -15,3 +15,9 @@ verify_jwt = false
 [functions.invoicing]
 verify_jwt = false
 
+
+[functions.workspace-chat]
+verify_jwt = false
+
+[functions.client-sheets]
+verify_jwt = false

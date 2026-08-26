@@ -524,8 +524,12 @@ export type Database = {
           created_by: string | null
           data: Json
           id: string
+          is_published: boolean
           name: string
+          period: string | null
+          published_at: string | null
           sheet_type: string
+          thread_id: string | null
           updated_at: string
         }
         Insert: {
@@ -534,8 +538,12 @@ export type Database = {
           created_by?: string | null
           data?: Json
           id?: string
+          is_published?: boolean
           name: string
+          period?: string | null
+          published_at?: string | null
           sheet_type: string
+          thread_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -544,11 +552,23 @@ export type Database = {
           created_by?: string | null
           data?: Json
           id?: string
+          is_published?: boolean
           name?: string
+          period?: string | null
+          published_at?: string | null
           sheet_type?: string
+          thread_id?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "financial_sheets_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_threads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       import_profiles: {
         Row: {
@@ -779,6 +799,74 @@ export type Database = {
           parsed_data?: Json | null
           status?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      workspace_messages: {
+        Row: {
+          actions: Json
+          attachments: Json
+          content: string
+          created_at: string
+          id: string
+          role: string
+          thread_id: string
+        }
+        Insert: {
+          actions?: Json
+          attachments?: Json
+          content?: string
+          created_at?: string
+          id?: string
+          role: string
+          thread_id: string
+        }
+        Update: {
+          actions?: Json
+          attachments?: Json
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_threads: {
+        Row: {
+          client_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          period: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          period?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          period?: string | null
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
