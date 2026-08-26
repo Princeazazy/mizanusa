@@ -89,7 +89,7 @@ export const FuturisticHeader = ({
   };
 
   const popover =
-    "absolute top-full right-0 mt-2 surface-panel z-50 p-2 shadow-2xl";
+    "absolute top-full right-0 mt-2 surface-panel z-[200] p-2 shadow-2xl";
 
   return (
     <motion.header

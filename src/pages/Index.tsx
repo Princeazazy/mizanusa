@@ -190,7 +190,7 @@ const Index = () => {
 
           {/* Sheet Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <div className="glass-card p-1.5 mb-8 relative z-[60]">
+            <div className="glass-card p-1.5 mb-8 relative z-30">
               <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-transparent p-0">
                 <TabsTrigger 
                   value="dashboard" 
@@ -217,7 +217,7 @@ const Index = () => {
                     </svg>
                   </button>
                   {q4Open && (
-                    <div className="absolute top-full left-0 mt-1 z-50 min-w-[180px] rounded-xl border border-border bg-popover p-1 shadow-2xl">
+                    <div className="absolute top-full left-0 mt-1 z-[200] min-w-[180px] rounded-xl border border-border bg-popover p-1 shadow-2xl">
                       {[
                         { key: "october", label: "October 2025" },
                         { key: "november", label: "November 2025" },
@@ -257,7 +257,7 @@ const Index = () => {
                     </svg>
                   </button>
                   {y26Open && (
-                    <div className="absolute top-full left-0 mt-1 z-50 min-w-[200px] rounded-xl border border-border bg-popover p-1 shadow-2xl">
+                    <div className="absolute top-full left-0 mt-1 z-[200] min-w-[200px] rounded-xl border border-border bg-popover p-1 shadow-2xl">
                       {cvs2026Months.map((m) => (
                         <button
                           key={m.key}
