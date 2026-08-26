@@ -67,22 +67,27 @@ export const DraftSheetsPanel = ({ sheets, onChanged }: Props) => {
 
     return (
       <div className="rounded-xl border border-white/10 bg-white/[0.02]">
-        <div className="flex flex-wrap items-center gap-2 px-3 py-2.5">
+        <div className="px-3 py-2.5">
           <button
             type="button"
             onClick={() => setOpen(isOpen ? null : sheet.id)}
-            className="flex min-w-0 flex-1 items-center gap-2 text-left"
+            className="flex w-full items-start gap-2 text-left"
           >
-            <FileSpreadsheet className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-            <span className="min-w-0 flex-1 truncate text-[13px] font-medium">{sheet.name}</span>
-            <Badge variant="outline" className="shrink-0 text-[10px] uppercase tracking-wide">
-              {TYPE_LABEL[sheet.sheet_type] ?? sheet.sheet_type}
-            </Badge>
-            {sheet.period && <span className="shrink-0 text-[11px] text-muted-foreground">{sheet.period}</span>}
-            <span className="shrink-0 text-[11px] text-muted-foreground">{rows.length} rows</span>
-            <ChevronDown className={cn("h-4 w-4 shrink-0 transition-transform", isOpen && "rotate-180")} aria-hidden="true" />
+            <FileSpreadsheet className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+            <span className="min-w-0 flex-1">
+              <span className="block break-words text-[13px] font-medium">{sheet.name}</span>
+              <span className="mt-1 flex flex-wrap items-center gap-1.5">
+                <Badge variant="outline" className="text-[10px] uppercase tracking-wide">
+                  {TYPE_LABEL[sheet.sheet_type] ?? sheet.sheet_type}
+                </Badge>
+                {sheet.period && <span className="text-[11px] text-muted-foreground">{sheet.period}</span>}
+                <span className="text-[11px] text-muted-foreground">{rows.length} rows</span>
+              </span>
+            </span>
+            <ChevronDown className={cn("mt-0.5 h-4 w-4 shrink-0 transition-transform", isOpen && "rotate-180")} aria-hidden="true" />
           </button>
 
+          <div className="mt-2 flex items-center gap-2">
           <Button
             size="sm"
             variant={sheet.is_published ? "outline" : "default"}
