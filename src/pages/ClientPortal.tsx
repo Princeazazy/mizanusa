@@ -542,7 +542,7 @@ const ClientPortal = () => {
 
           {/* Sheet Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <div className="glass-card p-1.5 mb-8">
+            <div className="glass-card relative z-30 p-1.5 mb-8">
               <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-transparent p-0">
                 {isCVS && (
                   <TabsTrigger 
@@ -573,7 +573,7 @@ const ClientPortal = () => {
                       </svg>
                     </TabsTrigger>
                     {q4Open && (
-                      <div className="absolute top-full left-0 mt-1 glass-card z-50 min-w-[160px] p-1">
+                      <div className="absolute top-full left-0 mt-1 glass-card z-[200] min-w-[160px] p-1">
                         <button
                           onClick={() => { setActiveTab("october"); setQ4Open(false); }}
                           className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent/50 rounded-lg transition-colors ${activeTab === "october" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"}`}

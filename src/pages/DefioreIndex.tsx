@@ -147,7 +147,7 @@ const DefioreIndex = () => {
 
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <div className="glass-card p-1.5 mb-8">
+            <div className="glass-card relative z-30 p-1.5 mb-8">
               <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-transparent p-0">
                 <TabsTrigger value="dashboard" className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
                   <LayoutDashboard className="h-4 w-4" />Dashboard
@@ -171,7 +171,7 @@ const DefioreIndex = () => {
                     </svg>
                   </TabsTrigger>
                   {bankOpen && (
-                    <div className="absolute top-full left-0 mt-1 glass-card z-50 min-w-[160px] p-1">
+                    <div className="absolute top-full left-0 mt-1 glass-card z-[200] min-w-[160px] p-1">
                       {[
                         { value: "january", label: "January 2026" },
                         { value: "february", label: "February 2026" },
@@ -209,7 +209,7 @@ const DefioreIndex = () => {
                     </svg>
                   </TabsTrigger>
                   {ccOpen && (
-                    <div className="absolute top-full left-0 mt-1 glass-card z-50 min-w-[160px] p-1">
+                    <div className="absolute top-full left-0 mt-1 glass-card z-[200] min-w-[160px] p-1">
                       {[
                         { value: "cc-january", label: "CC – Jan 2026" },
                         { value: "cc-february", label: "CC – Feb 2026" },

@@ -90,7 +90,7 @@ export const FuturisticSidebar = ({ onSignOut, onTabChange }: FuturisticSidebarP
   return (
     <nav
       aria-label="Primary"
-      className="sidebar-futuristic fixed left-0 top-0 z-40 flex min-h-screen w-16 flex-col items-center py-5"
+      className="sidebar-futuristic fixed left-0 top-0 z-[100] flex min-h-screen w-16 flex-col items-center py-5"
     >
       <button
         type="button"
