@@ -115,7 +115,9 @@ export const DraftSheetsPanel = ({ sheets, onChanged }: Props) => {
           >
             <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
           </Button>
+          </div>
         </div>
+
 
         {isOpen && (
           <div className="max-h-[360px] overflow-auto border-t border-white/10 px-3 py-2">
