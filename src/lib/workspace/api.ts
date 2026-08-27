@@ -51,21 +51,69 @@ export interface OutgoingAttachment {
 
 export const MAX_ATTACHMENT_BYTES = 15 * 1024 * 1024;
 
-const TEXTUAL = /\.(csv|txt|tsv|json|md|ofx|qfx|qbo)$/i;
+const TEXTUAL = /\.(csv|txt|tsv|json|md|ofx|qfx|qbo|xml|yml|yaml|log|rtf)$/i;
+const SPREADSHEET = /\.(xlsx|xlsm|xls|numbers)$/i;
+const WORD = /\.(docx)$/i;
+const HTML = /\.(html?|htm)$/i;
 
-export async function readAttachment(file: File): Promise<OutgoingAttachment> {
-  const mimeType = file.type || "application/octet-stream";
-  if (TEXTUAL.test(file.name) || mimeType.startsWith("text/") || mimeType === "application/json") {
-    return { name: file.name, mimeType, text: await file.text() };
-  }
-  const dataUrl = await new Promise<string>((resolve, reject) => {
+const toDataUrl = (file: File) =>
+  new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result));
     reader.onerror = () => reject(reader.error ?? new Error("Could not read file"));
     reader.readAsDataURL(file);
   });
-  return { name: file.name, mimeType, dataUrl };
+
+const stripHtml = (html: string) =>
+  new DOMParser().parseFromString(html, "text/html").body?.textContent?.replace(/\n{3,}/g, "\n\n").trim() ?? "";
+
+export async function readAttachment(file: File): Promise<OutgoingAttachment> {
+  const mimeType = file.type || "application/octet-stream";
+
+  // Images and PDFs go to the model natively.
+  if (mimeType.startsWith("image/") || mimeType === "application/pdf" || /\.pdf$/i.test(file.name)) {
+    return { name: file.name, mimeType: mimeType === "application/octet-stream" ? "application/pdf" : mimeType, dataUrl: await toDataUrl(file) };
+  }
+
+  // Spreadsheets → CSV text per sheet.
+  if (SPREADSHEET.test(file.name) || mimeType.includes("spreadsheet") || mimeType.includes("excel")) {
+    const XLSX = await import("xlsx");
+    const wb = XLSX.read(await file.arrayBuffer(), { type: "array" });
+    const text = wb.SheetNames.map(
+      (n) => `--- Sheet: ${n} ---\n${XLSX.utils.sheet_to_csv(wb.Sheets[n])}`,
+    ).join("\n\n");
+    return { name: file.name, mimeType, text };
+  }
+
+  // Word documents → plain text.
+  if (WORD.test(file.name) || mimeType.includes("wordprocessing")) {
+    const mammoth = await import("mammoth");
+    const { value } = await mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() });
+    return { name: file.name, mimeType, text: value };
+  }
+
+  if (HTML.test(file.name) || mimeType === "text/html") {
+    return { name: file.name, mimeType, text: stripHtml(await file.text()) };
+  }
+
+  if (TEXTUAL.test(file.name) || mimeType.startsWith("text/") || mimeType === "application/json") {
+    return { name: file.name, mimeType, text: await file.text() };
+  }
+
+  // Unknown type: try reading it as text, otherwise send the bytes and let the server decide.
+  try {
+    const text = await file.text();
+    // Reject binary garbage (lots of control characters).
+    const suspect = (text.match(/[\u0000-\u0008\u000E-\u001F]/g) ?? []).length;
+    if (text.trim() && suspect / Math.max(text.length, 1) < 0.01) {
+      return { name: file.name, mimeType, text };
+    }
+  } catch {
+    /* fall through */
+  }
+  return { name: file.name, mimeType, dataUrl: await toDataUrl(file) };
 }
+
 
 export async function fetchThreads(clientId: string) {
   const { data, error } = await supabase

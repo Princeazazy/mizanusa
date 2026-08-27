@@ -93,14 +93,21 @@ const attachmentBlock = (a: Attachment) => {
     return { type: "text", text: `Attached file "${a.name}" (${a.mimeType}) contents:\n${a.text.slice(0, 200_000)}` };
   }
   if (!a.dataUrl) return null;
-  if (a.mimeType.startsWith("image/")) {
+  const mime = (a.dataUrl.match(/^data:([^;,]+)/)?.[1] ?? a.mimeType).toLowerCase();
+  if (mime.startsWith("image/")) {
     return { type: "image_url", image_url: { url: a.dataUrl } };
   }
-  if (a.mimeType === "application/pdf") {
+  if (mime === "application/pdf") {
     return { type: "file", file: { filename: a.name, file_data: a.dataUrl } };
+  }
+  // Unknown binary: hand it over as a PDF-style file block only when the name says PDF.
+  if (/\.pdf$/i.test(a.name)) {
+    const base64 = a.dataUrl.split(",")[1] ?? "";
+    return { type: "file", file: { filename: a.name, file_data: `data:application/pdf;base64,${base64}` } };
   }
   return null;
 };
+
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: buildCorsHeaders(req) });
@@ -256,7 +263,7 @@ Deno.serve(async (req) => {
       const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
         method: "POST",
         headers: { "Lovable-API-Key": LOVABLE_API_KEY, "Content-Type": "application/json" },
-        body: JSON.stringify({ model: MODEL, messages, tools, tool_choice: "auto" }),
+        body: JSON.stringify({ model: MODEL, messages, tools, tool_choice: "auto", reasoning_effort: "none" }),
       });
 
       if (!response.ok) {
@@ -269,9 +276,15 @@ Deno.serve(async (req) => {
           return jsonResponse(req, { error: "AI credits exhausted. Add credits to continue." }, 402);
         }
         if (response.status === 400) {
+          let hint = "";
+          try {
+            hint = String(JSON.parse(detail)?.error?.message ?? "").slice(0, 300);
+          } catch {
+            hint = detail.slice(0, 200);
+          }
           return jsonResponse(
             req,
-            { error: "The AI rejected this request — an attachment may be an unsupported format." },
+            { error: `The AI rejected this request${hint ? `: ${hint}` : " — an attachment may be an unsupported format."}` },
             400,
           );
         }
