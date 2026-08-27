@@ -263,7 +263,7 @@ Deno.serve(async (req) => {
       const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
         method: "POST",
         headers: { "Lovable-API-Key": LOVABLE_API_KEY, "Content-Type": "application/json" },
-        body: JSON.stringify({ model: MODEL, messages, tools, tool_choice: "auto" }),
+        body: JSON.stringify({ model: MODEL, messages, tools, tool_choice: "auto", reasoning_effort: "none" }),
       });
 
       if (!response.ok) {
