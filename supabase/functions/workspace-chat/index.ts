@@ -276,9 +276,15 @@ Deno.serve(async (req) => {
           return jsonResponse(req, { error: "AI credits exhausted. Add credits to continue." }, 402);
         }
         if (response.status === 400) {
+          let hint = "";
+          try {
+            hint = String(JSON.parse(detail)?.error?.message ?? "").slice(0, 300);
+          } catch {
+            hint = detail.slice(0, 200);
+          }
           return jsonResponse(
             req,
-            { error: "The AI rejected this request — an attachment may be an unsupported format." },
+            { error: `The AI rejected this request${hint ? `: ${hint}` : " — an attachment may be an unsupported format."}` },
             400,
           );
         }
