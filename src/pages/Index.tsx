@@ -15,6 +15,7 @@ import { FuturisticDashboardSheet } from "@/components/sheets/FuturisticDashboar
 import { CheckingAccountSheet } from "@/components/sheets/CheckingAccountSheet";
 import { TransfersSheet } from "@/components/sheets/TransfersSheet";
 import { ESafetySheet } from "@/components/sheets/ESafetySheet";
+import { PayrollSheet } from "@/components/sheets/PayrollSheet";
 import { VituSheet } from "@/components/sheets/VituSheet";
 import { ChartOfAccountsSheet } from "@/components/sheets/ChartOfAccountsSheet";
 import { ReconciliationSheet } from "@/components/sheets/ReconciliationSheet";
@@ -51,6 +52,7 @@ const SEARCH_TARGETS: SearchTarget[] = [
   { label: "Transfers 2026", value: "transfers2026", hint: "Inter-account movement (2026 YTD)" },
   { label: "Vitu Dealer 2026", value: "dealervitu", hint: "PennDOT title transactions" },
   { label: "E-Safety Inspections", value: "esafety", hint: "Inspection revenue" },
+  { label: "Payroll", value: "payroll", hint: "Payroll register" },
   { label: "Title Revenue", value: "titlerevenue", hint: "Title & tag income" },
   { label: "Vitu Statements", value: "vitu", hint: "Vendor billing" },
   { label: "Chart of Accounts", value: "coa", hint: "COA coding" },
@@ -305,6 +307,13 @@ const Index = () => {
                   <Car className="h-4 w-4" />
                   PA eSafety
                 </TabsTrigger>
+                <TabsTrigger
+                  value="payroll"
+                  className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
+                >
+                  <Users className="h-4 w-4" />
+                  Payroll
+                </TabsTrigger>
                 <TabsTrigger 
                   value="titlerevenue" 
                   className="gap-2 futuristic-tab data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
@@ -478,6 +487,10 @@ const Index = () => {
                 
                 <TabsContent value="esafety" className="m-0">
                   <ESafetySheet />
+                </TabsContent>
+
+                <TabsContent value="payroll" className="m-0">
+                  <PayrollSheet />
                 </TabsContent>
                 
                 <TabsContent value="titlerevenue" className="m-0">
