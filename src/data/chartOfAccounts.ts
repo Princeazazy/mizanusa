@@ -20,7 +20,11 @@ export const chartOfAccounts: COAEntry[] = [
   { code: "5120", name: "Title Lookup Services", type: "COGS", description: "VITU RTS title services" },
   
   // Operating Expenses (6000 series)
+  { code: "6010", name: "Salaries & Wages", type: "Expense", description: "Gross payroll per the payroll processor register" },
+  { code: "6020", name: "Employer Payroll Taxes", type: "Expense", description: "Company FICA/Medicare match, FUTA and PA SUTA" },
+  { code: "6030", name: "Payroll Processing Fees", type: "Expense", description: "Third-party payroll service charges" },
   { code: "6050", name: "Rent - Front Office", type: "Expense", description: "Front office rent expense" },
+
   { code: "6055", name: "Rent - Main Office", type: "Expense", description: "Main office rent expense" },
   { code: "6100", name: "Utilities", type: "Expense", description: "PECO Energy, water, gas" },
   { code: "6200", name: "Communications", type: "Expense", description: "Verizon, internet, phone" },

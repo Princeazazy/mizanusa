@@ -11,6 +11,8 @@ import { TrendingUp, TrendingDown, DollarSign } from "lucide-react";
 import { useState } from "react";
 import { cvsQuarters, defaultQuarter } from "@/data/cvsQuarters";
 import { QuarterSelect } from "@/components/sheets/QuarterSelect";
+import { getPayrollForQuarter, payrollEmployerTaxes, payrollGrossWages } from "@/data/cvsPayroll";
+
 
 
 const formatCurrency = (amount: number) => {
@@ -58,6 +60,12 @@ export const ProfitLossSheet = () => {
   const grossProfit = totalRevenue - totalCOGS;
 
   // Operating Expenses (6000 series)
+  // Payroll (from the payroll processor register — not on the bank statement)
+  const payroll = getPayrollForQuarter(period.key);
+  const wages = payroll ? payrollGrossWages(payroll) : 0;
+  const employerPayrollTaxes = payroll ? payrollEmployerTaxes(payroll) : 0;
+
+  // Operating Expenses (6000 series)
   const rentFrontOffice = sumByCoaCode(allWithdrawals, "6050");
   const rentMainOffice = sumByCoaCode(allWithdrawals, "6055");
   const totalRent = rentFrontOffice + rentMainOffice;
@@ -72,9 +80,10 @@ export const ProfitLossSheet = () => {
   const meals = sumByCoaCode(allWithdrawals, "6310");
   const licenses = sumByCoaCode(allWithdrawals, "6900");
   const unclassified = sumByCoaCode(allWithdrawals, "6999");
-  const totalOperatingExpenses = totalRent + utilities + communications + officeSupplies + vehicleOperating + processingFees + bankFees + insurance + otherExpenses + meals + licenses + unclassified;
+  const totalOperatingExpenses = wages + employerPayrollTaxes + totalRent + utilities + communications + officeSupplies + vehicleOperating + processingFees + bankFees + insurance + otherExpenses + meals + licenses + unclassified;
 
   const netIncome = grossProfit - totalOperatingExpenses;
+
 
   return (
     <div className="space-y-6">
@@ -179,6 +188,17 @@ export const ProfitLossSheet = () => {
               <TableRow className="bg-expense/50 font-semibold">
                 <TableCell colSpan={3}>OPERATING EXPENSES</TableCell>
               </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Salaries &amp; Wages</TableCell>
+                <TableCell className="text-right text-muted-foreground">6010</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(wages)}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Employer Payroll Taxes</TableCell>
+                <TableCell className="text-right text-muted-foreground">6020</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(employerPayrollTaxes)}</TableCell>
+              </TableRow>
+
               <TableRow>
                 <TableCell className="pl-8">Rent - Front Office</TableCell>
                 <TableCell className="text-right text-muted-foreground">6050</TableCell>
