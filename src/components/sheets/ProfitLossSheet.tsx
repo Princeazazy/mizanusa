@@ -189,6 +189,17 @@ export const ProfitLossSheet = () => {
                 <TableCell colSpan={3}>OPERATING EXPENSES</TableCell>
               </TableRow>
               <TableRow>
+                <TableCell className="pl-8">Salaries &amp; Wages</TableCell>
+                <TableCell className="text-right text-muted-foreground">6010</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(wages)}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="pl-8">Employer Payroll Taxes</TableCell>
+                <TableCell className="text-right text-muted-foreground">6020</TableCell>
+                <TableCell className="text-right font-mono">{formatCurrency(employerPayrollTaxes)}</TableCell>
+              </TableRow>
+
+              <TableRow>
                 <TableCell className="pl-8">Rent - Front Office</TableCell>
                 <TableCell className="text-right text-muted-foreground">6050</TableCell>
                 <TableCell className="text-right font-mono">{formatCurrency(rentFrontOffice)}</TableCell>
