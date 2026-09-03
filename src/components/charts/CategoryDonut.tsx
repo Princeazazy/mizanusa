@@ -148,15 +148,26 @@ export const CategoryDonut = ({
                   cornerRadius={8}
                   stroke="none"
                   animationDuration={800}
+                  onMouseEnter={() => setHovered(true)}
+                  onMouseLeave={() => setHovered(false)}
                 >
                   {slices.map((s, i) => (
                     <Cell key={s.name} fill={donutPalette[i % donutPalette.length]} />
                   ))}
                 </Pie>
-                <Tooltip content={<DonutTooltip total={total} />} animationDuration={120} />
+                <Tooltip
+                  content={<DonutTooltip total={total} />}
+                  animationDuration={120}
+                  wrapperStyle={{ zIndex: 50, outline: "none" }}
+                  offset={16}
+                />
               </PieChart>
             </ResponsiveContainer>
-            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+            <div
+              className={`pointer-events-none absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-150 ${
+                hovered ? "opacity-0" : "opacity-100"
+              }`}
+            >
               <span className="hero-figure text-[clamp(1.25rem,3.4vw,1.6rem)]" title={fullCurrency(total)}>
                 {fullCurrency(total)}
               </span>
