@@ -89,6 +89,7 @@ export const CategoryDonut = ({
   className,
 }: Props) => {
   const [tab, setTab] = useState("expenses");
+  const [hovered, setHovered] = useState(false);
 
   const { slices, total } = useMemo(() => {
     const sorted = [...data].filter((d) => d.value > 0).sort((a, b) => b.value - a.value);
