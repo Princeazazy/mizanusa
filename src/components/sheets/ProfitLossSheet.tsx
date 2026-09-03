@@ -60,6 +60,12 @@ export const ProfitLossSheet = () => {
   const grossProfit = totalRevenue - totalCOGS;
 
   // Operating Expenses (6000 series)
+  // Payroll (from the payroll processor register — not on the bank statement)
+  const payroll = getPayrollForQuarter(period.key);
+  const wages = payroll ? payrollGrossWages(payroll) : 0;
+  const employerPayrollTaxes = payroll ? payrollEmployerTaxes(payroll) : 0;
+
+  // Operating Expenses (6000 series)
   const rentFrontOffice = sumByCoaCode(allWithdrawals, "6050");
   const rentMainOffice = sumByCoaCode(allWithdrawals, "6055");
   const totalRent = rentFrontOffice + rentMainOffice;
@@ -74,9 +80,10 @@ export const ProfitLossSheet = () => {
   const meals = sumByCoaCode(allWithdrawals, "6310");
   const licenses = sumByCoaCode(allWithdrawals, "6900");
   const unclassified = sumByCoaCode(allWithdrawals, "6999");
-  const totalOperatingExpenses = totalRent + utilities + communications + officeSupplies + vehicleOperating + processingFees + bankFees + insurance + otherExpenses + meals + licenses + unclassified;
+  const totalOperatingExpenses = wages + employerPayrollTaxes + totalRent + utilities + communications + officeSupplies + vehicleOperating + processingFees + bankFees + insurance + otherExpenses + meals + licenses + unclassified;
 
   const netIncome = grossProfit - totalOperatingExpenses;
+
 
   return (
     <div className="space-y-6">
